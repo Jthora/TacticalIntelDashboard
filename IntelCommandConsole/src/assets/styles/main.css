@@ -1,0 +1,34 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.feed-visualizer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feed-item {
+  background: white;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+}
+
+.feed-item h3 {
+  margin: 0;
+}
+
+.feed-item p {
+  color: gray;
+}
