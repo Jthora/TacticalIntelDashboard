@@ -1,0 +1,32 @@
+{
+  "name": "IntelCommandConsole",
+  "version": "1.0.0",
+  "description": "A modular React application for managing and visualizing feeds.",
+  "main": "src/main.tsx",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.0",
+    "vite": "^2.0.0",
+    "eslint": "^7.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react-hooks": "^4.0.0"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "feeds",
+    "dashboard"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

@@ -1,12 +1,14 @@
 import React from 'react';
-import FeedVisualizer from './components/FeedVisualizer';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
 import './assets/styles/main.css';
 
 const App: React.FC = () => (
-  <div className="App">
-    <h1>Tactical Intel Dashboard</h1>
-    <FeedVisualizer />
-  </div>
+  <Router>
+    <div className="App">
+      <AppRoutes />
+    </div>
+  </Router>
 );
 
 export default App;
