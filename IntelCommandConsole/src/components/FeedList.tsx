@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import FeedService from '../services/FeedService';
-import { Feed } from '../types/FeedTypes';
+import { FeedItem } from '../types/FeedTypes';
 
 const FeedList: React.FC = () => {
-  const [feeds, setFeeds] = useState<Feed[]>([]);
+  const [feeds, setFeeds] = useState<FeedItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

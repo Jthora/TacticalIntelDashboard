@@ -28,7 +28,8 @@
 │   ├── main.tsx
 │   ├── models
 │   │   ├── Feed.ts
-│   │   └── FeedList.ts
+│   │   ├── FeedList.ts
+│   │   └── FeedResults.ts
 │   ├── pages
 │   │   ├── HomePage.tsx
 │   │   └── SettingsPage.tsx
@@ -39,11 +40,12 @@
 │   ├── types
 │   │   └── FeedTypes.ts
 │   ├── utils
-│   │   └── LocalStorageUtil.ts
+│   │   ├── LocalStorageUtil.ts
+│   │   └── fetchFeed.ts
 │   └── vite-env.d.ts
 ├── tsconfig.app.json
 ├── tsconfig.json
 ├── tsconfig.node.json
 └── vite.config.ts
 
-14 directories, 33 files
+14 directories, 35 files

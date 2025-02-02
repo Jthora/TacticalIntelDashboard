@@ -1,21 +1,28 @@
-export type Feed = {
+export interface FeedItem {
   id: string;
-  name: string;
-  url: string;
   title: string;
   link: string;
   pubDate: string;
-  description?: string;
-  content?: string;
+  description: string;
+  content: string;
   feedListId: string;
-};
+  author?: string;
+  categories?: string[];
+  media?: { url: string, type: string }[];
+}
 
-export type FeedList = {
+export interface FeedList {
   id: string;
   name: string;
-};
+}
 
-export type FeedResults = {
-  feeds: Feed[];
+export interface FeedSource {
+  id: string;
+  name: string;
+  url: string;
+}
+
+export interface FeedResults {
+  feeds: FeedItem[];
   fetchedAt: string; // Timestamp of when the feeds were fetched
-};
+}

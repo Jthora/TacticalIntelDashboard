@@ -1,14 +1,13 @@
-import { fetchFeed } from '../utils/fetchFeed';
-import { FeedResults } from '../models/FeedResults';
-import { Feed, FeedList } from '../types/FeedTypes';
+import FeedController from '../controllers/FeedController';
+import { FeedItem, FeedList, FeedResults } from '../types/FeedTypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
+import { DefaultFeeds } from '../constants/DefaultFeeds';
 
 class FeedService {
-  private feeds: Feed[] = [];
+  private feeds: FeedItem[] = [];
   private feedLists: FeedList[] = [];
   private readonly feedsStorageKey = 'feeds';
   private readonly feedListsStorageKey = 'feedLists';
-  private feedResultsCache: { [url: string]: FeedResults } = {};
 
   constructor() {
     this.loadFeeds();
@@ -19,19 +18,19 @@ class FeedService {
   private loadFeeds() {
     try {
       console.log('Loading feeds from local storage');
-      const storedFeeds = LocalStorageUtil.getItem<Feed[]>(this.feedsStorageKey);
-      if (storedFeeds) {
+      const storedFeeds = LocalStorageUtil.getItem<FeedItem[]>(this.feedsStorageKey);
+      if (storedFeeds && storedFeeds.length > 0) {
         this.feeds = storedFeeds;
         console.log('Feeds loaded from local storage:', this.feeds);
       } else {
         console.log('No feeds found in local storage, loading default feeds');
-        this.feeds = this.getDefaultFeeds();
+        this.feeds = DefaultFeeds;
         this.saveFeeds();
         console.log('Default feeds loaded:', this.feeds);
       }
     } catch (error) {
       console.error('Failed to load feeds:', error);
-      this.feeds = this.getDefaultFeeds();
+      this.feeds = DefaultFeeds;
       this.saveFeeds();
       console.log('Default feeds loaded due to error:', this.feeds);
     }
@@ -41,10 +40,11 @@ class FeedService {
     try {
       console.log('Loading feed lists from local storage');
       const storedFeedLists = LocalStorageUtil.getItem<FeedList[]>(this.feedListsStorageKey);
-      if (storedFeedLists) {
+      if (storedFeedLists && storedFeedLists.length > 0) {
         this.feedLists = storedFeedLists;
         console.log('Feed lists loaded from local storage:', this.feedLists);
       } else {
+        console.log('No feed lists found in local storage, loading default feed lists');
         this.feedLists = this.getDefaultFeedLists();
         this.saveFeedLists();
         console.log('Default feed lists loaded:', this.feedLists);
@@ -53,6 +53,7 @@ class FeedService {
       console.error('Failed to load feed lists:', error);
       this.feedLists = this.getDefaultFeedLists();
       this.saveFeedLists();
+      console.log('Default feed lists loaded due to error:', this.feedLists);
     }
   }
 
@@ -76,31 +77,8 @@ class FeedService {
     }
   }
 
-  private getDefaultFeeds(): Feed[] {
-    const defaultUrls = [
-      'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
-      'https://feeds.bbci.co.uk/news/rss.xml',
-      'https://www.npr.org/rss/rss.php?id=1001',
-      'https://www.reddit.com/r/news/.rss',
-      'https://www.aljazeera.com/xml/rss/all.xml',
-      'https://rss.cnn.com/rss/edition.rss',
-      'https://www.theguardian.com/world/rss',
-      'https://www.washingtonpost.com/rss/world',
-      'https://www.bloomberg.com/feed/podcast/etf-report.xml',
-      'https://www.ft.com/?format=rss',
-    ];
-  
-    return defaultUrls.map((url, index) => ({
-      id: (index + 1).toString(),
-      name: `Feed ${index + 1}`,
-      url,
-      title: `Title ${index + 1}`,
-      link: `${url}/link`,
-      pubDate: `2023-01-${String(index + 1).padStart(2, '0')}`,
-      description: `Description ${index + 1}`,
-      content: `Content ${index + 1}`,
-      feedListId: '1',
-    }));
+  private getDefaultFeeds(): FeedItem[] {
+    return DefaultFeeds;
   }
 
   public resetToDefault() {
@@ -118,7 +96,7 @@ class FeedService {
     ];
   }
 
-  public getFeeds(): Feed[] {
+  public getFeeds(): FeedItem[] {
     console.log('Getting all feeds');
     return this.feeds;
   }
@@ -135,7 +113,7 @@ class FeedService {
     }
   }
 
-  public getFeedsByList(feedListId: string): Feed[] {
+  public getFeedsByList(feedListId: string): FeedItem[] {
     console.log(`Getting feeds for list ID: ${feedListId}`);
     try {
       const feeds = this.feeds.filter(feed => feed.feedListId === feedListId);
@@ -147,7 +125,7 @@ class FeedService {
     }
   }
 
-  public addFeed(feed: Feed) {
+  public addFeed(feed: FeedItem) {
     try {
       console.log('Adding new feed:', feed);
       this.feeds.push(feed);
@@ -157,7 +135,7 @@ class FeedService {
     }
   }
 
-  public addFeedToList(feedListId: string, feed: Feed) {
+  public addFeedToList(feedListId: string, feed: FeedItem) {
     try {
       console.log(`Adding feed to list ID: ${feedListId}`, feed);
       feed.feedListId = feedListId;
@@ -211,20 +189,18 @@ class FeedService {
 
   public async updateFeedsFromServer() {
     console.log('Updating feeds from server');
-    console.log('Current feeds:', this.feeds); // Log the current feeds
-  
-    const updatedFeeds: Feed[] = [];
+    console.log('Current feeds:', this.feeds);
+
+    const updatedFeeds: FeedItem[] = [];
     for (const feed of this.feeds) {
       try {
-        console.log(`Fetching feed for URL: ${feed.url}`);
-        const feedResults = await fetchFeed(feed.url);
-        if (feedResults) {
-          console.log(`Feed fetched for URL: ${feed.url}`, feedResults);
-          const updatedFeed = feedResults.feeds[0]; // Assuming feedResults.feeds is an array
+        console.log(`Fetching feed for URL: ${feed.link}`);
+        const feedResults = await FeedController.fetchAndParseFeed(feed.link);
+        if (feedResults && feedResults.feeds.length > 0) {
+          console.log(`Feed fetched for URL: ${feed.link}`, feedResults);
+          const updatedFeed = feedResults.feeds[0];
           updatedFeeds.push({
             id: feed.id,
-            name: feed.name,
-            url: feed.url,
             title: updatedFeed.title,
             link: updatedFeed.link,
             pubDate: updatedFeed.pubDate,
@@ -232,22 +208,24 @@ class FeedService {
             content: updatedFeed.content,
             feedListId: feed.feedListId,
           });
-          this.feedResultsCache[feed.url] = feedResults; // Cache the results
         } else {
-          console.warn(`Failed to fetch feed for URL: ${feed.url}`);
+          if (feedResults && feedResults.feeds.length == 0) {
+            console.warn(`No feeds found for URL, URL Feed List Returned Empty: ${feed.link}`);
+          }
+          console.warn(`Failed to fetch feed for URL: ${feed.link}`);
         }
       } catch (error) {
-        console.error(`Error fetching feed for URL: ${feed.url}`, error);
+        console.error(`Error fetching feed for URL: ${feed.link}`, error);
       }
     }
-  
+
     this.feeds = updatedFeeds;
     this.saveFeeds();
     console.log('Feeds updated from server:', this.feeds);
   }
 
   public getFeedResults(url: string): FeedResults | null {
-    return this.feedResultsCache[url] || null;
+    return FeedController.getFeedResults(url);
   }
 }
 

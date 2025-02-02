@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import FeedItem from './FeedItem';
 import FeedService from '../services/FeedService';
-import { Feed } from '../types/FeedTypes';
+import { FeedItem as FeedItemType } from '../types/FeedTypes';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
 }
 
 const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => {
-  const [feeds, setFeeds] = useState<Feed[]>([]);
+  const [feeds, setFeeds] = useState<FeedItemType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 

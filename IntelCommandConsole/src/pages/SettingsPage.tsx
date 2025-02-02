@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import FeedService from '../services/FeedService';
-import { Feed, FeedList } from '../types/FeedTypes';
+import { FeedItem, FeedList } from '../types/FeedTypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 
 const SettingsPage: React.FC = () => {
   const [feedLists, setFeedLists] = useState<FeedList[]>([]);
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);
-  const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [newFeed, setNewFeed] = useState<Partial<Feed>>({});
+  const [feeds, setFeeds] = useState<FeedItem[]>([]);
+  const [newFeed, setNewFeed] = useState<Partial<FeedItem>>({});
   const [newFeedList, setNewFeedList] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +16,7 @@ const SettingsPage: React.FC = () => {
   useEffect(() => {
     const loadFeedLists = async () => {
       try {
-        const lists = await FeedService.getFeedLists();
+        const lists = FeedService.getFeedLists();
         setFeedLists(lists);
       } catch (err) {
         console.error(err);
@@ -32,7 +32,7 @@ const SettingsPage: React.FC = () => {
     if (selectedFeedList) {
       const loadFeeds = async () => {
         try {
-          const rssFeeds = await FeedService.getFeedsByList(selectedFeedList);
+          const rssFeeds = FeedService.getFeedsByList(selectedFeedList);
           setFeeds(rssFeeds);
         } catch (err) {
           console.error(err);
@@ -44,22 +44,29 @@ const SettingsPage: React.FC = () => {
   }, [selectedFeedList]);
 
   const handleAddFeed = () => {
-    if (newFeed.title && newFeed.url && selectedFeedList) {
-      const feed: Feed = {
-        id: (feeds.length + 1).toString(),
-        name: newFeed.name || `Feed ${feeds.length + 1}`,
-        url: newFeed.url,
-        title: newFeed.title,
-        link: newFeed.link || newFeed.url,
-        pubDate: new Date().toISOString(),
-        description: newFeed.description || '',
-        content: newFeed.content || '',
-        feedListId: selectedFeedList,
-      };
-      FeedService.addFeedToList(selectedFeedList, feed);
-      setFeeds([...feeds, feed]);
-      setNewFeed({});
+    if (!newFeed.title || !newFeed.link) {
+      alert('Please provide both a title and a link for the feed.');
+      return;
     }
+
+    if (!selectedFeedList) {
+      alert('Please select a feed list.');
+      return;
+    }
+
+    const feed: FeedItem = {
+      id: (feeds.length + 1).toString(),
+      title: newFeed.title,
+      link: newFeed.link,
+      pubDate: new Date().toISOString(),
+      description: newFeed.description || '',
+      content: newFeed.content || '',
+      feedListId: selectedFeedList, // Assigning feedListId from selectedFeedList
+    };
+
+    FeedService.addFeedToList(selectedFeedList, feed);
+    setFeeds([...feeds, feed]);
+    setNewFeed({ title: '', link: '', description: '', content: '' });
   };
 
   const handleRemoveFeed = (feedId: string) => {
@@ -154,9 +161,9 @@ const SettingsPage: React.FC = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Feed URL"
-                  value={newFeed.url || ''}
-                  onChange={(e) => setNewFeed({ ...newFeed, url: e.target.value })}
+                  placeholder="Feed Link"
+                  value={newFeed.link || ''}
+                  onChange={(e) => setNewFeed({ ...newFeed, link: e.target.value })}
                 />
                 <button onClick={handleAddFeed}>Add Feed</button>
               </div>

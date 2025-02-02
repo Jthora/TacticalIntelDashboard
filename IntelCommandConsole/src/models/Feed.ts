@@ -7,5 +7,8 @@ export interface Feed {
   pubDate: string;
   description?: string;
   content?: string;
-  feedListId: string; // Add this line
+  feedListId: string;
+  author?: string;
+  categories?: string[];
+  media?: { url: string, type: string }[];
 }
