@@ -91,7 +91,7 @@ A Touch-Interface Intel Command Console that runs in browser locally for RSS Agg
     ```
     This command will install all the required packages listed in the `package.json` file of the CORS Anywhere project.
 
-4. **Create a `server.js` file with the following content**:
+4. **Modify `server.js` file with the following content**:
     ```javascript
     // Listen on a specific host via the HOST environment variable
     var host = process.env.HOST || '0.0.0.0';
@@ -149,7 +149,7 @@ A Touch-Interface Intel Command Console that runs in browser locally for RSS Agg
       console.log('Running CORS Anywhere on ' + host + ':' + port);
     });
     ```
-    Create a new file named `server.js` in the CORS Anywhere directory and paste the above code into it.
+    Open and edit `server.js` in the CORS Anywhere directory and paste the above code into it.
 
 5. **Start the CORS Anywhere server**:
     ```sh
