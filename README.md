@@ -43,7 +43,7 @@ A Touch-Interface Intel Command Console that runs in browser locally for RSS Agg
 
 2. **Navigate to the project directory**:
     ```sh
-    cd TacticalIntelDashboard
+    cd TacticalIntelDashboard/IntelCommandConsole
     ```
     Change your current directory to the project directory.
 
@@ -68,6 +68,11 @@ A Touch-Interface Intel Command Console that runs in browser locally for RSS Agg
 ### Setting up CORS Anywhere Proxy Server
 
 1. **Clone the CORS Anywhere repository**:
+    escape back to the containing folder to clone the proxy server directory
+    ```sh
+    cd ..
+    ```
+
     ```sh
     git clone https://github.com/Rob--W/cors-anywhere.git
     ```
