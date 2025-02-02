@@ -1,10 +1,12 @@
-import FeedController from '../controllers/FeedController';
-import { FeedItem, FeedList, FeedResults } from '../types/FeedTypes';
+import { Feed } from '../models/Feed';
+import { FeedList, FeedResults } from '../types/FeedTypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
+import FeedController from '../controllers/FeedController';
 import { DefaultFeeds } from '../constants/DefaultFeeds';
+import { convertFeedItemsToFeeds } from '../utils/feedConversion';
 
 class FeedService {
-  private feeds: FeedItem[] = [];
+  private feeds: Feed[] = [];
   private feedLists: FeedList[] = [];
   private readonly feedsStorageKey = 'feeds';
   private readonly feedListsStorageKey = 'feedLists';
@@ -18,19 +20,15 @@ class FeedService {
   private loadFeeds() {
     try {
       console.log('Loading feeds from local storage');
-      const storedFeeds = LocalStorageUtil.getItem<FeedItem[]>(this.feedsStorageKey);
+      const storedFeeds = LocalStorageUtil.getItem<Feed[]>(this.feedsStorageKey);
       if (storedFeeds && storedFeeds.length > 0) {
         this.feeds = storedFeeds;
-        console.log('Feeds loaded from local storage:', this.feeds);
       } else {
-        console.log('No feeds found in local storage, loading default feeds');
-        this.feeds = DefaultFeeds;
-        this.saveFeeds();
-        console.log('Default feeds loaded:', this.feeds);
+        this.feeds = this.getDefaultFeeds();
       }
     } catch (error) {
       console.error('Failed to load feeds:', error);
-      this.feeds = DefaultFeeds;
+      this.feeds = this.getDefaultFeeds();
       this.saveFeeds();
       console.log('Default feeds loaded due to error:', this.feeds);
     }
@@ -42,12 +40,8 @@ class FeedService {
       const storedFeedLists = LocalStorageUtil.getItem<FeedList[]>(this.feedListsStorageKey);
       if (storedFeedLists && storedFeedLists.length > 0) {
         this.feedLists = storedFeedLists;
-        console.log('Feed lists loaded from local storage:', this.feedLists);
       } else {
-        console.log('No feed lists found in local storage, loading default feed lists');
         this.feedLists = this.getDefaultFeedLists();
-        this.saveFeedLists();
-        console.log('Default feed lists loaded:', this.feedLists);
       }
     } catch (error) {
       console.error('Failed to load feed lists:', error);
@@ -77,8 +71,8 @@ class FeedService {
     }
   }
 
-  private getDefaultFeeds(): FeedItem[] {
-    return DefaultFeeds;
+  private getDefaultFeeds(): Feed[] {
+    return convertFeedItemsToFeeds(DefaultFeeds);
   }
 
   public resetToDefault() {
@@ -96,7 +90,7 @@ class FeedService {
     ];
   }
 
-  public getFeeds(): FeedItem[] {
+  public getFeeds(): Feed[] {
     console.log('Getting all feeds');
     return this.feeds;
   }
@@ -113,7 +107,7 @@ class FeedService {
     }
   }
 
-  public getFeedsByList(feedListId: string): FeedItem[] {
+  public getFeedsByList(feedListId: string): Feed[] {
     console.log(`Getting feeds for list ID: ${feedListId}`);
     try {
       const feeds = this.feeds.filter(feed => feed.feedListId === feedListId);
@@ -125,7 +119,19 @@ class FeedService {
     }
   }
 
-  public addFeed(feed: FeedItem) {
+  public getFeedById(feedId: string): Feed | undefined {
+    console.log(`Getting feed by ID: ${feedId}`);
+    try {
+      const feed = this.feeds.find(feed => feed.id === feedId);
+      console.log(`Feed found:`, feed);
+      return feed;
+    } catch (error) {
+      console.error(`Failed to get feed by ID ${feedId}:`, error);
+      return undefined;
+    }
+  }
+
+  public addFeed(feed: Feed) {
     try {
       console.log('Adding new feed:', feed);
       this.feeds.push(feed);
@@ -135,7 +141,7 @@ class FeedService {
     }
   }
 
-  public addFeedToList(feedListId: string, feed: FeedItem) {
+  public addFeedToList(feedListId: string, feed: Feed) {
     try {
       console.log(`Adding feed to list ID: ${feedListId}`, feed);
       feed.feedListId = feedListId;
@@ -179,9 +185,7 @@ class FeedService {
     try {
       console.log(`Removing feed list ID: ${feedListId}`);
       this.feedLists = this.feedLists.filter(list => list.id !== feedListId);
-      this.feeds = this.feeds.filter(feed => feed.feedListId !== feedListId);
       this.saveFeedLists();
-      this.saveFeeds();
     } catch (error) {
       console.error('Failed to remove feed list:', error);
     }
@@ -191,31 +195,21 @@ class FeedService {
     console.log('Updating feeds from server');
     console.log('Current feeds:', this.feeds);
 
-    const updatedFeeds: FeedItem[] = [];
+    const updatedFeeds: Feed[] = [];
     for (const feed of this.feeds) {
       try {
-        console.log(`Fetching feed for URL: ${feed.link}`);
-        const feedResults = await FeedController.fetchAndParseFeed(feed.link);
-        if (feedResults && feedResults.feeds.length > 0) {
-          console.log(`Feed fetched for URL: ${feed.link}`, feedResults);
-          const updatedFeed = feedResults.feeds[0];
-          updatedFeeds.push({
-            id: feed.id,
-            title: updatedFeed.title,
-            link: updatedFeed.link,
-            pubDate: updatedFeed.pubDate,
-            description: updatedFeed.description,
-            content: updatedFeed.content,
-            feedListId: feed.feedListId,
-          });
+        const response = await fetch(feed.url);
+        if (response.ok) {
+          const feedData = await response.json();
+          const updatedFeed = { ...feed, ...feedData };
+          updatedFeeds.push(updatedFeed);
         } else {
-          if (feedResults && feedResults.feeds.length == 0) {
-            console.warn(`No feeds found for URL, URL Feed List Returned Empty: ${feed.link}`);
-          }
-          console.warn(`Failed to fetch feed for URL: ${feed.link}`);
+          console.error(`Failed to fetch feed from ${feed.url}: ${response.statusText}`);
+          updatedFeeds.push(feed); // Keep the old feed if fetch fails
         }
       } catch (error) {
-        console.error(`Error fetching feed for URL: ${feed.link}`, error);
+        console.error(`Error fetching feed from ${feed.url}:`, error);
+        updatedFeeds.push(feed); // Keep the old feed if fetch fails
       }
     }
 

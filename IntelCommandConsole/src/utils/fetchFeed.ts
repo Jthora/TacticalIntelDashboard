@@ -1,8 +1,12 @@
 import { FeedResults } from '../types/FeedTypes';
-import { parseFeedData, isValidXML } from './xmlParsing';
-import { convertFeedItems } from './feedConversion';
+import { Feed } from '../models/Feed';
+import { parseFeedData as parseXMLFeedData, isValidXML } from '../parsers/xmlParser';
+import { parseFeedData as parseJSONFeedData, isValidJSON } from '../parsers/jsonParser';
+import { parseFeedData as parseTXTFeedData, isValidTXT } from '../parsers/txtParser';
+import { parseFeedData as parseHTMLFeedData, isValidHTML } from '../parsers/htmlParser';
+import { convertFeedsToFeedItems } from './feedConversion';
 import { LocalStorageUtil } from './LocalStorageUtil';
-import { handleFetchError, handleXMLParsingError } from './errorHandler';
+import { handleFetchError, handleXMLParsingError, handleJSONParsingError, handleTXTParsingError, handleHTMLParsingError } from './errorHandler';
 
 const PROXY_URL = import.meta.env.VITE_PROXY_URL || 'http://localhost:8081/';
 
@@ -21,28 +25,48 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
     }
 
     const contentType = response.headers.get('content-type');
-    if (!contentType || (!contentType.includes('application/xml') && !contentType.includes('text/xml'))) {
-      throw new Error(`Invalid content type: ${contentType}`);
-    }
-
     const textData = await response.text();
     console.log(`Feed data fetched for URL: ${url}`, textData);
 
-    // Check if the fetched data is valid XML
-    if (!isValidXML(textData)) {
-      handleXMLParsingError(url, new Error('Invalid XML'), textData);
-      return null;
+    let feeds: Feed[] = [];
+    if (contentType && (contentType.includes('application/xml') || contentType.includes('text/xml'))) {
+      if (!isValidXML(textData)) {
+        handleXMLParsingError(url, new Error('Invalid XML'), textData);
+        return null;
+      }
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(textData, "application/xml");
+      if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+        handleXMLParsingError(url, new Error('Parser error'), textData);
+        return null;
+      }
+      feeds = parseXMLFeedData(xmlDoc, url);
+    } else if (contentType && contentType.includes('application/json')) {
+      if (!isValidJSON(textData)) {
+        handleJSONParsingError(url, new Error('Invalid JSON'), textData);
+        return null;
+      }
+      const jsonData = JSON.parse(textData);
+      feeds = parseJSONFeedData(jsonData, url);
+    } else if (contentType && contentType.includes('text/plain')) {
+      if (!isValidTXT(textData)) {
+        handleTXTParsingError(url, new Error('Invalid TXT'), textData);
+        return null;
+      }
+      feeds = parseTXTFeedData(textData, url);
+    } else if (contentType && contentType.includes('text/html')) {
+      if (!isValidHTML(textData)) {
+        handleHTMLParsingError(url, new Error('Invalid HTML'), textData);
+        return null;
+      }
+      const parser = new DOMParser();
+      const htmlDoc = parser.parseFromString(textData, "text/html");
+      feeds = parseHTMLFeedData(htmlDoc.documentElement, url, '1');
+    } else {
+      throw new Error(`Unsupported content type: ${contentType}`);
     }
 
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(textData, "application/xml");
-    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
-      handleXMLParsingError(url, new Error('Parser error'), textData);
-      return null;
-    }
-
-    const feedItems = parseFeedData(xmlDoc, url);
-    const convertedFeedItems = convertFeedItems(feedItems, url);
+    const convertedFeedItems = convertFeedsToFeedItems(feeds);
 
     return {
       feeds: convertedFeedItems,

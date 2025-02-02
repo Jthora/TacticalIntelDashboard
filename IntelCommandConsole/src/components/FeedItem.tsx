@@ -1,15 +1,15 @@
 import React from 'react';
+import { Feed } from '../models/Feed';
 
 interface FeedItemProps {
-  title: string;
-  link: string;
-  pubDate: string;
+  feed: Feed;
 }
 
-const FeedItem: React.FC<FeedItemProps> = ({ title, link, pubDate }) => (
+const FeedItem: React.FC<FeedItemProps> = ({ feed }) => (
   <div className="feed-item">
-    <h3><a href={link} target="_blank" rel="noopener noreferrer">{title}</a></h3>
-    <p>{pubDate}</p>
+    <h3><a href={feed.link} target="_blank" rel="noopener noreferrer">{feed.title}</a></h3>
+    <p>{feed.pubDate}</p>
+    {feed.description && <p>{feed.description}</p>}
   </div>
 );
 

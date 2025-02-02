@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import FeedVisualizer from '../components/FeedVisualizer';
+import Header from '../components/Header';
+import LeftSidebar from '../components/LeftSidebar';
+import RightSidebar from '../components/RightSidebar';
+import CentralView from '../components/CentralView';
 
 const HomePage: React.FC = () => {
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSetSelectedFeedList = (feedListId: string | null) => {
-    try {
-      setSelectedFeedList(feedListId);
-      setError(null);
-    } catch (err) {
-      console.error('Failed to set selected feed list:', err);
-      setError('Failed to set selected feed list');
-    }
-  };
 
   return (
     <div className="home-page">
-      <Sidebar setSelectedFeedList={handleSetSelectedFeedList} />
-      {error ? <div>{error}</div> : <FeedVisualizer selectedFeedList={selectedFeedList} />}
+      <Header />
+      <div className="content">
+        <LeftSidebar setSelectedFeedList={setSelectedFeedList} />
+        <CentralView selectedFeedList={selectedFeedList} />
+        <RightSidebar />
+      </div>
     </div>
   );
 };

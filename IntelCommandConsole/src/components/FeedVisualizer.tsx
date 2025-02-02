@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import FeedItem from './FeedItem';
 import FeedService from '../services/FeedService';
-import { FeedItem as FeedItemType } from '../types/FeedTypes';
+import { Feed } from '../models/Feed';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
 }
 
 const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => {
-  const [feeds, setFeeds] = useState<FeedItemType[]>([]);
+  const [feeds, setFeeds] = useState<Feed[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -18,16 +18,8 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
         setLoading(true);
         setError(null);
         try {
-          console.log(`Loading feeds for list: ${selectedFeedList}`);
-          const feedResults = FeedService.getFeedResults(selectedFeedList);
-          if (feedResults) {
-            setFeeds(feedResults.feeds);
-            console.log(`Loaded feeds: ${JSON.stringify(feedResults.feeds)}`);
-          } else {
-            const feedsByList = FeedService.getFeedsByList(selectedFeedList);
-            setFeeds(feedsByList);
-            console.log(`Loaded feeds by list: ${JSON.stringify(feedsByList)}`);
-          }
+          const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
+          setFeeds(feedsByList);
         } catch (err) {
           console.error('Failed to load feeds:', err);
           setError('Failed to load feeds');
@@ -42,27 +34,6 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     loadFeeds();
   }, [selectedFeedList]);
 
-  useEffect(() => {
-    const updateFeeds = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        await FeedService.updateFeedsFromServer();
-        const feedResults = FeedService.getFeedResults(selectedFeedList || '');
-        if (feedResults) {
-          setFeeds(feedResults.feeds);
-          console.log(`Updated feeds: ${JSON.stringify(feedResults.feeds)}`);
-        }
-      } catch (err) {
-        console.error('Failed to update feeds:', err);
-        setError('Failed to update feeds');
-      } finally {
-        setLoading(false);
-      }
-    };
-    updateFeeds();
-  }, []);
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -76,8 +47,8 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
       {feeds.length === 0 ? (
         <div>No feeds available</div>
       ) : (
-        feeds.map((feed, index) => (
-          <FeedItem key={index} title={feed.title} link={feed.link} pubDate={feed.pubDate} />
+        feeds.map((feed) => (
+          <FeedItem key={feed.id} feed={feed} />
         ))
       )}
     </div>

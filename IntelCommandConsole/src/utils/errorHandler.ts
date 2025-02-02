@@ -55,3 +55,58 @@ export const handleXMLParsingError = (url: string, error: Error, xmlContent: str
     console.warn(`XML Content: ${xmlContent}`);
   }
 };
+
+export const handleJSONParsingError = (url: string, error: Error, jsonContent: string): void => {
+  if (error.message.includes('Unexpected token')) {
+    console.warn(`Unexpected token error in JSON data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected end of JSON input')) {
+    console.warn(`Unexpected end of JSON input error in JSON data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected string in JSON')) {
+    console.warn(`Unexpected string error in JSON data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected number in JSON')) {
+    console.warn(`Unexpected number error in JSON data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected boolean in JSON')) {
+    console.warn(`Unexpected boolean error in JSON data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected null in JSON')) {
+    console.warn(`Unexpected null error in JSON data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected character in JSON')) {
+    console.warn(`Unexpected character error in JSON data fetched for URL: ${url}`);
+  } else {
+    console.warn(`Unknown JSON parsing error for URL: ${url}`, error);
+  }
+  console.warn(`JSON Content: ${jsonContent}`);
+};
+
+export const handleTXTParsingError = (url: string, error: Error, txtContent: string): void => {
+  if (error.message.includes('Unexpected token')) {
+    console.warn(`Unexpected token error in TXT data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected end of input')) {
+    console.warn(`Unexpected end of input error in TXT data fetched for URL: ${url}`);
+  } else if (error.message.includes('Invalid character')) {
+    console.warn(`Invalid character error in TXT data fetched for URL: ${url}`);
+  } else if (error.message.includes('Encoding error')) {
+    console.warn(`Encoding error in TXT data fetched for URL: ${url}`);
+  } else {
+    console.warn(`Unknown TXT parsing error for URL: ${url}`, error);
+  }
+  console.warn(`TXT Content: ${txtContent}`);
+};
+
+export const handleHTMLParsingError = (url: string, error: Error, htmlContent: string): void => {
+  if (error.message.includes('Unexpected token')) {
+    console.warn(`Unexpected token error in HTML data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unexpected end of input')) {
+    console.warn(`Unexpected end of input error in HTML data fetched for URL: ${url}`);
+  } else if (error.message.includes('Invalid character')) {
+    console.warn(`Invalid character error in HTML data fetched for URL: ${url}`);
+  } else if (error.message.includes('Encoding error')) {
+    console.warn(`Encoding error in HTML data fetched for URL: ${url}`);
+  } else if (error.message.includes('Unclosed tag')) {
+    console.warn(`Unclosed tag error in HTML data fetched for URL: ${url}`);
+  } else if (error.message.includes('Mismatched tag')) {
+    console.warn(`Mismatched tag error in HTML data fetched for URL: ${url}`);
+  } else {
+    console.warn(`Unknown HTML parsing error for URL: ${url}`, error);
+  }
+  console.warn(`HTML Content: ${htmlContent}`);
+};

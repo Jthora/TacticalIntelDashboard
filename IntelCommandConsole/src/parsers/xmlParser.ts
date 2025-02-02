@@ -1,5 +1,5 @@
 import { Feed } from '../models/Feed';
-import { getTextContent, getAttributeValue, getAllTextContents, getTextContentWithFallback } from './xmlHelpers';
+import { getTextContent, getAttributeValue, getAllTextContents, getTextContentWithFallback } from '../helpers/xmlHelper';
 
 export const parseFeedData = (xmlDoc: Document, url: string): Feed[] => {
   const items = xmlDoc.getElementsByTagName("item");
@@ -45,14 +45,4 @@ export const isValidXML = (textData: string): boolean => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(textData, "application/xml");
   return xmlDoc.getElementsByTagName("parsererror").length === 0;
-};
-
-// New function to handle edge cases and unique content
-export const handleEdgeCases = (xmlDoc: Document): void => {
-  // Example: Handle specific edge cases or unique content
-  const specialElements = xmlDoc.getElementsByTagName("specialElement");
-  if (specialElements.length > 0) {
-    console.log("Special elements found:", specialElements);
-    // Add logic to handle special elements
-  }
 };

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import FeedService from '../services/FeedService';
 import { FeedItem, FeedList } from '../types/FeedTypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
+import { convertFeedItemToFeed, convertFeedsToFeedItems } from '../utils/feedConversion';
 
 const SettingsPage: React.FC = () => {
   const [feedLists, setFeedLists] = useState<FeedList[]>([]);
@@ -33,7 +34,8 @@ const SettingsPage: React.FC = () => {
       const loadFeeds = async () => {
         try {
           const rssFeeds = FeedService.getFeedsByList(selectedFeedList);
-          setFeeds(rssFeeds);
+          const convertedFeeds = convertFeedsToFeedItems(rssFeeds);
+          setFeeds(convertedFeeds);
         } catch (err) {
           console.error(err);
           setError('Failed to load feeds');
@@ -64,7 +66,8 @@ const SettingsPage: React.FC = () => {
       feedListId: selectedFeedList, // Assigning feedListId from selectedFeedList
     };
 
-    FeedService.addFeedToList(selectedFeedList, feed);
+    const feedToAdd = convertFeedItemToFeed(feed);
+    FeedService.addFeedToList(selectedFeedList, feedToAdd);
     setFeeds([...feeds, feed]);
     setNewFeed({ title: '', link: '', description: '', content: '' });
   };
