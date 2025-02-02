@@ -38,17 +38,15 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ setSelectedFeedList }) => {
 
   return (
     <div className="left-sidebar">
-      <ul>
-        {feedLists.length === 0 ? (
-          <div>No feed lists available</div>
-        ) : (
-          feedLists.map((list) => (
-            <li key={list.id} onClick={() => setSelectedFeedList(list.id)}>
-              {list.name}
-            </li>
-          ))
-        )}
-      </ul>
+      {feedLists.length === 0 ? (
+        <div>No feed lists available</div>
+      ) : (
+        feedLists.map((list) => (
+          <button key={list.id} onClick={() => setSelectedFeedList(list.id)}>
+            {list.name}
+          </button>
+        ))
+      )}
     </div>
   );
 };

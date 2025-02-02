@@ -4,6 +4,7 @@ import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import FeedController from '../controllers/FeedController';
 import { DefaultFeeds } from '../constants/DefaultFeeds';
 import { convertFeedItemsToFeeds } from '../utils/feedConversion';
+import { fetchFeed } from '../utils/fetchFeed'; // Import fetchFeed
 
 class FeedService {
   private feeds: Feed[] = [];
@@ -198,13 +199,12 @@ class FeedService {
     const updatedFeeds: Feed[] = [];
     for (const feed of this.feeds) {
       try {
-        const response = await fetch(feed.url);
-        if (response.ok) {
-          const feedData = await response.json();
-          const updatedFeed = { ...feed, ...feedData };
+        const feedResults = await fetchFeed(feed.url); // Use fetchFeed to get feed data
+        if (feedResults) {
+          const updatedFeed = { ...feed, ...feedResults.feeds[0] }; // Assuming feedResults.feeds[0] contains the updated feed data
           updatedFeeds.push(updatedFeed);
         } else {
-          console.error(`Failed to fetch feed from ${feed.url}: ${response.statusText}`);
+          console.error(`Failed to fetch feed from ${feed.url}`);
           updatedFeeds.push(feed); // Keep the old feed if fetch fails
         }
       } catch (error) {

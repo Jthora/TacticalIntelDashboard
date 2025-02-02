@@ -10,10 +10,16 @@ import { handleFetchError, handleXMLParsingError, handleJSONParsingError, handle
 
 const PROXY_URL = import.meta.env.VITE_PROXY_URL || 'http://localhost:8081/';
 
+const handleCORSError = (url: string, error: Error): void => {
+  console.error(`CORS error fetching feed from ${url}:`, error);
+  // Additional handling logic if needed
+};
+
 export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
   console.log(`Starting to fetch feed from URL: ${url}`);
   try {
-    const response = await fetchWithRetry(`${PROXY_URL}${url}`, {
+    const proxyUrl = `${PROXY_URL}${url}`;
+    const response = await fetchWithRetry(proxyUrl, {
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
@@ -26,7 +32,7 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
 
     const contentType = response.headers.get('content-type');
     const textData = await response.text();
-    console.log(`Feed data fetched for URL: ${url}`, textData);
+    console.log(`Feed data fetched for URL: ${proxyUrl}`, textData);
 
     let feeds: Feed[] = [];
     if (contentType && (contentType.includes('application/xml') || contentType.includes('text/xml'))) {
@@ -73,7 +79,11 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       fetchedAt: new Date().toISOString(),
     };
   } catch (error) {
-    handleFetchError(error as Error, url);
+    if (error instanceof TypeError && error.message.includes('NetworkError')) {
+      handleCORSError(url, error);
+    } else {
+      handleFetchError(error as Error, url);
+    }
     return null;
   }
 };
@@ -87,7 +97,11 @@ const fetchWithRetry = async (url: string, options: RequestInit, retries = 3, ba
       }
       console.warn(`Attempt ${attempt} failed: ${response.statusText}`);
     } catch (error) {
-      handleFetchError(error as Error, url);
+      if (error instanceof TypeError && error.message.includes('NetworkError')) {
+        handleCORSError(url, error);
+      } else {
+        handleFetchError(error as Error, url);
+      }
     }
     await new Promise(resolve => setTimeout(resolve, backoff * attempt));
   }

@@ -13,8 +13,55 @@ body {
 
 .App {
   text-align: center;
-  padding: 20px;
+  padding: 0px;
   background-color: #0a0f24; /* Dark blue background */
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  background-color: #000000; /* Medium blue background */
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.header .logo {
+  width: 144px; /* Adjust width if necessary */
+  height: auto;
+  margin-right: 20px;
+}
+
+.header .title {
+  margin: 0;
+  color: #ffffff; /* White text */
+  font-size: 48px;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.left-sidebar {
+  width: 20%;
+  background-color: #1a233a; /* Medium blue background */
+  padding: 10px;
+}
+
+.central-view {
+  flex: 1;
+  padding: 10px;
+}
+
+.right-sidebar {
+  width: 20%;
+  background-color: #1a233a; /* Medium blue background */
+  padding: 10px;
 }
 
 .feed-visualizer {
@@ -130,4 +177,20 @@ body {
 
 .feed-list-item button:hover, .feed-item button:hover {
   background-color: #cc0000; /* Darker red background */
+}
+
+.left-sidebar button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #00bfff; /* Light blue background */
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #ffffff; /* White text */
+}
+
+.left-sidebar button:hover {
+  background-color: #0077cc; /* Darker blue background */
 }
