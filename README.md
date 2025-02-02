@@ -4,31 +4,35 @@ A Touch-Interface Intel Command Console that runs in browser locally for RSS Agg
 ## Setup and Installation
 
 ### Prerequisites
-- **Node.js (v18 or higher)**: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. You can download it from [nodejs.org](https://nodejs.org/).
-- **npm**: npm is the package manager for Node.js. It is installed automatically with Node.js.
-- **Git**: Git is a version control system. You can download it from [git-scm.com](https://git-scm.com/).
+- **Node.js (v18 or higher)**: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+- **npm**: npm is the package manager for Node.js.
+- **Git**: Git is a version control system.
 
-### Setting up Node.js, npm, and Git
-1. **Download and install Node.js**:
-    - Go to the [Node.js download page](https://nodejs.org/) and download the installer for your operating system.
-    - Run the installer and follow the instructions to install Node.js and npm.
+### Setting up Node.js, npm, and Git on Ubuntu Linux
+1. **Update your package list**:
+    ```sh
+    sudo apt update
+    ```
 
-2. **Verify the installation**:
+2. **Install Git**:
+    ```sh
+    sudo apt install git -y
+    ```
+    This command will install Git on your system.
+
+3. **Install Node.js and npm**:
+    ```sh
+    sudo apt install nodejs npm -y
+    ```
+    This command will install Node.js and npm on your system.
+
+4. **Verify the installations**:
     ```sh
     node -v
     npm -v
-    ```
-    These commands will print the installed versions of Node.js and npm. Ensure that Node.js is v18 or higher and npm is installed.
-
-3. **Download and install Git**:
-    - Go to the [Git download page](https://git-scm.com/) and download the installer for your operating system.
-    - Run the installer and follow the instructions to install Git.
-
-4. **Verify the installation**:
-    ```sh
     git --version
     ```
-    This command will print the installed version of Git.
+    These commands will print the installed versions of Node.js, npm, and Git. Ensure that Node.js is v18 or higher and npm is installed.
 
 ### Steps
 1. **Clone the repository**:
@@ -139,7 +143,7 @@ A Touch-Interface Intel Command Console that runs in browser locally for RSS Agg
       console.log('Running CORS Anywhere on ' + host + ':' + port);
     });
     ```
-    Open to modify the file named `server.js` in the CORS Anywhere directory and paste the above code into it.
+    Create a new file named `server.js` in the CORS Anywhere directory and paste the above code into it.
 
 5. **Start the CORS Anywhere server**:
     ```sh
