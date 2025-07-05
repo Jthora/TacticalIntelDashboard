@@ -8,31 +8,124 @@ import { convertFeedsToFeedItems } from './feedConversion';
 import { LocalStorageUtil } from './LocalStorageUtil';
 import { handleFetchError, handleXMLParsingError, handleJSONParsingError, handleTXTParsingError, handleHTMLParsingError } from './errorHandler';
 
-const PROXY_URL = import.meta.env.VITE_PROXY_URL || 'http://localhost:8081/';
+// Configuration for different proxy strategies
+const PROXY_CONFIG = {
+  // Vercel Edge Function (Production)
+  vercel: '/api/proxy-feed?url=',
+  // Public CORS proxies (Fallback)
+  fallback: [
+    'https://api.allorigins.win/get?url=',
+    'https://api.codetabs.com/v1/proxy?quest=',
+    'https://cors-anywhere.herokuapp.com/',
+  ],
+  // Local development
+  local: import.meta.env.VITE_PROXY_URL || 'http://localhost:8081/',
+};
+
+// Determine which proxy strategy to use
+const getProxyUrl = (targetUrl: string): string => {
+  // In production/Vercel environment
+  if (import.meta.env.PROD || window.location.hostname.includes('vercel.app')) {
+    return `${PROXY_CONFIG.vercel}${encodeURIComponent(targetUrl)}`;
+  }
+  
+  // In development, use local proxy if available
+  if (import.meta.env.DEV) {
+    return `${PROXY_CONFIG.local}${targetUrl}`;
+  }
+  
+  // Fallback to public proxy
+  return `${PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
+};
 
 const handleCORSError = (url: string, error: Error): void => {
   console.error(`CORS error fetching feed from ${url}:`, error);
   // Additional handling logic if needed
 };
 
+const fetchWithRetry = async (url: string, options: RequestInit, retries = 3, backoff = 300): Promise<Response> => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.ok) {
+        return response;
+      }
+      console.warn(`Attempt ${attempt} failed: ${response.statusText}`);
+    } catch (error) {
+      if (error instanceof TypeError && error.message.includes('NetworkError')) {
+        handleCORSError(url, error);
+      } else {
+        handleFetchError(error as Error, url);
+      }
+    }
+    await new Promise(resolve => setTimeout(resolve, backoff * attempt));
+  }
+  throw new Error(`Failed to fetch ${url} after ${retries} attempts`);
+};
+
+const fetchWithFallback = async (url: string, options: RequestInit): Promise<Response> => {
+  const proxyUrl = getProxyUrl(url);
+  
+  try {
+    // Try primary proxy
+    console.log(`Attempting to fetch via primary proxy: ${proxyUrl}`);
+    const response = await fetchWithRetry(proxyUrl, options);
+    
+    if (response.ok) {
+      return response;
+    }
+    
+    throw new Error(`Primary proxy failed: ${response.status} ${response.statusText}`);
+  } catch (primaryError) {
+    console.warn(`Primary proxy failed, trying fallbacks:`, primaryError);
+    
+    // Try fallback proxies in sequence
+    for (let i = 0; i < PROXY_CONFIG.fallback.length; i++) {
+      try {
+        const fallbackUrl = `${PROXY_CONFIG.fallback[i]}${encodeURIComponent(url)}`;
+        console.log(`Attempting fallback proxy ${i + 1}: ${fallbackUrl}`);
+        
+        const response = await fetchWithRetry(fallbackUrl, {
+          ...options,
+          headers: {
+            ...options.headers,
+            'X-Requested-With': 'XMLHttpRequest', // Some proxies require this
+          }
+        });
+        
+        if (response.ok) {
+          console.log(`Fallback proxy ${i + 1} succeeded`);
+          return response;
+        }
+      } catch (fallbackError) {
+        console.warn(`Fallback proxy ${i + 1} failed:`, fallbackError);
+        continue;
+      }
+    }
+    
+    // All proxies failed
+    throw new Error(`All proxy attempts failed for URL: ${url}`);
+  }
+};
+
 export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
   console.log(`Starting to fetch feed from URL: ${url}`);
   try {
-    const proxyUrl = `${PROXY_URL}${url}`;
-    const response = await fetchWithRetry(proxyUrl, {
+    const response = await fetchWithFallback(url, {
       headers: {
         'Cache-Control': 'no-cache',
         'Pragma': 'no-cache',
         'Expires': '0'
       }
     });
+    
     if (!response.ok) {
       throw new Error(`Failed to fetch feed: ${response.statusText}`);
     }
 
     const contentType = response.headers.get('content-type');
     const textData = await response.text();
-    console.log(`Feed data fetched for URL: ${proxyUrl}`, textData);
+    console.log(`Feed data fetched for URL: ${url}`, textData);
 
     let feeds: Feed[] = [];
     if (contentType && (contentType.includes('application/xml') || contentType.includes('text/xml'))) {
@@ -82,30 +175,11 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
     if (error instanceof TypeError && error.message.includes('NetworkError')) {
       handleCORSError(url, error);
     } else {
+      console.error('Error fetching feed:', error);
       handleFetchError(error as Error, url);
     }
     return null;
   }
-};
-
-const fetchWithRetry = async (url: string, options: RequestInit, retries = 3, backoff = 300): Promise<Response> => {
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const response = await fetch(url, options);
-      if (response.ok) {
-        return response;
-      }
-      console.warn(`Attempt ${attempt} failed: ${response.statusText}`);
-    } catch (error) {
-      if (error instanceof TypeError && error.message.includes('NetworkError')) {
-        handleCORSError(url, error);
-      } else {
-        handleFetchError(error as Error, url);
-      }
-    }
-    await new Promise(resolve => setTimeout(resolve, backoff * attempt));
-  }
-  throw new Error(`Failed to fetch ${url} after ${retries} attempts`);
 };
 
 // Additional functionality for robustness
