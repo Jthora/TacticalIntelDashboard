@@ -724,3 +724,829 @@
   white-space: nowrap;
   border: 0;
 }
+
+/* ========================================
+   WING COMMANDER COMMAND CENTER LAYOUT
+======================================== */
+
+.wing-command-center {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--deep-space-blue), var(--bg-primary));
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* System Status Bar */
+.system-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background: linear-gradient(90deg, var(--bg-tertiary), var(--tactical-blue));
+  border-bottom: 1px solid var(--wing-commander-blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  position: relative;
+}
+
+.system-status-bar::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
+  animation: cyberpunk-scan 10s linear infinite;
+}
+
+.status-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-value {
+  padding: 4px 12px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.status-value.operational {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.status-value.initializing,
+.status-value.loading-protocols,
+.status-value.connecting-to-networks,
+.status-value.syncing-intel-feeds,
+.status-value.refreshing-data,
+.status-value.exporting-intel {
+  background: linear-gradient(135deg, var(--cyber-electric-blue), rgba(0, 191, 255, 0.2));
+  color: var(--cyber-electric-blue);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  animation: cyber-pulse-blue 1.5s ease-in-out infinite;
+}
+
+.status-value.establishing,
+.status-value.connecting {
+  background: linear-gradient(135deg, var(--status-degraded), rgba(255, 204, 0, 0.2));
+  color: var(--status-degraded);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+.status-value.authenticated,
+.status-value.secure {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+/* Command Grid Layout */
+.command-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr 300px;
+  grid-template-rows: 1fr 120px;
+  grid-template-areas: 
+    "threat-panel main-display tactical-panel"
+    "threat-panel command-console tactical-panel";
+  gap: 4px;
+  padding: 4px;
+  min-height: calc(100vh - 120px);
+  position: relative;
+}
+
+/* Grid Panel Base Styles */
+.grid-panel {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+  border: 2px solid var(--wing-commander-blue);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
+  animation: cyberpunk-scan 6s linear infinite;
+  z-index: 1;
+}
+
+/* Panel Headers */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, var(--tactical-blue), var(--bg-tertiary));
+  border-bottom: 1px solid var(--wing-commander-blue);
+  position: relative;
+  z-index: 2;
+}
+
+.panel-title {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: var(--glow-blue);
+}
+
+.panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.feed-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: var(--glow-gold);
+}
+
+/* Panel Status Indicators */
+.panel-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.panel-status.active {
+  background: var(--status-operational);
+  box-shadow: 0 0 10px var(--status-operational);
+  animation: cyber-pulse-green 2s ease-in-out infinite;
+}
+
+.panel-status.monitoring {
+  background: var(--cyber-electric-blue);
+  box-shadow: 0 0 10px var(--cyber-electric-blue);
+  animation: cyber-pulse-blue 2s ease-in-out infinite;
+}
+
+.panel-status.ready {
+  background: var(--accent-gold);
+  box-shadow: 0 0 10px var(--accent-gold);
+  animation: cyber-pulse-gold 2s ease-in-out infinite;
+}
+
+/* Panel Content Areas */
+.panel-content {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Specific Panel Layouts */
+.threat-panel {
+  grid-area: threat-panel;
+  border-color: var(--threat-high);
+}
+
+.main-display {
+  grid-area: main-display;
+  border-color: var(--wing-commander-blue);
+}
+
+.tactical-panel {
+  grid-area: tactical-panel;
+  border-color: var(--steel-blue);
+}
+
+.command-console {
+  grid-area: command-console;
+  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--tactical-blue));
+}
+
+/* Grid Scan Lines */
+.grid-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scanline {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.3), transparent);
+}
+
+.scanline.horizontal {
+  top: 30%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  animation: scan-horizontal 8s linear infinite;
+}
+
+.scanline.vertical {
+  top: 0;
+  bottom: 0;
+  left: 60%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(0, 191, 255, 0.2), transparent);
+  animation: scan-vertical 12s linear infinite;
+}
+
+/* Scan Line Animations */
+@keyframes scan-horizontal {
+  0% { top: 30%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 70%; opacity: 0; }
+}
+
+@keyframes scan-vertical {
+  0% { left: 20%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { left: 80%; opacity: 0; }
+}
+
+@keyframes cyber-pulse-green {
+  0% { box-shadow: 0 0 10px var(--status-operational); }
+  50% { box-shadow: 0 0 20px var(--status-operational), 0 0 30px rgba(0, 255, 136, 0.5); }
+  100% { box-shadow: 0 0 10px var(--status-operational); }
+}
+
+/* ========================================
+   INTEL DISPLAY CONTAINER
+======================================== */
+
+.intel-display-container {
+  height: 100%;
+  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Data Stream Header */
+.data-stream-header {
+  padding: 15px 20px;
+  background: linear-gradient(90deg, var(--bg-tertiary), var(--tactical-blue));
+  border-bottom: 1px solid var(--cyber-electric-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stream-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stream-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stream-status {
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stream-status.initializing,
+.stream-status.establishing-connection,
+.stream-status.syncing-feeds {
+  background: linear-gradient(135deg, var(--cyber-electric-blue), rgba(0, 191, 255, 0.2));
+  color: var(--cyber-electric-blue);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  animation: cyber-pulse-blue 1.5s ease-in-out infinite;
+}
+
+.stream-status.streaming-live-data {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  animation: cyber-pulse-green 2s ease-in-out infinite;
+}
+
+.stream-stats {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-gold);
+  font-weight: bold;
+  text-shadow: var(--glow-gold);
+}
+
+/* Main Display Area */
+.intel-display-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stream Indicators */
+.stream-indicators {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px 0;
+  pointer-events: none;
+}
+
+.indicator-line {
+  height: 30%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--cyber-electric-blue), transparent);
+  position: relative;
+}
+
+.indicator-line.stream-1 {
+  animation: data-stream-flow 2s linear infinite;
+}
+
+.indicator-line.stream-2 {
+  animation: data-stream-flow 2.5s linear infinite reverse;
+}
+
+.indicator-line.stream-3 {
+  animation: data-stream-flow 1.8s linear infinite;
+}
+
+/* Display Effects */
+.display-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.6), transparent);
+  animation: intel-scan 4s linear infinite;
+}
+
+.data-corruption {
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  width: 1px;
+  height: 60%;
+  background: linear-gradient(180deg, transparent, rgba(255, 0, 102, 0.3), transparent);
+  animation: glitch-flicker 0.1s linear infinite;
+}
+
+/* Animations */
+@keyframes data-stream-flow {
+  0% { opacity: 0.3; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0.3; transform: scaleY(0.5); }
+}
+
+@keyframes intel-scan {
+  0% { top: 0; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes glitch-flicker {
+  0%, 98% { opacity: 0; }
+  2%, 96% { opacity: 0.8; }
+  4%, 94% { opacity: 0.2; }
+  6%, 92% { opacity: 0.6; }
+  8%, 90% { opacity: 0; }
+}
+
+/* ========================================
+   COMMAND CONSOLE PANEL
+======================================== */
+
+.command-console-panel {
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--tactical-blue));
+  border: 2px solid var(--accent-gold);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Console Header */
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: linear-gradient(90deg, var(--tactical-blue), var(--bg-tertiary));
+  border-bottom: 1px solid var(--accent-gold);
+}
+
+.console-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-text {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: var(--glow-gold);
+}
+
+.console-status {
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.console-status.operational {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+
+.console-toggle {
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-gold);
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  transition: all 0.3s ease;
+}
+
+.console-toggle:hover {
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.toggle-symbol {
+  font-weight: bold;
+}
+
+/* System Metrics */
+.system-metrics {
+  padding: 8px 15px;
+  background: linear-gradient(90deg, var(--bg-primary), var(--bg-tertiary));
+  border-bottom: 1px solid var(--wing-commander-blue);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metric-label {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 80px;
+  font-size: 9px;
+}
+
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--wing-commander-blue);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.metric-fill {
+  height: 100%;
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.metric-fill.normal {
+  background: linear-gradient(90deg, var(--status-operational), var(--cyber-electric-blue));
+}
+
+.metric-fill.warning {
+  background: linear-gradient(90deg, var(--status-degraded), var(--threat-medium));
+  animation: warning-pulse 2s ease-in-out infinite;
+}
+
+.metric-fill.critical {
+  background: linear-gradient(90deg, var(--threat-critical), var(--threat-high));
+  animation: critical-pulse 1s ease-in-out infinite;
+}
+
+.metric-value {
+  color: var(--cyber-electric-blue);
+  font-weight: bold;
+  min-width: 30px;
+  text-align: right;
+}
+
+.metric-value-large {
+  color: var(--accent-gold);
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: var(--glow-gold);
+}
+
+.metric-value-feed {
+  color: var(--wing-commander-blue);
+  font-weight: bold;
+  text-transform: uppercase;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Command Actions Grid */
+.command-grid-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 10px;
+  flex: 1;
+  align-content: start;
+}
+
+.command-btn {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+  border: 1px solid var(--wing-commander-blue);
+  color: var(--text-primary);
+  padding: 8px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-height: 50px;
+}
+
+.command-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.command-btn:hover::before {
+  left: 100%;
+}
+
+.command-icon {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.command-label {
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+}
+
+.command-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Priority-based styling */
+.priority-critical {
+  border-color: var(--threat-critical);
+}
+
+.priority-critical:hover {
+  background: linear-gradient(135deg, var(--threat-critical), var(--bg-primary));
+  box-shadow: 0 0 15px rgba(255, 0, 102, 0.5);
+  transform: translateY(-2px);
+}
+
+.priority-high {
+  border-color: var(--threat-high);
+}
+
+.priority-high:hover {
+  background: linear-gradient(135deg, var(--threat-high), var(--bg-primary));
+  box-shadow: 0 0 12px rgba(255, 102, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.priority-medium {
+  border-color: var(--cyber-electric-blue);
+}
+
+.priority-medium:hover {
+  background: linear-gradient(135deg, var(--cyber-electric-blue), var(--bg-primary));
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+}
+
+.priority-low {
+  border-color: var(--steel-blue);
+}
+
+.priority-low:hover {
+  background: linear-gradient(135deg, var(--steel-blue), var(--bg-primary));
+  box-shadow: 0 0 8px rgba(70, 130, 180, 0.4);
+}
+
+/* Console Footer */
+.console-footer {
+  padding: 8px 15px;
+  background: linear-gradient(90deg, var(--bg-tertiary), var(--bg-primary));
+  border-top: 1px solid var(--wing-commander-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.operational-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px;
+}
+
+.status-indicator.active {
+  background: var(--status-operational);
+  box-shadow: 0 0 8px var(--status-operational);
+  animation: cyber-pulse-green 2s ease-in-out infinite;
+}
+
+.status-text {
+  color: var(--status-operational);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sync-time {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Animations */
+@keyframes warning-pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes critical-pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .data-stream-header {
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 15px;
+  }
+  
+  .stream-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .stream-indicators {
+    display: none;
+  }
+  
+  .command-grid-actions {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+  
+  .command-btn {
+    min-height: 40px;
+    padding: 6px 4px;
+  }
+  
+  .command-icon {
+    font-size: 14px;
+  }
+  
+  .command-label {
+    font-size: 8px;
+  }
+  
+  .system-metrics {
+    padding: 6px 10px;
+  }
+  
+  .metric-item {
+    gap: 6px;
+  }
+  
+  .metric-label {
+    min-width: 60px;
+    font-size: 8px;
+  }
+}

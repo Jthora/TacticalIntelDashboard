@@ -31,23 +31,6 @@ body {
   position: relative;
 }
 
-/* Enhanced Home Page with Grid Layout */
-.home-page {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: linear-gradient(135deg, var(--deep-space-blue), var(--bg-primary));
-}
-
-/* Wing Commander Enhanced Content Area */
-.content {
-  display: flex;
-  flex: 1;
-  gap: 2px;
-  background: var(--bg-primary);
-  padding: 2px;
-}
-
 /* Enhanced Left Sidebar - Threat Panel */
 .left-sidebar {
   width: 320px;
