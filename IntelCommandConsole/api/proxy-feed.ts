@@ -1,3 +1,7 @@
+export const config = {
+  runtime: 'edge',
+};
+
 /**
  * Vercel Edge Function to proxy RSS feeds and bypass CORS
  * Replaces the need for a persistent CORS proxy server

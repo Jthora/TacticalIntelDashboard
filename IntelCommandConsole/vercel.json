@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/proxy-feed.ts": {
-      "runtime": "@vercel/node"
+      "runtime": "edge"
     }
   },
   "build": {
