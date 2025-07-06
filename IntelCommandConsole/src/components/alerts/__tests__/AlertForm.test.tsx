@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AlertForm from '../AlertForm';
-import { AlertConfig, AlertPriority } from '../../../types/AlertTypes';
 
 // Mock CSS imports
 jest.mock('../AlertForm.css', () => ({}));
@@ -13,33 +12,6 @@ describe('AlertForm', () => {
   const defaultProps = {
     onSubmit: mockOnSubmit,
     onCancel: mockOnCancel,
-  };
-
-  const mockAlert: AlertConfig = {
-    id: 'test-alert-1',
-    name: 'Test Alert',
-    description: 'Test description',
-    keywords: ['test', 'keyword'],
-    sources: ['source1', 'source2'],
-    priority: 'high' as AlertPriority,
-    active: true,
-    createdAt: new Date('2024-01-01'),
-    triggerCount: 5,
-    notifications: {
-      browser: true,
-      sound: false,
-      email: 'test@example.com',
-      webhook: 'https://example.com/webhook',
-      customMessage: 'Custom alert message'
-    },
-    scheduling: {
-      activeHours: {
-        start: '09:00',
-        end: '17:00'
-      },
-      activeDays: [1, 2, 3, 4, 5],
-      timezone: 'UTC'
-    }
   };
 
   beforeEach(() => {

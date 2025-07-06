@@ -126,16 +126,6 @@ export function parseRSSDate(dateString: string): Date | null {
     return null;
   }
 
-  // Try different date formats commonly used in RSS
-  const formats = [
-    // RFC 2822 format (most common in RSS)
-    /^[A-Za-z]{3},?\s+\d{1,2}\s+[A-Za-z]{3}\s+\d{4}\s+\d{1,2}:\d{2}(:\d{2})?\s*([+-]\d{4}|[A-Z]{3,4})?$/,
-    // ISO 8601 format
-    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?([+-]\d{2}:\d{2}|Z)?$/,
-    // Simple date format
-    /^\d{4}-\d{2}-\d{2}$/
-  ];
-
   try {
     const date = new Date(dateString.trim());
     if (!isNaN(date.getTime())) {

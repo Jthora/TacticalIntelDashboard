@@ -39,64 +39,6 @@ body {
   background: linear-gradient(135deg, var(--deep-space-blue), var(--bg-primary));
 }
 
-/* Wing Commander Enhanced Header */
-.header {
-  background: linear-gradient(135deg, var(--bg-primary), var(--bg-accent));
-  padding: 15px 20px;
-  display: flex;
-  align-items: center;
-  border-bottom: 2px solid var(--wing-commander-blue);
-  box-shadow: 0 2px 15px rgba(0, 191, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--wing-commander-blue), var(--cyber-electric-blue), var(--wing-commander-blue));
-  animation: cyberpunk-scan 6s linear infinite;
-}
-
-.header .logo {
-  width: 144px;
-  height: auto;
-  margin-right: 20px;
-  filter: drop-shadow(var(--glow-blue));
-  transition: all 0.3s ease;
-}
-
-.header .logo:hover {
-  filter: drop-shadow(0 0 15px rgba(0, 191, 255, 0.8));
-  transform: scale(1.05);
-}
-
-.header .title {
-  margin: 0;
-  color: var(--text-primary);
-  font-size: var(--font-h1-commander);
-  font-family: var(--font-primary);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: var(--glow-blue);
-  position: relative;
-}
-
-.header .title::after {
-  content: 'CYBER INVESTIGATION AGENCY';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  font-size: 12px;
-  color: var(--accent-gold);
-  letter-spacing: 2px;
-  text-shadow: var(--glow-gold);
-}
-
 /* Wing Commander Enhanced Content Area */
 .content {
   display: flex;
@@ -439,14 +381,6 @@ body {
   .right-sidebar {
     width: 100%;
     height: auto;
-  }
-  
-  .header .title {
-    font-size: 32px;
-  }
-  
-  .header .title::after {
-    font-size: 10px;
   }
   
   .quick-actions {

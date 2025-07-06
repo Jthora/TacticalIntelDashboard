@@ -112,14 +112,20 @@
 }
 
 @keyframes cyberpunk-scan {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
-@keyframes superhero-power-up {
-  0% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.05); filter: brightness(1.2); }
-  100% { transform: scale(1); filter: brightness(1); }
+@keyframes wing-data-stream {
+  0% { transform: translateX(-100px); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100px); opacity: 0; }
+}
+
+@keyframes cyber-grid-pulse {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
 }
 
 /* ========================================

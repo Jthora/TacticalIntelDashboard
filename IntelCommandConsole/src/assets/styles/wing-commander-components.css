@@ -4,6 +4,233 @@
  */
 
 /* ========================================
+   CYBER COMMAND HEADER
+======================================== */
+
+.cyber-command-header {
+  background: linear-gradient(135deg, var(--bg-primary), var(--tactical-blue));
+  border-bottom: 3px solid var(--wing-commander-blue);
+  position: relative;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.header-primary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.command-logo {
+  width: 144px;
+  height: auto;
+  filter: drop-shadow(var(--glow-blue));
+  transition: all 0.3s ease;
+  animation: cyber-pulse-blue 4s ease-in-out infinite;
+}
+
+.command-logo:hover {
+  filter: drop-shadow(0 0 20px rgba(0, 191, 255, 1));
+  transform: scale(1.08) rotate(1deg);
+}
+
+.agency-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.command-title {
+  font-family: var(--font-primary);
+  font-size: var(--font-h1-commander);
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: var(--glow-blue);
+  line-height: 1;
+  animation: wing-commander-glow 6s ease-in-out infinite;
+}
+
+.agency-subtitle {
+  font-family: var(--font-secondary);
+  font-size: 14px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 5px;
+  text-shadow: var(--glow-gold);
+  animation: cyber-pulse-gold 3s ease-in-out infinite alternate;
+}
+
+.status-indicators {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.threat-indicator, .system-indicator, .time-display {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 100px;
+  text-align: center;
+  border: 2px solid;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Threat Level Indicators */
+.threat-normal {
+  background: linear-gradient(135deg, var(--threat-low), var(--bg-primary));
+  border-color: var(--threat-low);
+  color: var(--threat-low);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+.threat-elevated {
+  background: linear-gradient(135deg, var(--threat-medium), var(--bg-primary));
+  border-color: var(--threat-medium);
+  color: var(--threat-medium);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+  animation: cyber-pulse-yellow 2s ease-in-out infinite;
+}
+
+.threat-high {
+  background: linear-gradient(135deg, var(--threat-high), var(--bg-primary));
+  border-color: var(--threat-high);
+  color: var(--threat-high);
+  box-shadow: 0 0 15px rgba(255, 102, 0, 0.5);
+  animation: cyber-pulse-orange 1.5s ease-in-out infinite;
+}
+
+.threat-critical {
+  background: linear-gradient(135deg, var(--threat-critical), var(--bg-primary));
+  border-color: var(--threat-critical);
+  color: var(--threat-critical);
+  box-shadow: 0 0 20px rgba(255, 0, 102, 0.7);
+  animation: cyber-pulse-pink 1s ease-in-out infinite;
+}
+
+/* System Status Indicators */
+.status-operational {
+  background: linear-gradient(135deg, var(--status-operational), var(--bg-primary));
+  border-color: var(--status-operational);
+  color: var(--status-operational);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+.status-degraded {
+  background: linear-gradient(135deg, var(--status-degraded), var(--bg-primary));
+  border-color: var(--status-degraded);
+  color: var(--status-degraded);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+  animation: cyber-pulse-yellow 2s ease-in-out infinite;
+}
+
+.status-maintenance {
+  background: linear-gradient(135deg, var(--accent-purple), var(--bg-primary));
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+}
+
+/* Time Display */
+.time-display {
+  background: linear-gradient(135deg, var(--cyber-electric-blue), var(--bg-primary));
+  border-color: var(--cyber-electric-blue);
+  color: var(--cyber-electric-blue);
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+  font-family: var(--font-mono);
+  letter-spacing: 2px;
+}
+
+/* Header Effects */
+.header-scanline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--wing-commander-blue), 
+    var(--cyber-electric-blue), 
+    var(--wing-commander-blue), 
+    transparent
+  );
+  animation: cyberpunk-scan 8s linear infinite;
+}
+
+.header-glow-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(0, 102, 204, 0.1), 
+    transparent, 
+    rgba(0, 191, 255, 0.1)
+  );
+  pointer-events: none;
+  animation: cyber-ambient-glow 12s ease-in-out infinite alternate;
+}
+
+/* Additional Animations for Header */
+@keyframes cyber-pulse-gold {
+  0% { text-shadow: var(--glow-gold); }
+  100% { text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.5); }
+}
+
+@keyframes cyber-pulse-yellow {
+  0% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(255, 204, 0, 0.8), 0 0 35px rgba(255, 204, 0, 0.3); }
+  100% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
+}
+
+@keyframes cyber-pulse-orange {
+  0% { box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
+  50% { box-shadow: 0 0 25px rgba(255, 102, 0, 0.9), 0 0 35px rgba(255, 102, 0, 0.4); }
+  100% { box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
+}
+
+@keyframes cyber-ambient-glow {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+/* ========================================
    WING COMMANDER BUTTONS
 ======================================== */
 

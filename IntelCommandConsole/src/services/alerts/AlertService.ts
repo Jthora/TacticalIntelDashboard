@@ -628,6 +628,25 @@ export class AlertService {
 
     return matches;
   }
+
+  /**
+   * Get alert statistics
+   */
+  public getAlertStats() {
+    const totalAlerts = this.alerts.length;
+    const activeAlerts = this.alerts.filter(alert => alert.active).length;
+    const totalTriggers = this.alertHistory.length;
+    const triggersToday = this.alertHistory.filter(
+      trigger => new Date().getTime() - trigger.triggeredAt.getTime() < 24 * 60 * 60 * 1000
+    ).length;
+
+    return {
+      totalAlerts,
+      activeAlerts,
+      totalTriggers,
+      triggersToday
+    };
+  }
 }
 
 export default AlertService;
