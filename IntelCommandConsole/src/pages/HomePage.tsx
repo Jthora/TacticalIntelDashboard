@@ -12,18 +12,14 @@ const HomePage: React.FC = () => {
   const [connectionStatus, setConnectionStatus] = useState('ESTABLISHING');
 
   useEffect(() => {
-    // Simulate system initialization sequence
+    // Streamlined system initialization
     const initSequence = async () => {
-      setSystemStatus('LOADING PROTOCOLS');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      setSystemStatus('LOADING');
+      await new Promise(resolve => setTimeout(resolve, 800));
       
-      setSystemStatus('CONNECTING TO NETWORKS');
+      setSystemStatus('CONNECTING');
       setConnectionStatus('CONNECTING');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setSystemStatus('SYNCING INTEL FEEDS');
-      setConnectionStatus('AUTHENTICATED');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 600));
       
       setSystemStatus('OPERATIONAL');
       setConnectionStatus('SECURE');
@@ -33,14 +29,14 @@ const HomePage: React.FC = () => {
   }, []);
 
   const handleRefreshAll = () => {
-    setSystemStatus('REFRESHING DATA');
+    setSystemStatus('REFRESHING');
     setTimeout(() => {
       window.location.reload();
-    }, 500);
+    }, 300);
   };
 
   const handleExportData = () => {
-    setSystemStatus('EXPORTING INTEL');
+    setSystemStatus('EXPORTING');
     
     const data = {
       timestamp: new Date().toISOString(),
@@ -48,90 +44,85 @@ const HomePage: React.FC = () => {
       exportedAt: new Date().toLocaleString(),
       systemStatus,
       connectionStatus,
-      classification: 'TACTICAL-INTEL-EXPORT'
+      classification: 'ARCH-ANGEL-INTEL-EXPORT'
     };
     
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `wing-commander-intel-${Date.now()}.json`;
+    a.download = `arch-angel-intel-${Date.now()}.json`;
     a.click();
     URL.revokeObjectURL(url);
     
-    setTimeout(() => setSystemStatus('OPERATIONAL'), 2000);
+    setTimeout(() => setSystemStatus('OPERATIONAL'), 1500);
   };
 
   return (
-    <div className="wing-command-center">
+    <div className="arch-angel-interface">
       <Header />
       
-      {/* System Status Bar */}
-      <div className="system-status-bar">
-        <div className="status-section">
+      {/* Streamlined Status Bar */}
+      <div className="interface-status-bar">
+        <div className="status-item">
           <span className="status-label">SYSTEM:</span>
-          <span className={`status-value ${systemStatus.toLowerCase().replace(' ', '-')}`}>
+          <span className={`status-value ${systemStatus.toLowerCase()}`}>
             {systemStatus}
           </span>
         </div>
-        <div className="status-section">
+        <div className="status-item">
           <span className="status-label">CONNECTION:</span>
           <span className={`status-value ${connectionStatus.toLowerCase()}`}>
             {connectionStatus}
           </span>
         </div>
-        <div className="status-section">
-          <span className="status-label">GRID:</span>
+        <div className="status-item">
+          <span className="status-label">INTEL GRID:</span>
           <span className="status-value operational">ACTIVE</span>
         </div>
       </div>
 
-      {/* Main Command Grid */}
-      <div className="command-grid">
-        {/* Threat Analysis Panel */}
-        <div className="grid-panel threat-panel">
-          <div className="panel-header">
-            <h3 className="panel-title">THREAT ANALYSIS</h3>
-            <div className="panel-status active"></div>
+      {/* Main Interface Grid */}
+      <div className="intel-grid">
+        {/* Intelligence Sources */}
+        <div className="grid-section sources">
+          <div className="section-header">
+            <h3>INTELLIGENCE SOURCES</h3>
           </div>
-          <div className="panel-content">
+          <div className="section-content">
             <LeftSidebar setSelectedFeedList={setSelectedFeedList} />
           </div>
         </div>
 
-        {/* Main Intelligence Display */}
-        <div className="grid-panel main-display">
-          <div className="panel-header">
-            <h3 className="panel-title">INTELLIGENCE FEED</h3>
-            <div className="panel-controls">
-              <span className="feed-counter">
-                {selectedFeedList ? `FEED: ${selectedFeedList}` : 'ALL SOURCES'}
-              </span>
+        {/* Main Intel Feed */}
+        <div className="grid-section main-feed">
+          <div className="section-header">
+            <h3>INTELLIGENCE FEED</h3>
+            <div className="feed-info">
+              {selectedFeedList ? `SOURCE: ${selectedFeedList}` : 'ALL SOURCES'}
             </div>
           </div>
-          <div className="panel-content">
+          <div className="section-content">
             <CentralView selectedFeedList={selectedFeedList} />
           </div>
         </div>
 
-        {/* Tactical Information Panel */}
-        <div className="grid-panel tactical-panel">
-          <div className="panel-header">
-            <h3 className="panel-title">TACTICAL INFO</h3>
-            <div className="panel-status monitoring"></div>
+        {/* Analysis Panel */}
+        <div className="grid-section analysis">
+          <div className="section-header">
+            <h3>ANALYSIS</h3>
           </div>
-          <div className="panel-content">
+          <div className="section-content">
             <RightSidebar />
           </div>
         </div>
 
-        {/* Command Console */}
-        <div className="grid-panel command-console">
-          <div className="panel-header">
-            <h3 className="panel-title">COMMAND CONSOLE</h3>
-            <div className="panel-status ready"></div>
+        {/* Operations Console */}
+        <div className="grid-section operations">
+          <div className="section-header">
+            <h3>OPERATIONS</h3>
           </div>
-          <div className="panel-content">
+          <div className="section-content">
             <QuickActions 
               selectedFeedList={selectedFeedList}
               onRefreshAll={handleRefreshAll}
@@ -141,14 +132,8 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Alert System Overlay */}
+      {/* Alert System */}
       <AlertNotificationPanel />
-      
-      {/* Grid Scan Lines */}
-      <div className="grid-scanlines">
-        <div className="scanline horizontal"></div>
-        <div className="scanline vertical"></div>
-      </div>
     </div>
   );
 };

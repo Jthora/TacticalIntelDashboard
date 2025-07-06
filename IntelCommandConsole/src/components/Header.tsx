@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 
 const Header: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -16,14 +15,14 @@ const Header: React.FC = () => {
       const levels = ['NORMAL', 'ELEVATED', 'HIGH', 'CRITICAL'];
       const randomLevel = levels[Math.floor(Math.random() * levels.length)];
       setThreatLevel(randomLevel);
-    }, 30000); // Change every 30 seconds
+    }, 30000);
 
     // Simulate system status updates
     const statusTimer = setInterval(() => {
       const statuses = ['OPERATIONAL', 'DEGRADED', 'MAINTENANCE'];
       const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
       setSystemStatus(randomStatus);
-    }, 45000); // Change every 45 seconds
+    }, 45000);
 
     return () => {
       clearInterval(timer);
@@ -40,40 +39,37 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="cyber-command-header">
-      <div className="header-primary">
-        <div className="logo-section">
-          <img src={WingCommanderLogo} alt="Wing Commander Logo" className="command-logo" />
-          <div className="agency-identity">
-            <h1 className="command-title">TACTICAL INTEL DASHBOARD</h1>
-            <div className="agency-subtitle">CYBER INVESTIGATION AGENCY</div>
+    <header className="arch-angel-header">
+      <div className="header-content">
+        <div className="agency-identity">
+          <div className="agency-logo">AA</div>
+          <div className="agency-info">
+            <h1 className="agency-title">ARCH ANGEL AGENCY</h1>
+            <div className="agency-subtitle">TACTICAL INTELLIGENCE</div>
           </div>
         </div>
         
-        <div className="status-indicators">
-          <div className="status-item">
-            <span className="status-label">THREAT LEVEL</span>
-            <div className={`threat-indicator threat-${threatLevel.toLowerCase()}`}>
+        <div className="status-bar">
+          <div className="status-group">
+            <span className="status-label">THREAT</span>
+            <div className={`status-indicator threat-${threatLevel.toLowerCase()}`}>
               {threatLevel}
             </div>
           </div>
-          <div className="status-item">
-            <span className="status-label">SYSTEM STATUS</span>
-            <div className={`system-indicator status-${systemStatus.toLowerCase()}`}>
+          <div className="status-group">
+            <span className="status-label">SYSTEM</span>
+            <div className={`status-indicator system-${systemStatus.toLowerCase()}`}>
               {systemStatus}
             </div>
           </div>
-          <div className="status-item">
-            <span className="status-label">MISSION TIME</span>
-            <div className="time-display">
+          <div className="status-group">
+            <span className="status-label">TIME</span>
+            <div className="status-indicator time-display">
               {formatTime(currentTime)}
             </div>
           </div>
         </div>
       </div>
-      
-      <div className="header-scanline"></div>
-      <div className="header-glow-effect"></div>
     </header>
   );
 };

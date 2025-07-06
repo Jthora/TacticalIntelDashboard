@@ -1,9 +1,9 @@
 /**
- * Wing Commander Tactical Intel Dashboard
- * Enhanced with Cyberpunk Command Center UX
+ * Arch Angel Agency Tactical Intel Dashboard
+ * Professional Command Center Interface
  */
 
-/* Import Wing Commander Foundation */
+/* Import Arch Angel Foundation */
 @import './wing-commander-foundation.css';
 @import './wing-commander-components.css';
 
@@ -12,77 +12,55 @@
   src: url('./fonts/Aldrich-Regular.ttf') format('truetype');
 }
 
-/* Enhanced Body with Wing Commander Theme */
+/* Clean Body with Professional Theme */
 body {
   font-family: var(--font-secondary), 'Aldrich', Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, var(--deep-space-blue), var(--bg-primary));
+  background: #0f0f0f;
   color: var(--text-primary);
   overflow-x: hidden;
 }
 
-/* Wing Commander App Container */
+/* Professional App Container */
 .App {
   text-align: center;
   padding: 0px;
-  background: var(--bg-primary);
+  background: #0f0f0f;
   min-height: 100vh;
   position: relative;
 }
 
-/* Enhanced Left Sidebar - Threat Panel */
+/* Clean Left Sidebar - Intel Sources */
 .left-sidebar {
-  width: 320px;
-  background: linear-gradient(135deg, var(--tactical-blue), var(--deep-space-blue));
+  width: 280px;
+  background: linear-gradient(180deg, #1a1a1a, #151515);
   padding: 15px;
-  border: 2px solid var(--wing-commander-blue);
+  border: 1px solid #333;
   position: relative;
   overflow: hidden;
 }
 
-.left-sidebar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
-  animation: cyberpunk-scan 4s linear infinite;
-}
-
-/* Enhanced Central View - Main Display */
+/* Clean Central View - Main Display */
 .central-view {
   flex: 1;
   padding: 15px;
-  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
-  border: 1px solid var(--accent-wing);
+  background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  border: 1px solid #333;
   position: relative;
   overflow: hidden;
 }
 
-.central-view::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--wing-commander-blue), transparent);
-  animation: cyberpunk-scan 5s linear infinite;
-}
-
-/* Enhanced Right Sidebar - System Status */
+/* Clean Right Sidebar - Analysis Panel */
 .right-sidebar {
-  width: 320px;
-  background: linear-gradient(135deg, var(--bg-tertiary), var(--tactical-blue));
+  width: 300px;
+  background: linear-gradient(180deg, #1a1a1a, #151515);
   padding: 15px;
-  border: 2px solid var(--steel-blue);
+  border: 1px solid #333;
   position: relative;
 }
 
-/* Wing Commander Feed Visualizer */
+/* Professional Feed Visualizer */
 .feed-visualizer {
   display: flex;
   flex-direction: column;
@@ -91,13 +69,13 @@ body {
   background: transparent;
 }
 
-/* Enhanced Feed Items with Cyberpunk Styling */
+/* Clean Feed Items with Professional Styling */
 .feed-item {
-  background: linear-gradient(135deg, var(--tactical-blue), rgba(0, 191, 255, 0.05));
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
   margin: 8px 0;
   padding: 15px;
-  border-radius: 4px;
-  border-left: 4px solid var(--cyber-electric-blue);
+  border-radius: 2px;
+  border-left: 3px solid #00bfff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), var(--glow-blue);
   width: 95%;
   color: var(--text-primary);
@@ -119,22 +97,24 @@ body {
 
 .feed-item:hover {
   background: linear-gradient(135deg, var(--wing-commander-blue), rgba(0, 191, 255, 0.1));
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 5px 20px rgba(0, 191, 255, 0.3), var(--glow-blue);
+  border: 1px solid #333;
+  transition: all 0.2s ease;
 }
 
-.feed-item:hover::before {
-  left: 100%;
+.feed-item:hover {
+  background: linear-gradient(180deg, #333333, #222222);
+  border-left-color: #00ccff;
+  transform: translateY(-1px);
 }
 
 .feed-item h3 {
   margin: 0 0 8px 0;
-  color: var(--cyber-electric-blue);
+  color: #00bfff;
   font-family: var(--font-primary);
   font-size: var(--font-body-large);
-  text-shadow: var(--glow-blue);
   text-transform: uppercase;
   letter-spacing: 1px;
+  font-weight: 600;
 }
 
 .feed-item p {
@@ -145,7 +125,7 @@ body {
 }
 
 .feed-item .timestamp {
-  color: var(--accent-gold);
+  color: #999;
   font-size: var(--font-body-small);
   font-family: var(--font-mono);
   opacity: 0.8;
@@ -154,44 +134,42 @@ body {
 
 /* Priority-based Feed Item Styling */
 .feed-item.priority-critical {
-  border-left-color: var(--threat-critical);
-  animation: cyber-pulse-pink 2s infinite;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), var(--glow-pink);
+  border-left-color: #ff0066;
+  background: linear-gradient(180deg, rgba(255, 0, 102, 0.1), #1a1a1a);
 }
 
 .feed-item.priority-high {
-  border-left-color: var(--threat-high);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 102, 0, 0.3);
+  border-left-color: #ff6600;
+  background: linear-gradient(180deg, rgba(255, 102, 0, 0.1), #1a1a1a);
 }
 
 .feed-item.priority-medium {
-  border-left-color: var(--threat-medium);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 204, 0, 0.3);
+  border-left-color: #ffcc00;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.1), #1a1a1a);
 }
 
 .feed-item.priority-low {
-  border-left-color: var(--threat-low);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), var(--glow-green);
+  border-left-color: #00ff88;
+  background: linear-gradient(180deg, rgba(0, 255, 136, 0.1), #1a1a1a);
 }
 
-/* Wing Commander Enhanced Settings Page */
+/* Professional Settings Page */
 .settings-page {
   padding: 20px;
-  background: linear-gradient(135deg, var(--deep-space-blue), var(--bg-primary));
+  background: #0f0f0f;
   color: var(--text-primary);
   font-family: var(--font-secondary);
   min-height: 100vh;
 }
 
-/* Enhanced Navigation Bar */
+/* Clean Navigation Bar */
 .navbar {
   display: flex;
-  background: linear-gradient(135deg, var(--tactical-blue), var(--bg-primary));
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
   padding: 10px 0;
-  border-radius: 4px;
-  border: 1px solid var(--wing-commander-blue);
+  border-radius: 2px;
+  border: 1px solid #333;
   margin-bottom: 20px;
-  box-shadow: var(--glow-blue);
 }
 
 .navbar a {
@@ -199,8 +177,8 @@ body {
   text-decoration: none;
   padding: 12px 20px;
   margin: 0 5px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+  border-radius: 2px;
+  transition: all 0.2s ease;
   font-family: var(--font-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -208,109 +186,94 @@ body {
 }
 
 .navbar a:hover {
-  background: linear-gradient(135deg, var(--wing-commander-blue), var(--cyber-electric-blue));
-  box-shadow: var(--glow-blue);
-  transform: translateY(-2px);
-  text-shadow: var(--glow-blue);
+  background: linear-gradient(180deg, #333333, #222222);
+  border: 1px solid #00bfff;
 }
 
 .navbar a.active {
-  background: linear-gradient(135deg, var(--accent-gold), var(--wing-commander-blue));
-  color: var(--bg-primary);
+  background: linear-gradient(180deg, #0066cc, #004499);
+  color: #ffffff;
   font-weight: bold;
-  box-shadow: var(--glow-gold);
+  border: 1px solid #00bfff;
 }
 
-/* Wing Commander Form Enhancements */
-.wing-form {
-  background: linear-gradient(135deg, var(--tactical-blue), rgba(0, 191, 255, 0.05));
-  border: 2px solid var(--wing-commander-blue);
-  border-radius: 8px;
+/* Arch Angel Form Styling */
+.arch-angel-form {
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #333;
+  border-radius: 2px;
   padding: 20px;
   margin: 15px 0;
-  box-shadow: var(--glow-blue);
-  position: relative;
 }
 
-.wing-form::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
-  animation: cyberpunk-scan 4s linear infinite;
-}
-
-.wing-form h3 {
-  color: var(--accent-gold);
+.arch-angel-form h3 {
+  color: #ffffff;
   font-family: var(--font-primary);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   margin-bottom: 15px;
-  text-shadow: var(--glow-gold);
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.wing-input {
-  background: rgba(0, 191, 255, 0.1);
-  border: 1px solid var(--wing-commander-blue);
+.arch-angel-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #555;
   color: var(--text-primary);
-  padding: 10px 12px;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 2px;
   font-family: var(--font-secondary);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   width: 100%;
   box-sizing: border-box;
+  font-size: 12px;
 }
 
-.wing-input:focus {
+.arch-angel-input:focus {
   outline: none;
-  border-color: var(--cyber-electric-blue);
-  box-shadow: var(--glow-blue);
-  background: rgba(0, 191, 255, 0.15);
+  border-color: #00bfff;
+  background: rgba(0, 191, 255, 0.1);
 }
 
-.wing-input::placeholder {
-  color: var(--text-secondary);
+.arch-angel-input::placeholder {
+  color: #999;
   opacity: 0.7;
 }
 
-/* Enhanced Quick Actions */
+/* Professional Quick Actions */
 .quick-actions {
   position: fixed;
   bottom: 20px;
   right: 20px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   z-index: 1000;
 }
 
 .quick-action-button {
-  background: linear-gradient(135deg, var(--accent-purple), var(--wing-commander-blue));
-  border: 2px solid var(--accent-gold);
+  background: linear-gradient(180deg, #333333, #222222);
+  border: 1px solid #00bfff;
   color: var(--text-primary);
-  padding: 12px 16px;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  padding: 10px 12px;
+  border-radius: 2px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 20px;
-  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+  transition: all 0.2s ease;
+  font-size: 16px;
 }
 
 .quick-action-button:hover {
-  transform: translateY(-3px) scale(1.1);
-  box-shadow: 0 6px 25px rgba(138, 43, 226, 0.6), var(--glow-gold);
-  animation: superhero-power-up 0.3s ease-out;
+  background: linear-gradient(180deg, #444444, #333333);
+  border-color: #00ccff;
+  transform: translateY(-1px);
 }
 
-/* Wing Commander Loading States */
-.wing-loading-overlay {
+/* Clean Loading States */
+.arch-angel-loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -385,70 +348,53 @@ body {
   box-shadow: var(--glow-blue);
 }
 
-/* Wing Commander Enhanced Form Inputs */
+/* Arch Angel Enhanced Form Inputs */
 .add-feed-form input, .add-feed-list-form input {
   margin-bottom: 12px;
-  padding: 12px 15px;
-  border: 1px solid var(--wing-commander-blue);
-  border-radius: 4px;
-  background: rgba(0, 191, 255, 0.1);
+  padding: 8px 12px;
+  border: 1px solid #555;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.3);
   color: var(--text-primary);
   font-family: var(--font-secondary);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  font-size: 12px;
 }
 
 .add-feed-form input:focus, .add-feed-list-form input:focus {
   outline: none;
-  border-color: var(--cyber-electric-blue);
-  box-shadow: var(--glow-blue);
-  background: rgba(0, 191, 255, 0.15);
+  border-color: #00bfff;
+  background: rgba(0, 191, 255, 0.1);
 }
 
 .add-feed-form input::placeholder, .add-feed-list-form input::placeholder {
-  color: var(--text-secondary);
+  color: #999;
   opacity: 0.7;
 }
 
-/* Wing Commander Enhanced Buttons */
+/* Arch Angel Enhanced Buttons */
 .add-feed-form button, .add-feed-list-form button {
-  padding: 12px 20px;
-  border: 2px solid var(--wing-commander-blue);
-  border-radius: 4px;
-  background: linear-gradient(135deg, var(--tactical-blue), var(--bg-primary));
+  padding: 8px 16px;
+  border: 1px solid #00bfff;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
   color: var(--text-primary);
   cursor: pointer;
   font-family: var(--font-primary);
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.add-feed-form button::before, .add-feed-list-form button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.3), transparent);
-  transition: left 0.5s;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 11px;
 }
 
 .add-feed-form button:hover, .add-feed-list-form button:hover {
-  background: linear-gradient(135deg, var(--wing-commander-blue), var(--tactical-blue));
-  box-shadow: var(--glow-blue);
-  transform: translateY(-2px);
-  text-shadow: var(--glow-blue);
+  background: linear-gradient(180deg, #333333, #222222);
+  border-color: #00ccff;
+  transform: translateY(-1px);
 }
 
-.add-feed-form button:hover::before, .add-feed-list-form button:hover::before {
-  left: 100%;
-}
-
-/* Wing Commander Enhanced Feed Lists */
+/* Arch Angel Feed Lists */
 .feed-list {
   display: flex;
   flex-direction: column;
@@ -456,57 +402,69 @@ body {
 }
 
 .feed-list-item {
-  background: linear-gradient(135deg, var(--tactical-blue), rgba(0, 191, 255, 0.05));
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
   margin: 8px 0;
-  padding: 15px;
-  border-radius: 4px;
-  border-left: 4px solid var(--cyber-electric-blue);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), var(--glow-blue);
+  padding: 12px;
+  border-radius: 2px;
+  border-left: 3px solid #00bfff;
+  border: 1px solid #333;
   color: var(--text-primary);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Darker shadow */
-  color: #ffffff; /* White text */
+  transition: all 0.2s ease;
+}
+
+.feed-list-item:hover {
+  background: linear-gradient(180deg, #333333, #222222);
+  border-left-color: #00ccff;
 }
 
 .feed-list-item h3, .feed-item h3 {
   margin: 0;
-  color: #00bfff; /* Light blue text */
+  color: #00bfff;
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .feed-list-item h3:hover, .feed-item h3:hover {
-  text-decoration: underline;
+  color: #00ccff;
 }
 
 .feed-list-item button, .feed-item button {
-  padding: 5px;
-  border: none;
-  border-radius: 5px;
-  background-color: #ff4d4d; /* Red background */
-  color: #ffffff; /* White text */
+  padding: 4px 8px;
+  border: 1px solid #ff4444;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #cc3300, #992200);
+  color: #ffffff;
   cursor: pointer;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .feed-list-item button:hover, .feed-item button:hover {
-  background-color: #cc0000; /* Darker red background */
+  background: linear-gradient(180deg, #dd4411, #aa2200);
+  border-color: #ff5555;
 }
 
 .left-sidebar button {
   display: block;
   width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  background-color: #00bfff; /* Light blue background */
-  border: none;
+  padding: 8px 12px;
+  margin: 4px 0;
+  background: linear-gradient(180deg, #333333, #222222);
+  border: 1px solid #555;
   cursor: pointer;
   text-align: left;
-  color: #ffffff; /* White text */
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
 }
 
 .left-sidebar button:hover {
-  background-color: #0077cc; /* Darker blue background */
+  background: linear-gradient(180deg, #444444, #333333);
+  border-color: #00bfff;
 }

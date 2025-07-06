@@ -4,252 +4,462 @@
  */
 
 /* ========================================
-   CYBER COMMAND HEADER
+   ARCH ANGEL AGENCY HEADER
 ======================================== */
 
-.cyber-command-header {
-  background: linear-gradient(135deg, var(--bg-primary), var(--tactical-blue));
-  border-bottom: 3px solid var(--wing-commander-blue);
+.arch-angel-header {
+  background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  border-bottom: 2px solid #00bfff;
   position: relative;
-  overflow: hidden;
-  z-index: 1000;
 }
 
-.header-primary {
+.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 30px;
-  position: relative;
-  z-index: 2;
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-
-.command-logo {
-  width: 144px;
-  height: auto;
-  filter: drop-shadow(var(--glow-blue));
-  transition: all 0.3s ease;
-  animation: cyber-pulse-blue 4s ease-in-out infinite;
-}
-
-.command-logo:hover {
-  filter: drop-shadow(0 0 20px rgba(0, 191, 255, 1));
-  transform: scale(1.08) rotate(1deg);
+  padding: 4px 15px;
+  max-width: 100%;
+  min-height: 50px;
 }
 
 .agency-identity {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 12px;
 }
 
-.command-title {
+.agency-logo {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #0066cc, #004499);
+  color: white;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-primary);
-  font-size: var(--font-h1-commander);
-  font-weight: 900;
-  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  border: 1px solid #00bfff;
+}
+
+.agency-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.agency-title {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 4px;
-  text-shadow: var(--glow-blue);
+  letter-spacing: 1.5px;
   line-height: 1;
-  animation: wing-commander-glow 6s ease-in-out infinite;
 }
 
 .agency-subtitle {
   font-family: var(--font-secondary);
-  font-size: 14px;
-  color: var(--accent-gold);
+  font-size: 10px;
+  color: #999;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-top: 5px;
-  text-shadow: var(--glow-gold);
-  animation: cyber-pulse-gold 3s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+  margin: 0;
 }
 
-.status-indicators {
+.status-bar {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: center;
 }
 
-.status-item {
+.status-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .status-label {
   font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-secondary);
+  font-size: 9px;
+  color: #999;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 600;
 }
 
-.threat-indicator, .system-indicator, .time-display {
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-family: var(--font-primary);
-  font-size: 13px;
+.status-indicator {
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  min-width: 100px;
+  border: 1px solid;
+  min-width: 70px;
   text-align: center;
-  border: 2px solid;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 /* Threat Level Indicators */
 .threat-normal {
-  background: linear-gradient(135deg, var(--threat-low), var(--bg-primary));
-  border-color: var(--threat-low);
-  color: var(--threat-low);
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
 }
 
 .threat-elevated {
-  background: linear-gradient(135deg, var(--threat-medium), var(--bg-primary));
-  border-color: var(--threat-medium);
-  color: var(--threat-medium);
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
-  animation: cyber-pulse-yellow 2s ease-in-out infinite;
+  background: rgba(255, 204, 0, 0.1);
+  border-color: #ffcc00;
+  color: #ffcc00;
 }
 
 .threat-high {
-  background: linear-gradient(135deg, var(--threat-high), var(--bg-primary));
-  border-color: var(--threat-high);
-  color: var(--threat-high);
-  box-shadow: 0 0 15px rgba(255, 102, 0, 0.5);
-  animation: cyber-pulse-orange 1.5s ease-in-out infinite;
+  background: rgba(255, 102, 0, 0.1);
+  border-color: #ff6600;
+  color: #ff6600;
 }
 
 .threat-critical {
-  background: linear-gradient(135deg, var(--threat-critical), var(--bg-primary));
-  border-color: var(--threat-critical);
-  color: var(--threat-critical);
-  box-shadow: 0 0 20px rgba(255, 0, 102, 0.7);
-  animation: cyber-pulse-pink 1s ease-in-out infinite;
+  background: rgba(255, 0, 102, 0.1);
+  border-color: #ff0066;
+  color: #ff0066;
 }
 
 /* System Status Indicators */
-.status-operational {
-  background: linear-gradient(135deg, var(--status-operational), var(--bg-primary));
-  border-color: var(--status-operational);
-  color: var(--status-operational);
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+.system-operational {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
 }
 
-.status-degraded {
-  background: linear-gradient(135deg, var(--status-degraded), var(--bg-primary));
-  border-color: var(--status-degraded);
-  color: var(--status-degraded);
-  box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
-  animation: cyber-pulse-yellow 2s ease-in-out infinite;
+.system-degraded {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: #ffcc00;
+  color: #ffcc00;
 }
 
-.status-maintenance {
-  background: linear-gradient(135deg, var(--accent-purple), var(--bg-primary));
-  border-color: var(--accent-purple);
-  color: var(--accent-purple);
-  box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+.system-maintenance {
+  background: rgba(138, 43, 226, 0.1);
+  border-color: #8a2be2;
+  color: #8a2be2;
 }
 
 /* Time Display */
 .time-display {
-  background: linear-gradient(135deg, var(--cyber-electric-blue), var(--bg-primary));
-  border-color: var(--cyber-electric-blue);
-  color: var(--cyber-electric-blue);
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.3);
+  background: rgba(0, 191, 255, 0.1);
+  border-color: #00bfff;
+  color: #00bfff;
   font-family: var(--font-mono);
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
-/* Header Effects */
-.header-scanline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    var(--wing-commander-blue), 
-    var(--cyber-electric-blue), 
-    var(--wing-commander-blue), 
-    transparent
-  );
-  animation: cyberpunk-scan 8s linear infinite;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 8px 15px;
+  }
+  
+  .agency-title {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  
+  .agency-subtitle {
+    font-size: 10px;
+  }
+  
+  .status-bar {
+    gap: 12px;
+  }
+  
+  .status-indicator {
+    min-width: 60px;
+    padding: 3px 6px;
+    font-size: 9px;
+  }
 }
 
-.header-glow-effect {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(0, 102, 204, 0.1), 
-    transparent, 
-    rgba(0, 191, 255, 0.1)
-  );
-  pointer-events: none;
-  animation: cyber-ambient-glow 12s ease-in-out infinite alternate;
-}
-
-/* Additional Animations for Header */
-@keyframes cyber-pulse-gold {
-  0% { text-shadow: var(--glow-gold); }
-  100% { text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.5); }
-}
-
-@keyframes cyber-pulse-yellow {
-  0% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
-  50% { box-shadow: 0 0 25px rgba(255, 204, 0, 0.8), 0 0 35px rgba(255, 204, 0, 0.3); }
-  100% { box-shadow: 0 0 15px rgba(255, 204, 0, 0.4); }
-}
-
-@keyframes cyber-pulse-orange {
-  0% { box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
-  50% { box-shadow: 0 0 25px rgba(255, 102, 0, 0.9), 0 0 35px rgba(255, 102, 0, 0.4); }
-  100% { box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
-}
-
-@keyframes cyber-ambient-glow {
-  0% { opacity: 0.3; }
-  100% { opacity: 0.6; }
+@media (max-width: 480px) {
+  .status-bar {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .status-group {
+    flex-direction: row;
+    gap: 8px;
+  }
 }
 
 /* ========================================
-   WING COMMANDER BUTTONS
+   ARCH ANGEL INTERFACE LAYOUT
 ======================================== */
 
-.wing-command-button {
-  background: linear-gradient(135deg, var(--tactical-blue), var(--bg-primary));
-  border: 2px solid var(--wing-commander-blue);
-  color: var(--text-primary);
+.arch-angel-interface {
+  min-height: 100vh;
+  background: #0f0f0f;
+  color: #ffffff;
   font-family: var(--font-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Interface Status Bar */
+.interface-status-bar {
+  background: linear-gradient(90deg, #1a1a1a, #151515);
+  border-bottom: 1px solid #333;
+  padding: 6px 15px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  min-height: 32px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-label {
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-value {
+  padding: 2px 6px;
+  border-radius: 2px;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-  padding: 12px 24px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  font-size: var(--font-body-medium);
-  min-width: 120px;
+  min-width: 80px;
+  text-align: center;
+  border: 1px solid;
 }
+
+.status-value.initializing,
+.status-value.loading,
+.status-value.connecting,
+.status-value.refreshing,
+.status-value.exporting {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.status-value.operational,
+.status-value.secure {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.status-value.establishing {
+  background: rgba(0, 191, 255, 0.1);
+  border-color: #00bfff;
+  color: #00bfff;
+}
+
+/* Intelligence Grid Layout */
+.intel-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: 
+    "sources main-feed analysis"
+    "operations operations operations";
+  gap: 1px;
+  background: #333;
+  margin: 1px;
+}
+
+.grid-section {
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #333;
+}
+
+.grid-section.sources {
+  grid-area: sources;
+}
+
+.grid-section.main-feed {
+  grid-area: main-feed;
+}
+
+.grid-section.analysis {
+  grid-area: analysis;
+}
+
+.grid-section.operations {
+  grid-area: operations;
+  max-height: 200px;
+}
+
+.section-header {
+  background: linear-gradient(90deg, #2a2a2a, #1f1f1f);
+  border-bottom: 2px solid #00bfff;
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.feed-info {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #00bfff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(0, 191, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid #00bfff;
+}
+
+.section-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Responsive Design for Grid */
+@media (max-width: 1200px) {
+  .intel-grid {
+    grid-template-columns: 250px 1fr 250px;
+  }
+}
+
+@media (max-width: 900px) {
+  .intel-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: 
+      "main-feed"
+      "sources"
+      "analysis"
+      "operations";
+  }
+  
+  .grid-section.operations {
+    max-height: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .interface-status-bar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .status-item {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ========================================
+   ARCH ANGEL BUTTONS
+======================================== */
+
+.arch-angel-button {
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #00bfff;
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px;
+  border-radius: 2px;
+  position: relative;
+  outline: none;
+}
+
+.arch-angel-button:hover {
+  background: linear-gradient(180deg, #333333, #222222);
+  border-color: #00ccff;
+  transform: translateY(-1px);
+}
+
+.arch-angel-button:active {
+  background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  transform: translateY(0);
+}
+
+.arch-angel-button:disabled {
+  background: #1a1a1a;
+  border-color: #555;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Variants */
+.arch-angel-button.primary {
+  background: linear-gradient(180deg, #0066cc, #004499);
+  border-color: #00bfff;
+}
+
+.arch-angel-button.primary:hover {
+  background: linear-gradient(180deg, #0077dd, #0055aa);
+}
+
+.arch-angel-button.danger {
+  background: linear-gradient(180deg, #cc3300, #992200);
+  border-color: #ff4422;
+}
+
+.arch-angel-button.danger:hover {
+  background: linear-gradient(180deg, #dd4411, #aa2200);
+}
+
+.arch-angel-button.success {
+  background: linear-gradient(180deg, #009966, #006644);
+  border-color: #00cc88;
+}
+
+.arch-angel-button.success:hover {
+  background: linear-gradient(180deg, #00aa77, #007755);
+}
+
+.arch-angel-button.warning {
+  background: linear-gradient(180deg, #cc9900, #996600);
+  border-color: #ffcc00;
+}
+
+.arch-angel-button.warning:hover {
+  background: linear-gradient(180deg, #ddaa00, #aa7700);
+}
+
+/* Legacy button effects - removing for professional look */
 
 .wing-command-button::before {
   content: '';
@@ -1181,27 +1391,24 @@
 }
 
 /* ========================================
-   COMMAND CONSOLE PANEL
+   ARCH ANGEL COMMAND CONSOLE
 ======================================== */
 
 .command-console-panel {
-  height: 100%;
-  background: linear-gradient(135deg, var(--bg-tertiary), var(--tactical-blue));
-  border: 2px solid var(--accent-gold);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(180deg, #1a1a1a, #151515);
+  border: 1px solid #333;
+  border-radius: 2px;
+  padding: 12px;
+  font-family: var(--font-primary);
 }
 
-/* Console Header */
 .console-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  background: linear-gradient(90deg, var(--tactical-blue), var(--bg-tertiary));
-  border-bottom: 1px solid var(--accent-gold);
+  padding-bottom: 8px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 12px;
 }
 
 .console-title {
@@ -1211,249 +1418,191 @@
 }
 
 .title-text {
-  font-family: var(--font-primary);
   font-size: 12px;
-  font-weight: bold;
-  color: var(--text-primary);
+  font-weight: 600;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: var(--glow-gold);
 }
 
 .console-status {
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 2px;
-  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  border: 1px solid;
 }
 
 .console-status.operational {
-  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
-  color: var(--status-operational);
-  box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
 }
 
 .console-toggle {
-  background: transparent;
-  border: 1px solid var(--accent-gold);
-  color: var(--accent-gold);
+  background: none;
+  border: 1px solid #555;
+  color: #999;
   padding: 4px 8px;
   border-radius: 2px;
   cursor: pointer;
-  font-family: var(--font-mono);
   font-size: 10px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .console-toggle:hover {
-  background: var(--accent-gold);
-  color: var(--bg-primary);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  border-color: #00bfff;
+  color: #00bfff;
 }
 
-.toggle-symbol {
-  font-weight: bold;
-}
-
-/* System Metrics */
 .system-metrics {
-  padding: 8px 15px;
-  background: linear-gradient(90deg, var(--bg-primary), var(--bg-tertiary));
-  border-bottom: 1px solid var(--wing-commander-blue);
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 10px;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
 }
 
 .metric-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 10px;
 }
 
 .metric-label {
-  color: var(--text-secondary);
+  color: #999;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   min-width: 80px;
-  font-size: 9px;
 }
 
 .metric-bar {
   flex: 1;
-  height: 8px;
-  background: var(--bg-primary);
-  border: 1px solid var(--wing-commander-blue);
-  border-radius: 1px;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
   overflow: hidden;
-  position: relative;
 }
 
 .metric-fill {
   height: 100%;
-  transition: width 0.5s ease;
-  position: relative;
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
 .metric-fill.normal {
-  background: linear-gradient(90deg, var(--status-operational), var(--cyber-electric-blue));
+  background: linear-gradient(90deg, #00ff88, #00cc66);
 }
 
 .metric-fill.warning {
-  background: linear-gradient(90deg, var(--status-degraded), var(--threat-medium));
-  animation: warning-pulse 2s ease-in-out infinite;
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
 }
 
 .metric-fill.critical {
-  background: linear-gradient(90deg, var(--threat-critical), var(--threat-high));
-  animation: critical-pulse 1s ease-in-out infinite;
+  background: linear-gradient(90deg, #ff0066, #cc0044);
 }
 
-.metric-value {
-  color: var(--cyber-electric-blue);
+.metric-value,
+.metric-value-large,
+.metric-value-feed {
+  color: #00bfff;
   font-weight: bold;
-  min-width: 30px;
-  text-align: right;
+  font-family: var(--font-mono);
 }
 
 .metric-value-large {
-  color: var(--accent-gold);
-  font-weight: bold;
-  font-size: 14px;
-  text-shadow: var(--glow-gold);
+  font-size: 12px;
 }
 
 .metric-value-feed {
-  color: var(--wing-commander-blue);
-  font-weight: bold;
-  text-transform: uppercase;
-  max-width: 100px;
+  font-size: 9px;
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Command Actions Grid */
 .command-grid-actions {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-  padding: 10px;
-  flex: 1;
-  align-content: start;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .command-btn {
-  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
-  border: 1px solid var(--wing-commander-blue);
-  color: var(--text-primary);
-  padding: 8px 6px;
-  border-radius: 3px;
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #555;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 2px;
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  min-height: 50px;
+  font-family: var(--font-primary);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.command-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.command-btn:hover::before {
-  left: 100%;
-}
-
-.command-icon {
-  font-size: 16px;
-  margin-bottom: 2px;
-}
-
-.command-label {
-  font-weight: bold;
-  line-height: 1;
-  text-align: center;
-}
-
-.command-glow {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  transition: all 0.3s ease;
-}
-
-/* Priority-based styling */
-.priority-critical {
-  border-color: var(--threat-critical);
-}
-
-.priority-critical:hover {
-  background: linear-gradient(135deg, var(--threat-critical), var(--bg-primary));
-  box-shadow: 0 0 15px rgba(255, 0, 102, 0.5);
-  transform: translateY(-2px);
-}
-
-.priority-high {
-  border-color: var(--threat-high);
-}
-
-.priority-high:hover {
-  background: linear-gradient(135deg, var(--threat-high), var(--bg-primary));
-  box-shadow: 0 0 12px rgba(255, 102, 0, 0.5);
+.command-btn:hover {
+  background: linear-gradient(180deg, #333333, #222222);
+  border-color: #00bfff;
   transform: translateY(-1px);
 }
 
-.priority-medium {
-  border-color: var(--cyber-electric-blue);
+.command-btn.primary-command {
+  border-color: #00bfff;
 }
 
-.priority-medium:hover {
-  background: linear-gradient(135deg, var(--cyber-electric-blue), var(--bg-primary));
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+.command-btn.secondary-command {
+  border-color: #666;
 }
 
-.priority-low {
-  border-color: var(--steel-blue);
+.command-btn.emergency-command {
+  border-color: #ff4444;
 }
 
-.priority-low:hover {
-  background: linear-gradient(135deg, var(--steel-blue), var(--bg-primary));
-  box-shadow: 0 0 8px rgba(70, 130, 180, 0.4);
+.command-btn.priority-critical {
+  background: linear-gradient(180deg, rgba(255, 0, 102, 0.2), #1a1a1a);
 }
 
-/* Console Footer */
+.command-btn.priority-high {
+  background: linear-gradient(180deg, rgba(255, 102, 0, 0.2), #1a1a1a);
+}
+
+.command-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.command-label {
+  font-size: 8px;
+  line-height: 1;
+}
+
+.command-glow {
+  display: none; /* Remove glow effects for professional look */
+}
+
 .console-footer {
-  padding: 8px 15px;
-  background: linear-gradient(90deg, var(--bg-tertiary), var(--bg-primary));
-  border-top: 1px solid var(--wing-commander-blue);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--font-mono);
+  padding-top: 8px;
+  border-top: 1px solid #333;
   font-size: 9px;
+  color: #999;
 }
 
 .operational-status {
@@ -1463,90 +1612,37 @@
 }
 
 .status-indicator {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  box-shadow: 0 0 8px;
+  background: #333;
 }
 
 .status-indicator.active {
-  background: var(--status-operational);
-  box-shadow: 0 0 8px var(--status-operational);
-  animation: cyber-pulse-green 2s ease-in-out infinite;
+  background: #00ff88;
 }
 
 .status-text {
-  color: var(--status-operational);
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .sync-time {
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #666;
 }
 
-/* Animations */
-@keyframes warning-pulse {
-  0% { opacity: 0.8; }
-  50% { opacity: 1; }
-  100% { opacity: 0.8; }
-}
-
-@keyframes critical-pulse {
-  0% { opacity: 0.7; }
-  50% { opacity: 1; }
-  100% { opacity: 0.7; }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .data-stream-header {
-    flex-direction: column;
-    gap: 10px;
-    padding: 12px 15px;
-  }
-  
-  .stream-stats {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .stream-indicators {
-    display: none;
-  }
-  
+/* Responsive Design for Command Console */
+@media (max-width: 600px) {
   .command-grid-actions {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .console-footer {
+    flex-direction: column;
     gap: 4px;
-  }
-  
-  .command-btn {
-    min-height: 40px;
-    padding: 6px 4px;
-  }
-  
-  .command-icon {
-    font-size: 14px;
-  }
-  
-  .command-label {
-    font-size: 8px;
-  }
-  
-  .system-metrics {
-    padding: 6px 10px;
-  }
-  
-  .metric-item {
-    gap: 6px;
-  }
-  
-  .metric-label {
-    min-width: 60px;
-    font-size: 8px;
+    text-align: center;
   }
 }
