@@ -1,0 +1,1648 @@
+/**
+ * Wing Commander Cyberpunk UI Components
+ * Superhero-grade interface components
+ */
+
+/* ========================================
+   ARCH ANGEL AGENCY HEADER
+======================================== */
+
+.arch-angel-header {
+  background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  border-bottom: 2px solid #00bfff;
+  position: relative;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 15px;
+  max-width: 100%;
+  min-height: 50px;
+}
+
+.agency-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.agency-logo {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #0066cc, #004499);
+  color: white;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 1px;
+  border: 1px solid #00bfff;
+}
+
+.agency-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.agency-title {
+  font-family: var(--font-primary);
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1;
+}
+
+.agency-subtitle {
+  font-family: var(--font-secondary);
+  font-size: 10px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.status-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.status-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.status-indicator {
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid;
+  min-width: 70px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* Threat Level Indicators */
+.threat-normal {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.threat-elevated {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.threat-high {
+  background: rgba(255, 102, 0, 0.1);
+  border-color: #ff6600;
+  color: #ff6600;
+}
+
+.threat-critical {
+  background: rgba(255, 0, 102, 0.1);
+  border-color: #ff0066;
+  color: #ff0066;
+}
+
+/* System Status Indicators */
+.system-operational {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.system-degraded {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.system-maintenance {
+  background: rgba(138, 43, 226, 0.1);
+  border-color: #8a2be2;
+  color: #8a2be2;
+}
+
+/* Time Display */
+.time-display {
+  background: rgba(0, 191, 255, 0.1);
+  border-color: #00bfff;
+  color: #00bfff;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 8px 15px;
+  }
+  
+  .agency-title {
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  
+  .agency-subtitle {
+    font-size: 10px;
+  }
+  
+  .status-bar {
+    gap: 12px;
+  }
+  
+  .status-indicator {
+    min-width: 60px;
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-bar {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .status-group {
+    flex-direction: row;
+    gap: 8px;
+  }
+}
+
+/* ========================================
+   ARCH ANGEL INTERFACE LAYOUT
+======================================== */
+
+.arch-angel-interface {
+  min-height: 100vh;
+  background: #0f0f0f;
+  color: #ffffff;
+  font-family: var(--font-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Interface Status Bar */
+.interface-status-bar {
+  background: linear-gradient(90deg, #1a1a1a, #151515);
+  border-bottom: 1px solid #333;
+  padding: 6px 15px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  min-height: 32px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-label {
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-value {
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 80px;
+  text-align: center;
+  border: 1px solid;
+}
+
+.status-value.initializing,
+.status-value.loading,
+.status-value.connecting,
+.status-value.refreshing,
+.status-value.exporting {
+  background: rgba(255, 204, 0, 0.1);
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.status-value.operational,
+.status-value.secure {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.status-value.establishing {
+  background: rgba(0, 191, 255, 0.1);
+  border-color: #00bfff;
+  color: #00bfff;
+}
+
+/* Intelligence Grid Layout */
+.intel-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 280px 1fr 300px;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: 
+    "sources main-feed analysis"
+    "operations operations operations";
+  gap: 1px;
+  background: #333;
+  margin: 1px;
+}
+
+.grid-section {
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #333;
+}
+
+.grid-section.sources {
+  grid-area: sources;
+}
+
+.grid-section.main-feed {
+  grid-area: main-feed;
+}
+
+.grid-section.analysis {
+  grid-area: analysis;
+}
+
+.grid-section.operations {
+  grid-area: operations;
+  max-height: 200px;
+}
+
+.section-header {
+  background: linear-gradient(90deg, #2a2a2a, #1f1f1f);
+  border-bottom: 2px solid #00bfff;
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.feed-info {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #00bfff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(0, 191, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid #00bfff;
+}
+
+.section-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Responsive Design for Grid */
+@media (max-width: 1200px) {
+  .intel-grid {
+    grid-template-columns: 250px 1fr 250px;
+  }
+}
+
+@media (max-width: 900px) {
+  .intel-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: 
+      "main-feed"
+      "sources"
+      "analysis"
+      "operations";
+  }
+  
+  .grid-section.operations {
+    max-height: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .interface-status-bar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .status-item {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ========================================
+   ARCH ANGEL BUTTONS
+======================================== */
+
+.arch-angel-button {
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #00bfff;
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 11px;
+  border-radius: 2px;
+  position: relative;
+  outline: none;
+}
+
+.arch-angel-button:hover {
+  background: linear-gradient(180deg, #333333, #222222);
+  border-color: #00ccff;
+  transform: translateY(-1px);
+}
+
+.arch-angel-button:active {
+  background: linear-gradient(180deg, #1a1a1a, #0f0f0f);
+  transform: translateY(0);
+}
+
+.arch-angel-button:disabled {
+  background: #1a1a1a;
+  border-color: #555;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Variants */
+.arch-angel-button.primary {
+  background: linear-gradient(180deg, #0066cc, #004499);
+  border-color: #00bfff;
+}
+
+.arch-angel-button.primary:hover {
+  background: linear-gradient(180deg, #0077dd, #0055aa);
+}
+
+.arch-angel-button.danger {
+  background: linear-gradient(180deg, #cc3300, #992200);
+  border-color: #ff4422;
+}
+
+.arch-angel-button.danger:hover {
+  background: linear-gradient(180deg, #dd4411, #aa2200);
+}
+
+.arch-angel-button.success {
+  background: linear-gradient(180deg, #009966, #006644);
+  border-color: #00cc88;
+}
+
+.arch-angel-button.success:hover {
+  background: linear-gradient(180deg, #00aa77, #007755);
+}
+
+.arch-angel-button.warning {
+  background: linear-gradient(180deg, #cc9900, #996600);
+  border-color: #ffcc00;
+}
+
+.arch-angel-button.warning:hover {
+  background: linear-gradient(180deg, #ddaa00, #aa7700);
+}
+
+/* Legacy button effects - removing for professional look */
+
+.wing-command-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.wing-command-button:hover {
+  background: linear-gradient(135deg, var(--wing-commander-blue), var(--tactical-blue));
+  box-shadow: var(--glow-blue);
+  transform: translateY(-2px);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.wing-command-button:hover::before {
+  left: 100%;
+}
+
+.wing-command-button.critical {
+  border-color: var(--threat-critical);
+  animation: cyber-pulse-pink 1s infinite;
+}
+
+.wing-command-button.superhero-power {
+  background: linear-gradient(135deg, var(--accent-purple), var(--wing-commander-blue));
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.4);
+}
+
+.wing-command-button:active {
+  transform: translateY(0);
+  animation: superhero-power-up 0.3s ease-out;
+}
+
+/* ========================================
+   CYBERPUNK DATA STREAMS
+======================================== */
+
+.cyber-data-stream {
+  background: linear-gradient(180deg, var(--bg-primary), var(--bg-accent));
+  border: 1px solid var(--wing-commander-blue);
+  font-family: var(--font-mono);
+  font-size: var(--font-code-cyber);
+  line-height: 1.3;
+  padding: 12px;
+  overflow-y: auto;
+  max-height: 400px;
+  box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.1);
+  position: relative;
+}
+
+.cyber-data-stream::before {
+  content: '// WING COMMANDER INTEL STREAM //';
+  display: block;
+  color: var(--accent-gold);
+  font-size: 10px;
+  margin-bottom: 8px;
+  text-align: center;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cyber-data-stream::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
+  animation: cyberpunk-scan 4s linear infinite;
+}
+
+.stream-item {
+  opacity: 1;
+  animation: cyber-fade-in 0.5s ease-in;
+  color: var(--cyber-electric-blue);
+  margin: 4px 0;
+  padding: 4px 8px;
+  border-left: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.stream-item:hover {
+  background: rgba(0, 191, 255, 0.1);
+  border-left-color: var(--cyber-electric-blue);
+  box-shadow: var(--glow-blue);
+}
+
+.stream-item.new {
+  background: rgba(0, 191, 255, 0.2);
+  animation: cyber-fade-in 0.5s ease-in;
+  border-left-color: var(--cyber-electric-blue);
+  box-shadow: var(--glow-blue);
+}
+
+.stream-item.priority-critical {
+  color: var(--threat-critical);
+  border-left-color: var(--threat-critical);
+  text-shadow: var(--glow-pink);
+  animation: cyber-pulse-pink 2s infinite;
+}
+
+.stream-item.priority-high {
+  color: var(--threat-high);
+  border-left-color: var(--threat-high);
+}
+
+.stream-item.priority-medium {
+  color: var(--threat-medium);
+  border-left-color: var(--threat-medium);
+}
+
+.stream-item.priority-low {
+  color: var(--threat-low);
+  border-left-color: var(--threat-low);
+}
+
+/* ========================================
+   WING COMMANDER THREAT PANEL
+======================================== */
+
+.wing-threat-assessment {
+  padding: 15px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.threat-header {
+  font-family: var(--font-primary);
+  font-size: var(--font-h3-subsection);
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  text-align: center;
+  text-shadow: var(--glow-gold);
+}
+
+.threat-item {
+  padding: 10px 12px;
+  margin: 8px 0;
+  border-left: 4px solid var(--threat-level-color);
+  background: rgba(0, 191, 255, 0.05);
+  transition: all 0.3s ease;
+  border-radius: 0 4px 4px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.threat-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--threat-level-color);
+}
+
+.threat-item:hover {
+  background: rgba(0, 191, 255, 0.1);
+  box-shadow: var(--glow-blue);
+  transform: translateX(5px);
+}
+
+.threat-item.critical {
+  border-left-color: var(--threat-critical);
+  animation: cyber-pulse-pink 1s infinite;
+}
+
+.threat-item.critical::before {
+  background: var(--threat-critical);
+  box-shadow: var(--glow-pink);
+}
+
+.threat-item.high {
+  border-left-color: var(--threat-high);
+}
+
+.threat-item.medium {
+  border-left-color: var(--threat-medium);
+}
+
+.threat-item.low {
+  border-left-color: var(--threat-low);
+}
+
+.threat-item.info {
+  border-left-color: var(--threat-info);
+}
+
+.threat-title {
+  font-weight: bold;
+  color: var(--text-primary);
+  font-size: var(--font-body-medium);
+  margin-bottom: 4px;
+}
+
+.threat-description {
+  color: var(--text-secondary);
+  font-size: var(--font-body-small);
+  line-height: 1.4;
+}
+
+.threat-timestamp {
+  color: var(--accent-wing);
+  font-size: var(--font-status-wing);
+  font-family: var(--font-mono);
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+/* ========================================
+   SYSTEM STATUS INDICATORS
+======================================== */
+
+.system-status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+  height: 100%;
+}
+
+.status-indicator {
+  background: rgba(0, 191, 255, 0.1);
+  border: 1px solid var(--wing-commander-blue);
+  border-radius: 4px;
+  padding: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.status-indicator:hover {
+  background: rgba(0, 191, 255, 0.2);
+  box-shadow: var(--glow-blue);
+}
+
+.status-indicator.operational {
+  border-color: var(--status-operational);
+  color: var(--status-operational);
+}
+
+.status-indicator.degraded {
+  border-color: var(--status-degraded);
+  color: var(--status-degraded);
+}
+
+.status-indicator.offline {
+  border-color: var(--status-offline);
+  color: var(--status-offline);
+  animation: cyber-pulse-pink 2s infinite;
+}
+
+.status-label {
+  font-size: var(--font-body-small);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  font-family: var(--font-primary);
+}
+
+.status-value {
+  font-size: var(--font-body-large);
+  font-weight: bold;
+  font-family: var(--font-mono);
+}
+
+/* ========================================
+   WING COMMANDER HEADER ENHANCEMENTS
+======================================== */
+
+.wing-header-enhanced {
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-accent));
+  border-bottom: 2px solid var(--wing-commander-blue);
+  position: relative;
+  overflow: hidden;
+}
+
+.wing-header-enhanced::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--wing-commander-blue), var(--cyber-electric-blue), var(--wing-commander-blue));
+  animation: cyberpunk-scan 6s linear infinite;
+}
+
+.wing-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.wing-logo {
+  width: 144px;
+  height: auto;
+  filter: drop-shadow(var(--glow-blue));
+  transition: all 0.3s ease;
+}
+
+.wing-logo:hover {
+  filter: drop-shadow(0 0 15px rgba(0, 191, 255, 0.8));
+  transform: scale(1.05);
+}
+
+.wing-title {
+  font-family: var(--font-primary);
+  font-size: var(--font-h1-commander);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: var(--glow-blue);
+  margin: 0;
+  position: relative;
+}
+
+.wing-title::after {
+  content: 'CYBER INVESTIGATION AGENCY';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  font-size: 12px;
+  color: var(--accent-gold);
+  letter-spacing: 2px;
+  text-shadow: var(--glow-gold);
+}
+
+.wing-system-time {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: var(--font-mono);
+}
+
+.wing-mission-clock {
+  font-size: var(--font-body-large);
+  color: var(--cyber-electric-blue);
+  text-shadow: var(--glow-blue);
+}
+
+.wing-system-date {
+  font-size: var(--font-body-small);
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* ========================================
+   CYBERPUNK UTILITIES
+======================================== */
+
+.cyber-badge {
+  display: inline-block;
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wing-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--wing-commander-blue), transparent);
+  margin: 10px 0;
+  position: relative;
+}
+
+.wing-divider::after {
+  content: '⚡';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-primary);
+  color: var(--accent-gold);
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.cyberpunk-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--wing-commander-blue) var(--bg-primary);
+}
+
+.cyberpunk-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cyberpunk-scrollbar::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+.cyberpunk-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--wing-commander-blue), var(--cyber-electric-blue));
+  border-radius: 4px;
+}
+
+.cyberpunk-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--cyber-electric-blue), var(--wing-commander-blue));
+  box-shadow: var(--glow-blue);
+}
+
+/* ========================================
+   LOADING STATES
+======================================== */
+
+.wing-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  color: var(--cyber-electric-blue);
+  font-family: var(--font-primary);
+}
+
+.wing-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--cyber-electric-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.wing-loading-text {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: cyber-pulse-blue 2s infinite;
+}
+
+/* ========================================
+   FOCUS STATES & ACCESSIBILITY
+======================================== */
+
+.wing-command-button:focus,
+.threat-item:focus,
+.status-indicator:focus {
+  outline: 2px solid var(--cyber-electric-blue);
+  outline-offset: 2px;
+  box-shadow: var(--glow-blue);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================
+   WING COMMANDER COMMAND CENTER LAYOUT
+======================================== */
+
+.wing-command-center {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--deep-space-blue), var(--bg-primary));
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* System Status Bar */
+.system-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background: linear-gradient(90deg, var(--bg-tertiary), var(--tactical-blue));
+  border-bottom: 1px solid var(--wing-commander-blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  position: relative;
+}
+
+.system-status-bar::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
+  animation: cyberpunk-scan 10s linear infinite;
+}
+
+.status-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-value {
+  padding: 4px 12px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.status-value.operational {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.status-value.initializing,
+.status-value.loading-protocols,
+.status-value.connecting-to-networks,
+.status-value.syncing-intel-feeds,
+.status-value.refreshing-data,
+.status-value.exporting-intel {
+  background: linear-gradient(135deg, var(--cyber-electric-blue), rgba(0, 191, 255, 0.2));
+  color: var(--cyber-electric-blue);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  animation: cyber-pulse-blue 1.5s ease-in-out infinite;
+}
+
+.status-value.establishing,
+.status-value.connecting {
+  background: linear-gradient(135deg, var(--status-degraded), rgba(255, 204, 0, 0.2));
+  color: var(--status-degraded);
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+.status-value.authenticated,
+.status-value.secure {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+/* Command Grid Layout */
+.command-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr 300px;
+  grid-template-rows: 1fr 120px;
+  grid-template-areas: 
+    "threat-panel main-display tactical-panel"
+    "threat-panel command-console tactical-panel";
+  gap: 4px;
+  padding: 4px;
+  min-height: calc(100vh - 120px);
+  position: relative;
+}
+
+/* Grid Panel Base Styles */
+.grid-panel {
+  background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+  border: 2px solid var(--wing-commander-blue);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyber-electric-blue), transparent);
+  animation: cyberpunk-scan 6s linear infinite;
+  z-index: 1;
+}
+
+/* Panel Headers */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, var(--tactical-blue), var(--bg-tertiary));
+  border-bottom: 1px solid var(--wing-commander-blue);
+  position: relative;
+  z-index: 2;
+}
+
+.panel-title {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: var(--glow-blue);
+}
+
+.panel-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.feed-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: var(--glow-gold);
+}
+
+/* Panel Status Indicators */
+.panel-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.panel-status.active {
+  background: var(--status-operational);
+  box-shadow: 0 0 10px var(--status-operational);
+  animation: cyber-pulse-green 2s ease-in-out infinite;
+}
+
+.panel-status.monitoring {
+  background: var(--cyber-electric-blue);
+  box-shadow: 0 0 10px var(--cyber-electric-blue);
+  animation: cyber-pulse-blue 2s ease-in-out infinite;
+}
+
+.panel-status.ready {
+  background: var(--accent-gold);
+  box-shadow: 0 0 10px var(--accent-gold);
+  animation: cyber-pulse-gold 2s ease-in-out infinite;
+}
+
+/* Panel Content Areas */
+.panel-content {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Specific Panel Layouts */
+.threat-panel {
+  grid-area: threat-panel;
+  border-color: var(--threat-high);
+}
+
+.main-display {
+  grid-area: main-display;
+  border-color: var(--wing-commander-blue);
+}
+
+.tactical-panel {
+  grid-area: tactical-panel;
+  border-color: var(--steel-blue);
+}
+
+.command-console {
+  grid-area: command-console;
+  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, var(--bg-tertiary), var(--tactical-blue));
+}
+
+/* Grid Scan Lines */
+.grid-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scanline {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.3), transparent);
+}
+
+.scanline.horizontal {
+  top: 30%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  animation: scan-horizontal 8s linear infinite;
+}
+
+.scanline.vertical {
+  top: 0;
+  bottom: 0;
+  left: 60%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, rgba(0, 191, 255, 0.2), transparent);
+  animation: scan-vertical 12s linear infinite;
+}
+
+/* Scan Line Animations */
+@keyframes scan-horizontal {
+  0% { top: 30%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 70%; opacity: 0; }
+}
+
+@keyframes scan-vertical {
+  0% { left: 20%; opacity: 0; }
+  50% { opacity: 1; }
+  100% { left: 80%; opacity: 0; }
+}
+
+@keyframes cyber-pulse-green {
+  0% { box-shadow: 0 0 10px var(--status-operational); }
+  50% { box-shadow: 0 0 20px var(--status-operational), 0 0 30px rgba(0, 255, 136, 0.5); }
+  100% { box-shadow: 0 0 10px var(--status-operational); }
+}
+
+/* ========================================
+   INTEL DISPLAY CONTAINER
+======================================== */
+
+.intel-display-container {
+  height: 100%;
+  background: linear-gradient(180deg, var(--bg-secondary), var(--bg-primary));
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Data Stream Header */
+.data-stream-header {
+  padding: 15px 20px;
+  background: linear-gradient(90deg, var(--bg-tertiary), var(--tactical-blue));
+  border-bottom: 1px solid var(--cyber-electric-blue);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stream-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stream-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stream-status {
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stream-status.initializing,
+.stream-status.establishing-connection,
+.stream-status.syncing-feeds {
+  background: linear-gradient(135deg, var(--cyber-electric-blue), rgba(0, 191, 255, 0.2));
+  color: var(--cyber-electric-blue);
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  animation: cyber-pulse-blue 1.5s ease-in-out infinite;
+}
+
+.stream-status.streaming-live-data {
+  background: linear-gradient(135deg, var(--status-operational), rgba(0, 255, 136, 0.2));
+  color: var(--status-operational);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  animation: cyber-pulse-green 2s ease-in-out infinite;
+}
+
+.stream-stats {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-gold);
+  font-weight: bold;
+  text-shadow: var(--glow-gold);
+}
+
+/* Main Display Area */
+.intel-display-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stream Indicators */
+.stream-indicators {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 20px 0;
+  pointer-events: none;
+}
+
+.indicator-line {
+  height: 30%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--cyber-electric-blue), transparent);
+  position: relative;
+}
+
+.indicator-line.stream-1 {
+  animation: data-stream-flow 2s linear infinite;
+}
+
+.indicator-line.stream-2 {
+  animation: data-stream-flow 2.5s linear infinite reverse;
+}
+
+.indicator-line.stream-3 {
+  animation: data-stream-flow 1.8s linear infinite;
+}
+
+/* Display Effects */
+.display-effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.scan-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.6), transparent);
+  animation: intel-scan 4s linear infinite;
+}
+
+.data-corruption {
+  position: absolute;
+  top: 20%;
+  right: 10%;
+  width: 1px;
+  height: 60%;
+  background: linear-gradient(180deg, transparent, rgba(255, 0, 102, 0.3), transparent);
+  animation: glitch-flicker 0.1s linear infinite;
+}
+
+/* Animations */
+@keyframes data-stream-flow {
+  0% { opacity: 0.3; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0.3; transform: scaleY(0.5); }
+}
+
+@keyframes intel-scan {
+  0% { top: 0; opacity: 0; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes glitch-flicker {
+  0%, 98% { opacity: 0; }
+  2%, 96% { opacity: 0.8; }
+  4%, 94% { opacity: 0.2; }
+  6%, 92% { opacity: 0.6; }
+  8%, 90% { opacity: 0; }
+}
+
+/* ========================================
+   ARCH ANGEL COMMAND CONSOLE
+======================================== */
+
+.command-console-panel {
+  background: linear-gradient(180deg, #1a1a1a, #151515);
+  border: 1px solid #333;
+  border-radius: 2px;
+  padding: 12px;
+  font-family: var(--font-primary);
+}
+
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 12px;
+}
+
+.console-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.console-status {
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+
+.console-status.operational {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: #00ff88;
+  color: #00ff88;
+}
+
+.console-toggle {
+  background: none;
+  border: 1px solid #555;
+  color: #999;
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: all 0.2s ease;
+}
+
+.console-toggle:hover {
+  border-color: #00bfff;
+  color: #00bfff;
+}
+
+.system-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+}
+
+.metric-label {
+  color: #999;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 80px;
+}
+
+.metric-bar {
+  flex: 1;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.metric-fill.normal {
+  background: linear-gradient(90deg, #00ff88, #00cc66);
+}
+
+.metric-fill.warning {
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
+}
+
+.metric-fill.critical {
+  background: linear-gradient(90deg, #ff0066, #cc0044);
+}
+
+.metric-value,
+.metric-value-large,
+.metric-value-feed {
+  color: #00bfff;
+  font-weight: bold;
+  font-family: var(--font-mono);
+}
+
+.metric-value-large {
+  font-size: 12px;
+}
+
+.metric-value-feed {
+  font-size: 9px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-grid-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.command-btn {
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #555;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.command-btn:hover {
+  background: linear-gradient(180deg, #333333, #222222);
+  border-color: #00bfff;
+  transform: translateY(-1px);
+}
+
+.command-btn.primary-command {
+  border-color: #00bfff;
+}
+
+.command-btn.secondary-command {
+  border-color: #666;
+}
+
+.command-btn.emergency-command {
+  border-color: #ff4444;
+}
+
+.command-btn.priority-critical {
+  background: linear-gradient(180deg, rgba(255, 0, 102, 0.2), #1a1a1a);
+}
+
+.command-btn.priority-high {
+  background: linear-gradient(180deg, rgba(255, 102, 0, 0.2), #1a1a1a);
+}
+
+.command-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.command-label {
+  font-size: 8px;
+  line-height: 1;
+}
+
+.command-glow {
+  display: none; /* Remove glow effects for professional look */
+}
+
+.console-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #333;
+  font-size: 9px;
+  color: #999;
+}
+
+.operational-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333;
+}
+
+.status-indicator.active {
+  background: #00ff88;
+}
+
+.status-text {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.sync-time {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #666;
+}
+
+/* Responsive Design for Command Console */
+@media (max-width: 600px) {
+  .command-grid-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .console-footer {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+}
