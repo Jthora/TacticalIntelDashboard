@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import FeedService from '../services/FeedService';
-import { Feed } from '../models/Feed';
+import { Feed } from '../../../models/Feed';
 import FeedItem from './FeedItem';
 
 const FeedList: React.FC = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTrigger } from '../../types/AlertTypes';
+import { AlertTrigger } from '../../../types/AlertTypes';
 import './AlertHistory.css';
 
 interface AlertHistoryProps {

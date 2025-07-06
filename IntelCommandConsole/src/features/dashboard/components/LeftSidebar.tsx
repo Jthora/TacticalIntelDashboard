@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import FeedService from '../services/FeedService';
-import { FeedList } from '../types/FeedTypes';
+import FeedService from '../../feeds/services/FeedService';
+import { FeedList } from '../../../types/FeedTypes';
 
 interface LeftSidebarProps {
   setSelectedFeedList: (feedListId: string | null) => void;

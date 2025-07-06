@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Feed } from '../models/Feed';
+import { Feed } from '../../../models/Feed';
 
 interface FeedItemProps {
   feed: Feed;

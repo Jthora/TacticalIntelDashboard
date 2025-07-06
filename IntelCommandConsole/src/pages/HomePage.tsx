@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import LeftSidebar from '../components/LeftSidebar';
-import RightSidebar from '../components/RightSidebar';
-import CentralView from '../components/CentralView';
-import QuickActions from '../components/QuickActions';
-import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel';
+import { Header, LeftSidebar, RightSidebar, CentralView, QuickActions, AlertNotificationPanel } from '../features';
 
 const HomePage: React.FC = () => {
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);

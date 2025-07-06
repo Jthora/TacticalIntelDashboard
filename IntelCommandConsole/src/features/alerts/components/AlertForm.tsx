@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertConfig, AlertPriority } from '../../types/AlertTypes';
+import { AlertConfig, AlertPriority } from '../../../types/AlertTypes';
 import './AlertForm.css';
 
 interface AlertFormProps {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import FeedService from '../services/FeedService';
+import { FeedService } from '../features';
 import { FeedItem, FeedList } from '../types/FeedTypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { convertFeedItemToFeed, convertFeedsToFeedItems } from '../utils/feedConversion';
-import AlertManager from '../components/alerts/AlertManager';
+import { AlertManager } from '../features';
 
 const SettingsPage: React.FC = () => {
   const [feedLists, setFeedLists] = useState<FeedList[]>([]);

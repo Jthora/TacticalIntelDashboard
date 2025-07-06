@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import FeedService from '../services/FeedService';
+import { FeedService } from '../features';
 import { Feed } from '../models/Feed';
 
 const FeedPage: React.FC = () => {

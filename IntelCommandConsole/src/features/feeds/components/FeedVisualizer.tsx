@@ -2,8 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import FeedItem from './FeedItem';
 import SearchAndFilter from './SearchAndFilter';
 import FeedService from '../services/FeedService';
-import { Feed } from '../models/Feed';
-import useAlerts from '../hooks/alerts/useAlerts';
+import { Feed } from '../../../models/Feed';
+import useAlerts from '../../../hooks/alerts/useAlerts';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;

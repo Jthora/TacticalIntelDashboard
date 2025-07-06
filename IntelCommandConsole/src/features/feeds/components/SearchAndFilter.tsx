@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Feed } from '../models/Feed';
+import { Feed } from '../../../models/Feed';
 
 interface SearchAndFilterProps {
   feeds: Feed[];

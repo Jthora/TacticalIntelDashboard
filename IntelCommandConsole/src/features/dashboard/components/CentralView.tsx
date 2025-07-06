@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FeedVisualizer from './FeedVisualizer';
+import { FeedVisualizer } from '../../feeds';
 
 interface CentralViewProps {
   selectedFeedList: string | null;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AlertConfig } from '../../types/AlertTypes';
-import useAlerts from '../../hooks/alerts/useAlerts';
+import { AlertConfig } from '../../../types/AlertTypes';
+import useAlerts from '../../../hooks/alerts/useAlerts';
 import AlertList from './AlertList';
 import AlertForm from './AlertForm';
 import AlertHistory from './AlertHistory';

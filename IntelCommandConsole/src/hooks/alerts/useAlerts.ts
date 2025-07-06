@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AlertConfig, AlertTrigger } from '../../types/AlertTypes';
-import AlertService from '../../services/alerts/AlertService';
+import { ArchAngelAlertService } from '../../features/alerts/services/ArchAngelAlertService';
 
 export interface UseAlertsReturn {
   // Alert management
@@ -53,7 +53,7 @@ export const useAlerts = (): UseAlertsReturn => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const alertService = AlertService.getInstance();
+  const alertService = ArchAngelAlertService.getInstance();
 
   // Initialize alerts service and load data
   useEffect(() => {
@@ -162,7 +162,11 @@ export const useAlerts = (): UseAlertsReturn => {
   // Get alert history
   const getAlertHistory = useCallback((alertId?: string, limit?: number) => {
     try {
-      return alertService.getAlertHistory(alertId, limit);
+      if (alertId) {
+        return alertService.getRecentTriggers(alertId, limit || 10);
+      } else {
+        return alertService.getAlertHistory(limit);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to get alert history');
       return [];
@@ -172,7 +176,11 @@ export const useAlerts = (): UseAlertsReturn => {
   // Clear alert history
   const clearAlertHistory = useCallback((alertId?: string) => {
     try {
-      alertService.clearAlertHistory(alertId);
+      if (alertId) {
+        alertService.clearAlertHistory(alertId);
+      } else {
+        alertService.clearHistory();
+      }
       refreshData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to clear alert history');
