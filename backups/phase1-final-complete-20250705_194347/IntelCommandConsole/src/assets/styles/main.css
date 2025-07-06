@@ -1,0 +1,196 @@
+@font-face {
+  font-family: 'Aldrich';
+  src: url('./fonts/Aldrich-Regular.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Aldrich', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #0a0f24; /* Dark blue background */
+  color: #ffffff; /* White text */
+}
+
+.App {
+  text-align: center;
+  padding: 0px;
+  background-color: #0a0f24; /* Dark blue background */
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  background-color: #000000; /* Medium blue background */
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.header .logo {
+  width: 144px; /* Adjust width if necessary */
+  height: auto;
+  margin-right: 20px;
+}
+
+.header .title {
+  margin: 0;
+  color: #ffffff; /* White text */
+  font-size: 48px;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.left-sidebar {
+  width: 20%;
+  background-color: #1a233a; /* Medium blue background */
+  padding: 10px;
+}
+
+.central-view {
+  flex: 1;
+  padding: 10px;
+}
+
+.right-sidebar {
+  width: 20%;
+  background-color: #1a233a; /* Medium blue background */
+  padding: 10px;
+}
+
+.feed-visualizer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feed-item {
+  background: #1a233a; /* Medium blue background */
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Darker shadow */
+  width: 80%;
+  color: #ffffff; /* White text */
+}
+
+.feed-item h3 {
+  margin: 0;
+  color: #00bfff; /* Light blue text */
+}
+
+.feed-item p {
+  color: #b0c4de; /* Light steel blue text */
+}
+
+.settings-page {
+  padding: 20px;
+  background-color: #0a0f24; /* Dark blue background */
+  color: #ffffff; /* White text */
+  font-family: 'Aldrich', Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #1a233a; /* Medium blue background */
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.navbar a {
+  color: #ffffff; /* White text */
+  text-decoration: none;
+  padding: 10px;
+}
+
+.navbar a:hover {
+  background-color: #00bfff; /* Light blue background */
+}
+
+.add-feed-form, .add-feed-list-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.add-feed-form input, .add-feed-list-form input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1a233a; /* Medium blue background */
+  color: #ffffff; /* White text */
+}
+
+.add-feed-form button, .add-feed-list-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #00bfff; /* Light blue background */
+  color: #ffffff; /* White text */
+  cursor: pointer;
+}
+
+.add-feed-form button:hover, .add-feed-list-form button:hover {
+  background-color: #0077cc; /* Darker blue background */
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.feed-list-item, .feed-item {
+  background: #1a233a; /* Medium blue background */
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Darker shadow */
+  color: #ffffff; /* White text */
+}
+
+.feed-list-item h3, .feed-item h3 {
+  margin: 0;
+  color: #00bfff; /* Light blue text */
+  cursor: pointer;
+}
+
+.feed-list-item h3:hover, .feed-item h3:hover {
+  text-decoration: underline;
+}
+
+.feed-list-item button, .feed-item button {
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ff4d4d; /* Red background */
+  color: #ffffff; /* White text */
+  cursor: pointer;
+}
+
+.feed-list-item button:hover, .feed-item button:hover {
+  background-color: #cc0000; /* Darker red background */
+}
+
+.left-sidebar button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #00bfff; /* Light blue background */
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #ffffff; /* White text */
+}
+
+.left-sidebar button:hover {
+  background-color: #0077cc; /* Darker blue background */
+}
