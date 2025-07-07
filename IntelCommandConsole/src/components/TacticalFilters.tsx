@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './TacticalFilters.css';
 
 interface TacticalFiltersProps {
   // Optional props for parent components to control or observe filter state

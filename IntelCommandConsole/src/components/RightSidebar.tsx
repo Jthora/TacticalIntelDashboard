@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FeedService from '../features/feeds/services/FeedService';
 import { Feed } from '../models/Feed';
-import SystemPerformance from './SystemPerformance';
 import SystemControl from './SystemControl';
 import TacticalFilters from './TacticalFilters';
 import Export, { ExportFormat, ExportOptions } from './Export';
@@ -73,9 +72,6 @@ const RightSidebar: React.FC = () => {
     <div className="tactical-sidebar-container animate-slide-in-right">
       {/* System Control Module */}
       <SystemControl />
-
-      {/* System Performance Module - Real Data */}
-      <SystemPerformance />
 
       {/* Tactical Filters Module */}
       <TacticalFilters 
