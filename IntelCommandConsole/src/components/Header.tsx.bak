@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSearch } from '../contexts/SearchContext';
 import Modal from './Modal';
 import FeedManager from './FeedManager';
@@ -9,16 +9,6 @@ const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFeedManager, setShowFeedManager] = useState(false);
   const [showSystemMenu, setShowSystemMenu] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Update time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,22 +36,21 @@ const Header: React.FC = () => {
             className="brand-icon-micro"
           />
           <div className="brand-text-micro">
-            <span className="brand-code">TACTICAL INTEL DASHBOARD</span>
+            <span className="brand-code">TACTICAL-CMD</span>
           </div>
         </div>
         
-        {/* Status indicators - reordered for better spacing */}
+        {/* Status indicators */}
         <div className="status-micro-grid">
-          <div className="clock-display" title="System Time">
-            {currentTime.toLocaleTimeString('en-US', { 
-              hour12: false, 
-              hour: '2-digit', 
-              minute: '2-digit',
-              second: '2-digit'
-            })}
-          </div>
           <div className="status-indicator status-online" title="Connection Status">
             ● ONLINE
+          </div>
+          <div className="clock-display" title="System Time">
+            {new Date().toLocaleTimeString('en-US', { 
+              hour12: false, 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            })}
           </div>
         </div>
 
@@ -127,4 +116,6 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+// Explicit default export to fix module resolution
+const HeaderComponent = Header;
+export default HeaderComponent;

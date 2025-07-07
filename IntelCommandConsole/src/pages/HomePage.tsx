@@ -5,7 +5,6 @@ import RightSidebar from '../components/RightSidebar';
 import CentralView from '../components/CentralView';
 import QuickActions from '../components/QuickActions';
 import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel';
-import '../assets/styles/tactical-ui.css';
 
 const HomePage: React.FC = () => {
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);

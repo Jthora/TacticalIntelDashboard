@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import FeedService from '../features/feeds/services/FeedService';
 import { Feed } from '../models/Feed';
+import SystemPerformance from './SystemPerformance';
 
 const RightSidebar: React.FC = () => {
   const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [performanceMode, setPerformanceMode] = useState<'normal' | 'turbo' | 'eco'>('normal');
   const [healthAlerts, setHealthAlerts] = useState<boolean>(true);
   const [autoExport, setAutoExport] = useState<boolean>(false);
   const [filterPresets] = useState<string[]>(['CRITICAL', 'INTEL', 'THREAT']);
@@ -34,27 +34,6 @@ const RightSidebar: React.FC = () => {
     }
     setActiveFilters(newFilters);
   };
-
-  const getPerformanceModeColor = () => {
-    switch (performanceMode) {
-      case 'turbo': return '#ff9500';
-      case 'eco': return '#00ff41';
-      default: return '#00d4ff';
-    }
-  };
-
-  const getSystemMetrics = () => {
-    return {
-      cpu: Math.floor(Math.random() * 100),
-      memory: Math.floor(Math.random() * 100),
-      network: Math.floor(Math.random() * 100),
-      uptime: '2h 34m',
-      threats: Math.floor(Math.random() * 5),
-      alerts: Math.floor(Math.random() * 10)
-    };
-  };
-
-  const metrics = getSystemMetrics();
 
   return (
     <div className="tactical-sidebar-container animate-slide-in-right">
@@ -95,19 +74,6 @@ const RightSidebar: React.FC = () => {
         <div className="tactical-content">
           <div className="system-controls-grid">
             <div className="control-group">
-              <label className="control-label">PERFORMANCE</label>
-              <select 
-                value={performanceMode} 
-                onChange={(e) => setPerformanceMode(e.target.value as any)}
-                className="control-select"
-                style={{ borderColor: getPerformanceModeColor() }}
-              >
-                <option value="eco">ECO</option>
-                <option value="normal">NORMAL</option>
-                <option value="turbo">TURBO</option>
-              </select>
-            </div>
-            <div className="control-group">
               <label className="control-label">ALERTS</label>
               <button 
                 className={`control-toggle ${healthAlerts ? 'active' : ''}`}
@@ -129,184 +95,195 @@ const RightSidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Performance Monitor Module */}
-      <div className="tactical-module module-performance">
-        <div className="tactical-header-enhanced">
-          <div className="header-primary">
-            <span className="module-icon">⚡</span>
-            <h3>PERFORMANCE</h3>
-          </div>
-          <div className="header-status">
-            <span 
-              className="status-dot"
-              style={{ background: getPerformanceModeColor() }}
-            ></span>
-            <span className="status-text">{performanceMode.toUpperCase()}</span>
-          </div>
-        </div>
-        <div className="tactical-content">
-          <div className="performance-grid-micro">
-            <div className="metric-card-micro">
-              <div className="metric-header">
-                <span className="metric-icon">🖥</span>
-                <span className="metric-name">CPU</span>
-              </div>
-              <div className="metric-bar">
-                <div 
-                  className="metric-fill" 
-                  style={{ 
-                    width: `${metrics.cpu}%`,
-                    background: metrics.cpu > 80 ? '#ff0040' : metrics.cpu > 60 ? '#ff9500' : '#00ff41'
-                  }}
-                ></div>
-              </div>
-              <span className="metric-value">{metrics.cpu}%</span>
-            </div>
-            
-            <div className="metric-card-micro">
-              <div className="metric-header">
-                <span className="metric-icon">💾</span>
-                <span className="metric-name">RAM</span>
-              </div>
-              <div className="metric-bar">
-                <div 
-                  className="metric-fill" 
-                  style={{ 
-                    width: `${metrics.memory}%`,
-                    background: metrics.memory > 80 ? '#ff0040' : metrics.memory > 60 ? '#ff9500' : '#00ff41'
-                  }}
-                ></div>
-              </div>
-              <span className="metric-value">{metrics.memory}%</span>
-            </div>
-            
-            <div className="metric-card-micro">
-              <div className="metric-header">
-                <span className="metric-icon">📡</span>
-                <span className="metric-name">NET</span>
-              </div>
-              <div className="metric-bar">
-                <div 
-                  className="metric-fill" 
-                  style={{ 
-                    width: `${metrics.network}%`,
-                    background: '#00d4ff'
-                  }}
-                ></div>
-              </div>
-              <span className="metric-value">{metrics.network}%</span>
-            </div>
-          </div>
-          
-          <div className="system-status-micro">
-            <div className="status-item">
-              <span className="status-label">UPTIME</span>
-              <span className="status-value">{metrics.uptime}</span>
-            </div>
-            <div className="status-item">
-              <span className="status-label">THREATS</span>
-              <span className="status-value threat-count">{metrics.threats}</span>
-            </div>
-            <div className="status-item">
-              <span className="status-label">ALERTS</span>
-              <span className="status-value alert-count">{metrics.alerts}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* System Performance Module - Real Data */}
+      <SystemPerformance />
 
-      {/* Tactical Filters Module */}
+      {/* Enhanced Tactical Filters Module */}
       <div className="tactical-module module-filters">
         <div className="tactical-header-enhanced">
           <div className="header-primary">
             <span className="module-icon">🎛</span>
-            <h3>FILTERS</h3>
+            <h3>TACTICAL FILTERS</h3>
           </div>
-          <div className="header-controls-micro">
-            <button 
-              className="micro-btn"
-              onClick={() => setActiveFilters(new Set())}
-              title="Clear All"
-            >
-              ✕
-            </button>
-            <button 
-              className="micro-btn"
-              onClick={() => setActiveFilters(new Set(filterPresets))}
-              title="Preset"
-            >
-              ⚡
-            </button>
-            <button 
-              className="micro-btn"
-              title="Save Preset"
-            >
-              💾
-            </button>
+          <div className="header-status">
+            <span className={`status-dot ${activeFilters.size > 0 ? 'active' : 'idle'}`}></span>
+            <span className="status-text">{activeFilters.size > 0 ? 'FILTERING' : 'STANDBY'}</span>
           </div>
         </div>
         <div className="tactical-content">
-          <div className="filter-matrix">
-            <div className="filter-category">
-              <div className="category-header">PRIORITY</div>
-              <div className="filter-buttons-micro">
-                {['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(filter => (
+          {/* Filter Control Panel */}
+          <div className="filter-controls-section">
+            <div className="filter-quick-actions">
+              <button 
+                className="filter-action-btn clear"
+                onClick={() => setActiveFilters(new Set())}
+                title="Clear All Filters"
+              >
+                <span className="btn-icon">✕</span>
+                <span className="btn-text">CLEAR ALL</span>
+              </button>
+              <button 
+                className="filter-action-btn preset"
+                onClick={() => setActiveFilters(new Set(filterPresets))}
+                title="Load Preset Filters"
+              >
+                <span className="btn-icon">⚡</span>
+                <span className="btn-text">PRESET</span>
+              </button>
+              <button 
+                className="filter-action-btn save"
+                title="Save Current Configuration"
+              >
+                <span className="btn-icon">💾</span>
+                <span className="btn-text">SAVE</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Filter Categories Matrix */}
+          <div className="filter-categories-section">
+            <div className="filter-category-card">
+              <div className="category-header">
+                <span className="category-icon">🚨</span>
+                <span className="category-title">PRIORITY LEVELS</span>
+              </div>
+              <div className="filter-grid">
+                {[
+                  { key: 'CRITICAL', label: 'CRITICAL', color: '#ff0040' },
+                  { key: 'HIGH', label: 'HIGH', color: '#ff9500' },
+                  { key: 'MEDIUM', label: 'MEDIUM', color: '#ffd700' },
+                  { key: 'LOW', label: 'LOW', color: '#00ff41' }
+                ].map(filter => (
                   <button
-                    key={filter}
-                    className={`filter-btn-micro ${activeFilters.has(filter) ? 'active' : ''}`}
-                    onClick={() => toggleFilter(filter)}
+                    key={filter.key}
+                    className={`filter-tag ${activeFilters.has(filter.key) ? 'active' : ''}`}
+                    onClick={() => toggleFilter(filter.key)}
+                    style={{ '--filter-color': filter.color } as React.CSSProperties}
                   >
-                    {filter.charAt(0)}
+                    <span className="filter-indicator"></span>
+                    <span className="filter-label">{filter.label}</span>
                   </button>
                 ))}
               </div>
             </div>
             
-            <div className="filter-category">
-              <div className="category-header">TYPE</div>
-              <div className="filter-buttons-micro">
-                {['INTEL', 'NEWS', 'ALERT', 'THREAT'].map(filter => (
+            <div className="filter-category-card">
+              <div className="category-header">
+                <span className="category-icon">📡</span>
+                <span className="category-title">CONTENT TYPE</span>
+              </div>
+              <div className="filter-grid">
+                {[
+                  { key: 'INTEL', label: 'INTELLIGENCE', color: '#00ffaa' },
+                  { key: 'NEWS', label: 'NEWS', color: '#0099ff' },
+                  { key: 'ALERT', label: 'ALERT', color: '#ff6600' },
+                  { key: 'THREAT', label: 'THREAT', color: '#ff0040' }
+                ].map(filter => (
                   <button
-                    key={filter}
-                    className={`filter-btn-micro ${activeFilters.has(filter) ? 'active' : ''}`}
-                    onClick={() => toggleFilter(filter)}
+                    key={filter.key}
+                    className={`filter-tag ${activeFilters.has(filter.key) ? 'active' : ''}`}
+                    onClick={() => toggleFilter(filter.key)}
+                    style={{ '--filter-color': filter.color } as React.CSSProperties}
                   >
-                    {filter.charAt(0)}
+                    <span className="filter-indicator"></span>
+                    <span className="filter-label">{filter.label}</span>
                   </button>
                 ))}
               </div>
             </div>
             
-            <div className="filter-category">
-              <div className="category-header">REGION</div>
-              <div className="filter-buttons-micro">
-                {['GLOBAL', 'US', 'EU', 'ASIA'].map(filter => (
+            <div className="filter-category-card">
+              <div className="category-header">
+                <span className="category-icon">🌍</span>
+                <span className="category-title">GEOGRAPHIC REGION</span>
+              </div>
+              <div className="filter-grid">
+                {[
+                  { key: 'GLOBAL', label: 'GLOBAL', color: '#ffffff' },
+                  { key: 'AMERICAS', label: 'AMERICAS', color: '#00ffaa' },
+                  { key: 'EUROPE', label: 'EUROPE', color: '#0099ff' },
+                  { key: 'ASIA_PACIFIC', label: 'ASIA-PAC', color: '#ff9500' }
+                ].map(filter => (
                   <button
-                    key={filter}
-                    className={`filter-btn-micro ${activeFilters.has(filter) ? 'active' : ''}`}
-                    onClick={() => toggleFilter(filter)}
+                    key={filter.key}
+                    className={`filter-tag ${activeFilters.has(filter.key) ? 'active' : ''}`}
+                    onClick={() => toggleFilter(filter.key)}
+                    style={{ '--filter-color': filter.color } as React.CSSProperties}
                   >
-                    {filter.charAt(0)}
+                    <span className="filter-indicator"></span>
+                    <span className="filter-label">{filter.label}</span>
                   </button>
                 ))}
               </div>
             </div>
           </div>
-          
-          <div className="filter-quick-actions">
-            <select className="time-range-select">
-              <option>1H</option>
-              <option>6H</option>
-              <option>24H</option>
-              <option>7D</option>
-              <option>30D</option>
-            </select>
-            <button className="action-btn-micro" title="Apply Filters">
-              ▶
-            </button>
-            <button className="action-btn-micro" title="Save Search">
-              📌
-            </button>
+
+          {/* Time Range & Advanced Filters */}
+          <div className="filter-advanced-section">
+            <div className="time-range-panel">
+              <div className="panel-header">
+                <span className="panel-icon">⏰</span>
+                <span className="panel-title">TIME RANGE</span>
+              </div>
+              <div className="time-range-grid">
+                {[
+                  { value: '1H', label: '1 HOUR', active: false },
+                  { value: '6H', label: '6 HOURS', active: false },
+                  { value: '24H', label: '24 HOURS', active: true },
+                  { value: '7D', label: '7 DAYS', active: false },
+                  { value: '30D', label: '30 DAYS', active: false }
+                ].map((range) => (
+                  <button
+                    key={range.value}
+                    className={`time-range-btn ${range.active ? 'active' : ''}`}
+                  >
+                    <span className="range-value">{range.value}</span>
+                    <span className="range-label">{range.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Filter Summary & Actions */}
+          <div className="filter-summary-section">
+            <div className="active-filters-display">
+              <div className="summary-header">
+                <span className="summary-icon">🎯</span>
+                <span className="summary-title">ACTIVE FILTERS</span>
+                <span className="filter-count">{activeFilters.size}</span>
+              </div>
+              {activeFilters.size > 0 ? (
+                <div className="active-filters-list">
+                  {Array.from(activeFilters).map(filter => (
+                    <span key={filter} className="active-filter-tag">
+                      {filter}
+                      <button 
+                        className="remove-filter-btn"
+                        onClick={() => toggleFilter(filter)}
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-filters-message">
+                  No filters active - showing all content
+                </div>
+              )}
+            </div>
+            
+            <div className="filter-execution-panel">
+              <button className="apply-filters-btn">
+                <span className="btn-icon">▶</span>
+                <span className="btn-text">APPLY FILTERS</span>
+              </button>
+              <button className="save-preset-btn">
+                <span className="btn-icon">📌</span>
+                <span className="btn-text">SAVE PRESET</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
