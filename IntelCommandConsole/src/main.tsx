@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './assets/styles/enhanced-feeds.css';
+import './assets/styles/tactical-ui.css';
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
