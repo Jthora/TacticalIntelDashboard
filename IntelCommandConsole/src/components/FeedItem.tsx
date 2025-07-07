@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Feed } from '../models/Feed';
 
 interface FeedItemProps {
@@ -7,6 +7,13 @@ interface FeedItemProps {
 
 const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
   const [expanded, setExpanded] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Animate item in when it mounts
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const formatDate = (dateString: string) => {
     try {
@@ -36,7 +43,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
   };
 
   return (
-    <div className={`feed-item ${expanded ? 'expanded' : ''}`}>
+    <div className={`feed-item ${expanded ? 'expanded' : ''} ${isVisible ? 'visible' : 'mounting'}`}>
       <div className="feed-item-header">
         <div className="feed-source-badge">
           {getSourceFromUrl(feed.link)}

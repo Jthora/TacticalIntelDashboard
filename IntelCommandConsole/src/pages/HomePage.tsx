@@ -5,6 +5,7 @@ import RightSidebar from '../components/RightSidebar';
 import CentralView from '../components/CentralView';
 import QuickActions from '../components/QuickActions';
 import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel';
+import '../assets/styles/tactical-ui.css';
 
 const HomePage: React.FC = () => {
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);
@@ -31,18 +32,31 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="home-page">
-      <Header />
-      <div className="content">
+    <div className="tactical-dashboard">
+      <div className="tactical-header-main">
+        <Header />
+      </div>
+      
+      <div className="tactical-sidebar-left">
         <LeftSidebar setSelectedFeedList={setSelectedFeedList} />
+      </div>
+      
+      <div className="tactical-main">
         <CentralView selectedFeedList={selectedFeedList} />
+      </div>
+      
+      <div className="tactical-sidebar-right">
         <RightSidebar />
       </div>
-      <QuickActions 
-        selectedFeedList={selectedFeedList}
-        onRefreshAll={handleRefreshAll}
-        onExportData={handleExportData}
-      />
+      
+      <div className="tactical-quickactions">
+        <QuickActions 
+          selectedFeedList={selectedFeedList}
+          onRefreshAll={handleRefreshAll}
+          onExportData={handleExportData}
+        />
+      </div>
+      
       <AlertNotificationPanel />
     </div>
   );

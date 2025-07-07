@@ -1,137 +1,117 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useSearch } from '../contexts/SearchContext';
 import Modal from './Modal';
 import FeedManager from './FeedManager';
 import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 
 const Header: React.FC = () => {
-  const { performSearch, addToHistory, searchHistory, isSearching } = useSearch();
+  const { performSearch, isSearching } = useSearch();
   const [searchQuery, setSearchQuery] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
   const [showFeedManager, setShowFeedManager] = useState(false);
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [showSystemMenu, setShowSystemMenu] = useState(false);
 
-  const handleSearch = async (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      await performSearch({ 
+      performSearch({ 
         query: searchQuery.trim(),
         operators: 'AND',
         caseSensitive: false 
       });
-      addToHistory(searchQuery.trim());
-      setShowSuggestions(false);
-      // Focus back to input for next search
-      searchInputRef.current?.focus();
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    setShowSuggestions(value.length > 0 && searchHistory.length > 0);
-  };
-
-  const handleSuggestionClick = (suggestion: string) => {
-    setSearchQuery(suggestion);
-    setShowSuggestions(false);
-    performSearch({ 
-      query: suggestion,
-      operators: 'AND',
-      caseSensitive: false 
-    });
-  };
-
-  const handleInputFocus = () => {
-    if (searchQuery.length > 0 && searchHistory.length > 0) {
-      setShowSuggestions(true);
-    }
-  };
-
-  const handleInputBlur = () => {
-    // Delay hiding suggestions to allow clicking
-    setTimeout(() => setShowSuggestions(false), 200);
-  };
-
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      setShowSuggestions(false);
-      searchInputRef.current?.blur();
-    }
+    setSearchQuery(e.target.value);
   };
 
   return (
-    <header className="header">
-      <img src={WingCommanderLogo} alt="Wing Commander Logo" className="logo" />
-      <h1 className="title">Tactical Intel Dashboard</h1>
+    <header className="tactical-header-enhanced tactical-header-compact">
+      <div className="header-primary-bar">
+        {/* Brand section */}
+        <div className="brand-micro">
+          <img 
+            src={WingCommanderLogo} 
+            alt="TC" 
+            className="brand-icon-micro"
+          />
+          <div className="brand-text-micro">
+            <span className="brand-code">TACTICAL-CMD</span>
+          </div>
+        </div>
+        
+        {/* Status indicators */}
+        <div className="status-micro-grid">
+          <div className="status-indicator status-online" title="Connection Status">
+            ● ONLINE
+          </div>
+          <div className="clock-display" title="System Time">
+            {new Date().toLocaleTimeString('en-US', { 
+              hour12: false, 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            })}
+          </div>
+        </div>
 
-      {/* Enhanced search functionality */}
-      <div className="header-search">
-        <form onSubmit={handleSearch} className="search-form">
-          <div className="search-input-container">
+        {/* Search */}
+        <div className="search-micro">
+          <form onSubmit={handleSearch} className="search-form-micro">
             <input
-              ref={searchInputRef}
               type="text"
-              placeholder="Search across all feeds..."
               value={searchQuery}
               onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
-              onKeyDown={handleKeyDown}
-              className="search-input"
+              placeholder="SEARCH INTEL..."
+              className="search-input-micro"
               disabled={isSearching}
             />
             <button 
               type="submit" 
-              className="search-button"
+              className="search-btn-micro"
               disabled={isSearching || !searchQuery.trim()}
+              title="Search"
             >
-              {isSearching ? '⏳' : '🔍'}
+              {isSearching ? '⟳' : '→'}
             </button>
-          </div>
-          
-          {/* Feed Management Button */}
+          </form>
+        </div>
+
+        {/* Controls */}
+        <div className="controls-micro">
           <button 
-            className="manage-feeds-button"
+            className="control-btn-micro"
             onClick={() => setShowFeedManager(true)}
-            title="Manage Feeds"
+            title="Feed Manager"
           >
-            🗂️ Manage
+            ⚙
           </button>
-          
-          {/* Search suggestions dropdown */}
-          {showSuggestions && searchHistory.length > 0 && (
-            <div className="search-suggestions">
-              <div className="search-suggestions-header">Recent searches:</div>
-              {searchHistory
-                .filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()))
-                .slice(0, 5)
-                .map((suggestion, index) => (
-                  <div
-                    key={index}
-                    className="search-suggestion-item"
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    <span className="suggestion-icon">🕐</span>
-                    {suggestion}
-                  </div>
-                ))
-              }
-            </div>
-          )}
-        </form>
-        
-        {/* Feed Manager Modal */}
-        <Modal
-          isOpen={showFeedManager}
-          onClose={() => setShowFeedManager(false)}
-          title="Feed Manager"
-          size="fullscreen"
-        >
-          <FeedManager />
-        </Modal>
+          <button 
+            className="control-btn-micro"
+            onClick={() => setShowSystemMenu(!showSystemMenu)}
+            title="System Menu"
+          >
+            ⋮
+          </button>
+        </div>
       </div>
+
+      {/* System menu dropdown */}
+      {showSystemMenu && (
+        <div className="system-menu-micro">
+          <div className="menu-item-micro" onClick={() => window.location.reload()}>↻ REFRESH</div>
+          <div className="menu-item-micro" onClick={() => document.documentElement.requestFullscreen()}>⛶ FULLSCREEN</div>
+          <div className="menu-item-micro" onClick={() => console.log('Export logs')}>↓ EXPORT</div>
+        </div>
+      )}
+        
+      <Modal
+        isOpen={showFeedManager}
+        onClose={() => setShowFeedManager(false)}
+        title="FEED MANAGEMENT CONSOLE"
+        size="fullscreen"
+      >
+        <FeedManager />
+      </Modal>
     </header>
   );
 };

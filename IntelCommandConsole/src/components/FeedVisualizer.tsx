@@ -4,6 +4,8 @@ import SearchAndFilter from './SearchAndFilter';
 import FeedService from '../services/FeedService';
 import { Feed } from '../models/Feed';
 import useAlerts from '../hooks/alerts/useAlerts';
+import { FeedVisualizerSkeleton, ErrorOverlay } from './LoadingStates';
+import { useLoading } from '../hooks/useLoading';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
@@ -12,11 +14,20 @@ interface FeedVisualizerProps {
 const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => {
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [filteredFeeds, setFilteredFeeds] = useState<Feed[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
+
+  // Enhanced loading state management
+  const { 
+    isLoading, 
+    error, 
+    setLoading,
+    setError
+  } = useLoading({
+    minLoadingTime: 800,
+    initialMessage: 'Loading intelligence feeds...'
+  });
 
   // Alert system integration
   const { 
@@ -32,8 +43,10 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
       return;
     }
 
-    if (showLoading) setLoading(true);
-    setError(null);
+    if (showLoading) {
+      setLoading(true, 'Loading intelligence feeds...');
+      setError(null);
+    }
 
     try {
       console.log(`Loading feeds for list: ${selectedFeedList}`);
@@ -77,7 +90,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     } finally {
       setLoading(false);
     }
-  }, [selectedFeedList, isMonitoring, checkFeedItems]);
+  }, [selectedFeedList, isMonitoring, checkFeedItems, setLoading, setError]);
 
   // Auto-refresh mechanism
   useEffect(() => {
@@ -104,81 +117,80 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     setAutoRefresh(!autoRefresh);
   };
 
-  if (loading) {
-    return (
-      <div className="feed-visualizer">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Loading intelligence feeds...</p>
-        </div>
-      </div>
-    );
+  if (isLoading) {
+    return <FeedVisualizerSkeleton />;
   }
 
   if (error) {
     return (
       <div className="feed-visualizer">
-        <div className="error-container">
-          <h3>⚠️ Feed Load Error</h3>
-          <p>{error}</p>
-          <button onClick={handleRefresh} className="retry-button">
-            🔄 Retry
-          </button>
-        </div>
+        <ErrorOverlay
+          title="⚠️ Feed Load Error"
+          message={error}
+          onRetry={() => loadFeeds(true)}
+          suggestions={[
+            "Check your internet connection",
+            "Verify the feed source is available",
+            "Try selecting a different feed list"
+          ]}
+        />
       </div>
     );
   }
 
   return (
-    <div className="feed-visualizer">
-      <div className="feed-controls">
+    <div className="feed-visualizer-container">
+      <div className="feed-controls tactical-header" style={{ borderBottom: '1px solid rgba(0, 255, 170, 0.2)' }}>
         <div className="status-bar">
-          <span className="feed-count">
-            📡 {filteredFeeds.length > 0 ? filteredFeeds.length : feeds.length} feeds loaded
+          <span className="feed-count text-accent font-semibold">
+            📡 {filteredFeeds.length > 0 ? filteredFeeds.length : feeds.length} FEEDS LOADED
           </span>
           {lastUpdated && (
-            <span className="last-updated">
-              🕐 Updated: {lastUpdated.toLocaleTimeString()}
+            <span className="last-updated text-secondary text-sm">
+              🕐 UPDATED: {lastUpdated.toLocaleTimeString()}
             </span>
           )}
           {/* Alert system status indicator */}
-          <span className={`alert-status ${isMonitoring ? 'monitoring' : 'inactive'}`}>
-            {isMonitoring ? '🚨 Alert Monitor: ON' : '⚪ Alert Monitor: OFF'}
+          <span className={`alert-status text-sm ${isMonitoring ? 'text-accent' : 'text-muted'}`}>
+            {isMonitoring ? '🚨 ALERT MONITOR: ON' : '⚪ ALERT MONITOR: OFF'}
           </span>
           {recentAlertTriggers > 0 && (
-            <span className="recent-alerts pulse">
-              🔥 {recentAlertTriggers} Alert{recentAlertTriggers > 1 ? 's' : ''} Triggered!
+            <span className="recent-alerts animate-pulse text-accent font-bold">
+              🔥 {recentAlertTriggers} ALERT{recentAlertTriggers > 1 ? 'S' : ''} TRIGGERED!
             </span>
           )}
           {alertStats.activeAlerts > 0 && (
-            <span className="active-alerts-count">
-              📋 {alertStats.activeAlerts} Active Alert{alertStats.activeAlerts > 1 ? 's' : ''}
+            <span className="active-alerts-count text-secondary text-sm">
+              📋 {alertStats.activeAlerts} ACTIVE ALERT{alertStats.activeAlerts > 1 ? 'S' : ''}
             </span>
           )}
         </div>
         <div className="control-buttons">
           <button 
             onClick={handleRefresh} 
-            className="refresh-button"
+            className="btn btn-primary btn-sm"
             title="Refresh feeds"
           >
-            🔄 Refresh
+            🔄 REFRESH
           </button>
           <button 
             onClick={toggleAutoRefresh}
-            className={`auto-refresh-button ${autoRefresh ? 'active' : 'inactive'}`}
+            className={`btn btn-sm ${autoRefresh ? 'btn-warning' : 'btn-secondary'}`}
             title={`Auto-refresh: ${autoRefresh ? 'ON' : 'OFF'}`}
           >
-            {autoRefresh ? '🔴' : '⚪'} Auto-refresh
+            {autoRefresh ? '🔴 AUTO-REFRESH' : '⚪ AUTO-REFRESH'}
           </button>
         </div>
       </div>
 
-      <div className="feed-list">
+      <div className="feed-content">
         {feeds.length === 0 ? (
-          <div className="no-feeds">
-            <h3>📋 No Intelligence Available</h3>
-            <p>Select a feed list from the sidebar to begin monitoring.</p>
+          <div className="no-feeds empty-state">
+            <div className="empty-icon">📋</div>
+            <div className="empty-title text-lg font-semibold text-muted">NO INTELLIGENCE AVAILABLE</div>
+            <div className="empty-description text-secondary">
+              Select a feed list from the sidebar to begin monitoring intelligence sources.
+            </div>
           </div>
         ) : (
           <>

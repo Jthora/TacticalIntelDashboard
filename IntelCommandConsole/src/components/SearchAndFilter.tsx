@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Feed } from '../models/Feed';
 
 interface SearchAndFilterProps {
@@ -11,6 +11,8 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
   const [selectedTimeRange, setSelectedTimeRange] = useState('all');
   const [selectedSource, setSelectedSource] = useState('all');
   const [sortBy, setSortBy] = useState('date');
+  const [isFiltering, setIsFiltering] = useState(false);
+  const [hasActiveFilters, setHasActiveFilters] = useState(false);
 
   // Extract unique sources from feeds
   const sources = useMemo(() => {
@@ -26,8 +28,16 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
     return Array.from(sourceSet).sort();
   }, [feeds]);
 
+  // Track active filters
+  useEffect(() => {
+    const hasFilters = searchTerm !== '' || selectedTimeRange !== 'all' || selectedSource !== 'all';
+    setHasActiveFilters(hasFilters);
+  }, [searchTerm, selectedTimeRange, selectedSource]);
+
   // Filter and sort feeds
   const filteredFeeds = useMemo(() => {
+    setIsFiltering(true);
+    
     let filtered = feeds.filter(feed => {
       // Search filter
       if (searchTerm) {
@@ -93,8 +103,13 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
   }, [feeds, searchTerm, selectedTimeRange, selectedSource, sortBy]);
 
   // Update parent component when filtered feeds change
-  React.useEffect(() => {
-    onFilteredFeedsChange(filteredFeeds);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onFilteredFeedsChange(filteredFeeds);
+      setIsFiltering(false);
+    }, 150); // Small delay to show filtering animation
+
+    return () => clearTimeout(timeoutId);
   }, [filteredFeeds, onFilteredFeedsChange]);
 
   const clearFilters = () => {
@@ -105,17 +120,24 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
   };
 
   return (
-    <div className="search-and-filter">
+    <div className={`search-and-filter ${isFiltering ? 'filtering' : ''}`}>
       <div className="filter-header">
-        <h3>🔍 Intelligence Filter</h3>
-        <button onClick={clearFilters} className="clear-filters-btn">
+        <h3 className={hasActiveFilters ? 'active-filters' : ''}>
+          🔍 Intelligence Filter
+          {hasActiveFilters && <span className="filter-indicator">●</span>}
+        </h3>
+        <button 
+          onClick={clearFilters} 
+          className={`clear-filters-btn ${hasActiveFilters ? 'visible' : ''}`}
+          disabled={!hasActiveFilters}
+        >
           🗑️ Clear
         </button>
       </div>
 
       {/* Search Input */}
       <div className="search-section">
-        <div className="search-input-container">
+        <div className={`search-input-container ${searchTerm ? 'has-input' : ''}`}>
           <input
             type="text"
             placeholder="🔍 Search headlines, content..."
@@ -126,7 +148,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
           {searchTerm && (
             <button 
               onClick={() => setSearchTerm('')}
-              className="clear-search-btn"
+              className="clear-search-btn animate-in"
             >
               ✕
             </button>
@@ -136,7 +158,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
 
       {/* Filter Controls */}
       <div className="filter-controls">
-        <div className="filter-group">
+        <div className={`filter-group ${selectedTimeRange !== 'all' ? 'active' : ''}`}>
           <label>📅 Time Range:</label>
           <select 
             value={selectedTimeRange} 
@@ -151,7 +173,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
           </select>
         </div>
 
-        <div className="filter-group">
+        <div className={`filter-group ${selectedSource !== 'all' ? 'active' : ''}`}>
           <label>📡 Source:</label>
           <select 
             value={selectedSource} 
@@ -165,7 +187,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
           </select>
         </div>
 
-        <div className="filter-group">
+        <div className={`filter-group ${sortBy !== 'date' ? 'active' : ''}`}>
           <label>🔄 Sort By:</label>
           <select 
             value={sortBy} 
@@ -180,12 +202,13 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
       </div>
 
       {/* Results Summary */}
-      <div className="filter-results">
+      <div className={`filter-results ${isFiltering ? 'updating' : ''}`}>
         <span className="results-count">
           📊 {filteredFeeds.length} of {feeds.length} items
+          {isFiltering && <span className="filtering-indicator">⏳</span>}
         </span>
-        {(searchTerm || selectedTimeRange !== 'all' || selectedSource !== 'all') && (
-          <span className="active-filters">
+        {hasActiveFilters && (
+          <span className="active-filters-badge pulse">
             🎯 Filters Active
           </span>
         )}

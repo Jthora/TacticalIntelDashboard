@@ -1,0 +1,394 @@
+import React, { useState } from 'react';
+import { useSearch } from '../contexts/SearchContext';
+import Modal from './Modal';
+import FeedManager from './FeedManager';
+import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
+import { 
+  ConnectionStatusToggle, 
+  RealTimeClockDisplay
+} from './micro-features';
+
+const Header: React.FC = () => {
+  const { performSearch, addToHistory, searchHistory, isSearching } = useSearch();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showFeedManager, setShowFeedManager] = useState(false);
+  const [isCompactMode, setIsCompactMode] = useState(false);
+  const [showSystemMenu, setShowSystemMenu] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [sortOption, setSortOption] = useState<SortOption>('alphabetical');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // State for filter matrix and quick presets
+  const [activePreset, setActivePreset] = useState<string | null>(null);
+  
+  // Quick filter presets configuration
+  const defaultPresets: FilterPreset[] = [
+    {
+      id: 'breaking-news',
+      name: 'Breaking',
+      label: 'BRK',
+      filters: { priority: ['high'], type: ['news'], timeRange: 'last-hour' },
+      description: 'High-priority breaking news sources',
+      color: '#ff4444'
+    },
+    {
+      id: 'social-intel',
+      name: 'Social',
+      label: 'SOC',
+      filters: { type: ['social'], region: ['domestic', 'international'] },
+      description: 'Social media intelligence sources',
+      color: '#44ccff'
+    },
+    {
+      id: 'official-sources',
+      name: 'Official',
+      label: 'OFF',
+      filters: { type: ['official'], priority: ['high', 'medium'] },
+      description: 'Government and official sources',
+      color: '#44ff44'
+    },
+    {
+      id: 'threat-monitor',
+      name: 'Threat',
+      label: 'THR',
+      filters: { priority: ['high'], type: ['threat'], status: ['active'] },
+      description: 'Active threat monitoring',
+      color: '#ff8800'
+    }
+  ];
+
+  // Mock intelligence sources for filtering demo
+  const mockSources = [
+    { id: '1', name: 'Source Alpha', isOnline: true, status: 'active', lastUpdate: new Date().toISOString() },
+    { id: '2', name: 'Source Beta', isOnline: false, status: 'inactive', lastUpdate: new Date(Date.now() - 1000 * 60 * 60 * 25).toISOString() },
+    { id: '3', name: 'Source Gamma', isOnline: true, status: 'error', lastUpdate: new Date().toISOString() },
+  ];
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      await performSearch({ 
+        query: searchQuery.trim(),
+        operators: 'AND',
+        caseSensitive: false 
+      });
+      addToHistory(searchQuery.trim());
+      setShowSuggestions(false);
+      searchInputRef.current?.focus();
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    setShowSuggestions(value.length > 0 && searchHistory.length > 0);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+    performSearch({ 
+      query: suggestion,
+      operators: 'AND',
+      caseSensitive: false 
+    });
+  };
+
+  // Handler functions for filter management
+  const handlePresetApply = (presetId: string) => {
+    console.log(`Applying filter preset: ${presetId}`);
+    const preset = defaultPresets.find(p => p.id === presetId);
+    if (preset) {
+      setActivePreset(presetId);
+      console.log('Applied filters:', preset.filters);
+      // In a real implementation, this would update the active filter configuration
+    }
+  };
+
+  const handleClearFilters = () => {
+    console.log('Clearing all filters');
+    setActivePreset(null);
+  };
+
+  const handleCreatePreset = () => {
+    console.log('Creating custom preset...');
+    // Would show preset creation dialog
+  };
+
+  const handleDeletePreset = (presetId: string) => {
+    console.log(`Deleting preset: ${presetId}`);
+    // Would handle custom preset deletion
+  };
+
+  return (
+    <header className={`tactical-header-enhanced tactical-header-compact ${isCompactMode ? 'compact' : ''}`}>
+      <div className="header-primary-bar">
+        {/* Ultra-compact brand section */}
+        <div className="brand-micro">
+          <img 
+            src={WingCommanderLogo} 
+            alt="TC" 
+            className="brand-icon-micro"
+          />
+          <div className="brand-text-micro">
+            <span className="brand-code">TC-01</span>
+          </div>
+        </div>
+        
+        {/* Micro status indicators */}
+        <div className="status-micro-grid">
+          {/* Feature 01: Connection Status Toggle */}
+          <ConnectionStatusToggle 
+            onStatusChange={(status) => console.log(`Connection status changed to: ${status}`)}
+          />
+          
+          {/* Feature 02: Alert Level Cycling */}
+          <AlertLevelCycling 
+            onLevelChange={(level) => console.log(`Alert level changed to: ${level}`)}
+          />
+          
+          {/* Feature 03: Real-Time Clock Display */}
+          <RealTimeClockDisplay 
+            format="24h"
+            showSeconds={true}
+          />
+        </div>
+
+        {/* Ultra-compact search */}
+        <div className="search-micro">
+          <form onSubmit={handleSearch} className="search-form-micro">
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={handleInputChange}
+              placeholder="SEARCH..."
+              className="search-input-micro"
+              disabled={isSearching}
+            />
+            <button 
+              type="submit" 
+              className="search-btn-micro"
+              disabled={isSearching || !searchQuery.trim()}
+              title="Execute Search"
+            >
+              {isSearching ? '⟳' : '→'}
+            </button>
+          </form>
+        </div>
+
+        {/* Micro control buttons */}
+        <div className="controls-micro">
+          {/* Feature 04: View Mode Switcher */}
+          <ViewModeSwitcher 
+            initialMode={viewMode}
+            onModeChange={(mode) => {
+              setViewMode(mode);
+              console.log(`Layout view mode changed to: ${mode}`);
+            }}
+          />
+          
+          {/* Feature 05: Sort Preference Selector */}
+          <SortPreferenceSelector 
+            initialSort={sortOption}
+            onSortChange={(sort) => {
+              setSortOption(sort);
+              console.log(`Sort preference changed to: ${sort}`);
+            }}
+          />
+          
+          {/* Feature 06: Active Filter Toggle */}
+          <ActiveFilterToggle 
+            sources={mockSources}
+            onFilterChange={(sources) => {
+              console.log(`Active filter applied, ${sources.length} sources visible`);
+            }}
+          />
+          
+          {/* Feature 07: Auto-Refresh Control */}
+          <AutoRefreshControl 
+            onRefresh={() => {
+              console.log('Auto-refresh triggered - refreshing data...');
+              // This would trigger data refresh in a real application
+            }}
+            refreshInterval={30}
+          />
+          
+          {/* Feature 08: Metrics Visibility Toggle */}
+          <MetricsVisibilityToggle 
+            sources={mockSources}
+            onMetricsToggle={(isVisible: boolean) => {
+              console.log(`Metrics visibility toggled: ${isVisible ? 'visible' : 'hidden'}`);
+              // This would control dashboard metrics visibility in a real application
+            }}
+          />
+          
+          {/* Feature 09: Performance Mode Selector */}
+          <PerformanceModeSelector 
+            onModeChange={(mode: PerformanceMode, context) => {
+              console.log(`Performance mode changed to: ${mode}`, context);
+              // This would optimize system performance based on selected mode
+            }}
+          />
+          
+          {/* Feature 10: Theme Switcher */}
+          <ThemeSwitcher 
+            onThemeChange={(theme: ThemeMode, config: ThemeConfiguration) => {
+              console.log(`Theme changed to: ${theme}`, config);
+              // This would apply theme changes throughout the application
+            }}
+          />
+          
+          {/* Feature 11: Compact Mode Toggle */}
+          <CompactModeToggle 
+            onCompactModeChange={(isCompact, config) => {
+              setIsCompactMode(isCompact);
+              console.log(`Compact mode changed to: ${isCompact ? 'ON' : 'OFF'}`, config);
+              // This would apply compact mode styling and layout changes
+              
+              // Apply CSS variables to the document root
+              const root = document.documentElement;
+              Object.entries(config.cssVariables).forEach(([property, value]) => {
+                root.style.setProperty(property, value);
+              });
+              
+              // Apply document class for compact mode
+              if (isCompact) {
+                document.documentElement.classList.add(config.documentClass);
+              } else {
+                document.documentElement.classList.remove('compact-mode');
+              }
+            }}
+            persistPreference={true}
+          />
+          
+          {/* Feature 13: Auto-Export Scheduler */}
+          <AutoExportScheduler 
+            onExportChange={(isEnabled, config) => {
+              console.log(`Auto-export scheduler ${isEnabled ? 'enabled' : 'disabled'}`, config);
+              // This would configure automatic data export scheduling
+            }}
+            exportData={{
+              timestamp: new Date(),
+              data: mockSources.map(source => ({
+                id: source.id,
+                name: source.name,
+                status: source.status,
+                lastUpdate: source.lastUpdate,
+                isOnline: source.isOnline
+              }))
+            }}
+            onExportExecute={async (data, options) => {
+              console.log('Executing export:', { data, options });
+              // This would perform the actual export operation
+              return new Promise((resolve) => {
+                setTimeout(() => {
+                  console.log(`Export completed: ${options.filename}`);
+                  resolve(true);
+                }, 1000);
+              });
+            }}
+            exportInterval={300} // 5 minutes default
+            exportFormat="json"
+          />
+          
+          {/* Feature 14: Filter Matrix Buttons */}
+          <FilterMatrixButtons 
+            onFiltersChange={(filters) => {
+              console.log('Filter matrix updated:', filters);
+              // This would apply multi-criteria filtering to intelligence sources
+              // Based on priority (high/medium/low), type (news/social/official), 
+              // and region (domestic/international/classified)
+              
+              // Example implementation:
+              const activeFilters = Object.entries(filters)
+                .filter(([, values]) => values.length > 0)
+                .map(([category, values]) => `${category}: ${values.join(', ')}`)
+                .join(' | ');
+              
+              if (activeFilters) {
+                console.log(`Active matrix filters: ${activeFilters}`);
+              } else {
+                console.log('All matrix filters cleared');
+              }
+            }}
+            initialFilters={{
+              priority: [],
+              type: [],
+              region: []
+            }}
+          />
+
+          {/* Feature 15: Quick Filter Presets */}
+          <QuickFilterPresets 
+            presets={defaultPresets}
+            activePreset={activePreset}
+            onPresetApply={handlePresetApply}
+            onClearFilters={handleClearFilters}
+            onCreatePreset={handleCreatePreset}
+            onDeletePreset={handleDeletePreset}
+            isEnabled={true}
+            allowCustomPresets={true}
+            maxPresets={6}
+          />
+
+          <button 
+            className="control-btn-micro"
+            onClick={() => setShowFeedManager(true)}
+            title="Feed Manager"
+          >
+            █
+          </button>
+          <button 
+            className="control-btn-micro"
+            onClick={() => setShowSystemMenu(!showSystemMenu)}
+            title="System Menu"
+          >
+            ⋮
+          </button>
+        </div>
+      </div>
+
+      {/* System menu dropdown */}
+      {showSystemMenu && (
+        <div className="system-menu-micro">
+          <div className="menu-item-micro" onClick={() => window.location.reload()}>↻ REFRESH</div>
+          <div className="menu-item-micro" onClick={() => document.documentElement.requestFullscreen()}>⛶ FULLSCREEN</div>
+          <div className="menu-item-micro" onClick={() => console.log('Export logs')}>↓ EXPORT</div>
+          <div className="menu-item-micro" onClick={() => console.log('Running system diagnostics...')}>⚠ DIAGNOSTICS</div>
+        </div>
+      )}
+
+      {/* Search suggestions overlay */}
+      {showSuggestions && searchHistory.length > 0 && (
+        <div className="search-suggestions-micro">
+          {searchHistory
+            .filter(item => item.toLowerCase().includes(searchQuery.toLowerCase()))
+            .slice(0, 3)
+            .map((suggestion, index) => (
+              <div
+                key={index}
+                className="suggestion-item-micro"
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </div>
+            ))
+          }
+        </div>
+      )}
+        
+      <Modal
+        isOpen={showFeedManager}
+        onClose={() => setShowFeedManager(false)}
+        title="FEED MANAGEMENT CONSOLE"
+        size="fullscreen"
+      >
+        <FeedManager />
+      </Modal>
+    </header>
+  );
+};
+
+export default Header;
