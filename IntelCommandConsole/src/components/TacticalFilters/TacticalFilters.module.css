@@ -6,6 +6,9 @@
 .filter-controls-section {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .filter-quick-actions {
@@ -21,6 +24,8 @@
   font-family: var(--font-tactical);
   font-size: var(--font-size-xs);
   font-weight: bold;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   display: flex;
@@ -88,6 +93,8 @@
 .filter-category-card {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
   transition: all var(--transition-fast);
 }
 
@@ -100,6 +107,8 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-xs);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -129,6 +138,8 @@
   color: var(--text-secondary);
   font-family: var(--font-tactical);
   font-size: var(--font-size-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   display: flex;
@@ -181,7 +192,7 @@
 .filter-indicator {
   width: 6px;
   height: 6px;
-  
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.4);
   transition: all var(--transition-fast);
   flex-shrink: 0;
@@ -199,8 +210,8 @@
 .filter-advanced-section {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 255, 170, 0.2);
-  
-  
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
 }
 
@@ -214,7 +225,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  
+  padding-bottom: var(--spacing-xs);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -243,8 +254,8 @@
   color: var(--text-secondary);
   font-family: var(--font-tactical);
   font-size: var(--font-size-xs);
-  
-  
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   display: flex;
@@ -284,8 +295,8 @@
 .filter-summary-section {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(0, 255, 170, 0.2);
-  
-  
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
 }
 
 .active-filters-display {
@@ -321,7 +332,7 @@
   font-size: var(--font-size-xs);
   font-weight: bold;
   padding: 2px var(--spacing-xs);
-  
+  border-radius: var(--radius-sm);
   min-width: 20px;
   text-align: center;
 }
@@ -340,7 +351,7 @@
   font-size: var(--font-size-xs);
   font-weight: bold;
   padding: 2px var(--spacing-xs);
-  
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
@@ -367,9 +378,9 @@
   font-size: var(--font-size-xs);
   font-style: italic;
   text-align: center;
-  
+  padding: var(--spacing-sm);
   background: rgba(255, 255, 255, 0.05);
-  
+  border-radius: var(--radius-sm);
   border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
@@ -387,8 +398,8 @@
   font-family: var(--font-tactical);
   font-size: var(--font-size-xs);
   font-weight: bold;
-  
-  
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   display: flex;
@@ -415,109 +426,6 @@
 .save-preset-btn:hover {
   background: rgba(0, 153, 255, 0.3);
   box-shadow: 0 0 8px rgba(0, 153, 255, 0.3);
-}
-
-/* Active Range Indicator */
-.active-range-indicator {
-  margin-left: auto;
-  background: rgba(0, 255, 170, 0.2);
-  color: var(--accent-cyan);
-  padding: 2px 8px;
-  border-radius: 2px;
-  font-size: var(--font-size-xs);
-  font-weight: bold;
-}
-
-/* Custom Time Range Panel */
-.custom-time-range {
-  margin-top: var(--spacing-sm);
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 255, 170, 0.2);
-  border-radius: 2px;
-  padding: var(--spacing-sm);
-}
-
-.custom-range-inputs {
-  display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-sm);
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  flex: 1;
-}
-
-.input-label {
-  font-family: var(--font-tactical);
-  font-size: var(--font-size-xs);
-  color: var(--text-secondary);
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-.time-input {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 255, 170, 0.3);
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: var(--font-size-xs);
-  padding: var(--spacing-xs);
-  border-radius: 2px;
-  outline: none;
-  transition: border-color var(--transition-fast);
-}
-
-.time-input:focus {
-  border-color: var(--accent-cyan);
-  box-shadow: 0 0 4px rgba(0, 255, 170, 0.3);
-}
-
-.custom-range-actions {
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.custom-range-btn {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 255, 170, 0.3);
-  color: var(--text-secondary);
-  font-family: var(--font-tactical);
-  font-size: var(--font-size-xs);
-  font-weight: bold;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  flex: 1;
-  justify-content: center;
-}
-
-.custom-range-btn:hover {
-  border-color: var(--accent-cyan);
-  color: var(--accent-cyan);
-  background: rgba(0, 255, 170, 0.1);
-}
-
-.custom-range-btn.apply {
-  border-color: rgba(0, 255, 170, 0.5);
-  color: var(--accent-cyan);
-}
-
-.custom-range-btn.apply:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.custom-range-btn.cancel {
-  border-color: rgba(255, 107, 107, 0.3);
-  color: #ff6b6b;
-}
-
-.custom-range-btn.cancel:hover {
-  border-color: #ff6b6b;
-  background: rgba(255, 107, 107, 0.1);
 }
 
 /* Module-specific theming for filters */
@@ -559,7 +467,7 @@
 
 @media (max-width: 480px) {
   .filter-category-card {
-    
+    padding: var(--spacing-xs);
   }
   
   .filter-grid {
@@ -569,7 +477,7 @@
   
   .filter-tag {
     min-height: 35px;
-    padding: var(--spacing-xs);
+    padding: var(--spacing-xs) 2px;
   }
   
   .time-range-grid {

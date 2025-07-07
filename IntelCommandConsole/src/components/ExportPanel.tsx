@@ -54,41 +54,18 @@ const ExportPanel: React.FC<ExportPanelProps> = ({ feeds, onExportComplete }) =>
         };
       }
 
-      const result = ExportService.exportFeeds(feeds, options);
+      const result = await ExportService.exportFeeds(feeds, options);
       
-      // Create download link
-      const timestamp = new Date().toISOString().split('T')[0];
-      const filename = `tactical_intel_feeds_${timestamp}.${format}`;
-      
-      if (typeof result === 'string') {
-        // For JSON and CSV
-        const blob = new Blob([result], { 
-          type: format === 'json' ? 'application/json' : 'text/csv' 
-        });
-        downloadFile(blob, filename);
-      } else {
-        // For PDF (Blob)
-        downloadFile(result, filename);
-      }
+      // Download the file using the new API
+      await ExportService.downloadFile(result);
 
-      onExportComplete?.(format, filename);
+      onExportComplete?.(format, result.filename);
     } catch (error) {
       console.error('Export failed:', error);
       alert('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
     }
-  };
-
-  const downloadFile = (blob: Blob, filename: string) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   };
 
   const getFilteredFeedCount = () => {

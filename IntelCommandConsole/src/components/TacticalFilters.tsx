@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './TacticalFilters.css';
+import { useFilters, useTimeRangePresets } from '../contexts/FilterContext';
+import { TimeRange } from '../services/FilterService';
 
 interface TacticalFiltersProps {
-  // Optional props for parent components to control or observe filter state
+  // Optional props for backwards compatibility
   onFiltersChange?: (activeFilters: Set<string>) => void;
   onApplyFilters?: (activeFilters: Set<string>) => void;
   onSavePreset?: (activeFilters: Set<string>) => void;
+  onTimeRangeChange?: (range: TimeRange) => void;
   initialFilters?: string[];
   filterPresets?: string[];
 }
@@ -14,40 +17,93 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
   onFiltersChange,
   onApplyFilters,
   onSavePreset,
-  initialFilters = [],
+  onTimeRangeChange,
   filterPresets = ['CRITICAL', 'INTEL', 'THREAT'],
 }) => {
-  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set(initialFilters));
+  const { 
+    filterState, 
+    addFilter, 
+    removeFilter, 
+    isFilterActive, 
+    clearAllFilters, 
+    hasActiveFilters
+  } = useFilters();
+
+  const { applyPreset, applyCustomRange } = useTimeRangePresets();
+
+  const [showCustomRange, setShowCustomRange] = useState(false);
+  const [customStartDate, setCustomStartDate] = useState('');
+  const [customEndDate, setCustomEndDate] = useState('');
+
+  // Time range presets
+  const timeRanges = [
+    { key: '1H', label: '1H', hours: 1 },
+    { key: '6H', label: '6H', hours: 6 },
+    { key: '24H', label: '24H', hours: 24 },
+    { key: '7D', label: '7D', hours: 168 },
+    { key: '30D', label: '30D', hours: 720 },
+    { key: 'CUSTOM', label: 'CUSTOM', hours: 0 }
+  ];
 
   const toggleFilter = (filter: string) => {
-    const newFilters = new Set(activeFilters);
-    if (newFilters.has(filter)) {
-      newFilters.delete(filter);
+    if (isFilterActive(filter)) {
+      removeFilter(filter);
     } else {
-      newFilters.add(filter);
+      addFilter(filter);
     }
-    setActiveFilters(newFilters);
-    onFiltersChange?.(newFilters);
+    
+    // Call legacy callback for backwards compatibility
+    onFiltersChange?.(filterState.activeFilters);
   };
 
-  const clearAllFilters = () => {
-    const newFilters = new Set<string>();
-    setActiveFilters(newFilters);
-    onFiltersChange?.(newFilters);
+  const selectTimeRange = (rangeKey: string) => {
+    if (rangeKey === 'CUSTOM') {
+      setShowCustomRange(true);
+      return;
+    }
+    
+    setShowCustomRange(false);
+    applyPreset(rangeKey);
+    
+    // Call legacy callback for backwards compatibility
+    if (onTimeRangeChange) {
+      const range = { 
+        start: new Date(Date.now() - (timeRanges.find(r => r.key === rangeKey)?.hours || 24) * 60 * 60 * 1000),
+        end: new Date(),
+        label: rangeKey
+      };
+      onTimeRangeChange(range);
+    }
+  };
+
+  const handleApplyCustomRange = () => {
+    if (customStartDate && customEndDate) {
+      const start = new Date(customStartDate);
+      const end = new Date(customEndDate);
+      applyCustomRange(start, end, 'CUSTOM');
+      setShowCustomRange(false);
+      
+      // Call legacy callback for backwards compatibility
+      onTimeRangeChange?.({ start, end, label: 'CUSTOM' });
+    }
   };
 
   const loadPresetFilters = () => {
-    const newFilters = new Set(filterPresets);
-    setActiveFilters(newFilters);
-    onFiltersChange?.(newFilters);
+    clearAllFilters();
+    filterPresets.forEach(preset => addFilter(preset));
   };
 
   const handleApplyFilters = () => {
-    onApplyFilters?.(activeFilters);
+    onApplyFilters?.(filterState.activeFilters);
   };
 
   const handleSavePreset = () => {
-    onSavePreset?.(activeFilters);
+    onSavePreset?.(filterState.activeFilters);
+  };
+
+  const getCurrentTimeRangeLabel = () => {
+    if (!filterState.timeRange) return 'ALL';
+    return filterState.timeRange.label;
   };
 
   return (
@@ -58,8 +114,8 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
           <h3>TACTICAL FILTERS</h3>
         </div>
         <div className="header-status">
-          <span className={`status-dot ${activeFilters.size > 0 ? 'active' : 'idle'}`}></span>
-          <span className="status-text">{activeFilters.size > 0 ? 'FILTERING' : 'STANDBY'}</span>
+          <span className={`status-dot ${hasActiveFilters ? 'active' : 'idle'}`}></span>
+          <span className="status-text">{hasActiveFilters ? 'FILTERING' : 'STANDBY'}</span>
         </div>
       </div>
       <div className="tactical-content">
@@ -109,7 +165,7 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
               ].map(filter => (
                 <button
                   key={filter.key}
-                  className={`filter-tag ${activeFilters.has(filter.key) ? 'active' : ''}`}
+                  className={`filter-tag ${isFilterActive(filter.key) ? 'active' : ''}`}
                   onClick={() => toggleFilter(filter.key)}
                   style={{ '--filter-color': filter.color } as React.CSSProperties}
                 >
@@ -134,7 +190,7 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
               ].map(filter => (
                 <button
                   key={filter.key}
-                  className={`filter-tag ${activeFilters.has(filter.key) ? 'active' : ''}`}
+                  className={`filter-tag ${isFilterActive(filter.key) ? 'active' : ''}`}
                   onClick={() => toggleFilter(filter.key)}
                   style={{ '--filter-color': filter.color } as React.CSSProperties}
                 >
@@ -159,7 +215,7 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
               ].map(filter => (
                 <button
                   key={filter.key}
-                  className={`filter-tag ${activeFilters.has(filter.key) ? 'active' : ''}`}
+                  className={`filter-tag ${isFilterActive(filter.key) ? 'active' : ''}`}
                   onClick={() => toggleFilter(filter.key)}
                   style={{ '--filter-color': filter.color } as React.CSSProperties}
                 >
@@ -177,38 +233,74 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
             <div className="panel-header">
               <span className="panel-icon">⏰</span>
               <span className="panel-title">TIME RANGE</span>
+              <span className="active-range-indicator">{getCurrentTimeRangeLabel()}</span>
             </div>
             <div className="time-range-grid">
-              {[
-                { value: '1H', label: '1 HOUR', active: false },
-                { value: '6H', label: '6 HOURS', active: false },
-                { value: '24H', label: '24 HOURS', active: true },
-                { value: '7D', label: '7 DAYS', active: false },
-                { value: '30D', label: '30 DAYS', active: false }
-              ].map((range) => (
+              {timeRanges.map(range => (
                 <button
-                  key={range.value}
-                  className={`time-range-btn ${range.active ? 'active' : ''}`}
+                  key={range.key}
+                  className={`time-range-btn ${getCurrentTimeRangeLabel() === range.key ? 'active' : ''}`}
+                  onClick={() => selectTimeRange(range.key)}
                 >
-                  <span className="range-value">{range.value}</span>
-                  <span className="range-label">{range.label}</span>
+                  {range.label}
                 </button>
               ))}
             </div>
+            
+            {/* Custom Time Range Panel */}
+            {showCustomRange && (
+              <div className="custom-time-range">
+                <div className="custom-range-inputs">
+                  <div className="input-group">
+                    <label className="input-label">START</label>
+                    <input
+                      type="datetime-local"
+                      value={customStartDate}
+                      onChange={(e) => setCustomStartDate(e.target.value)}
+                      className="time-input"
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label className="input-label">END</label>
+                    <input
+                      type="datetime-local"
+                      value={customEndDate}
+                      onChange={(e) => setCustomEndDate(e.target.value)}
+                      className="time-input"
+                    />
+                  </div>
+                </div>
+                <div className="custom-range-actions">
+                  <button 
+                    className="custom-range-btn apply"
+                    onClick={handleApplyCustomRange}
+                    disabled={!customStartDate || !customEndDate}
+                  >
+                    APPLY
+                  </button>
+                  <button 
+                    className="custom-range-btn cancel"
+                    onClick={() => setShowCustomRange(false)}
+                  >
+                    CANCEL
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-
+        
         {/* Filter Summary & Actions */}
         <div className="filter-summary-section">
           <div className="active-filters-display">
             <div className="summary-header">
               <span className="summary-icon">🎯</span>
               <span className="summary-title">ACTIVE FILTERS</span>
-              <span className="filter-count">{activeFilters.size}</span>
+              <span className="filter-count">{filterState.activeFilters.size}</span>
             </div>
-            {activeFilters.size > 0 ? (
+            {filterState.activeFilters.size > 0 ? (
               <div className="active-filters-list">
-                {Array.from(activeFilters).map(filter => (
+                {Array.from(filterState.activeFilters).map(filter => (
                   <span key={filter} className="active-filter-tag">
                     {filter}
                     <button 

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
+import { useTheme } from '../contexts/ThemeContext';
+import { SettingsService, SystemSettings } from '../services/SettingsService';
 
 interface SystemControlProps {
   // Optional props for parent components to control or observe system settings
@@ -9,47 +11,67 @@ interface SystemControlProps {
   onAutoExportChange?: (enabled: boolean) => void;
 }
 
-const SystemControl: React.FC<SystemControlProps> = ({
+const SystemControl: React.FC<SystemControlProps> = memo(({
   onThemeChange,
   onCompactModeChange,
   onRealTimeUpdatesChange,
   onHealthAlertsChange,
   onAutoExportChange,
 }) => {
-  const [systemTheme, setSystemTheme] = useState<'dark' | 'night' | 'combat'>('dark');
-  const [compactMode, setCompactMode] = useState<boolean>(false);
-  const [realTimeUpdates, setRealTimeUpdates] = useState<boolean>(true);
-  const [healthAlerts, setHealthAlerts] = useState<boolean>(true);
-  const [autoExport, setAutoExport] = useState<boolean>(false);
+  const { theme, compactMode, setTheme, setCompactMode } = useTheme();
+  const [settings, setSettings] = useState<SystemSettings>();
+  const [settingsService] = useState(() => SettingsService.getInstance());
 
-  const handleThemeChange = (theme: 'dark' | 'night' | 'combat') => {
-    setSystemTheme(theme);
-    onThemeChange?.(theme);
-  };
+  useEffect(() => {
+    // Load initial settings
+    const currentSettings = settingsService.getSettings();
+    setSettings(currentSettings);
 
-  const handleCompactModeToggle = () => {
+    // Subscribe to settings changes
+    const unsubscribe = settingsService.subscribe((newSettings) => {
+      setSettings(newSettings);
+    });
+
+    return unsubscribe;
+  }, [settingsService]);
+
+  const handleThemeChange = useCallback((newTheme: 'dark' | 'night' | 'combat') => {
+    setTheme(newTheme);
+    settingsService.updateSettingWithNotification('theme', newTheme);
+    onThemeChange?.(newTheme);
+  }, [setTheme, settingsService, onThemeChange]);
+
+  const handleCompactModeToggle = useCallback(() => {
     const newMode = !compactMode;
     setCompactMode(newMode);
+    settingsService.updateSettingWithNotification('compactMode', newMode);
     onCompactModeChange?.(newMode);
-  };
+  }, [compactMode, setCompactMode, settingsService, onCompactModeChange]);
 
-  const handleRealTimeUpdatesToggle = () => {
-    const newUpdates = !realTimeUpdates;
-    setRealTimeUpdates(newUpdates);
+  const handleRealTimeUpdatesToggle = useCallback(() => {
+    if (!settings) return;
+    const newUpdates = !settings.realTimeUpdates;
+    settingsService.updateSettingWithNotification('realTimeUpdates', newUpdates);
     onRealTimeUpdatesChange?.(newUpdates);
-  };
+  }, [settings, settingsService, onRealTimeUpdatesChange]);
 
-  const handleHealthAlertsToggle = () => {
-    const newAlerts = !healthAlerts;
-    setHealthAlerts(newAlerts);
+  const handleHealthAlertsToggle = useCallback(() => {
+    if (!settings) return;
+    const newAlerts = !settings.healthAlerts;
+    settingsService.updateSettingWithNotification('healthAlerts', newAlerts);
     onHealthAlertsChange?.(newAlerts);
-  };
+  }, [settings, settingsService, onHealthAlertsChange]);
 
-  const handleAutoExportToggle = () => {
-    const newAutoExport = !autoExport;
-    setAutoExport(newAutoExport);
+  const handleAutoExportToggle = useCallback(() => {
+    if (!settings) return;
+    const newAutoExport = !settings.autoExport;
+    settingsService.updateSettingWithNotification('autoExport', newAutoExport);
     onAutoExportChange?.(newAutoExport);
-  };
+  }, [settings, settingsService, onAutoExportChange]);
+
+  if (!settings) {
+    return <div className="tactical-module module-system-control">Loading...</div>;
+  }
 
   return (
     <div className="tactical-module module-system-control">
@@ -60,7 +82,7 @@ const SystemControl: React.FC<SystemControlProps> = ({
         </div>
         <div className="header-controls-micro">
           <select 
-            value={systemTheme} 
+            value={theme} 
             onChange={(e) => handleThemeChange(e.target.value as any)}
             className="micro-select"
             title="Theme"
@@ -77,7 +99,7 @@ const SystemControl: React.FC<SystemControlProps> = ({
             ▣
           </button>
           <button 
-            className={`micro-btn ${realTimeUpdates ? 'active' : ''}`}
+            className={`micro-btn ${settings.realTimeUpdates ? 'active' : ''}`}
             onClick={handleRealTimeUpdatesToggle}
             title="Real-time Updates"
           >
@@ -90,25 +112,25 @@ const SystemControl: React.FC<SystemControlProps> = ({
           <div className="control-group">
             <label className="control-label">ALERTS</label>
             <button 
-              className={`control-toggle ${healthAlerts ? 'active' : ''}`}
+              className={`control-toggle ${settings.healthAlerts ? 'active' : ''}`}
               onClick={handleHealthAlertsToggle}
             >
-              {healthAlerts ? '◉' : '○'}
+              {settings.healthAlerts ? '◉' : '○'}
             </button>
           </div>
           <div className="control-group">
             <label className="control-label">AUTO-EXPORT</label>
             <button 
-              className={`control-toggle ${autoExport ? 'active' : ''}`}
+              className={`control-toggle ${settings.autoExport ? 'active' : ''}`}
               onClick={handleAutoExportToggle}
             >
-              {autoExport ? '◉' : '○'}
+              {settings.autoExport ? '◉' : '○'}
             </button>
           </div>
         </div>
       </div>
     </div>
   );
-};
+});
 
 export default SystemControl;

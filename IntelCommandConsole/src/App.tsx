@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { SearchProvider } from './contexts/SearchContext';
+import { FilterProvider } from './contexts/FilterContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { HealthProvider } from './contexts/HealthContext';
 import AppRoutes from './routes/AppRoutes';
 import SearchResults from './components/SearchResults';
 import PerformanceManager from './services/PerformanceManager';
@@ -19,12 +22,18 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <SearchProvider>
-        <div className="App">
-          <AppRoutes />
-          <SearchResults />
-        </div>
-      </SearchProvider>
+      <ThemeProvider>
+        <SearchProvider>
+          <FilterProvider>
+            <HealthProvider>
+              <div className="App">
+                <AppRoutes />
+                <SearchResults />
+              </div>
+            </HealthProvider>
+          </FilterProvider>
+        </SearchProvider>
+      </ThemeProvider>
     </Router>
   );
 };

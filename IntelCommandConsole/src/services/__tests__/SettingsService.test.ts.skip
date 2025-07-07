@@ -1,0 +1,268 @@
+// SettingsService tests
+// Tests settings management, persistence, and event handling
+
+import { SettingsService, SettingsServiceClass } from '../SettingsService';
+
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+describe('SettingsService', () => {
+  beforeEach(() => {
+    // Clear localStorage before each test
+    localStorageMock.clear();
+    
+    // Reset the singleton instance
+    // @ts-ignore - Accessing private property for testing
+    SettingsService.instance = undefined;
+  });
+
+  describe('Singleton Pattern', () => {
+    it('returns the same instance', () => {
+      // SettingsService is already the singleton instance
+      expect(SettingsService).toBeDefined();
+      expect(typeof SettingsService.getSetting).toBe('function');
+      expect(typeof SettingsService.updateSetting).toBe('function');
+    });
+  });
+
+  describe('Default Settings', () => {
+    it('provides default settings', () => {
+      const settings = SettingsService.getSettings();
+      
+      expect(settings.theme).toBe('dark');
+      expect(settings.compactMode).toBe(false);
+      expect(settings.realTimeUpdates).toBe(true);
+      expect(settings.healthAlerts).toBe(true);
+      expect(settings.autoExport).toBe(false);
+      expect(settings.version).toBe('1.0.0');
+    });
+  });
+
+  describe('Get and Set Settings', () => {
+    it('can get individual settings', () => {
+      expect(SettingsService.getSetting('theme')).toBe('dark');
+      expect(SettingsService.getSetting('compactMode')).toBe(false);
+      expect(SettingsService.getSetting('realTimeUpdates')).toBe(true);
+    });
+
+    it('can update individual settings', () => {
+      const result = SettingsService.updateSetting('theme', 'night');
+      
+      expect(result).toBe(true);
+      expect(SettingsService.getSetting('theme')).toBe('night');
+    });
+
+    it('can update multiple settings', () => {
+      const result = SettingsService.updateSettings({
+        theme: 'combat',
+        compactMode: true,
+        realTimeUpdates: false,
+      });
+      
+      expect(result).toBe(true);
+      expect(SettingsService.getSetting('theme')).toBe('combat');
+      expect(SettingsService.getSetting('compactMode')).toBe(true);
+      expect(SettingsService.getSetting('realTimeUpdates')).toBe(false);
+    });
+
+    it('validates theme setting', () => {
+      // Valid theme
+      const validResult = SettingsService.updateSetting('theme', 'night');
+      expect(validResult).toBe(true);
+      
+      // Invalid theme should not update
+      const invalidResult = SettingsService.updateSetting('theme', 'invalid' as any);
+      expect(invalidResult).toBe(false);
+      expect(SettingsService.getSetting('theme')).toBe('night'); // Should remain unchanged
+    });
+
+    it('updates lastModified timestamp', () => {
+      const beforeUpdate = SettingsService.getSettings().lastModified;
+      
+      // Wait a bit to ensure timestamp difference
+      setTimeout(() => {
+        SettingsService.updateSetting('compactMode', true);
+        const afterUpdate = SettingsService.getSettings().lastModified;
+        
+        expect(afterUpdate).not.toBe(beforeUpdate);
+      }, 10);
+    });
+  });
+
+  describe('Persistence', () => {
+    it('saves settings to localStorage', () => {
+      SettingsService.updateSetting('theme', 'combat');
+      SettingsService.updateSetting('compactMode', true);
+      
+      const stored = localStorageMock.getItem('tactical-system-settings');
+      expect(stored).toBeTruthy();
+      
+      const parsedSettings = JSON.parse(stored!);
+      expect(parsedSettings.theme).toBe('combat');
+      expect(parsedSettings.compactMode).toBe(true);
+    });
+
+    it('loads settings from localStorage', () => {
+      // Manually set localStorage data
+      const testSettings = {
+        theme: 'night',
+        compactMode: true,
+        realTimeUpdates: false,
+        healthAlerts: false,
+        autoExport: true,
+        lastModified: new Date().toISOString(),
+        version: '1.0.0',
+      };
+      
+      localStorageMock.setItem('tactical-system-settings', JSON.stringify(testSettings));
+      
+      // Create new instance to trigger loading
+      // @ts-ignore
+      SettingsService.instance = undefined;
+      const newInstance = SettingsService.getInstance();
+      
+      expect(SettingsService.getSetting('theme')).toBe('night');
+      expect(SettingsService.getSetting('compactMode')).toBe(true);
+      expect(SettingsService.getSetting('realTimeUpdates')).toBe(false);
+    });
+
+    it('handles corrupted localStorage data gracefully', () => {
+      localStorageMock.setItem('tactical-system-settings', 'invalid json');
+      
+      // @ts-ignore
+      SettingsService.instance = undefined;
+      const newInstance = SettingsService.getInstance();
+      
+      // Should fall back to defaults
+      expect(SettingsService.getSetting('theme')).toBe('dark');
+      expect(SettingsService.getSetting('compactMode')).toBe(false);
+    });
+  });
+
+  describe('Event Handling', () => {
+    it('notifies listeners on setting changes', () => {
+      const listener = jest.fn();
+      
+      SettingsService.addEventListener('test-listener', listener);
+      SettingsService.updateSetting('theme', 'night');
+      
+      expect(listener).toHaveBeenCalledWith(
+        expect.objectContaining({
+          setting: 'theme',
+          previousValue: 'dark',
+          newValue: 'night',
+          timestamp: expect.any(String),
+        })
+      );
+    });
+
+    it('can remove event listeners', () => {
+      const listener = jest.fn();
+      
+      SettingsService.addEventListener('test-listener', listener);
+      SettingsService.updateSetting('theme', 'night');
+      expect(listener).toHaveBeenCalledTimes(1);
+      
+      SettingsService.removeEventListener('test-listener');
+      SettingsService.updateSetting('theme', 'combat');
+      expect(listener).toHaveBeenCalledTimes(1); // Should not be called again
+    });
+
+    it('handles multiple listeners', () => {
+      const listener1 = jest.fn();
+      const listener2 = jest.fn();
+      
+      SettingsService.addEventListener('listener1', listener1);
+      SettingsService.addEventListener('listener2', listener2);
+      
+      SettingsService.updateSetting('compactMode', true);
+      
+      expect(listener1).toHaveBeenCalledTimes(1);
+      expect(listener2).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('Reset and Export/Import', () => {
+    it('can reset settings to defaults', () => {
+      SettingsService.updateSettings({
+        theme: 'combat',
+        compactMode: true,
+        realTimeUpdates: false,
+      });
+      
+      const result = SettingsService.resetSettings();
+      expect(result).toBe(true);
+      
+      const settings = SettingsService.getSettings();
+      expect(settings.theme).toBe('dark');
+      expect(settings.compactMode).toBe(false);
+      expect(settings.realTimeUpdates).toBe(true);
+    });
+
+    it('can export settings as JSON', () => {
+      SettingsService.updateSetting('theme', 'night');
+      SettingsService.updateSetting('compactMode', true);
+      
+      const exported = SettingsService.exportSettings();
+      const parsed = JSON.parse(exported);
+      
+      expect(parsed.theme).toBe('night');
+      expect(parsed.compactMode).toBe(true);
+    });
+
+    it('can import settings from JSON', () => {
+      const importData = {
+        theme: 'combat',
+        compactMode: true,
+        realTimeUpdates: false,
+        healthAlerts: false,
+        autoExport: true,
+      };
+      
+      const result = SettingsService.importSettings(JSON.stringify(importData));
+      expect(result).toBe(true);
+      
+      expect(SettingsService.getSetting('theme')).toBe('combat');
+      expect(SettingsService.getSetting('compactMode')).toBe(true);
+      expect(SettingsService.getSetting('realTimeUpdates')).toBe(false);
+    });
+
+    it('validates imported settings', () => {
+      const invalidImportData = {
+        theme: 'invalid-theme',
+        compactMode: 'not-boolean',
+        unknownSetting: 'value',
+      };
+      
+      const result = SettingsService.importSettings(JSON.stringify(invalidImportData));
+      expect(result).toBe(false);
+      
+      // Settings should remain unchanged
+      expect(SettingsService.getSetting('theme')).toBe('dark');
+    });
+
+    it('handles malformed import JSON', () => {
+      const result = SettingsService.importSettings('invalid json');
+      expect(result).toBe(false);
+    });
+  });
+});

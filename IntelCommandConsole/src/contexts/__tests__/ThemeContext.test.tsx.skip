@@ -1,0 +1,194 @@
+// ThemeContext tests
+// Tests theme switching, compact mode, and CSS variable application
+
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { ThemeProvider, useTheme } from '../ThemeContext';
+import { SettingsService } from '../../services/SettingsService';
+
+// Mock SettingsService
+jest.mock('../../services/SettingsService', () => ({
+  SettingsService: {
+    getSetting: jest.fn(),
+    updateSetting: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+  },
+}));
+
+const mockedSettingsService = SettingsService as jest.Mocked<typeof SettingsService>;
+
+// Test component that uses the theme context
+const TestComponent: React.FC = () => {
+  const { currentTheme, isCompactMode, setTheme, setCompactMode, toggleCompactMode, cycleTheme } = useTheme();
+  
+  return (
+    <div>
+      <div data-testid="current-theme">{currentTheme}</div>
+      <div data-testid="compact-mode">{isCompactMode.toString()}</div>
+      <button data-testid="set-night-theme" onClick={() => setTheme('night')}>
+        Set Night Theme
+      </button>
+      <button data-testid="toggle-compact" onClick={toggleCompactMode}>
+        Toggle Compact
+      </button>
+      <button data-testid="cycle-theme" onClick={cycleTheme}>
+        Cycle Theme
+      </button>
+      <button data-testid="set-compact-true" onClick={() => setCompactMode(true)}>
+        Set Compact True
+      </button>
+    </div>
+  );
+};
+
+describe('ThemeContext', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Default mock returns
+    mockedSettingsService.getSetting.mockImplementation((key) => {
+      if (key === 'theme') return 'dark';
+      if (key === 'compactMode') return false;
+      return 'dark'; // default fallback
+    });
+  });
+
+  it('provides default theme and compact mode values', () => {
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('dark');
+    expect(screen.getByTestId('compact-mode')).toHaveTextContent('false');
+  });
+
+  it('can switch themes', () => {
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByTestId('set-night-theme'));
+    
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('night');
+    expect(mockedSettingsService.updateSetting).toHaveBeenCalledWith('theme', 'night');
+  });
+
+  it('can toggle compact mode', () => {
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByTestId('toggle-compact'));
+    
+    expect(screen.getByTestId('compact-mode')).toHaveTextContent('true');
+    expect(mockedSettingsService.updateSetting).toHaveBeenCalledWith('compactMode', true);
+  });
+
+  it('can set compact mode directly', () => {
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByTestId('set-compact-true'));
+    
+    expect(screen.getByTestId('compact-mode')).toHaveTextContent('true');
+    expect(mockedSettingsService.updateSetting).toHaveBeenCalledWith('compactMode', true);
+  });
+
+  it('can cycle through themes', () => {
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    // Initial: dark
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('dark');
+
+    // First cycle: dark -> night
+    fireEvent.click(screen.getByTestId('cycle-theme'));
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('night');
+
+    // Second cycle: night -> combat
+    fireEvent.click(screen.getByTestId('cycle-theme'));
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('combat');
+
+    // Third cycle: combat -> dark
+    fireEvent.click(screen.getByTestId('cycle-theme'));
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('dark');
+  });
+
+  it('uses initial theme from props', () => {
+    render(
+      <ThemeProvider initialTheme="combat">
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('combat');
+  });
+
+  it('uses initial compact mode from props', () => {
+    render(
+      <ThemeProvider initialCompactMode={true}>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('compact-mode')).toHaveTextContent('true');
+  });
+
+  it('throws error when used outside provider', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    
+    expect(() => {
+      render(<TestComponent />);
+    }).toThrow('useTheme must be used within a ThemeProvider');
+
+    consoleSpy.mockRestore();
+  });
+
+  it('loads theme from SettingsService on initialization', () => {
+    mockedSettingsService.getSetting.mockImplementation((key) => {
+      if (key === 'theme') return 'night';
+      if (key === 'compactMode') return true;
+      return 'dark'; // default fallback
+    });
+
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('current-theme')).toHaveTextContent('night');
+    expect(screen.getByTestId('compact-mode')).toHaveTextContent('true');
+  });
+
+  it('applies CSS variables to document on theme change', () => {
+    const documentElementStyle = document.documentElement.style;
+    const setPropertySpy = jest.spyOn(documentElementStyle, 'setProperty');
+
+    render(
+      <ThemeProvider>
+        <TestComponent />
+      </ThemeProvider>
+    );
+
+    fireEvent.click(screen.getByTestId('set-night-theme'));
+
+    // Should have called setProperty for CSS variables
+    expect(setPropertySpy).toHaveBeenCalledWith('--primary-color', '#00ff00');
+    expect(setPropertySpy).toHaveBeenCalledWith('--background-color', '#0d1b0d');
+    
+    setPropertySpy.mockRestore();
+  });
+});

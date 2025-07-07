@@ -1,22 +1,43 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import FeedItem from './FeedItem';
-import SearchAndFilter from './SearchAndFilter';
 import FeedService from '../services/FeedService';
 import { Feed } from '../models/Feed';
 import useAlerts from '../hooks/alerts/useAlerts';
 import { FeedVisualizerSkeleton, ErrorOverlay } from './LoadingStates';
 import { useLoading } from '../hooks/useLoading';
+import { useFilters } from '../contexts/FilterContext';
+import PerformanceManager from '../services/PerformanceManager';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
 }
 
-const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => {
+const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }) => {
   const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [filteredFeeds, setFilteredFeeds] = useState<Feed[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
+
+  // Filter context integration
+  const { getFilteredFeeds } = useFilters();
+
+  // Performance-optimized filtered feeds with caching
+  const filteredFeeds = useMemo(() => {
+    const cacheKey = `filtered-feeds-${selectedFeedList}-${feeds.length}`;
+    const cached = PerformanceManager.getCache(cacheKey);
+    
+    if (cached) {
+      return cached;
+    }
+
+    const enrichedFeeds = feeds.map(feed => FeedService.enrichFeedWithMetadata(feed));
+    const filtered = getFilteredFeeds(enrichedFeeds);
+    
+    // Cache for 30 seconds
+    PerformanceManager.setCache(cacheKey, filtered, 30000);
+    
+    return filtered;
+  }, [feeds, getFilteredFeeds, selectedFeedList]);
 
   // Enhanced loading state management
   const { 
@@ -92,16 +113,17 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     }
   }, [selectedFeedList, isMonitoring, checkFeedItems, setLoading, setError]);
 
-  // Auto-refresh mechanism
+  // Auto-refresh mechanism with performance optimization
   useEffect(() => {
     if (!autoRefresh || !selectedFeedList) return;
 
-    const refreshInterval = setInterval(() => {
+    const refreshInterval = PerformanceManager.getRefreshInterval('feeds');
+    const intervalId = setInterval(() => {
       console.log('Auto-refreshing feeds...');
       loadFeeds(false); // Don't show loading spinner for auto-refresh
-    }, 5 * 60 * 1000); // Refresh every 5 minutes
+    }, refreshInterval);
 
-    return () => clearInterval(refreshInterval);
+    return () => clearInterval(intervalId);
   }, [autoRefresh, selectedFeedList, loadFeeds]);
 
   // Initial load and when selectedFeedList changes
@@ -193,21 +215,15 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
             </div>
           </div>
         ) : (
-          <>
-            <SearchAndFilter 
-              feeds={feeds} 
-              onFilteredFeedsChange={setFilteredFeeds}
-            />
-            <div className="feed-scroll-container">
-              {(filteredFeeds.length > 0 ? filteredFeeds : feeds).map((feed) => (
-                <FeedItem key={feed.id} feed={feed} />
-              ))}
-            </div>
-          </>
+          <div className="feed-scroll-container">
+            {filteredFeeds.map((feed: Feed) => (
+              <FeedItem key={feed.id} feed={feed} />
+            ))}
+          </div>
         )}
       </div>
     </div>
   );
-};
+});
 
 export default FeedVisualizer;
