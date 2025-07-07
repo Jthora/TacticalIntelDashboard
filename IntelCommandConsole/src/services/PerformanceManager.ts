@@ -3,6 +3,8 @@
  * Handles refresh intervals, caching, resource management, and system monitoring
  */
 
+import { logger } from '../utils/LoggerService';
+
 interface PerformanceConfig {
   refreshIntervals: {
     feeds: number;
@@ -163,7 +165,7 @@ export class PerformanceManager {
   enableLowPowerMode(): void {
     if (this.isLowPowerMode) return;
     
-    log.debug("Component", '🔋 Enabling low power mode for better performance');
+    logger.debug("Component", '🔋 Enabling low power mode for better performance');
     this.isLowPowerMode = true;
     
     // Reduce refresh intervals
@@ -186,7 +188,7 @@ export class PerformanceManager {
   disableLowPowerMode(): void {
     if (!this.isLowPowerMode) return;
     
-    log.debug("Component", '⚡ Disabling low power mode');
+    logger.debug("Component", '⚡ Disabling low power mode');
     this.isLowPowerMode = false;
     this.config = this.getOptimalConfig();
     
