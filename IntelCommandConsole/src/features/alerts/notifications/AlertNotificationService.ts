@@ -4,6 +4,7 @@
  */
 
 import { AlertConfig, AlertTrigger } from '../../../types/AlertTypes';
+import { log } from '../../../utils/LoggerService';
 
 export class AlertNotificationService {
   private notificationPermission: NotificationPermission = 'default';
@@ -110,7 +111,7 @@ export class AlertNotificationService {
    */
   private onNotificationClick(alert: AlertConfig, trigger: AlertTrigger): void {
     // This could be extended to emit events or navigate to specific views
-    console.log('Notification clicked:', { alert: alert.name, trigger: trigger.id });
+    log.debug("Component", 'Notification clicked:', { alert: alert.name, trigger: trigger.id });
     
     // Example: Focus on the alert in the UI
     const event = new CustomEvent('alert-notification-clicked', {
@@ -166,7 +167,7 @@ export class AlertNotificationService {
   public clearNotifications(): void {
     // Modern browsers don't provide a way to close all notifications programmatically
     // This is a placeholder for future implementation
-    console.log('Clearing notifications...');
+    log.debug("Component", 'Clearing notifications...');
   }
 
   /**

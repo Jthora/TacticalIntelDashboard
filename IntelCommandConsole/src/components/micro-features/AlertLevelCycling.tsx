@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export interface AlertLevelCyclingProps {
   initialLevel?: 'green' | 'yellow' | 'red';
@@ -57,8 +58,8 @@ export const AlertLevelCycling: React.FC<AlertLevelCyclingProps> = ({
     onLevelChange?.(newLevel);
     
     // Log alert level change with operational context
-    console.log(`🚨 Alert Level Changed: ${alertLevel.toUpperCase()} → ${newLevel.toUpperCase()}`);
-    console.log(`📋 Operational Status: ${getAlertDescription(newLevel)}`);
+    log.debug("Component", `🚨 Alert Level Changed: ${alertLevel.toUpperCase()} → ${newLevel.toUpperCase()}`);
+    log.debug("Component", `📋 Operational Status: ${getAlertDescription(newLevel)}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

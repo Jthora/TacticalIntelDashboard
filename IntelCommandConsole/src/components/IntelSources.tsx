@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FeedService from '../services/FeedService';
 import { FeedList } from '../types/FeedTypes';
-import { LoadingSpinner } from './LoadingStates';
+import { LoadingSpinner } from '../shared/components/LoadingStates';
 
 interface IntelSourcesProps {
   setSelectedFeedList: (feedListId: string | null) => void;

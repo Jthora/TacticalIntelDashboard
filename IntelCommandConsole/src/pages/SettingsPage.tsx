@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { log } from '../utils/LoggerService';
 import { Link } from 'react-router-dom';
 import FeedService from '../services/FeedService';
 import { FeedItem, FeedList } from '../types/FeedTypes';
@@ -114,7 +115,7 @@ const SettingsPage: React.FC = () => {
     setFeedLists([]);
     setFeeds([]);
     setSelectedFeedList(null);
-    console.log('Local storage cleared');
+    log.debug("Component", 'Local storage cleared');
   };
 
   if (loading) {

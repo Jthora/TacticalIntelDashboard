@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export type ThemeMode = 'dark' | 'night' | 'combat';
 
@@ -118,7 +119,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
         onThemeChange(nextTheme, themeConfig);
       }
       
-      console.log(`Theme changed: ${themeMode} -> ${nextTheme}`);
+      log.debug("Component", `Theme changed: ${themeMode} -> ${nextTheme}`);
     } catch (error) {
       console.error('Error during theme change:', error);
       // Gracefully handle errors without throwing

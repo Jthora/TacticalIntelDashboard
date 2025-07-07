@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FeedService from '../services/FeedService';
 import { Feed } from '../models/Feed';
 import FeedItem from './FeedItem';
-import { FeedListSkeleton } from './LoadingStates';
+import { FeedListSkeleton } from '../shared/components/LoadingStates';
 import { useLoading } from '../hooks/useLoading';
 
 const FeedList: React.FC = () => {

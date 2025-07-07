@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../../../utils/LoggerService';
 import { Feed } from '../../../models/Feed';
 import FeedHealthIndicator from '../../../components/FeedHealthIndicator';
 
@@ -91,7 +92,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
         <button 
           onClick={() => {
             // TODO: Implement bookmark functionality
-            console.log('Bookmark:', feed.title);
+            log.debug("Component", 'Bookmark:', feed.title);
           }}
           className="action-button"
         >

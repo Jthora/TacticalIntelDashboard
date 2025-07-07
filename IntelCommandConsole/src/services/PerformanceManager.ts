@@ -163,7 +163,7 @@ export class PerformanceManager {
   enableLowPowerMode(): void {
     if (this.isLowPowerMode) return;
     
-    console.log('🔋 Enabling low power mode for better performance');
+    log.debug("Component", '🔋 Enabling low power mode for better performance');
     this.isLowPowerMode = true;
     
     // Reduce refresh intervals
@@ -186,7 +186,7 @@ export class PerformanceManager {
   disableLowPowerMode(): void {
     if (!this.isLowPowerMode) return;
     
-    console.log('⚡ Disabling low power mode');
+    log.debug("Component", '⚡ Disabling low power mode');
     this.isLowPowerMode = false;
     this.config = this.getOptimalConfig();
     

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export type SortOption = 'alphabetical' | 'activity' | 'priority';
 
@@ -53,7 +54,7 @@ export const SortPreferenceSelector: React.FC<SortPreferenceSelectorProps> = ({
     
     // Log operational change
     const config = sortConfig[nextSort];
-    console.log(`📊 Sort preference changed to: ${nextSort} - ${config.description}`);
+    log.debug("Component", `📊 Sort preference changed to: ${nextSort} - ${config.description}`);
     
     // Callback for parent component
     if (onSortChange) {

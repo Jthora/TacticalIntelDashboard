@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export interface RealTimeClockDisplayProps {
   format?: '12h' | '24h' | 'iso' | 'military';
@@ -100,7 +101,7 @@ export const RealTimeClockDisplay: React.FC<RealTimeClockDisplayProps> = ({
   // Pause/resume on click for operational flexibility
   const toggleActive = () => {
     setIsActive(!isActive);
-    console.log(`⏰ Clock ${isActive ? 'paused' : 'resumed'} - Time: ${currentTime}`);
+    log.debug("Component", `⏰ Clock ${isActive ? 'paused' : 'resumed'} - Time: ${currentTime}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

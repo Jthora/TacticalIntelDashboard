@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { log } from '../utils/LoggerService';
 import { useSearch } from '../contexts/SearchContext';
-import Modal from './Modal';
+import Modal from '../shared/components/Modal';
 import FeedManager from './FeedManager';
 import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 
@@ -111,7 +112,7 @@ const Header: React.FC = () => {
         <div className="system-menu-micro">
           <div className="menu-item-micro" onClick={() => window.location.reload()}>↻ REFRESH</div>
           <div className="menu-item-micro" onClick={() => document.documentElement.requestFullscreen()}>⛶ FULLSCREEN</div>
-          <div className="menu-item-micro" onClick={() => console.log('Export logs')}>↓ EXPORT</div>
+          <div className="menu-item-micro" onClick={() => log.debug("Component", 'Export logs')}>↓ EXPORT</div>
         </div>
       )}
         

@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export type PerformanceMode = 'eco' | 'normal' | 'turbo';
 
@@ -95,7 +96,7 @@ const PerformanceModeSelector: React.FC<PerformanceModeSelectorProps> = ({
         onModeChange(nextMode, context);
       }
       
-      console.log(`Performance mode changed: ${performanceMode} -> ${nextMode}`);
+      log.debug("Component", `Performance mode changed: ${performanceMode} -> ${nextMode}`);
     } catch (error) {
       console.error('Performance mode change error:', error);
     }

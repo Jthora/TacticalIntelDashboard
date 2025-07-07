@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import { log } from '../../../utils/LoggerService';
 import FeedService from '../services/FeedService';
 import { SearchService } from '../../../services/SearchService';
 import { Feed } from '../../../models/Feed';
@@ -61,9 +62,9 @@ const FeedList: React.FC = () => {
     const handleLowPowerMode = (event: CustomEvent) => {
       setIsLowPowerMode(event.detail.enabled);
       if (event.detail.enabled) {
-        console.log('📡 FeedList: Reduced refresh frequency for better performance');
+        log.debug("Component", '📡 FeedList: Reduced refresh frequency for better performance');
       } else {
-        console.log('📡 FeedList: Restored normal refresh frequency');
+        log.debug("Component", '📡 FeedList: Restored normal refresh frequency');
       }
     };
 

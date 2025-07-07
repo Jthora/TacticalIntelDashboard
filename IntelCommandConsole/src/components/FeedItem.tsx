@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { log } from '../utils/LoggerService';
 import { Feed } from '../models/Feed';
 
 interface FeedItemProps {
@@ -96,7 +97,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
         <button 
           onClick={() => {
             // TODO: Implement bookmark functionality
-            console.log('Bookmark:', feed.title);
+            log.debug("Component", 'Bookmark:', feed.title);
           }}
           className="action-button"
         >

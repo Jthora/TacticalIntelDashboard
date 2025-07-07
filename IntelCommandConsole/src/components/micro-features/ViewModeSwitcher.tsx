@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export type ViewMode = 'list' | 'grid' | 'compact';
 
@@ -51,7 +52,7 @@ export const ViewModeSwitcher: React.FC<ViewModeSwitcherProps> = ({
     setViewMode(nextMode);
     
     // Log operational change
-    console.log(`🔄 View mode changed to: ${nextMode} - Optimized for ${modeConfig[nextMode].description}`);
+    log.debug("Component", `🔄 View mode changed to: ${nextMode} - Optimized for ${modeConfig[nextMode].description}`);
     
     // Callback for parent component
     if (onModeChange) {

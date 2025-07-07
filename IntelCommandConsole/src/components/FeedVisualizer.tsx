@@ -3,10 +3,11 @@ import FeedItem from './FeedItem';
 import FeedService from '../services/FeedService';
 import { Feed } from '../models/Feed';
 import useAlerts from '../hooks/alerts/useAlerts';
-import { FeedVisualizerSkeleton, ErrorOverlay } from './LoadingStates';
+import { FeedVisualizerSkeleton, ErrorOverlay } from '../shared/components/LoadingStates';
 import { useLoading } from '../hooks/useLoading';
 import { useFilters } from '../contexts/FilterContext';
 import PerformanceManager from '../services/PerformanceManager';
+import { log } from '../utils/LoggerService';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
@@ -70,13 +71,13 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     }
 
     try {
-      console.log(`Loading feeds for list: ${selectedFeedList}`);
+      log.debug("Component", `Loading feeds for list: ${selectedFeedList}`);
       const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
-      console.log(`Loaded ${feedsByList.length} feeds`);
+      log.debug("Component", `Loaded ${feedsByList.length} feeds`);
       
       // Process feeds for alert monitoring
       if (isMonitoring && feedsByList.length > 0) {
-        console.log(`🚨 Checking ${feedsByList.length} feed items for alerts...`);
+        log.debug("Component", `🚨 Checking ${feedsByList.length} feed items for alerts...`);
         
         // Convert Feed objects to format expected by alert system
         const feedItemsForAlerts = feedsByList.map(feed => ({
@@ -95,7 +96,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
         const triggers = checkFeedItems(feedItemsForAlerts);
         
         if (triggers.length > 0) {
-          console.log(`🚨 ${triggers.length} alert(s) triggered!`);
+          log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
           setRecentAlertTriggers(triggers.length);
           
           // Reset the trigger count after 30 seconds
@@ -119,7 +120,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
 
     const refreshInterval = PerformanceManager.getRefreshInterval('feeds');
     const intervalId = setInterval(() => {
-      console.log('Auto-refreshing feeds...');
+      log.debug("Component", 'Auto-refreshing feeds...');
       loadFeeds(false); // Don't show loading spinner for auto-refresh
     }, refreshInterval);
 

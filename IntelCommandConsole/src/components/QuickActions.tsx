@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../utils/LoggerService';
 
 interface QuickActionsProps {
   selectedFeedList: string | null;
@@ -17,7 +18,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
     const url = prompt('🔗 Enter RSS Feed URL:');
     if (url) {
       // TODO: Implement add feed functionality
-      console.log('Adding feed:', url);
+      log.debug("Component", 'Adding feed:', url);
       alert('Feed addition functionality coming soon!');
     }
   };
@@ -28,7 +29,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
 
   const handleSettings = () => {
     // TODO: Navigate to settings page
-    console.log('Opening settings...');
+    log.debug("Component", 'Opening settings...');
     alert('Settings page coming soon!');
   };
 

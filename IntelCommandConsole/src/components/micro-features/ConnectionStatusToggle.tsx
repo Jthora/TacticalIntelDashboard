@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { log } from '../../utils/LoggerService';
 
 export interface ConnectionStatusToggleProps {
   initialStatus?: 'secure' | 'encrypted' | 'scanning';
@@ -54,7 +55,7 @@ export const ConnectionStatusToggle: React.FC<ConnectionStatusToggleProps> = ({
       onStatusChange?.(newStatus);
       
       // Log security event for audit trail
-      console.log(`🔒 Security Status Changed: ${connectionStatus.toUpperCase()} → ${newStatus.toUpperCase()}`);
+      log.debug("Component", `🔒 Security Status Changed: ${connectionStatus.toUpperCase()} → ${newStatus.toUpperCase()}`);
     }, 150);
   };
 

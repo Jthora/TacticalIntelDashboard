@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { log } from '../utils/LoggerService';
 import FeedService from '../features/feeds/services/FeedService';
 import { Feed } from '../models/Feed';
 import SystemControl from './SystemControl';
@@ -23,49 +24,49 @@ const RightSidebar: React.FC = () => {
 
   const handleFiltersChange = (activeFilters: Set<string>) => {
     // Handle filter changes if needed
-    console.log('Filters changed:', activeFilters);
+    log.debug("Component", 'Filters changed:', activeFilters);
   };
 
   const handleApplyFilters = (activeFilters: Set<string>) => {
     // Handle filter application
-    console.log('Applying filters:', activeFilters);
+    log.debug("Component", 'Applying filters:', activeFilters);
   };
 
   const handleSavePreset = (activeFilters: Set<string>) => {
     // Handle preset saving
-    console.log('Saving preset:', activeFilters);
+    log.debug("Component", 'Saving preset:', activeFilters);
   };
 
   const handleAutoExportChange = (enabled: boolean) => {
-    console.log('Auto export changed:', enabled);
+    log.debug("Component", 'Auto export changed:', enabled);
   };
 
   const handleExportSettingsOpen = () => {
-    console.log('Export settings opened');
+    log.debug("Component", 'Export settings opened');
   };
 
   const handleFormatSelect = (format: ExportFormat) => {
-    console.log('Export format selected:', format);
+    log.debug("Component", 'Export format selected:', format);
   };
 
   const handleOptionsChange = (options: ExportOptions) => {
-    console.log('Export options changed:', options);
+    log.debug("Component", 'Export options changed:', options);
   };
 
   const handleExecuteExport = (format: ExportFormat | null, options: ExportOptions) => {
-    console.log('Executing export:', { format, options, feedCount: feeds.length });
+    log.debug("Component", 'Executing export:', { format, options, feedCount: feeds.length });
   };
 
   const handleHealthScan = () => {
-    console.log('Health scan initiated');
+    log.debug("Component", 'Health scan initiated');
   };
 
   const handleHealthClean = () => {
-    console.log('System clean initiated');
+    log.debug("Component", 'System clean initiated');
   };
 
   const handleHealthRepair = () => {
-    console.log('System repair initiated');
+    log.debug("Component", 'System repair initiated');
   };
 
   return (

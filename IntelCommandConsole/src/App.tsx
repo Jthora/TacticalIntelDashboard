@@ -12,7 +12,6 @@ import './assets/styles/main.css';
 const App: React.FC = () => {
   useEffect(() => {
     // Initialize performance monitoring
-    console.log('🚀 Tactical Intel Dashboard - Performance Optimized');
     
     // Cleanup performance manager on unmount
     return () => {

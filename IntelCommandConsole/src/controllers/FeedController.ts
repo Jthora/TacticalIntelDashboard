@@ -1,4 +1,5 @@
 import { FeedResults, FeedItem } from '../types/FeedTypes';
+import { log } from '../utils/LoggerService';
 import { fetchFeed } from '../utils/fetchFeed';
 
 interface FetchedFeedItem {
@@ -26,11 +27,11 @@ class FeedController {
     try {
       const cachedResult = this.getCachedFeedResults(url);
       if (cachedResult) {
-        console.log(`Returning cached results for URL: ${url}`);
+        log.debug("Component", `Returning cached results for URL: ${url}`);
         return cachedResult;
       }
 
-      console.log(`Fetching feed for URL: ${url}`);
+      log.debug("Component", `Fetching feed for URL: ${url}`);
       const fetchedFeedResults = await fetchFeed(url);
       if (fetchedFeedResults) {
         const feedResults = this.convertFeedResults(fetchedFeedResults);
@@ -66,14 +67,14 @@ class FeedController {
 
   private cacheFeedResults(url: string, feedResults: FeedResults) {
     this.feedResultsCache.set(url, feedResults);
-    console.log(`Feed fetched and cached for URL: ${url}`);
+    log.debug("Component", `Feed fetched and cached for URL: ${url}`);
   }
 
   public getFeedResults(url: string): FeedResults | null {
     try {
       const cachedResult = this.getCachedFeedResults(url);
       if (cachedResult) {
-        console.log(`Returning cached results for URL: ${url}`);
+        log.debug("Component", `Returning cached results for URL: ${url}`);
         return cachedResult;
       }
       console.warn(`No cached results found for URL: ${url}`);
@@ -91,7 +92,7 @@ class FeedController {
       if (cacheAge < this.cacheExpiryTime) {
         return cachedResult;
       } else {
-        console.log(`Cache expired for URL: ${url}`);
+        log.debug("Component", `Cache expired for URL: ${url}`);
         this.feedResultsCache.delete(url);
       }
     }
@@ -99,13 +100,13 @@ class FeedController {
   }
 
   public clearCache() {
-    console.log('Clearing feed results cache');
+    log.debug("Component", 'Clearing feed results cache');
     this.feedResultsCache.clear();
   }
 
   public removeCacheEntry(url: string) {
     if (this.feedResultsCache.has(url)) {
-      console.log(`Removing cache entry for URL: ${url}`);
+      log.debug("Component", `Removing cache entry for URL: ${url}`);
       this.feedResultsCache.delete(url);
     } else {
       console.warn(`No cache entry found for URL: ${url}`);

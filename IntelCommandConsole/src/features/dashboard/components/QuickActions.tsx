@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { log } from '../../../utils/LoggerService';
 
 interface QuickActionsProps {
   selectedFeedList: string | null;
@@ -28,7 +29,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
   const handleAddFeed = () => {
     const url = prompt('⚡ ENTER FEED URL FOR INTELLIGENCE STREAM:');
     if (url) {
-      console.log('ADDING INTEL SOURCE:', url);
+      log.debug("Component", 'ADDING INTEL SOURCE:', url);
       alert('🚀 INTEL SOURCE INTEGRATION INITIATED');
     }
   };
@@ -38,7 +39,7 @@ const QuickActions: React.FC<QuickActionsProps> = ({
   };
 
   const handleTacticalSettings = () => {
-    console.log('ACCESSING TACTICAL CONFIGURATION...');
+    log.debug("Component", 'ACCESSING TACTICAL CONFIGURATION...');
     alert('🎯 TACTICAL CONFIGURATION MODULE LOADING...');
   };
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { log } from '../../../utils/LoggerService';
 import FeedItem from './FeedItem';
 import SearchAndFilter from './SearchAndFilter';
 import FeedService from '../services/FeedService';
@@ -37,13 +38,13 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     setError(null);
 
     try {
-      console.log(`Loading feeds for list: ${selectedFeedList}`);
+      log.debug("Component", `Loading feeds for list: ${selectedFeedList}`);
       const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
-      console.log(`Loaded ${feedsByList.length} feeds`);
+      log.debug("Component", `Loaded ${feedsByList.length} feeds`);
       
       // Process feeds for alert monitoring
       if (isMonitoring && feedsByList.length > 0) {
-        console.log(`🚨 Checking ${feedsByList.length} feed items for alerts...`);
+        log.debug("Component", `🚨 Checking ${feedsByList.length} feed items for alerts...`);
         
         // Convert Feed objects to format expected by alert system
         const feedItemsForAlerts = feedsByList.map(feed => ({
@@ -62,7 +63,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
         const triggers = checkFeedItems(feedItemsForAlerts);
         
         if (triggers.length > 0) {
-          console.log(`🚨 ${triggers.length} alert(s) triggered!`);
+          log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
           setRecentAlertTriggers(triggers.length);
           
           // Reset the trigger count after 30 seconds
@@ -84,7 +85,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
   useOptimizedTimer(
     () => {
       if (autoRefresh && selectedFeedList) {
-        console.log('Auto-refreshing feeds...');
+        log.debug("Component", 'Auto-refreshing feeds...');
         loadFeeds(false); // Don't show loading spinner for auto-refresh
       }
     },

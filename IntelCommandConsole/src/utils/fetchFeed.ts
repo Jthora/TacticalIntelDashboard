@@ -1,4 +1,5 @@
 import { FeedResults } from '../types/FeedTypes';
+import { log } from '../utils/LoggerService';
 import { Feed } from '../models/Feed';
 import { parseFeedData as parseXMLFeedData, isValidXML } from '../parsers/xmlParser';
 import { parseFeedData as parseJSONFeedData, isValidJSON } from '../parsers/jsonParser';
@@ -68,7 +69,7 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
   
   try {
     // Try primary proxy
-    console.log(`Attempting to fetch via primary proxy: ${proxyUrl}`);
+    log.debug("Component", `Attempting to fetch via primary proxy: ${proxyUrl}`);
     const response = await fetchWithRetry(proxyUrl, options);
     
     if (response.ok) {
@@ -83,7 +84,7 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
     for (let i = 0; i < PROXY_CONFIG.fallback.length; i++) {
       try {
         const fallbackUrl = `${PROXY_CONFIG.fallback[i]}${encodeURIComponent(url)}`;
-        console.log(`Attempting fallback proxy ${i + 1}: ${fallbackUrl}`);
+        log.debug("Component", `Attempting fallback proxy ${i + 1}: ${fallbackUrl}`);
         
         const response = await fetchWithRetry(fallbackUrl, {
           ...options,
@@ -94,7 +95,7 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
         });
         
         if (response.ok) {
-          console.log(`Fallback proxy ${i + 1} succeeded`);
+          log.debug("Component", `Fallback proxy ${i + 1} succeeded`);
           return response;
         }
       } catch (fallbackError) {
@@ -109,7 +110,7 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
 };
 
 export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
-  console.log(`Starting to fetch feed from URL: ${url}`);
+  log.debug("Component", `Starting to fetch feed from URL: ${url}`);
   try {
     const response = await fetchWithFallback(url, {
       headers: {
@@ -125,7 +126,7 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
 
     const contentType = response.headers.get('content-type');
     const textData = await response.text();
-    console.log(`Feed data fetched for URL: ${url}`, textData);
+    log.debug("Component", `Feed data fetched for URL: ${url}`, textData);
 
     let feeds: Feed[] = [];
     if (contentType && (contentType.includes('application/xml') || contentType.includes('text/xml'))) {
@@ -187,7 +188,7 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
 const cacheFeedData = (url: string, data: FeedResults): void => {
   try {
     LocalStorageUtil.setItem(url, data);
-    console.log(`Feed data cached for URL: ${url}`);
+    log.debug("Component", `Feed data cached for URL: ${url}`);
   } catch (error) {
     console.error(`Error caching feed data for URL: ${url}`, error);
   }
@@ -197,7 +198,7 @@ const getCachedFeedData = (url: string): FeedResults | null => {
   try {
     const cachedData = LocalStorageUtil.getItem<FeedResults>(url);
     if (cachedData) {
-      console.log(`Cached feed data found for URL: ${url}`);
+      log.debug("Component", `Cached feed data found for URL: ${url}`);
       return cachedData;
     }
     return null;

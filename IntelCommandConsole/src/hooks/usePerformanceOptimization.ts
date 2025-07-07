@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useRef, useMemo } from 'react';
+import { log } from '../utils/LoggerService';
 import PerformanceManager from '../services/PerformanceManager';
 
 /**
@@ -36,7 +37,7 @@ export const useOptimizedTimer = (
     const handleLowPowerMode = (event: CustomEvent) => {
       if (event.detail.enabled) {
         // Timer intervals are automatically adjusted by PerformanceManager
-        console.log(`Timer ${id} adjusted for low power mode`);
+        log.debug("Component", `Timer ${id} adjusted for low power mode`);
       }
     };
 

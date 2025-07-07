@@ -1,4 +1,5 @@
 import { Feed } from '../../../models/Feed';
+import { log } from '../../../utils/LoggerService';
 import { FeedList, FeedResults } from '../../../types/FeedTypes';
 import { LocalStorageUtil } from '../../../utils/LocalStorageUtil';
 import FeedController from '../../../controllers/FeedController';
@@ -21,7 +22,7 @@ class FeedService {
 
   private loadFeeds() {
     try {
-      console.log('Loading feeds from local storage');
+      log.debug("Component", 'Loading feeds from local storage');
       const storedFeeds = LocalStorageUtil.getItem<Feed[]>(this.feedsStorageKey);
       if (storedFeeds && storedFeeds.length > 0) {
         this.feeds = storedFeeds;
@@ -32,13 +33,13 @@ class FeedService {
       console.error('Failed to load feeds:', error);
       this.feeds = this.getDefaultFeeds();
       this.saveFeeds();
-      console.log('Default feeds loaded due to error:', this.feeds);
+      log.debug("Component", 'Default feeds loaded due to error:', this.feeds);
     }
   }
 
   private loadFeedLists() {
     try {
-      console.log('Loading feed lists from local storage');
+      log.debug("Component", 'Loading feed lists from local storage');
       const storedFeedLists = LocalStorageUtil.getItem<FeedList[]>(this.feedListsStorageKey);
       if (storedFeedLists && storedFeedLists.length > 0) {
         this.feedLists = storedFeedLists;
@@ -49,15 +50,15 @@ class FeedService {
       console.error('Failed to load feed lists:', error);
       this.feedLists = this.getDefaultFeedLists();
       this.saveFeedLists();
-      console.log('Default feed lists loaded due to error:', this.feedLists);
+      log.debug("Component", 'Default feed lists loaded due to error:', this.feedLists);
     }
   }
 
   private saveFeeds() {
     try {
-      console.log('Saving feeds to local storage');
+      log.debug("Component", 'Saving feeds to local storage');
       LocalStorageUtil.setItem(this.feedsStorageKey, this.feeds);
-      console.log('Feeds saved to local storage');
+      log.debug("Component", 'Feeds saved to local storage');
     } catch (error) {
       console.error('Failed to save feeds:', error);
     }
@@ -65,9 +66,9 @@ class FeedService {
 
   private saveFeedLists() {
     try {
-      console.log('Saving feed lists to local storage');
+      log.debug("Component", 'Saving feed lists to local storage');
       LocalStorageUtil.setItem(this.feedListsStorageKey, this.feedLists);
-      console.log('Feed lists saved to local storage');
+      log.debug("Component", 'Feed lists saved to local storage');
     } catch (error) {
       console.error('Failed to save feed lists:', error);
     }
@@ -78,7 +79,7 @@ class FeedService {
   }
 
   public resetToDefault() {
-    console.log('Resetting feeds and feed lists to default');
+    log.debug("Component", 'Resetting feeds and feed lists to default');
     this.feeds = this.getDefaultFeeds();
     this.feedLists = this.getDefaultFeedLists();
     this.saveFeeds();
@@ -93,15 +94,15 @@ class FeedService {
   }
 
   public getFeeds(): Feed[] {
-    console.log('Getting all feeds');
+    log.debug("Component", 'Getting all feeds');
     return this.feeds;
   }
 
   public getFeedLists(): FeedList[] {
-    console.log('Getting all feed lists');
+    log.debug("Component", 'Getting all feed lists');
     try {
       const lists = this.feedLists;
-      console.log('Feed lists retrieved:', lists);
+      log.debug("Component", 'Feed lists retrieved:', lists);
       return lists;
     } catch (error) {
       console.error('Failed to get feed lists:', error);
@@ -110,10 +111,10 @@ class FeedService {
   }
 
   public getFeedsByList(feedListId: string): Feed[] {
-    console.log(`Getting feeds for list ID: ${feedListId}`);
+    log.debug("Component", `Getting feeds for list ID: ${feedListId}`);
     try {
       const feeds = this.feeds.filter(feed => feed.feedListId === feedListId);
-      console.log(`Feeds for list ID ${feedListId}:`, feeds);
+      log.debug("Component", `Feeds for list ID ${feedListId}:`, feeds);
       return feeds;
     } catch (error) {
       console.error(`Failed to get feeds for list ID ${feedListId}:`, error);
@@ -122,10 +123,10 @@ class FeedService {
   }
 
   public getFeedById(feedId: string): Feed | undefined {
-    console.log(`Getting feed by ID: ${feedId}`);
+    log.debug("Component", `Getting feed by ID: ${feedId}`);
     try {
       const feed = this.feeds.find(feed => feed.id === feedId);
-      console.log(`Feed found:`, feed);
+      log.debug("Component", `Feed found:`, feed);
       return feed;
     } catch (error) {
       console.error(`Failed to get feed by ID ${feedId}:`, error);
@@ -135,7 +136,7 @@ class FeedService {
 
   public addFeed(feed: Feed) {
     try {
-      console.log('Adding new feed:', feed);
+      log.debug("Component", 'Adding new feed:', feed);
       this.feeds.push(feed);
       this.saveFeeds();
     } catch (error) {
@@ -145,7 +146,7 @@ class FeedService {
 
   public addFeedToList(feedListId: string, feed: Feed) {
     try {
-      console.log(`Adding feed to list ID: ${feedListId}`, feed);
+      log.debug("Component", `Adding feed to list ID: ${feedListId}`, feed);
       feed.feedListId = feedListId;
       this.addFeed(feed);
     } catch (error) {
@@ -155,7 +156,7 @@ class FeedService {
 
   public removeFeed(feedId: string) {
     try {
-      console.log(`Removing feed ID: ${feedId}`);
+      log.debug("Component", `Removing feed ID: ${feedId}`);
       this.feeds = this.feeds.filter(feed => feed.id !== feedId);
       this.saveFeeds();
     } catch (error) {
@@ -165,7 +166,7 @@ class FeedService {
 
   public removeFeedFromList(feedListId: string, feedId: string) {
     try {
-      console.log(`Removing feed ID: ${feedId} from list ID: ${feedListId}`);
+      log.debug("Component", `Removing feed ID: ${feedId} from list ID: ${feedListId}`);
       this.feeds = this.feeds.filter(feed => feed.id !== feedId || feed.feedListId !== feedListId);
       this.saveFeeds();
     } catch (error) {
@@ -175,7 +176,7 @@ class FeedService {
 
   public addFeedList(feedList: FeedList) {
     try {
-      console.log('Adding new feed list:', feedList);
+      log.debug("Component", 'Adding new feed list:', feedList);
       this.feedLists.push(feedList);
       this.saveFeedLists();
     } catch (error) {
@@ -185,7 +186,7 @@ class FeedService {
 
   public removeFeedList(feedListId: string) {
     try {
-      console.log(`Removing feed list ID: ${feedListId}`);
+      log.debug("Component", `Removing feed list ID: ${feedListId}`);
       this.feedLists = this.feedLists.filter(list => list.id !== feedListId);
       this.saveFeedLists();
     } catch (error) {
@@ -194,8 +195,8 @@ class FeedService {
   }
 
   public async updateFeedsFromServer() {
-    console.log('Updating feeds from server');
-    console.log('Current feeds:', this.feeds);
+    log.debug("Component", 'Updating feeds from server');
+    log.debug("Component", 'Current feeds:', this.feeds);
 
     const updatedFeeds: Feed[] = [];
     for (const feed of this.feeds) {
@@ -226,7 +227,7 @@ class FeedService {
 
     this.feeds = updatedFeeds;
     this.saveFeeds();
-    console.log('Feeds updated from server:', this.feeds);
+    log.debug("Component", 'Feeds updated from server:', this.feeds);
   }
 
   public getFeedResults(url: string): FeedResults | null {
