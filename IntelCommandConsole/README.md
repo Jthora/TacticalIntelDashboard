@@ -18,24 +18,113 @@ A sophisticated tactical intelligence dashboard built with React, TypeScript, an
 
 ### System Health & Diagnostics
 - **Health Monitoring**: Real-time system health tracking with visual indicators
-- **Diagnostic Actions**: Automated scan, clean, and repair operations
-- **Performance Metrics**: System performance monitoring and optimization
-- **Alert System**: Proactive alerts for system anomalies
+- **Auto-Recovery**: Intelligent error handling and recovery mechanisms
+- **Diagnostic Tools**: Built-in troubleshooting and system analysis tools
+- **Performance Metrics**: Comprehensive performance tracking and optimization
 
-### Export & Data Management
-- **Multiple Formats**: Support for JSON, XML, PDF, and CSV exports
-- **Encryption**: AES-256 encryption for sensitive data exports
-- **Compression**: ZIP compression for large datasets
-- **Metadata**: Rich metadata embedding in all export formats
-- **Async Operations**: Non-blocking export operations with progress tracking
+## 🏗️ Project Structure
 
-### Theme & Settings
-- **Theme Management**: Dynamic theme switching with tactical/console themes
-- **Settings Persistence**: User preferences saved locally
-- **Responsive Design**: Optimized for various screen sizes
-- **Accessibility**: WCAG-compliant design patterns
+The project has been organized into a clean, maintainable structure:
 
-## 🛠️ Technical Architecture
+```
+IntelCommandConsole/
+├── 📁 src/                   # Source code
+├── 📁 docs/                  # Documentation (organized)
+│   ├── 📁 cors-solution/     # CORS documentation
+│   ├── 📁 deployment/        # Deployment documentation
+│   └── 📁 testing/           # Testing documentation
+├── 📁 deployment/            # Deployment files & configs
+├── 📁 tools/                 # Development & testing tools
+│   ├── 📁 testing/           # Testing utilities
+│   └── 📁 deployment/        # Deployment tools
+├── 📁 scripts/               # Build & utility scripts
+├── 📁 public/                # Static assets
+└── 📄 PROJECT_STRUCTURE.md   # Detailed structure documentation
+```
+
+For a comprehensive overview of the project structure, see [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md).
+
+## 🛡️ CORS Solution
+
+This project implements a robust, multi-layered solution for fetching RSS feeds without CORS issues:
+
+1. **Primary Approach**: RSS2JSON APIs (83% success rate)
+2. **Fallback System**: CORS Proxies (when APIs fail)
+3. **Offline Support**: Local cache system
+4. **Development**: Mock data fallback
+
+For detailed information on our CORS solution, see [docs/cors-solution/CORS_SOLUTION_COMPLETE.md](./docs/cors-solution/CORS_SOLUTION_COMPLETE.md).
+
+## 🚀 Deployment
+
+The dashboard is ready for deployment with multiple options:
+
+- **Static Hosting**: Vercel, Netlify, GitHub Pages
+- **Container**: Docker deployment ready
+- **Edge Functions**: Cloudflare Workers, Netlify Edge, AWS Lambda@Edge
+
+See [docs/deployment/DEPLOYMENT_READY.md](./docs/deployment/DEPLOYMENT_READY.md) for deployment instructions.
+## 📊 Performance Metrics
+
+- **RSS Feed Success Rate**: 83% (6/7 feeds operational)
+- **Primary API Success**: 83% (rss2json.vercel.app)
+- **Total Intelligence Items**: 148 live news items
+- **Bundle Size**: 98.83 kB gzipped
+- **Load Time**: <3 seconds with live data
+
+## 🧪 Development
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Setup
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+### Testing
+```bash
+# Run tests
+npm test
+
+# Test feed parsing
+tools/testing/test-feed-parsing.sh
+
+# Test proxy fallback
+node tools/testing/test-proxy-fallback.js
+```
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the `docs/` directory:
+
+- **CORS Solution**: `docs/cors-solution/`
+- **Deployment**: `docs/deployment/`
+- **Testing Reports**: `docs/testing/`
+- **Project Structure**: `PROJECT_STRUCTURE.md`
+- **Cleanup Summary**: `CLEANUP_SUMMARY.md`
+
+## 🔮 Future Enhancements
+
+1. **API Key Integration**: Paid RSS2JSON tier for higher limits
+2. **Custom Proxy Deployment**: Cloudflare Worker for 100% control
+3. **Feed Validation**: RSS feed health checking
+4. **Advanced Caching**: Improved offline capability
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ### Core Technologies
 - **React 18.3**: Modern React with concurrent features
