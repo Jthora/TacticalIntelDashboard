@@ -29,16 +29,12 @@ export interface RSS2JSONResponse {
 
 export class RSS2JSONService {
   private static readonly APIS = [
-    // Primary APIs - free tier with better reliability
-    'https://api.rss2json.com/v1/api.json',
-    
-    // Alternative APIs with different endpoints
-    'https://rss-to-json-serverless-api.vercel.app/api',
+    // Working APIs - prioritized by reliability
     'https://rss2json.vercel.app/api',
+    'https://api.rss2json.com/v1/api.json',
     
     // Backup APIs (may require different handling)
     'https://feed2json.org/convert',
-    'https://api.rss.app/v1/feed/json',
   ];
 
   static async fetchFeed(rssUrl: string): Promise<Feed[]> {
@@ -98,14 +94,14 @@ export class RSS2JSONService {
   private static validateResponse(data: any, apiUrl: string): boolean {
     if (!data) return false;
     
-    // RSS2JSON.com format
-    if (apiUrl.includes('rss2json.com')) {
-      return data.status === 'ok' && Array.isArray(data.items);
+    // rss2json.vercel.app format (working API)
+    if (apiUrl.includes('rss2json.vercel.app')) {
+      return Array.isArray(data.items) || Array.isArray(data);
     }
     
-    // Vercel-based APIs
-    if (apiUrl.includes('vercel.app')) {
-      return Array.isArray(data.items) || Array.isArray(data);
+    // RSS2JSON.com format (free tier)
+    if (apiUrl.includes('rss2json.com')) {
+      return data.status === 'ok' && Array.isArray(data.items);
     }
     
     // Feed2JSON format
@@ -121,14 +117,11 @@ export class RSS2JSONService {
     const encodedUrl = encodeURIComponent(rssUrl);
     
     switch (apiBase) {
-      case 'https://api.rss2json.com/v1/api.json':
-        return `${apiBase}?rss_url=${encodedUrl}&count=20`;
-      case 'https://rss-to-json-serverless-api.vercel.app/api':
-        return `${apiBase}?feedURL=${encodedUrl}`;
       case 'https://rss2json.vercel.app/api':
         return `${apiBase}?url=${encodedUrl}`;
-      case 'https://api.rss.app/v1/feed/json':
-        return `${apiBase}?url=${encodedUrl}`;
+      case 'https://api.rss2json.com/v1/api.json':
+        // Remove count parameter for free tier
+        return `${apiBase}?rss_url=${encodedUrl}`;
       case 'https://feed2json.org/convert':
         return `${apiBase}?url=${encodedUrl}`;
       default:
