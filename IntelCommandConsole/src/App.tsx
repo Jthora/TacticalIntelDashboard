@@ -6,6 +6,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { HealthProvider } from './contexts/HealthContext';
 import AppRoutes from './routes/AppRoutes';
 import SearchResults from './components/SearchResults';
+import DevelopmentNotice from './components/DevelopmentNotice';
 import PerformanceManager from './services/PerformanceManager';
 import './assets/styles/main.css';
 
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <FilterProvider>
             <HealthProvider>
               <div className="App">
+                <DevelopmentNotice />
                 <AppRoutes />
                 <SearchResults />
               </div>

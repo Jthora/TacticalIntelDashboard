@@ -1,0 +1,35 @@
+# Digital Ocean App Platform deployment configuration
+# Deploy RSS proxy to Digital Ocean's managed platform
+
+name: rss-proxy-server
+services:
+- name: rss-proxy
+  source_dir: /
+  github:
+    repo: your-username/your-repo
+    branch: main
+  run_command: node standalone-proxy-server.js
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 3001
+  routes:
+  - path: /
+  health_check:
+    http_path: /health
+    initial_delay_seconds: 20
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
+  envs:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: "3001"
+
+# To deploy:
+# 1. Push your code to GitHub
+# 2. Save this as .do/app.yaml in your repo
+# 3. Connect to Digital Ocean App Platform
+# 4. Deploy from GitHub

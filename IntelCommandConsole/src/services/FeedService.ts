@@ -197,6 +197,11 @@ class FeedService {
     log.debug("FeedService", 'Updating feeds from server');
     log.debug("FeedService", 'Current feeds:', this.feeds);
 
+    // Show development notice
+    if (import.meta.env.DEV) {
+      console.log('🔄 RSS Feed Service: In development mode. If proxies fail, mock data will be used.');
+    }
+
     const updatedFeeds: Feed[] = [];
     for (const feed of this.feeds) {
       try {

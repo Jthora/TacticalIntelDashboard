@@ -1,48 +1,99 @@
 import { Feed } from '../models/Feed';
-import { getTextContent, getAttributeValue, getAllTextContents, getTextContentWithFallback } from '../helpers/xmlHelper';
+import { getTextContent, getAllTextContents, getContentWithFallback, getAuthorWithFallback, getMediaWithFallback } from '../helpers/xmlHelper';
 
 export const parseFeedData = (xmlDoc: Document, url: string): Feed[] => {
-  const items = xmlDoc.getElementsByTagName("item");
   const feeds: Feed[] = [];
-
-  Array.from(items).forEach((item, index) => {
-    const feed: Feed = {
-      id: `${url}-${index}`,
-      name: getTextContent(xmlDoc.documentElement, "title", "No title"),
-      url,
-      title: getTextContent(item, "title", "No title"),
-      link: getTextContent(item, "link", url),
-      pubDate: getTextContent(item, "pubDate", new Date().toISOString()),
-      description: getTextContent(item, "description", ""),
-      content: getTextContentWithFallback(item, "content:encoded", "content", ""),
-      feedListId: '1', // This should be dynamically set based on the context
-      author: getTextContent(item, "author", ""),
-      categories: getAllTextContents(item, "category"),
-      media: extractMedia(item),
-    };
-    feeds.push(feed);
-  });
+  
+  // Try RSS format first
+  const rssItems = xmlDoc.getElementsByTagName("item");
+  if (rssItems.length > 0) {
+    Array.from(rssItems).forEach((item, index) => {
+      try {
+        const feed: Feed = {
+          id: `${url}-${index}`,
+          name: getTextContent(xmlDoc.documentElement, "title", "No title"),
+          url,
+          title: getTextContent(item, "title", "No title"),
+          link: getTextContent(item, "link", url),
+          pubDate: getTextContent(item, "pubDate", new Date().toISOString()),
+          description: getTextContent(item, "description", ""),
+          content: getContentWithFallback(item, getTextContent(item, "description", "")),
+          feedListId: '1', // This should be dynamically set based on the context
+          author: getAuthorWithFallback(item, ""),
+          categories: getAllTextContents(item, "category"),
+          media: getMediaWithFallback(item),
+        };
+        feeds.push(feed);
+      } catch (error) {
+        console.warn(`Error parsing RSS item ${index} from ${url}:`, error);
+      }
+    });
+  }
+  
+  // Try Atom format if no RSS items found
+  if (feeds.length === 0) {
+    const atomEntries = xmlDoc.getElementsByTagName("entry");
+    Array.from(atomEntries).forEach((entry, index) => {
+      try {
+        const feed: Feed = {
+          id: `${url}-${index}`,
+          name: getTextContent(xmlDoc.documentElement, "title", "No title"),
+          url,
+          title: getTextContent(entry, "title", "No title"),
+          link: getAtomLink(entry) || url,
+          pubDate: getTextContent(entry, "published", getTextContent(entry, "updated", new Date().toISOString())),
+          description: getTextContent(entry, "summary", getTextContent(entry, "content", "")),
+          content: getContentWithFallback(entry, getTextContent(entry, "summary", "")),
+          feedListId: '1', // This should be dynamically set based on the context
+          author: getAtomAuthor(entry) || getAuthorWithFallback(entry, ""),
+          categories: getAllTextContents(entry, "category"),
+          media: getMediaWithFallback(entry),
+        };
+        feeds.push(feed);
+      } catch (error) {
+        console.warn(`Error parsing Atom entry ${index} from ${url}:`, error);
+      }
+    });
+  }
 
   return feeds;
 };
 
-const extractMedia = (item: Element): { url: string, type: string }[] => {
-  const mediaElements = item.getElementsByTagName("media:content");
-  const media: { url: string, type: string }[] = [];
-
-  Array.from(mediaElements).forEach(mediaElement => {
-    const url = getAttributeValue(mediaElement, "media:content", "url", "");
-    const type = getAttributeValue(mediaElement, "media:content", "type", "unknown");
-    if (url) {
-      media.push({ url, type });
+const getAtomLink = (entry: Element): string => {
+  const linkElements = entry.getElementsByTagName("link");
+  for (let i = 0; i < linkElements.length; i++) {
+    const link = linkElements[i];
+    const href = link.getAttribute("href");
+    const rel = link.getAttribute("rel");
+    if (href && (!rel || rel === "alternate")) {
+      return href;
     }
-  });
+  }
+  return "";
+};
 
-  return media;
+const getAtomAuthor = (entry: Element): string => {
+  const authorElement = entry.getElementsByTagName("author")[0];
+  if (authorElement) {
+    const name = getTextContent(authorElement, "name", "");
+    const email = getTextContent(authorElement, "email", "");
+    return name || email || "";
+  }
+  return "";
 };
 
 export const isValidXML = (textData: string): boolean => {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(textData, "application/xml");
-  return xmlDoc.getElementsByTagName("parsererror").length === 0;
+  // Quick check for XML-like content
+  if (textData.includes('<?xml') || textData.includes('<rss') || textData.includes('<feed') || textData.includes('<channel')) {
+    return true;
+  }
+  
+  // Fallback to actual parsing
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(textData, "application/xml");
+    return xmlDoc.getElementsByTagName("parsererror").length === 0;
+  } catch (error) {
+    return false;
+  }
 };

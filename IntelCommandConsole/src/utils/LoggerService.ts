@@ -25,7 +25,7 @@ class LoggerService {
   private logs: LogEntry[] = [];
   private maxLogs = 1000;
   private logLevel: LogLevel = LogLevel.INFO;
-  private enableConsoleOutput = process.env.NODE_ENV === 'development';
+  private enableConsoleOutput = typeof process !== 'undefined' && process.env?.NODE_ENV === 'development';
 
   static getInstance(): LoggerService {
     if (!this.instance) {
@@ -35,8 +35,11 @@ class LoggerService {
   }
 
   private constructor() {
-    // Initialize logger
-    this.logLevel = this.parseLogLevel(process.env.VITE_LOG_LEVEL || 'INFO');
+    // Initialize logger - safe access to environment variables
+    const logLevel = typeof process !== 'undefined' && process.env 
+      ? process.env.VITE_LOG_LEVEL || 'INFO'
+      : 'INFO';
+    this.logLevel = this.parseLogLevel(logLevel);
   }
 
   private parseLogLevel(level: string): LogLevel {

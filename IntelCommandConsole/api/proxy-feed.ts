@@ -101,9 +101,23 @@ export default async function handler(request: Request) {
 
     // Get the response body
     const feedContent = await feedResponse.text();
-    const contentType = feedResponse.headers.get('content-type') || 'application/xml';
+    let contentType = feedResponse.headers.get('content-type') || 'application/xml';
 
     console.log(`Successfully fetched ${feedContent.length} bytes from ${targetUrl}`);
+    console.log(`Original content-type: ${contentType}`);
+    console.log(`Content preview: ${feedContent.substring(0, 200)}...`);
+
+    // Enhanced content type detection
+    // Many RSS feeds have incorrect content-type headers, so we'll try to detect based on content
+    if (feedContent.includes('<?xml') || feedContent.includes('<rss') || feedContent.includes('<feed')) {
+      contentType = 'application/xml; charset=utf-8';
+    } else if (feedContent.trim().startsWith('{') || feedContent.trim().startsWith('[')) {
+      contentType = 'application/json; charset=utf-8';
+    } else if (feedContent.includes('<html') || feedContent.includes('<!DOCTYPE html')) {
+      contentType = 'text/html; charset=utf-8';
+    }
+
+    console.log(`Detected content-type: ${contentType}`);
 
     // Return the feed content with CORS headers
     return new Response(feedContent, {
@@ -116,6 +130,7 @@ export default async function handler(request: Request) {
         'Cache-Control': 'public, max-age=300', // Cache for 5 minutes
         'X-Proxy-URL': targetUrl,
         'X-Proxy-Status': 'success',
+        'X-Original-Content-Type': feedResponse.headers.get('content-type') || 'unknown',
       },
     });
 

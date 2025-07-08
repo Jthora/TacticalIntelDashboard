@@ -26,13 +26,11 @@ module.exports = {
   },
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      useESM: true,
       tsconfig: 'tsconfig.test.json'
     }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
     'node_modules/(?!(.*\\.mjs$))'
-  ],
-  extensionsToTreatAsEsm: ['.ts', '.tsx']
+  ]
 };

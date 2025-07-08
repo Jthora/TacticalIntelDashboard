@@ -30,11 +30,20 @@ export const parseFeedData = (jsonData: Record<string, unknown>, url: string): F
 };
 
 export const isValidJSON = (textData: string): boolean => {
+  // Quick check to avoid parsing JavaScript code as JSON
+  if (textData.includes('export ') || 
+      textData.includes('function ') || 
+      textData.includes('import ') ||
+      textData.includes('const ') ||
+      !textData.trim().startsWith('{') && !textData.trim().startsWith('[')) {
+    return false;
+  }
+  
   try {
     JSON.parse(textData);
     return true;
   } catch (error) {
-    console.error('Invalid JSON:', error);
+    // Don't log every JSON parsing error as it's expected for non-JSON content
     return false;
   }
 };
