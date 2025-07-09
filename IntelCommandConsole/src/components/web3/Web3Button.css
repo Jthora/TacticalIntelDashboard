@@ -1,0 +1,83 @@
+/**
+ * Web3 Button Component Styles
+ * Enhances the user interface for wallet connections
+ */
+
+.web3-button {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.web3-button.connected {
+  color: var(--accent-cyan);
+}
+
+.connected-indicator {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--cyber-glow);
+  top: 3px;
+  right: 3px;
+  box-shadow: 0 0 5px var(--cyber-glow);
+  animation: pulse 2s infinite;
+}
+
+.connected-indicator[data-network="Ethereum"] {
+  background-color: #62a9e8;
+  box-shadow: 0 0 5px #62a9e8;
+}
+
+.connected-indicator[data-network="Polygon"] {
+  background-color: #8247e5;
+  box-shadow: 0 0 5px #8247e5;
+}
+
+.connected-indicator[data-network="BSC"] {
+  background-color: #f3ba2f;
+  box-shadow: 0 0 5px #f3ba2f;
+}
+
+.connected-indicator[data-network="Arbitrum"] {
+  background-color: #28a0f0;
+  box-shadow: 0 0 5px #28a0f0;
+}
+
+.wallet-preview {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--accent-cyan);
+  padding: 2px 4px;
+  border-radius: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  pointer-events: none;
+  border: 1px solid var(--accent-cyan);
+  z-index: 10;
+}
+
+.web3-button:hover .wallet-preview {
+  opacity: 1;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+}

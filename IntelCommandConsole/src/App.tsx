@@ -4,6 +4,9 @@ import { SearchProvider } from './contexts/SearchContext';
 import { FilterProvider } from './contexts/FilterContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { HealthProvider } from './contexts/HealthContext';
+import { FeedModeProvider } from './contexts/FeedModeContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { Web3Provider } from './contexts/Web3Context';
 import AppRoutes from './routes/AppRoutes';
 import SearchResults from './components/SearchResults';
 import DevelopmentNotice from './components/DevelopmentNotice';
@@ -23,17 +26,23 @@ const App: React.FC = () => {
   return (
     <Router>
       <ThemeProvider>
-        <SearchProvider>
-          <FilterProvider>
-            <HealthProvider>
-              <div className="App">
-                <DevelopmentNotice />
-                <AppRoutes />
-                <SearchResults />
-              </div>
-            </HealthProvider>
-          </FilterProvider>
-        </SearchProvider>
+        <SettingsProvider>
+          <Web3Provider>
+            <SearchProvider>
+              <FilterProvider>
+                <HealthProvider>
+                  <FeedModeProvider>
+                    <div className="App">
+                      <DevelopmentNotice />
+                      <AppRoutes />
+                      <SearchResults />
+                    </div>
+                  </FeedModeProvider>
+                </HealthProvider>
+              </FilterProvider>
+            </SearchProvider>
+          </Web3Provider>
+        </SettingsProvider>
       </ThemeProvider>
     </Router>
   );

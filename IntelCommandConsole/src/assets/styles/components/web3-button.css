@@ -1,0 +1,58 @@
+/**
+ * Web3 Button Styles
+ * For the enhanced Web3 wallet button in the header
+ */
+
+.web3-button {
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  padding-right: var(--spacing-md);
+}
+
+.web3-button.connected {
+  background-color: rgba(0, 255, 170, 0.1);
+  border-color: var(--accent-cyan);
+}
+
+.web3-button:hover {
+  background-color: rgba(0, 255, 170, 0.2);
+}
+
+.connected-indicator {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+  box-shadow: 0 0 5px var(--accent-green);
+}
+
+.wallet-preview {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-primary);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  margin-left: var(--spacing-xs);
+}
+
+.web3-button:hover .wallet-preview {
+  opacity: 1;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .wallet-preview {
+    display: none;
+  }
+  
+  .web3-button {
+    padding-right: var(--spacing-sm);
+  }
+}

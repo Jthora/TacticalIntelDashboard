@@ -1,3 +1,11 @@
+/* Import component styles */
+@import url('./components/header-controls.css');
+@import url('./components/settings-page.css');
+@import url('./components/profile-page.css');
+@import url('./components/settings-tabs.css');
+@import url('./components/web3-wallet.css');
+@import url('./layout.css');
+
 @font-face {
   font-family: 'Aldrich';
   src: url('./fonts/Aldrich-Regular.ttf') format('truetype');
@@ -13,7 +21,8 @@ body {
 
 .App {
   text-align: center;
-  padding: 0px;
+  padding: 0;
+  margin: 0;
   background-color: #0a0f24; /* Dark blue background */
 }
 
@@ -21,6 +30,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  padding: 0;
+  margin: 0;
 }
 
 .header {
