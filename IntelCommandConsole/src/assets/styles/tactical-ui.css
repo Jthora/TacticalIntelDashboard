@@ -21,8 +21,8 @@
   --accent-cyan: #00ffaa;
   --accent-blue: #0099ff;
   --accent-orange: #ff6600;
-  --accent-red: #ff0040;
-  --accent-purple: #9966ff;
+  --accent-red: #ff3333;
+  --accent-purple: #9933ff;
   --accent-yellow: #ffff00;
   --accent-green: #00ff00;
   
@@ -95,7 +95,7 @@
 
 body {
   font-family: 'Aldrich', 'Orbitron', 'JetBrains Mono', monospace;
-  background: linear-gradient(135deg, var(--primary-bg) 0%, #0f1429 100%);
+  background-color: var(--primary-bg); /* Solid black background instead of gradient */
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
@@ -135,7 +135,7 @@ body {
 
 /* Module Header */
 .tactical-header {
-  background: linear-gradient(135deg, rgba(0, 255, 170, 0.1) 0%, rgba(0, 153, 255, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.15) 0%, rgba(0, 255, 170, 0.05) 100%);
   border-bottom: 1px solid rgba(0, 255, 170, 0.3);
   padding: var(--spacing-md) var(--spacing-lg);
   position: relative;
@@ -159,6 +159,7 @@ body {
 /* Module Content */
 .tactical-content {
   padding: var(--spacing-lg);
+  background-color: transparent; /* No background like original */
 }
 
 /* Status Indicators */
@@ -227,7 +228,7 @@ body {
   height: 100vh;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: linear-gradient(135deg, var(--primary-bg) 0%, #0f1429 100%);
+  background-color: var(--primary-bg); /* Solid black background instead of gradient */
 }
 
 .tactical-header-main {
@@ -286,9 +287,6 @@ body {
   border-color: rgba(0, 153, 255, 0.3);
 }
 
-.module-health .tactical-header {
-  background: linear-gradient(135deg, rgba(0, 153, 255, 0.15) 0%, rgba(0, 153, 255, 0.05) 100%);
-}
 
 .module-health .tactical-header h3 {
   color: var(--accent-blue);
@@ -355,7 +353,6 @@ body {
 .diagnostic-btn {
   flex: 1;
   padding: 0.4rem 0.2rem;
-  background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 255, 65, 0.05) 100%);
   border: 1px solid rgba(0, 255, 65, 0.3);
   color: var(--accent-green);
   font-size: 0.65rem;
@@ -368,7 +365,6 @@ body {
 }
 
 .diagnostic-btn:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 65, 0.2) 0%, rgba(0, 255, 65, 0.1) 100%);
   border-color: rgba(0, 255, 65, 0.5);
   color: var(--text-primary);
   transform: translateY(-1px);
@@ -376,7 +372,6 @@ body {
 
 .diagnostic-btn:active {
   transform: translateY(0);
-  background: linear-gradient(135deg, rgba(0, 255, 65, 0.3) 0%, rgba(0, 255, 65, 0.15) 100%);
 }
 
 /* Enhanced Diagnostic Actions */
@@ -389,7 +384,6 @@ body {
 .diagnostic-btn.scanning,
 .diagnostic-btn.cleaning,
 .diagnostic-btn.repairing {
-  background: linear-gradient(135deg, rgba(255, 165, 0, 0.2) 0%, rgba(255, 165, 0, 0.1) 100%);
   border-color: rgba(255, 165, 0, 0.5);
   color: var(--accent-yellow);
   animation: pulse 2s infinite;
@@ -1150,12 +1144,10 @@ body {
 }
 
 .tactical-quickactions .tactical-module {
-  background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
   border-color: rgba(255, 102, 0, 0.3);
 }
 
 .tactical-quickactions .tactical-header {
-  background: linear-gradient(135deg, rgba(255, 102, 0, 0.15) 0%, rgba(255, 102, 0, 0.05) 100%);
   border-bottom: 1px solid rgba(255, 102, 0, 0.3);
 }
 
@@ -1175,7 +1167,6 @@ body {
 }
 
 .feed-controls {
-  background: rgba(0, 255, 170, 0.05);
   padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
   justify-content: space-between;
@@ -1275,7 +1266,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: var(--spacing-sm);
-  background: linear-gradient(90deg, rgba(0, 255, 170, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.12) 0%, rgba(0, 255, 170, 0.04) 100%);
   border-bottom: 1px solid rgba(0, 255, 170, 0.3);
   margin-bottom: var(--spacing-sm);
 }
@@ -2306,6 +2297,12 @@ body {
 }
 
 /* Status indicators for header */
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
 .header-status .status-dot {
   display: inline-block;
   width: 8px;
@@ -2399,6 +2396,67 @@ body {
   .source-item-header {
     gap: var(--spacing-xs);
   }
+}
+
+/* ===========================================
+   SPECIALIZED MODULE COLOR THEMES
+   =========================================== */
+
+/* System Control Module - Red Theme */
+.module-system-control {
+  border-color: rgba(255, 51, 51, 0.3);
+}
+
+.module-system-control .tactical-header,
+.module-system-control .tactical-header-enhanced {
+  border-bottom-color: rgba(255, 51, 51, 0.3);
+}
+
+.module-system-control .tactical-header h3,
+.module-system-control .tactical-header-enhanced h3 {
+  color: var(--accent-red);
+}
+
+/* Filters Module - Orange Theme (matching quickactions) */
+.module-filters {
+  border-color: rgba(255, 102, 0, 0.3);
+}
+
+.module-filters .tactical-header,
+.module-filters .tactical-header-enhanced {
+  border-bottom-color: rgba(255, 102, 0, 0.3);
+}
+
+.module-filters .tactical-header h3,
+.module-filters .tactical-header-enhanced h3 {
+  color: var(--accent-orange);
+}
+
+/* Export Module - Purple Theme */
+.module-export {
+  border-color: rgba(153, 51, 255, 0.3);
+}
+
+.module-export .tactical-header,
+.module-export .tactical-header-enhanced {
+  border-bottom-color: rgba(153, 51, 255, 0.3);
+}
+
+.module-export .tactical-header h3,
+.module-export .tactical-header-enhanced h3 {
+  color: var(--accent-purple);
+}
+
+/* Intelligence Module - Enhanced Green Theme */
+.module-intelligence .tactical-header h3,
+.module-intelligence .tactical-header-enhanced h3 {
+  color: var(--accent-cyan);
+}
+
+/* Health Module - Enhanced Blue Theme */
+.module-health .tactical-header h3,
+.module-health .tactical-header-enhanced h3 {
+  color: var(--accent-blue);
 }
 
 
