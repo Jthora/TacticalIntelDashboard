@@ -1,0 +1,49 @@
+/* Debug styles to highlight layout */
+.tactical-sidebar-left {
+  border: 3px solid red !important;
+  min-height: 100px !important;
+}
+
+.tactical-main {
+  border: 3px solid blue !important;
+  min-height: 100px !important;
+}
+
+.tactical-sidebar-right {
+  border: 3px solid green !important;
+  min-height: 100px !important;
+}
+
+/* Force the home-page-container grid layout */
+.home-page-container {
+  display: grid !important;
+  grid-template-columns: 240px 1fr 240px !important;
+  grid-template-rows: 1fr auto !important;
+  grid-template-areas:
+    "left-sidebar main right-sidebar"
+    "footer footer footer" !important;
+  height: calc(100vh - 60px) !important;
+  overflow: hidden !important;
+}
+
+/* Make sure the grid areas are assigned */
+.tactical-sidebar-left {
+  grid-area: left-sidebar !important;
+}
+
+.tactical-main {
+  grid-area: main !important;
+}
+
+.tactical-sidebar-right {
+  grid-area: right-sidebar !important;
+}
+
+.tactical-footer {
+  grid-area: footer !important;
+}
+
+/* Style for the main-screen-content */
+.main-screen-content {
+  display: contents !important;
+}

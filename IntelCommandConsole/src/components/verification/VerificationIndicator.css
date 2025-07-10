@@ -1,0 +1,76 @@
+/**
+ * Styles for the VerificationIndicator component
+ */
+
+.verification-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  gap: 6px;
+  background-color: var(--secondary-bg);
+}
+
+.verification-indicator.compact {
+  padding: 2px 4px;
+  font-size: 0.75rem;
+}
+
+/* Trusted status */
+.verification-indicator.trusted {
+  background-color: rgba(var(--success-rgb), 0.1);
+  border: 1px solid rgba(var(--success-rgb), 0.3);
+  color: var(--success-color);
+}
+
+.verification-indicator.trusted .indicator-icon {
+  color: var(--success-color);
+}
+
+/* Warning status */
+.verification-indicator.warning {
+  background-color: rgba(var(--warning-rgb), 0.1);
+  border: 1px solid rgba(var(--warning-rgb), 0.3);
+  color: var(--warning-color);
+}
+
+.verification-indicator.warning .indicator-icon {
+  color: var(--warning-color);
+}
+
+/* Untrusted status */
+.verification-indicator.untrusted {
+  background-color: rgba(var(--danger-rgb), 0.1);
+  border: 1px solid rgba(var(--danger-rgb), 0.3);
+  color: var(--danger-color);
+}
+
+.verification-indicator.untrusted .indicator-icon {
+  color: var(--danger-color);
+}
+
+/* Icon styling */
+.indicator-icon {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+
+.verification-indicator.compact .indicator-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Label styling */
+.indicator-label {
+  font-weight: 500;
+}
+
+.verification-indicator.compact .indicator-label {
+  font-size: 0.7rem;
+}

@@ -1,0 +1,12 @@
+diff --git a/node_modules/postcss/lib/input.js b/node_modules/postcss/lib/input.js
+index bb0ccf5..1705569 100644
+--- a/node_modules/postcss/lib/input.js
++++ b/node_modules/postcss/lib/input.js
+@@ -1,6 +1,6 @@
+ 'use strict'
+ 
+-let { nanoid } = require('nanoid/non-secure')
++let { nanoid } = { nanoid: () => Math.random().toString(36).substring(2, 10) };
+ let { isAbsolute, resolve } = require('path')
+ let { SourceMapConsumer, SourceMapGenerator } = require('source-map-js')
+ let { fileURLToPath, pathToFileURL } = require('url')

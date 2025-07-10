@@ -1,0 +1,36 @@
+{
+  "name": "ea-feed-validator",
+  "version": "1.0.0",
+  "description": "Earth Alliance Multi-Protocol Feed Validator",
+  "main": "validator.js",
+  "scripts": {
+    "start": "node validator.js",
+    "validate": "node multi-protocol-validator.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rss",
+    "validator",
+    "feed",
+    "earth-alliance",
+    "json-feed",
+    "ipfs",
+    "api",
+    "mastodon",
+    "ssb"
+  ],
+  "author": "Earth Alliance Intelligence",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "chalk": "^4.1.2",
+    "cheerio": "^1.0.0-rc.12",
+    "commander": "^11.1.0",
+    "fast-xml-parser": "^4.5.3",
+    "fs-extra": "^11.3.0",
+    "ipfs-http-client": "^60.0.1",
+    "markdown-table": "^3.0.3",
+    "ora": "^5.4.1",
+    "progress": "^2.0.3"
+  }
+}

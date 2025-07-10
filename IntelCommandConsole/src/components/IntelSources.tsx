@@ -282,7 +282,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({ setSelectedFeedList }) => {
                     <div className="source-item-header">
                       <div className="source-status">
                         <span 
-                          className="status-indicator"
+                          className="status-dot"
                           style={{ backgroundColor: activityColor }}
                           title={`Status: ${activityStatus.toUpperCase()}`}
                         ></span>

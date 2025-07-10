@@ -1,0 +1,31 @@
+/**
+ * Loading indicator styles for async content
+ */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  min-height: 300px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+}
+
+.loading-indicator::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--spacing-md);
+  border: 3px solid rgba(0, 255, 170, 0.2);
+  border-top: 3px solid var(--accent-cyan);
+  border-radius: 50%;
+  animation: loadingSpinner 1s infinite linear;
+}
+
+@keyframes loadingSpinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

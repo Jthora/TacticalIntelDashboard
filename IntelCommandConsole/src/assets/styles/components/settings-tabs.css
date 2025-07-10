@@ -1,0 +1,155 @@
+/**
+ * Settings tabs styles - to match the tactical dashboard components
+ */
+
+/* Sidebar vertical tabs for wide screens */
+.settings-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--spacing-xl);
+}
+
+.settings-sidebar-nav .settings-tab {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  background-color: transparent;
+  border: none;
+  border-left: 2px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin: var(--spacing-xs) 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.settings-sidebar-nav .settings-tab:hover {
+  color: var(--text-primary);
+  background-color: rgba(0, 255, 170, 0.05);
+}
+
+.settings-sidebar-nav .settings-tab.active {
+  color: var(--accent-cyan);
+  border-left: 2px solid var(--accent-cyan);
+  background-color: rgba(0, 255, 170, 0.1);
+  box-shadow: inset 0 0 10px rgba(0, 255, 170, 0.05);
+  text-shadow: var(--glow-cyan);
+}
+
+.settings-sidebar-nav .settings-tab .tab-icon {
+  margin-right: var(--spacing-md);
+  font-size: var(--font-size-md);
+}
+
+/* Horizontal tabs for mobile/default view */
+.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid rgba(0, 255, 170, 0.2);
+  padding: 0 var(--spacing-md);
+}
+
+.settings-tabs .settings-tab {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--spacing-xs) var(--spacing-md);
+  margin: 0 var(--spacing-xs);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-tabs .settings-tab:hover {
+  color: var(--text-primary);
+  background-color: rgba(0, 255, 170, 0.05);
+}
+
+.settings-tabs .settings-tab.active {
+  color: var(--accent-cyan);
+  border-bottom: 2px solid var(--accent-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+/* Verification styles */
+.verification-method {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid rgba(0, 255, 170, 0.1);
+  margin-bottom: var(--spacing-sm);
+}
+
+.verification-method:last-child {
+  border-bottom: none;
+}
+
+.method-priority {
+  color: var(--accent-blue);
+  font-size: var(--font-size-xs);
+  background-color: rgba(0, 153, 255, 0.1);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.status-indicator.online {
+  background: rgba(0, 255, 170, 0.2);
+  color: var(--accent-cyan);
+  border: 1px solid var(--accent-cyan);
+}
+
+/* Font size example */
+.font-size-example {
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  background-color: rgba(21, 21, 21, 0.7);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+/* Static fields */
+.static-field {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(21, 21, 21, 0.7);
+  border: 1px solid rgba(0, 255, 170, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--text-accent);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Warning text */
+.warning-text {
+  color: var(--accent-yellow);
+  font-size: var(--font-size-xs);
+  font-family: 'Rajdhani', sans-serif;
+  margin-top: var(--spacing-xs);
+}

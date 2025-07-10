@@ -52,12 +52,12 @@
   --glow-green: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
+/* Import cyberpunk fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap');
+
 /* ========================================
    WING COMMANDER TYPOGRAPHY
 ======================================== */
-
-/* Import cyberpunk fonts */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* Cyberpunk Font Stack */

@@ -302,7 +302,7 @@ describe('🔧 FEATURE 1: Multi-Source Intelligence Feed Aggregation', () => {
       jest.spyOn(FeedService, 'getFeedsByList').mockResolvedValue(mockFeeds);
 
       // Act - Complete workflow
-      render(<FeedVisualizer selectedFeedList="test-list" />);
+      render(<FeedVisualizer selectedFeedList="test-list"></FeedVisualizer>);
 
       // Assert - All components should be present
       await waitFor(() => {
@@ -354,7 +354,7 @@ describe('🔧 FEATURE 1: Multi-Source Intelligence Feed Aggregation', () => {
         .mockResolvedValue([{ id: '1', title: 'Recovery Article' }]);
 
       // Act
-      render(<FeedVisualizer selectedFeedList="test-list" />);
+      render(<FeedVisualizer selectedFeedList="test-list"></FeedVisualizer>);
 
       // Assert - Error should be displayed
       await waitFor(() => {

@@ -1,0 +1,256 @@
+/* Proposal Voting Panel Styles */
+.proposal-voting-panel {
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: #1a1d2d;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.proposal-voting-panel h2 {
+  margin-top: 0;
+  color: #edf2f7;
+  font-size: 24px;
+  border-bottom: 1px solid #2d3748;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.proposal-voting-panel h3 {
+  font-size: 18px;
+  color: #a0aec0;
+  margin-top: 25px;
+  margin-bottom: 15px;
+}
+
+.proposal-metadata {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.metadata-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.metadata-label {
+  font-weight: 600;
+  color: #718096;
+}
+
+.proposal-status {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background-color: #2b5a99;
+  color: #b9d4ff;
+}
+
+.status-active {
+  background-color: #375e31;
+  color: #c1ffc1;
+}
+
+.status-succeeded {
+  background-color: #2c684b;
+  color: #c1ffd7;
+}
+
+.status-defeated {
+  background-color: #802a2a;
+  color: #ffc1c1;
+}
+
+.status-executed {
+  background-color: #2d624d;
+  color: #c1ffe0;
+}
+
+.status-canceled {
+  background-color: #6b5b5b;
+  color: #e0e0e0;
+}
+
+.status-expired {
+  background-color: #6b3c3c;
+  color: #ffd1d1;
+}
+
+.address {
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.proposal-description {
+  background-color: #212537;
+  padding: 20px;
+  border-radius: 6px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.proposal-description p {
+  color: #cbd5e0;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.vote-distribution {
+  margin-top: 30px;
+}
+
+.vote-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.vote-bar-container {
+  display: grid;
+  grid-template-columns: 70px 1fr 60px 80px;
+  align-items: center;
+  gap: 15px;
+}
+
+.vote-label {
+  color: #a0aec0;
+  font-weight: 600;
+}
+
+.vote-bar {
+  height: 20px;
+  background-color: #2a324b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.vote-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.vote-yes {
+  background-color: #38a169;
+}
+
+.vote-no {
+  background-color: #e53e3e;
+}
+
+.vote-abstain {
+  background-color: #6b46c1;
+}
+
+.vote-percentage {
+  color: #edf2f7;
+  font-weight: 600;
+  text-align: right;
+}
+
+.vote-count {
+  color: #a0aec0;
+  font-family: monospace;
+  text-align: right;
+}
+
+.voting-section {
+  margin-top: 30px;
+  background-color: #212537;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.vote-options {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.vote-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vote-option input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4299e1;
+}
+
+.vote-option label {
+  color: #edf2f7;
+  cursor: pointer;
+}
+
+.loading-indicator {
+  color: #a0aec0;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.alert-danger {
+  background-color: rgba(229, 62, 62, 0.1);
+  border: 1px solid rgba(229, 62, 62, 0.3);
+  color: #fc8181;
+}
+
+.alert-warning {
+  background-color: rgba(236, 201, 75, 0.1);
+  border: 1px solid rgba(236, 201, 75, 0.3);
+  color: #f6e05e;
+}
+
+.alert-info {
+  background-color: rgba(66, 153, 225, 0.1);
+  border: 1px solid rgba(66, 153, 225, 0.3);
+  color: #90cdf4;
+}
+
+.alert-success {
+  background-color: rgba(56, 161, 105, 0.1);
+  border: 1px solid rgba(56, 161, 105, 0.3);
+  color: #68d391;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #4299e1;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #3182ce;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

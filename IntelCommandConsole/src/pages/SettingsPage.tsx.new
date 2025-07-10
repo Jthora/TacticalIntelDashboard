@@ -1,0 +1,94 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSettings, SettingsTab } from '../contexts/SettingsContext';
+import { CORSSettings } from '../components/settings/tabs/CORSSettings';
+
+const SettingsPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { settings, updateSettings } = useSettings();
+  const [activeTab, setActiveTab] = useState<SettingsTab>(settings.lastTab);
+  
+  const handleTabChange = (tab: SettingsTab) => {
+    setActiveTab(tab);
+    updateSettings({ lastTab: tab });
+  };
+
+  const handleBack = () => {
+    navigate('/');
+  };
+  
+  // Render the active tab content
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case SettingsTab.GENERAL:
+        return <div>General Settings Content</div>;
+      case SettingsTab.CORS:
+        return <CORSSettings />;
+      case SettingsTab.PROTOCOLS:
+        return <div>Protocol Settings Content</div>;
+      case SettingsTab.VERIFICATION:
+        return <div>Verification Settings Content</div>;
+      case SettingsTab.DISPLAY:
+        return <div>Display Settings Content</div>;
+      case SettingsTab.ADVANCED:
+        return <div>Advanced Settings Content</div>;
+      default:
+        return <div>General Settings Content</div>;
+    }
+  };
+  
+  return (
+    <div className="settings-page">
+      <div className="settings-page-header">
+        <button className="back-button" onClick={handleBack}>← Back to Dashboard</button>
+        <h1>Settings</h1>
+        <p>Configure system settings and preferences</p>
+      </div>
+      
+      <div className="settings-tabs">
+        <div 
+          className={`settings-tab ${activeTab === SettingsTab.GENERAL ? 'active' : ''}`}
+          onClick={() => handleTabChange(SettingsTab.GENERAL)}
+        >
+          General
+        </div>
+        <div 
+          className={`settings-tab ${activeTab === SettingsTab.CORS ? 'active' : ''}`}
+          onClick={() => handleTabChange(SettingsTab.CORS)}
+        >
+          CORS
+        </div>
+        <div 
+          className={`settings-tab ${activeTab === SettingsTab.PROTOCOLS ? 'active' : ''}`}
+          onClick={() => handleTabChange(SettingsTab.PROTOCOLS)}
+        >
+          Protocols
+        </div>
+        <div 
+          className={`settings-tab ${activeTab === SettingsTab.VERIFICATION ? 'active' : ''}`}
+          onClick={() => handleTabChange(SettingsTab.VERIFICATION)}
+        >
+          Verification
+        </div>
+        <div 
+          className={`settings-tab ${activeTab === SettingsTab.DISPLAY ? 'active' : ''}`}
+          onClick={() => handleTabChange(SettingsTab.DISPLAY)}
+        >
+          Display
+        </div>
+        <div 
+          className={`settings-tab ${activeTab === SettingsTab.ADVANCED ? 'active' : ''}`}
+          onClick={() => handleTabChange(SettingsTab.ADVANCED)}
+        >
+          Advanced
+        </div>
+      </div>
+      
+      <div className="settings-content">
+        {renderTabContent()}
+      </div>
+    </div>
+  );
+};
+
+export default SettingsPage;

@@ -1,0 +1,125 @@
+/**
+ * CSS styles for the Protocol settings page
+ */
+
+/* Protocol priority list */
+.protocol-list {
+  margin: 15px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.protocol-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+  cursor: move;
+  user-select: none;
+}
+
+.protocol-item:last-child {
+  border-bottom: none;
+}
+
+.protocol-item.dragging {
+  opacity: 0.5;
+  background-color: var(--hover-bg);
+}
+
+.protocol-drag-handle {
+  margin-right: 10px;
+  font-size: 18px;
+  color: var(--text-secondary);
+  cursor: grab;
+}
+
+.protocol-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.protocol-priority-badge {
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+}
+
+/* Protocol tabs */
+.protocol-settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.protocol-tab {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: all 0.2s;
+}
+
+.protocol-tab:hover {
+  opacity: 1;
+  background-color: var(--hover-bg);
+}
+
+.protocol-tab.active {
+  opacity: 1;
+  background-color: var(--secondary-bg);
+  border-bottom: 3px solid var(--accent-color);
+}
+
+/* Protocol settings panels */
+.protocol-settings-panel {
+  padding: 15px;
+  background-color: var(--secondary-bg);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.protocol-settings-panel.hidden {
+  display: none;
+}
+
+/* Form controls */
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* Feedback styles */
+.settings-feedback {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: var(--info-bg);
+  border-left: 4px solid var(--info-color);
+  border-radius: 4px;
+}
+
+.settings-feedback.success {
+  background-color: var(--success-bg);
+  border-left-color: var(--success-color);
+}
+
+.settings-feedback.error {
+  background-color: var(--danger-bg);
+  border-left-color: var(--danger-color);
+}

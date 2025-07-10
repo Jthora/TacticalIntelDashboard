@@ -7,6 +7,7 @@ import { FeedVisualizerSkeleton, ErrorOverlay } from '../shared/components/Loadi
 import { useLoading } from '../hooks/useLoading';
 import { useFilters } from '../contexts/FilterContext';
 import PerformanceManager from '../services/PerformanceManager';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 import { log } from '../utils/LoggerService';
 
 interface FeedVisualizerProps {
@@ -16,7 +17,13 @@ interface FeedVisualizerProps {
 const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }) => {
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+  
+  // Initialize autoRefresh from user settings
+  const [autoRefresh, setAutoRefresh] = useState<boolean>(() => {
+    const generalSettings = SettingsIntegrationService.getGeneralSettings();
+    return generalSettings.autoRefresh;
+  });
+  
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
 
   // Filter context integration
@@ -114,15 +121,18 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     }
   }, [selectedFeedList, isMonitoring, checkFeedItems, setLoading, setError]);
 
-  // Auto-refresh mechanism with performance optimization
+  // Auto-refresh mechanism with user settings integration
   useEffect(() => {
     if (!autoRefresh || !selectedFeedList) return;
 
-    const refreshInterval = PerformanceManager.getRefreshInterval('feeds');
+    // Get user's refresh interval setting (in seconds, convert to milliseconds)
+    const generalSettings = SettingsIntegrationService.getGeneralSettings();
+    const refreshIntervalMs = generalSettings.refreshInterval * 1000;
+    
     const intervalId = setInterval(() => {
-      log.debug("Component", 'Auto-refreshing feeds...');
+      log.debug("Component", `Auto-refreshing feeds every ${generalSettings.refreshInterval} seconds...`);
       loadFeeds(false); // Don't show loading spinner for auto-refresh
-    }, refreshInterval);
+    }, refreshIntervalMs);
 
     return () => clearInterval(intervalId);
   }, [autoRefresh, selectedFeedList, loadFeeds]);
@@ -191,17 +201,19 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
         <div className="control-buttons">
           <button 
             onClick={handleRefresh} 
-            className="btn btn-primary btn-sm"
+            className="filter-action-btn refresh"
             title="Refresh feeds"
           >
-            🔄 REFRESH
+            <span className="btn-icon">🔄</span>
+            <span className="btn-text">REFRESH</span>
           </button>
           <button 
             onClick={toggleAutoRefresh}
-            className={`btn btn-sm ${autoRefresh ? 'btn-warning' : 'btn-secondary'}`}
+            className={`filter-action-btn ${autoRefresh ? 'active' : ''}`}
             title={`Auto-refresh: ${autoRefresh ? 'ON' : 'OFF'}`}
           >
-            {autoRefresh ? '🔴 AUTO-REFRESH' : '⚪ AUTO-REFRESH'}
+            <span className="btn-icon">{autoRefresh ? '🔴' : '⚪'}</span>
+            <span className="btn-text">AUTO-REFRESH</span>
           </button>
         </div>
       </div>

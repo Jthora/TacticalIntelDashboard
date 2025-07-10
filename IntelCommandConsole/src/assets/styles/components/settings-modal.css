@@ -1,0 +1,215 @@
+/* Settings Modal Styles */
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.settings-modal {
+  background: var(--panel-bg, #2c3237);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: scaleIn 0.2s ease;
+  color: var(--text-color, #e9ecef);
+}
+
+.settings-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color, #495057);
+}
+
+.settings-modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.settings-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: var(--text-secondary, #adb5bd);
+  transition: color 0.2s ease;
+}
+
+.settings-modal-close:hover {
+  color: var(--text-color, #e9ecef);
+}
+
+.settings-modal-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: 70vh;
+}
+
+.settings-tabs {
+  width: 200px;
+  border-right: 1px solid var(--border-color, #495057);
+  overflow-y: auto;
+}
+
+.settings-tabs ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.settings-tabs li {
+  margin: 0;
+}
+
+.settings-tabs li button {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary, #adb5bd);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.settings-tabs li.active button {
+  background-color: var(--selection-bg, #0d6efd26);
+  color: var(--text-color, #e9ecef);
+  font-weight: 500;
+}
+
+.settings-tabs li button:hover {
+  background-color: var(--hover-bg, #3a4147);
+  color: var(--text-color, #e9ecef);
+}
+
+.settings-tab-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Settings sections and options */
+.settings-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color, #495057);
+}
+
+.settings-section:last-child {
+  border-bottom: none;
+}
+
+.settings-section h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+}
+
+.settings-option {
+  margin-bottom: 16px;
+}
+
+.settings-option label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.settings-option select,
+.settings-option input[type="text"],
+.settings-option input[type="number"] {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color, #495057);
+  background-color: var(--input-bg, #1a1d21);
+  color: var(--text-color, #e9ecef);
+}
+
+.settings-description {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: var(--text-secondary, #adb5bd);
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+button.reset-button {
+  background-color: var(--danger-color, #dc3545);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.save-button {
+  background-color: var(--primary-color, #0d6efd);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .settings-modal-content {
+    flex-direction: column;
+    height: auto;
+    max-height: 70vh;
+  }
+  
+  .settings-tabs {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color, #495057);
+  }
+  
+  .settings-tabs ul {
+    display: flex;
+    overflow-x: auto;
+    padding: 8px;
+  }
+  
+  .settings-tabs li {
+    flex: 0 0 auto;
+  }
+  
+  .settings-tabs li button {
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+}

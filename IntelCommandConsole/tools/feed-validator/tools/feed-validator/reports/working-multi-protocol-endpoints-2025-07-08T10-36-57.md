@@ -1,0 +1,14 @@
+https://www.veteranstoday.com/feed
+https://newenergytimes.com/feed
+https://unlimitedhangout.com/feed
+https://www.thelastamericanvagabond.com/feed
+https://thegrayzone.com/feed
+https://childrenshealthdefense.org/feed
+https://www.mintpressnews.com/feed
+https://www.corbettreport.com/feed
+https://thehighwire.com/feed
+https://anh-usa.org/feed
+https://naturalhealthresearch.org/feed
+https://noetic.org/feed
+https://iands.org/feed
+https://covertactionquarterly.org/feed

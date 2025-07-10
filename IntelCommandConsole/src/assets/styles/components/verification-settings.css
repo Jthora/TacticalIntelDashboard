@@ -1,0 +1,118 @@
+/**
+ * CSS styles for the Verification settings page
+ */
+
+/* Verification methods */
+.verification-methods-list {
+  margin: 15px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.verification-method {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--secondary-bg);
+}
+
+.verification-method:last-child {
+  border-bottom: none;
+}
+
+.method-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.method-priority {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-right: 8px;
+}
+
+.method-move-up,
+.method-move-down {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.method-move-up:hover,
+.method-move-down:hover {
+  opacity: 1;
+  color: var(--accent-color);
+}
+
+.method-move-up:disabled,
+.method-move-down:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Preview section */
+.verification-preview {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--secondary-bg);
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.verification-preview h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.preview-controls {
+  margin-bottom: 20px;
+}
+
+.preview-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.preview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* Form controls */
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* Feedback styles */
+.settings-feedback {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: var(--info-bg);
+  border-left: 4px solid var(--info-color);
+  border-radius: 4px;
+}

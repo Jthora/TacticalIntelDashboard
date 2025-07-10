@@ -1,0 +1,179 @@
+/* Settings Tooltip Styles */
+.settings-tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.settings-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: var(--primary-color, #2a2a2a);
+  color: var(--text-color, #e0e6ff);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  max-width: 300px;
+  min-width: 150px;
+  opacity: 0;
+  animation: tooltipFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.tooltip-content {
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* Positioning */
+.settings-tooltip.top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+}
+
+.settings-tooltip.top::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--primary-color, #2a2a2a);
+}
+
+.settings-tooltip.bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+}
+
+.settings-tooltip.bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: var(--primary-color, #2a2a2a);
+}
+
+.settings-tooltip.left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 8px;
+}
+
+.settings-tooltip.left::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: var(--primary-color, #2a2a2a);
+}
+
+.settings-tooltip.right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+}
+
+.settings-tooltip.right::after {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-right-color: var(--primary-color, #2a2a2a);
+}
+
+/* Theme adjustments */
+[data-theme="light"] .settings-tooltip {
+  background: #ffffff;
+  color: #333333;
+  border-color: #e0e0e0;
+}
+
+[data-theme="light"] .settings-tooltip.top::after {
+  border-top-color: #ffffff;
+}
+
+[data-theme="light"] .settings-tooltip.bottom::after {
+  border-bottom-color: #ffffff;
+}
+
+[data-theme="light"] .settings-tooltip.left::after {
+  border-left-color: #ffffff;
+}
+
+[data-theme="light"] .settings-tooltip.right::after {
+  border-right-color: #ffffff;
+}
+
+[data-theme="alliance"] .settings-tooltip {
+  background: var(--primary-color, #1a2a42);
+  border-color: var(--accent-color, #50b4e0);
+}
+
+[data-theme="alliance"] .settings-tooltip.top::after {
+  border-top-color: var(--primary-color, #1a2a42);
+}
+
+[data-theme="alliance"] .settings-tooltip.bottom::after {
+  border-bottom-color: var(--primary-color, #1a2a42);
+}
+
+[data-theme="alliance"] .settings-tooltip.left::after {
+  border-left-color: var(--primary-color, #1a2a42);
+}
+
+[data-theme="alliance"] .settings-tooltip.right::after {
+  border-right-color: var(--primary-color, #1a2a42);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .settings-tooltip {
+    max-width: 250px;
+    font-size: 11px;
+  }
+  
+  .tooltip-content {
+    padding: 6px 10px;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .settings-tooltip {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .settings-tooltip {
+    border-width: 2px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+}

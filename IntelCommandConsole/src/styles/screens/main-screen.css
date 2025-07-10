@@ -1,0 +1,113 @@
+/**
+ * Main Screen Layout Styles
+ * Controls the three-column layout for the main dashboard view
+ */
+
+/* Main Screen Container */
+.main-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  min-height: calc(100vh - var(--header-height, 60px));
+}
+
+/* Tactical Layout Container */
+.tactical-layout-container {
+  display: flex;
+  flex-direction: row !important; /* Force horizontal layout */
+  flex: 1;
+  height: calc(100vh - var(--header-height, 60px) - var(--footer-height, 60px));
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Left Sidebar */
+.tactical-sidebar-left {
+  width: 300px;
+  min-width: 300px;
+  background-color: var(--sidebar-bg-color, #0c1626);
+  border-right: 1px solid var(--border-color, #1e2d45);
+  height: 100%;
+  overflow-y: auto;
+  grid-area: left-sidebar;
+}
+
+/* Main Content Area */
+.tactical-main {
+  flex: 1;
+  background-color: var(--main-bg-color, #0a101d);
+  height: 100%;
+  overflow-y: auto;
+  grid-area: main;
+  padding: 0;
+}
+
+/* Right Sidebar */
+.tactical-sidebar-right {
+  width: 340px;
+  min-width: 340px;
+  background-color: var(--sidebar-bg-color, #0c1626);
+  border-left: 1px solid var(--border-color, #1e2d45);
+  height: 100%;
+  overflow-y: auto;
+  grid-area: right-sidebar;
+}
+
+/* Footer Area */
+.tactical-footer {
+  height: var(--footer-height, 60px);
+  min-height: var(--footer-height, 60px);
+  background-color: var(--footer-bg-color, #0c1626);
+  border-top: 1px solid var(--border-color, #1e2d45);
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .tactical-sidebar-left {
+    width: 250px;
+    min-width: 250px;
+  }
+  
+  .tactical-sidebar-right {
+    width: 300px;
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 992px) {
+  .tactical-layout-container {
+    flex-direction: column;
+  }
+  
+  .tactical-sidebar-left,
+  .tactical-sidebar-right {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .tactical-sidebar-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border-color, #1e2d45);
+  }
+  
+  .tactical-sidebar-right {
+    border-left: none;
+    border-top: 1px solid var(--border-color, #1e2d45);
+  }
+}
+
+/* Home Page Container */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}

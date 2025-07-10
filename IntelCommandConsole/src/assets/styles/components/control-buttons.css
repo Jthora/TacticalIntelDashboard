@@ -1,0 +1,36 @@
+/**
+ * Control Button Micro Styles
+ * Used for header navigation controls
+ */
+
+.control-btn-micro {
+  width: 32px;
+  height: 32px;
+  background-color: var(--bg-color-tertiary, #0c1626);
+  border: 1px solid var(--border-color, #1e2d45);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-color-primary, #fff);
+  font-size: 16px;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.control-btn-micro:hover {
+  background-color: var(--bg-color-hover, #1e2d45);
+}
+
+.control-btn-micro.active {
+  background-color: var(--accent-color, #00bfff);
+  color: var(--text-color-inverted, #fff);
+  border-color: var(--accent-color, #00bfff);
+}
+
+.controls-micro {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

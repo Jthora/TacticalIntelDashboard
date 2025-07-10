@@ -29,12 +29,13 @@ export interface RSS2JSONResponse {
 
 export class RSS2JSONService {
   private static readonly APIS = [
-    // Working APIs - prioritized by reliability
+    // Browser-compatible, CORS-enabled APIs - no server needed
     'https://rss2json.vercel.app/api',
     'https://api.rss2json.com/v1/api.json',
-    
-    // Backup APIs (may require different handling)
-    'https://feed2json.org/convert',
+    'https://api.rss-to-json.com/v1/api.json', // Different service
+    'https://api.allorigins.win/get?url=',      // CORS-enabled gateway
+    'https://corsproxy.io/?',                  // Public CORS proxy API
+    'https://api.cors.sh/cors/?url=',         // Another public CORS API
   ];
 
   static async fetchFeed(rssUrl: string): Promise<Feed[]> {

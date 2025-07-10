@@ -1,6 +1,8 @@
 import { FeedItem } from '../types/FeedTypes';
+import { DefaultFeeds as EarthAllianceDefaultFeeds } from './EarthAllianceDefaultFeeds';
 
-const defaultUrls = [
+// Original mainstream sources (kept for the MAINSTREAM mode)
+const mainstreamUrls = [
   'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
   'https://feeds.bbci.co.uk/news/rss.xml',
   'https://www.npr.org/rss/rss.php?id=1001',
@@ -13,12 +15,15 @@ const defaultUrls = [
   'https://www.ft.com/?format=rss',
 ];
 
-export const DefaultFeeds: FeedItem[] = defaultUrls.map((url, index) => ({
-  id: (index + 1).toString(),
-  title: `Title ${index + 1}`,
+export const MainstreamFeeds: FeedItem[] = mainstreamUrls.map((url, index) => ({
+  id: `ms-${index + 1}`,
+  title: `Mainstream Source ${index + 1}`,
   link: url,
   pubDate: `2023-01-${String(index + 1).padStart(2, '0')}`,
-  description: `Description ${index + 1}`,
-  content: `Content ${index + 1}`,
+  description: `Mainstream news source ${index + 1}`,
+  content: `Content from mainstream source ${index + 1}`,
   feedListId: '1',
 }));
+
+// Use Earth Alliance feeds as default
+export const DefaultFeeds: FeedItem[] = EarthAllianceDefaultFeeds;

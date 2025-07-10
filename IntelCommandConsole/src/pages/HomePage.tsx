@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import Header from '../components/Header';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
 import CentralView from '../components/CentralView';
 import QuickActions from '../components/QuickActions';
 import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel';
 
+/**
+ * HomePage displays the main dashboard with a 3-column layout.
+ */
 const HomePage: React.FC = () => {
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);
 
@@ -31,11 +33,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="tactical-dashboard">
-      <div className="tactical-header-main">
-        <Header />
-      </div>
-      
+    <div className="home-page-container">
       <div className="tactical-sidebar-left">
         <LeftSidebar setSelectedFeedList={setSelectedFeedList} />
       </div>
@@ -48,15 +46,14 @@ const HomePage: React.FC = () => {
         <RightSidebar />
       </div>
       
-      <div className="tactical-quickactions">
+      <div className="tactical-footer">
         <QuickActions 
           selectedFeedList={selectedFeedList}
           onRefreshAll={handleRefreshAll}
           onExportData={handleExportData}
         />
+        <AlertNotificationPanel />
       </div>
-      
-      <AlertNotificationPanel />
     </div>
   );
 };

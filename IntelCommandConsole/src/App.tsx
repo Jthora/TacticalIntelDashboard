@@ -7,11 +7,12 @@ import { HealthProvider } from './contexts/HealthContext';
 import { FeedModeProvider } from './contexts/FeedModeContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { Web3Provider } from './contexts/Web3Context';
+import { IPFSProvider } from './contexts/IPFSContext';
 import AppRoutes from './routes/AppRoutes';
 import SearchResults from './components/SearchResults';
 import DevelopmentNotice from './components/DevelopmentNotice';
 import PerformanceManager from './services/PerformanceManager';
-import './assets/styles/main.css';
+import RouteValidator from './components/RouteValidator';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -25,25 +26,28 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <ThemeProvider>
-        <SettingsProvider>
+      <SettingsProvider>
+        <ThemeProvider>
           <Web3Provider>
-            <SearchProvider>
-              <FilterProvider>
-                <HealthProvider>
-                  <FeedModeProvider>
-                    <div className="App">
-                      <DevelopmentNotice />
-                      <AppRoutes />
-                      <SearchResults />
-                    </div>
-                  </FeedModeProvider>
-                </HealthProvider>
-              </FilterProvider>
-            </SearchProvider>
+            <IPFSProvider>
+              <SearchProvider>
+                <FilterProvider>
+                  <HealthProvider>
+                    <FeedModeProvider>
+                      <div className="App">
+                        <DevelopmentNotice />
+                        <RouteValidator />
+                        <AppRoutes />
+                        <SearchResults />
+                      </div>
+                    </FeedModeProvider>
+                  </HealthProvider>
+                </FilterProvider>
+              </SearchProvider>
+            </IPFSProvider>
           </Web3Provider>
-        </SettingsProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </SettingsProvider>
     </Router>
   );
 };

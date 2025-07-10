@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { log } from '../utils/LoggerService';
+import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../contexts/SearchContext';
 import Modal from '../shared/components/Modal';
 import FeedManager from './FeedManager';
 import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
+import Web3Button from './web3/Web3Button';
+import NavigationButtons from './navigation/NavigationButtons';
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const { performSearch, isSearching } = useSearch();
   const [searchQuery, setSearchQuery] = useState('');
   const [showFeedManager, setShowFeedManager] = useState(false);
-  const [showSystemMenu, setShowSystemMenu] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // Update time every second
@@ -45,6 +47,8 @@ const Header: React.FC = () => {
             src={WingCommanderLogo} 
             alt="TC" 
             className="brand-icon-micro"
+            onClick={() => navigate('/')}
+            style={{ cursor: 'pointer' }}
           />
           <div className="brand-text-micro">
             <span className="brand-code">TACTICAL INTEL DASHBOARD</span>
@@ -90,32 +94,22 @@ const Header: React.FC = () => {
 
         {/* Controls */}
         <div className="controls-micro">
+          <NavigationButtons />
+          <Web3Button />
           <button 
             className="control-btn-micro"
-            onClick={() => setShowFeedManager(true)}
-            title="Feed Manager"
+            onClick={() => {
+              document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable fullscreen: ${err.message}`);
+              });
+            }}
+            title="Toggle Fullscreen"
           >
-            ⚙
-          </button>
-          <button 
-            className="control-btn-micro"
-            onClick={() => setShowSystemMenu(!showSystemMenu)}
-            title="System Menu"
-          >
-            ⋮
+            ⛶
           </button>
         </div>
       </div>
-
-      {/* System menu dropdown */}
-      {showSystemMenu && (
-        <div className="system-menu-micro">
-          <div className="menu-item-micro" onClick={() => window.location.reload()}>↻ REFRESH</div>
-          <div className="menu-item-micro" onClick={() => document.documentElement.requestFullscreen()}>⛶ FULLSCREEN</div>
-          <div className="menu-item-micro" onClick={() => log.debug("Component", 'Export logs')}>↓ EXPORT</div>
-        </div>
-      )}
-        
+      
       <Modal
         isOpen={showFeedManager}
         onClose={() => setShowFeedManager(false)}

@@ -45,8 +45,8 @@ const DevelopmentNotice: React.FC = () => {
             🔧 Development Mode
           </div>
           <div>
-            RSS feeds may use mock data if proxies fail due to CORS restrictions in development.
-            In production, real RSS feeds will work normally.
+            RSS feeds are using validated sources from the Earth Alliance roster.
+            All feeds have been tested and confirmed working.
           </div>
         </div>
         <button

@@ -1,0 +1,248 @@
+/* src/assets/styles/components/contract-deployment-panel.css */
+.contract-deployment-panel {
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.contract-deployment-panel h2 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.contract-deployment-panel h3 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.deployment-notice {
+  background-color: var(--surface-muted);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--warning);
+}
+
+.deployment-notice p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.deployment-section {
+  background-color: var(--surface-raised);
+  border-radius: 6px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.deployed-status {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  background-color: var(--surface-inset);
+  padding: 0.75rem;
+  border-radius: 6px;
+  flex-wrap: wrap;
+}
+
+.deployed-status .status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.deployed-status .status-indicator.deployed {
+  background-color: var(--success);
+  box-shadow: 0 0 8px var(--success-glow);
+}
+
+.deployed-status .status-indicator.not-deployed {
+  background-color: var(--warning);
+}
+
+.contract-address {
+  font-family: 'Roboto Mono', monospace;
+  background-color: var(--surface-muted);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  width: 100%;
+  word-break: break-all;
+  color: var(--text-secondary);
+}
+
+.deployment-form {
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.address-input-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-inset);
+  color: var(--text-primary);
+  font-family: 'Roboto Mono', monospace;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.deployment-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.deploy-button, .register-button, .confirm-button, .cancel-button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.deploy-button {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.deploy-button:hover {
+  background-color: var(--accent-hover);
+}
+
+.deploy-button:disabled {
+  background-color: var(--surface-muted);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.register-button {
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.register-button:hover {
+  background-color: var(--surface-hover);
+}
+
+.register-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.deployment-confirmation {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--surface-warning);
+  border-radius: 6px;
+  border-left: 4px solid var(--warning);
+}
+
+.confirmation-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.confirm-button {
+  background-color: var(--danger);
+  color: var(--text-on-accent);
+}
+
+.confirm-button:hover {
+  background-color: var(--danger-hover);
+}
+
+.cancel-button {
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.cancel-button:hover {
+  background-color: var(--surface-hover);
+}
+
+.deployed-networks {
+  background-color: var(--surface-raised);
+  border-radius: 6px;
+  padding: 1.25rem;
+}
+
+.networks-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.networks-table th,
+.networks-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.networks-table th {
+  color: var(--text-secondary);
+  font-weight: 500;
+  background-color: var(--surface-inset);
+}
+
+.networks-table td.address-cell {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+.no-deployments {
+  color: var(--text-muted);
+  padding: 1rem;
+  text-align: center;
+  background-color: var(--surface-inset);
+  border-radius: 4px;
+}
+
+.deployment-status {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}

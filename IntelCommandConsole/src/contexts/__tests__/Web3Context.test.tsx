@@ -1,22 +1,27 @@
 // src/contexts/__tests__/Web3Context.test.tsx
-import React from 'react';
 import { render, act, waitFor, screen, fireEvent } from '@testing-library/react';
-import { Web3Provider, useWeb3, AccessLevel } from '../Web3Context';
-import { Web3Error, Web3ErrorType } from '../../types/web3Errors';
+import { Web3Provider, useWeb3 } from '../Web3Context';
+
+// Create a mock provider that will be reused
+let mockProvider: any;
 
 // Mock ethers
-jest.mock('ethers', () => ({
-  ethers: {
-    BrowserProvider: jest.fn().mockImplementation(() => ({
-      send: jest.fn(),
-      getNetwork: jest.fn(),
-      getSigner: jest.fn(),
-      getBalance: jest.fn(),
-      lookupAddress: jest.fn(),
-    })),
-    formatEther: jest.fn((value) => '1.5'),
-  },
-}));
+jest.mock('ethers', () => {
+  mockProvider = {
+    send: jest.fn(),
+    getNetwork: jest.fn(),
+    getSigner: jest.fn(),
+    getBalance: jest.fn(),
+    lookupAddress: jest.fn(),
+  };
+
+  return {
+    ethers: {
+      BrowserProvider: jest.fn().mockImplementation(() => mockProvider),
+      formatEther: jest.fn(() => '1.5000'),
+    },
+  };
+});
 
 // Mock component to test the hook
 const TestComponent = () => {
@@ -416,13 +421,13 @@ describe('Web3Context', () => {
       });
 
       // Test signing
-      let signResult: string | undefined;
       await act(async () => {
         const button = screen.getByTestId('sign-message-button');
         button.onclick = async () => {
           try {
             const { signMessage } = useWeb3();
-            signResult = await signMessage('test message');
+            const signResult = await signMessage('test message');
+            console.log('Sign result:', signResult);
           } catch (error) {
             console.error('Sign error:', error);
           }

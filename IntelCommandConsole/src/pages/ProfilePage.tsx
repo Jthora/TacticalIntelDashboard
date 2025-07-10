@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useWeb3 } from '../contexts/Web3Context';
+import { useWeb3, AccessLevel } from '../contexts/Web3Context';
+import { createVerificationMessage } from '../utils/signatureUtils';
+import IPFSStoragePanel from '../components/ipfs/IPFSStoragePanel';
+import ContentVerificationPanel from '../components/ipfs/ContentVerificationPanel';
+import BatchVerificationPanel from '../components/ipfs/BatchVerificationPanel';
+import ContractDeploymentPanel from '../components/admin/ContractDeploymentPanel';
+import FeedSourceValidator from '../components/feed/FeedSourceValidator';
 import '../assets/styles/components/profile-page.css';
+import '../assets/styles/components/web3-verification.css';
+import '../assets/styles/components/content-verification-panel.css';
+import '../assets/styles/components/feed-source-validator.css';
+import '../assets/styles/components/batch-verification-panel.css';
+import '../assets/styles/components/contract-deployment-panel.css';
 
 /**
  * ProfilePage component for user profile management
- * Includes enhanced Web3 wallet connection functionality
- * Optimized for wide desktop screens with sidebar layout
- * Uses Web3Context for wallet state management
+ * Enhanced with real Web3 wallet connection functionality
+ * Supports ENS name resolution and transaction history
+ * Implements source verification features
  */
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,14 +28,25 @@ const ProfilePage: React.FC = () => {
     networkName,
     networkId,
     balance,
+    ensName,
+    accessLevel,
     connectWallet, 
     disconnectWallet,
-    switchNetwork
+    switchNetwork,
+    signMessage
   } = useWeb3();
   
   const [activeSection, setActiveSection] = useState('wallet');
   const [transactions, setTransactions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState('');
+  const [signature, setSignature] = useState('');
+  const [isSigning, setIsSigning] = useState(false);
+
+  // Initialize with a default verification message
+  useEffect(() => {
+    setVerificationMessage(createVerificationMessage("I am an authorized Earth Alliance operative with access to tactical intelligence systems."));
+  }, []);
 
   // Simulate transaction history based on connected state
   useEffect(() => {
@@ -69,9 +91,47 @@ const ProfilePage: React.FC = () => {
     setActiveSection(section);
   };
 
-  const handleNetworkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleNetworkChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newNetworkId = parseInt(e.target.value, 10);
-    switchNetwork(newNetworkId);
+    try {
+      await switchNetwork(newNetworkId);
+    } catch (error) {
+      console.error('Error switching networks:', error);
+    }
+  };
+
+  const handleSignMessage = async () => {
+    if (!verificationMessage) {
+      alert('Please enter a message to sign');
+      return;
+    }
+    
+    setIsSigning(true);
+    try {
+      const sig = await signMessage(verificationMessage);
+      setSignature(sig);
+    } catch (error) {
+      console.error('Error signing message:', error);
+      alert('Failed to sign message. Please try again.');
+    } finally {
+      setIsSigning(false);
+    }
+  };
+
+  const getAccessLevelName = (level: AccessLevel): string => {
+    switch (level) {
+      case AccessLevel.DIRECTOR:
+        return 'Director';
+      case AccessLevel.COMMANDER:
+        return 'Commander';
+      case AccessLevel.ANALYST:
+        return 'Analyst';
+      case AccessLevel.FIELD_OPERATIVE:
+        return 'Field Operative';
+      case AccessLevel.PUBLIC:
+      default:
+        return 'Public User';
+    }
   };
 
   // Available networks for dropdown
@@ -97,7 +157,7 @@ const ProfilePage: React.FC = () => {
             <div className="profile-avatar">
               {isConnected ? walletAddress.substring(0, 2) : "OP"}
             </div>
-            <h3>Tactical Operator</h3>
+            <h3>{ensName || 'Tactical Operator'}</h3>
             <p className="profile-status">
               {isConnected ? (
                 <>
@@ -131,6 +191,44 @@ const ProfilePage: React.FC = () => {
             >
               🔐 Secure Connection
             </button>
+            <button 
+              className={`profile-nav-item ${activeSection === 'verification' ? 'active' : ''}`}
+              onClick={() => handleSectionChange('verification')}
+            >
+              ✓ Source Verification
+            </button>
+            <button 
+              className={`profile-nav-item ${activeSection === 'storage' ? 'active' : ''}`}
+              onClick={() => handleSectionChange('storage')}
+            >
+              🗄️ Decentralized Storage
+            </button>
+            <button 
+              className={`profile-nav-item ${activeSection === 'verification-content' ? 'active' : ''}`}
+              onClick={() => handleSectionChange('verification-content')}
+            >
+              🔏 Content Verification
+            </button>
+            <button 
+              className={`profile-nav-item ${activeSection === 'feed-validation' ? 'active' : ''}`}
+              onClick={() => handleSectionChange('feed-validation')}
+            >
+              📰 Feed Source Validation
+            </button>
+            <button 
+              className={`profile-nav-item ${activeSection === 'batch-verification' ? 'active' : ''}`}
+              onClick={() => handleSectionChange('batch-verification')}
+            >
+              �� Batch Verification
+            </button>
+            {accessLevel <= AccessLevel.COMMANDER && (
+              <button 
+                className={`profile-nav-item ${activeSection === 'contract-deployment' ? 'active' : ''}`}
+                onClick={() => handleSectionChange('contract-deployment')}
+              >
+                🔧 Contract Deployment
+              </button>
+            )}
             <button 
               className={`profile-nav-item ${activeSection === 'info' ? 'active' : ''}`}
               onClick={() => handleSectionChange('info')}
@@ -212,6 +310,19 @@ const ProfilePage: React.FC = () => {
                           📋
                         </button>
                       </div>
+                      {ensName && (
+                        <div className="ens-name">
+                          <span className="ens-label">ENS Name:</span>
+                          <span className="ens-value">{ensName}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="access-level">
+                      <span className="access-label">Access Level:</span>
+                      <span className={`access-value level-${accessLevel}`}>
+                        {getAccessLevelName(accessLevel)}
+                      </span>
                     </div>
                     
                     {transactions.length > 0 && (
@@ -257,6 +368,119 @@ const ProfilePage: React.FC = () => {
               </div>
             )}
 
+            {/* Verification Section */}
+            {activeSection === 'verification' && (
+              <div className="profile-section">
+                <h2>Source Verification</h2>
+                
+                {!isConnected ? (
+                  <div className="verification-notice">
+                    <p>Connect your wallet to access source verification features</p>
+                    <button 
+                      className="connect-wallet-button" 
+                      onClick={handleConnectWallet}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Connecting...' : 'Connect Secure Wallet'}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="verification-panel">
+                    <p>Sign messages to verify your identity and intelligence reports</p>
+                    
+                    <div className="verification-form">
+                      <div className="form-group">
+                        <label htmlFor="verificationMessage">Message to sign:</label>
+                        <textarea 
+                          id="verificationMessage" 
+                          className="form-control" 
+                          value={verificationMessage}
+                          onChange={(e) => setVerificationMessage(e.target.value)}
+                          placeholder="Enter message to cryptographically sign..."
+                          rows={3}
+                        />
+                      </div>
+                      
+                      <button 
+                        className="sign-button"
+                        onClick={handleSignMessage}
+                        disabled={isSigning || !verificationMessage}
+                      >
+                        {isSigning ? 'Signing...' : 'Sign Message'}
+                      </button>
+                      
+                      {signature && (
+                        <div className="signature-result">
+                          <h4>Signature:</h4>
+                          <div className="signature-box">
+                            <p className="signature-text">{signature}</p>
+                            <button 
+                              className="copy-signature-button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(signature);
+                                alert('Signature copied to clipboard');
+                              }}
+                            >
+                              Copy Signature
+                            </button>
+                          </div>
+                          <p className="verification-instructions">
+                            Share this signature along with the original message to prove your identity.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* IPFS Storage Section */}
+            {activeSection === 'storage' && (
+              <div className="profile-section">
+                <h2>Decentralized Storage</h2>
+                <IPFSStoragePanel />
+              </div>
+            )}
+
+            {/* Content Verification Section */}
+            {activeSection === 'verification-content' && (
+              <div className="profile-section">
+                <h2>Content Verification</h2>
+                <ContentVerificationPanel />
+              </div>
+            )}
+
+            {/* Feed Source Validation Section */}
+            {activeSection === 'feed-validation' && (
+              <div className="profile-section">
+                <h2>Feed Source Validation</h2>
+                <FeedSourceValidator />
+              </div>
+            )}
+
+            {/* Batch Verification Section */}
+            {activeSection === 'batch-verification' && (
+              <div className="profile-section">
+                <h2>Batch Content Verification</h2>
+                <BatchVerificationPanel />
+              </div>
+            )}
+
+            {/* Contract Deployment Section */}
+            {activeSection === 'contract-deployment' && (
+              <div className="profile-section">
+                <h2>Smart Contract Deployment</h2>
+                {accessLevel <= AccessLevel.COMMANDER ? (
+                  <ContractDeploymentPanel />
+                ) : (
+                  <div className="access-restricted">
+                    <p>Access to contract deployment is restricted to Commander level and above.</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Operator Information Section */}
             {activeSection === 'info' && (
               <div className="profile-section">
@@ -264,7 +488,12 @@ const ProfilePage: React.FC = () => {
                 <div className="profile-form">
                   <div className="form-group">
                     <label htmlFor="displayName">Tactical Callsign</label>
-                    <input type="text" id="displayName" className="form-control" defaultValue="Tactical Operator" />
+                    <input 
+                      type="text" 
+                      id="displayName" 
+                      className="form-control" 
+                      defaultValue={ensName || "Tactical Operator"} 
+                    />
                   </div>
                   <div className="form-group">
                     <label htmlFor="email">Secure Contact</label>
@@ -272,7 +501,13 @@ const ProfilePage: React.FC = () => {
                   </div>
                   <div className="form-group">
                     <label htmlFor="role">Operational Role</label>
-                    <input type="text" id="role" className="form-control" defaultValue="Intelligence Analyst" readOnly />
+                    <input 
+                      type="text" 
+                      id="role" 
+                      className="form-control" 
+                      defaultValue={getAccessLevelName(accessLevel)} 
+                      readOnly 
+                    />
                   </div>
                   <button className="btn-primary">Update Profile</button>
                 </div>

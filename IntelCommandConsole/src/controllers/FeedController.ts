@@ -1,6 +1,6 @@
 import { FeedResults, FeedItem } from '../types/FeedTypes';
 import { log } from '../utils/LoggerService';
-import { fetchFeed } from '../utils/fetchFeed';
+import { fetchFeed } from '../utils/fetchFeed_new';
 
 interface FetchedFeedItem {
   id: string;

@@ -1,0 +1,429 @@
+/* src/assets/styles/components/batch-verification-panel.css */
+.batch-verification-panel {
+  background-color: var(--panel-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.batch-verification-panel h2 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  font-size: 1.4rem;
+}
+
+.batch-verification-panel h3 {
+  color: var(--text-primary);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.batch-verification-panel h4 {
+  color: var(--text-secondary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.verification-notice {
+  background-color: var(--surface-muted);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--warning);
+}
+
+.verification-notice p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.verification-mode-toggle {
+  display: flex;
+  margin-bottom: 1.5rem;
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  padding: 0.25rem;
+}
+
+.mode-button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.mode-button.active {
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.batch-maker, .verification-form {
+  background-color: var(--surface-raised);
+  border-radius: 6px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.batch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.batch-header h3, .batch-header h4 {
+  margin: 0;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-item-button, .upload-button {
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: var(--surface-inset);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.add-item-button:hover, .upload-button:hover {
+  background-color: var(--surface-hover);
+}
+
+.content-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-item {
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.item-title-input {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  padding: 0.25rem 0;
+  width: 70%;
+}
+
+.item-title-input:focus {
+  outline: none;
+  border-bottom-color: var(--accent-primary);
+}
+
+.item-number {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.remove-item-button {
+  background-color: transparent;
+  color: var(--danger);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.remove-item-button:hover {
+  background-color: var(--danger-bg);
+}
+
+.item-content-input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+  resize: vertical;
+  margin-bottom: 0.5rem;
+  font-family: 'Roboto Mono', monospace;
+  transition: border-color 0.2s;
+}
+
+.item-content-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.item-source-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-raised);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.item-source-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.empty-batch {
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-color);
+}
+
+.batch-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.verify-button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.verify-button:hover {
+  background-color: var(--accent-hover);
+}
+
+.verify-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: var(--surface-inset);
+  color: var(--text-primary);
+  font-family: 'Roboto Mono', monospace;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.verification-results {
+  background-color: var(--surface-raised);
+  border-radius: 6px;
+  padding: 1.25rem;
+}
+
+.result-summary {
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summary-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.summary-label {
+  width: 120px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.summary-value {
+  flex: 1;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.summary-value.verified {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.summary-value.failed {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.summary-value.hash {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.summary-value.link {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.summary-value.link:hover {
+  text-decoration: underline;
+}
+
+.verified-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.verified-item {
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  padding: 1rem;
+  border-left: 4px solid var(--border-color);
+}
+
+.verified-item.verified {
+  border-left-color: var(--success);
+}
+
+.verified-item.failed {
+  border-left-color: var(--danger);
+}
+
+.item-status {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.verified-item.verified .item-status {
+  color: var(--success);
+}
+
+.verified-item.failed .item-status {
+  color: var(--danger);
+}
+
+.item-content {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  background-color: var(--surface-raised);
+  border-radius: 4px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  word-break: break-all;
+  white-space: pre-wrap;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.item-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.item-detail {
+  display: flex;
+  align-items: center;
+}
+
+.detail-label {
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+.detail-value {
+  color: var(--text-secondary);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.result-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.reset-button {
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  background-color: var(--surface-inset);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-button:hover {
+  background-color: var(--surface-hover);
+}
+
+.verification-status {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: var(--surface-inset);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}

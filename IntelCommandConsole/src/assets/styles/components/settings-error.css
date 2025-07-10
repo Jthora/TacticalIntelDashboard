@@ -1,0 +1,90 @@
+/**
+ * Settings Error Component Styles
+ */
+.settings-error {
+  padding: var(--spacing-lg);
+  border: 1px solid rgba(255, 100, 100, 0.4);
+  border-radius: var(--radius-md);
+  background: rgba(50, 0, 0, 0.3);
+  color: var(--text-primary);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
+}
+
+.error-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid rgba(255, 100, 100, 0.2);
+  padding-bottom: var(--spacing-md);
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-right: var(--spacing-md);
+}
+
+.error-header h2 {
+  color: rgba(255, 100, 100, 0.9);
+  font-family: 'Orbitron', sans-serif;
+  margin: 0;
+  text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+.error-details {
+  margin-bottom: var(--spacing-lg);
+}
+
+.error-details p {
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.technical-details,
+.troubleshooting {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 100, 100, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.technical-details h3,
+.troubleshooting h3 {
+  font-family: 'Share Tech Mono', monospace;
+  color: rgba(255, 100, 100, 0.8);
+  margin-top: 0;
+  font-size: var(--font-size-md);
+}
+
+.technical-details ul,
+.troubleshooting ol {
+  margin: var(--spacing-sm) 0;
+  padding-left: var(--spacing-lg);
+}
+
+.technical-details li,
+.troubleshooting li {
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.6;
+}
+
+.technical-details code {
+  font-family: 'Source Code Pro', monospace;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: rgba(255, 100, 100, 0.9);
+}
+
+.error-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
+
+.error-actions button {
+  min-width: 150px;
+}

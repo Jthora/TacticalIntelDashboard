@@ -1,0 +1,183 @@
+/**
+ * CSS styles for the CORS settings page
+ */
+
+/* Service management */
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: var(--secondary-bg);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.service-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.service-url {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 1.2em;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.btn-icon:hover {
+  opacity: 1;
+  color: var(--danger-color);
+}
+
+.add-service-form {
+  display: flex;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.add-service-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+/* CORS Test Utility */
+.cors-test-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.cors-test-form input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.btn-primary.loading {
+  position: relative;
+  color: transparent;
+}
+
+.btn-primary.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.test-results {
+  padding: 16px;
+  border-radius: 4px;
+  margin-top: 16px;
+  background-color: var(--secondary-bg);
+}
+
+.test-results.success {
+  border-left: 4px solid var(--success-color);
+}
+
+.test-results.error {
+  border-left: 4px solid var(--danger-color);
+}
+
+.test-results.testing {
+  border-left: 4px solid var(--info-color);
+}
+
+.test-message {
+  margin-top: 0;
+  font-weight: 500;
+}
+
+.strategy-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.strategy-result {
+  padding: 12px;
+  border-radius: 4px;
+  background-color: var(--tertiary-bg);
+}
+
+.strategy-result.success {
+  border-left: 3px solid var(--success-color);
+}
+
+.strategy-result.error {
+  border-left: 3px solid var(--danger-color);
+}
+
+.strategy-result.testing {
+  border-left: 3px solid var(--info-color);
+  animation: pulse 1.5s infinite;
+}
+
+.strategy-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.9em;
+}
+
+.strategy-status {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* Feedback for settings changes */
+.settings-feedback {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: var(--info-bg);
+  border-left: 4px solid var(--info-color);
+}
+
+.settings-feedback.success {
+  background-color: var(--success-bg);
+  border-left: 4px solid var(--success-color);
+}
+
+.settings-feedback.error {
+  background-color: var(--danger-bg);
+  border-left: 4px solid var(--danger-color);
+}

@@ -1,0 +1,126 @@
+/* Settings Feedback Styles */
+
+.settings-feedback {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left: 4px solid var(--accent-color, #007acc);
+}
+
+.settings-feedback.success {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-left-color: #28a745;
+  color: #28a745;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+.settings-feedback.warning {
+  background-color: rgba(255, 193, 7, 0.1);
+  border-left-color: #ffc107;
+  color: #ffc107;
+}
+
+.settings-feedback.error {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-left-color: #dc3545;
+  color: #dc3545;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Settings preview elements */
+
+.font-size-example {
+  margin-top: 8px;
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-family: var(--font-family, 'Inter', sans-serif);
+}
+
+.theme-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.theme-swatch {
+  height: 50px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.theme-swatch:hover {
+  transform: scale(1.05);
+}
+
+.theme-swatch.selected {
+  border-color: var(--accent-color, #007acc);
+}
+
+.theme-swatch.dark {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.theme-swatch.night {
+  background-color: #101823;
+  color: #d0d7e2;
+}
+
+.theme-swatch.combat {
+  background-color: #2a2118;
+  color: #e5d6c5;
+}
+
+.theme-swatch.alliance {
+  background-color: #1a2a42;
+  color: #d0dff0;
+}
+
+.theme-swatch.light {
+  background-color: #f5f5f5;
+  color: #333333;
+}
+
+/* Density preview */
+.density-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.density-option {
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.density-option.selected {
+  border-color: var(--accent-color, #007acc);
+}
+
+.density-option.compact {
+  padding: 6px;
+  font-size: 0.9em;
+}
+
+.density-option.spacious {
+  padding: 18px;
+  font-size: 1.1em;
+}

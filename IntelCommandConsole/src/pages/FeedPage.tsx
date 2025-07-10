@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import FeedService from '../services/FeedService';
 import { Feed } from '../models/Feed';
 
+/**
+ * FeedPage displays the content of a specific feed.
+ * The feed ID is taken from the route parameters.
+ */
 const FeedPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [feed, setFeed] = useState<Feed | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [id, setId] = useState<string | null>(null);
 
   useEffect(() => {
     const loadFeed = async () => {
@@ -33,30 +39,51 @@ const FeedPage: React.FC = () => {
     loadFeed();
   }, [id]);
 
+  const handleBack = () => {
+    navigate('/');
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="feed-page loading">Loading...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div className="feed-page error">
+        <div className="error-message">{error}</div>
+        <button className="back-button" onClick={handleBack}>
+          Return to Dashboard
+        </button>
+      </div>
+    );
   }
 
   if (!feed) {
-    return <div>Feed not found</div>;
+    return (
+      <div className="feed-page not-found">
+        <div className="not-found-message">Feed not found</div>
+        <button className="back-button" onClick={handleBack}>
+          Return to Dashboard
+        </button>
+      </div>
+    );
   }
 
   return (
     <div className="feed-page">
-      <input
-        type="text"
-        value={id || ''}
-        onChange={(e) => setId(e.target.value)}
-        placeholder="Enter feed ID"
-      />
-      <h1>{feed.title}</h1>
-      <p>{feed.pubDate}</p>
-      {feed.description && <p>{feed.description}</p>}
-      {feed.content && <div dangerouslySetInnerHTML={{ __html: feed.content }} />}
+      <div className="feed-header">
+        <button className="back-button" onClick={handleBack}>
+          ← Back to Dashboard
+        </button>
+        <h1>{feed.title}</h1>
+        <p className="feed-date">{feed.pubDate}</p>
+      </div>
+      
+      {feed.description && <p className="feed-description">{feed.description}</p>}
+      
+      <div className="feed-content">
+        {feed.content && <div dangerouslySetInnerHTML={{ __html: feed.content }} />}
+      </div>
     </div>
   );
 };
