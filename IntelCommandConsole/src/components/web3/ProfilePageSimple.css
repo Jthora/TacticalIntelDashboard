@@ -1,0 +1,149 @@
+/* Simplified Profile Page - Tactical Dashboard Style */
+.profile-content-simple {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.authenticated-info {
+  margin-top: var(--spacing-xl);
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+/* Using tactical module styling */
+.info-card, .capabilities-card {
+  background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-medium);
+}
+
+.info-card::before, .capabilities-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  opacity: 0.6;
+}
+
+.info-card:hover, .capabilities-card:hover {
+  border-color: rgba(0, 255, 170, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Tactical header styling */
+.info-card h3, .capabilities-card h3 {
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.15) 0%, rgba(0, 255, 170, 0.05) 100%);
+  border-bottom: 1px solid rgba(0, 255, 170, 0.3);
+  padding: var(--spacing-md) var(--spacing-lg);
+  position: relative;
+  color: var(--text-accent);
+  font-weight: 600;
+  margin: 0 0 0 0;
+  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* Content area */
+.info-card-content, .capabilities-card-content {
+  padding: var(--spacing-lg);
+  background-color: transparent;
+}
+
+.status-grid {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm);
+  background: rgba(0, 255, 170, 0.05);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+}
+
+.status-item:hover {
+  background: rgba(0, 255, 170, 0.1);
+}
+
+.status-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.status-value.monospace {
+  font-family: 'Courier New', monospace;
+  font-size: var(--font-size-sm);
+}
+
+/* Access level colors matching tactical theme */
+.clearance-0, .clearance-1 { color: var(--text-muted); }
+.clearance-2 { color: var(--accent-green); }
+.clearance-3 { color: var(--accent-blue); }
+.clearance-4 { color: var(--accent-orange); }
+.clearance-5 { color: var(--accent-red); }
+
+.capabilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.capability-enabled {
+  padding: var(--spacing-sm);
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--accent-green);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.capability-enabled:hover {
+  background: rgba(0, 255, 65, 0.2);
+  transform: translateX(4px);
+  border-color: rgba(0, 255, 65, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-content-simple {
+    padding: var(--spacing-md);
+  }
+  
+  .authenticated-info {
+    margin-top: var(--spacing-lg);
+  }
+  
+  .status-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+}

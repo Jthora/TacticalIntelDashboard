@@ -1,0 +1,383 @@
+/* Web3 Login Panel - Tactical Dashboard Style */
+.web3-login-panel {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+/* Base tactical module styling */
+.login-card, .connected-card {
+  background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--tertiary-bg) 100%);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.login-card::before, .connected-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  opacity: 0.6;
+}
+
+.login-card:hover, .connected-card:hover {
+  border-color: rgba(0, 255, 170, 0.4);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+/* Login Card Header - matches tactical-header */
+.login-header {
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.15) 0%, rgba(0, 255, 170, 0.05) 100%);
+  border-bottom: 1px solid rgba(0, 255, 170, 0.3);
+  padding: var(--spacing-md) var(--spacing-lg);
+  position: relative;
+  text-align: center;
+}
+
+.tactical-icon {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-sm);
+  display: block;
+}
+
+.login-header h2 {
+  color: var(--text-accent);
+  font-weight: 600;
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.login-header p {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+/* Login content area - matches tactical-content */
+.login-content {
+  padding: var(--spacing-lg);
+  background-color: transparent;
+}
+
+/* Buttons - using existing tactical button styles */
+.connect-button {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: rgba(0, 255, 170, 0.2);
+  border: 2px solid var(--accent-cyan);
+  border-radius: var(--radius-md);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.connect-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--transition-slow);
+}
+
+.connect-button:hover {
+  background: rgba(0, 255, 170, 0.3);
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-1px);
+}
+
+.connect-button:hover::before {
+  left: 100%;
+}
+
+.connect-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.wallet-icon {
+  font-size: 1.2rem;
+}
+
+.supported-wallets {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+}
+
+.supported-wallets p {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  margin: 0 0 var(--spacing-xs) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wallet-icons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.wallet-icons span {
+  font-size: 1.5rem;
+  opacity: 0.7;
+  transition: opacity var(--transition-normal);
+  cursor: help;
+}
+
+.wallet-icons span:hover {
+  opacity: 1;
+}
+
+/* Connected Card Styling */
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(0, 255, 170, 0.2);
+  color: var(--accent-cyan);
+  margin-bottom: var(--spacing-lg);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: rgba(0, 255, 170, 0.05);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-md);
+}
+
+.wallet-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+  border: 2px solid var(--accent-cyan);
+}
+
+.wallet-details {
+  flex: 1;
+}
+
+.wallet-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-md);
+}
+
+.wallet-address {
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.wallet-network {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.network-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+}
+
+.network-dot[data-network="ethereum"] { background: #627eea; }
+.network-dot[data-network="polygon"] { background: #8247e5; }
+.network-dot[data-network="bsc"] { background: #f3ba2f; }
+.network-dot[data-network="arbitrum"] { background: #28a0f0; }
+
+.wallet-balance {
+  text-align: right;
+}
+
+.balance-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: var(--font-size-lg);
+}
+
+.balance-currency {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+}
+
+.access-level-indicator {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.access-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.access-icon {
+  font-size: 0.9rem;
+}
+
+.wallet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Action buttons using tactical secondary/warning button styles */
+.action-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid;
+  border-radius: var(--radius-md);
+  background: transparent;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left var(--transition-slow);
+}
+
+.action-button:hover::before {
+  left: 100%;
+}
+
+.action-button.secondary {
+  background: rgba(0, 153, 255, 0.2);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.action-button.secondary:hover {
+  background: rgba(0, 153, 255, 0.3);
+  box-shadow: var(--glow-blue);
+  transform: translateY(-1px);
+}
+
+.action-button.danger {
+  background: rgba(255, 51, 51, 0.2);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.action-button.danger:hover {
+  background: rgba(255, 51, 51, 0.3);
+  box-shadow: var(--glow-red);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .web3-login-panel {
+    padding: var(--spacing-md);
+  }
+  
+  .wallet-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .wallet-actions {
+    flex-direction: column;
+  }
+}
