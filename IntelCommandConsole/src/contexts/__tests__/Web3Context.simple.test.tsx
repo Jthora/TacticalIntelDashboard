@@ -4,16 +4,10 @@ import { renderHook, act, waitFor } from '@testing-library/react';
 import { Web3Provider, useWeb3, AccessLevel } from '../Web3Context';
 import { Web3Error, Web3ErrorType } from '../../types/web3Errors';
 
-// Mock ethers
+// Mock ethers before any imports that use it
 jest.mock('ethers', () => ({
   ethers: {
-    BrowserProvider: jest.fn().mockImplementation(() => ({
-      send: jest.fn(),
-      getNetwork: jest.fn(),
-      getSigner: jest.fn(),
-      getBalance: jest.fn(),
-      lookupAddress: jest.fn(),
-    })),
+    BrowserProvider: jest.fn(),
     formatEther: jest.fn((_value) => '1.5000'),
   },
 }));
@@ -25,10 +19,37 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('Web3Context', () => {
   let mockEthereum: any;
+  let mockSend: jest.Mock;
+  let mockGetNetwork: jest.Mock;
+  let mockGetSigner: jest.Mock;
+  let mockGetBalance: jest.Mock;
+  let mockLookupAddress: jest.Mock;
 
   beforeEach(() => {
     // Clear localStorage
     localStorage.clear();
+    
+    // Set up ethers mocks
+    mockSend = jest.fn();
+    mockGetNetwork = jest.fn();
+    mockGetSigner = jest.fn();
+    mockGetBalance = jest.fn();
+    mockLookupAddress = jest.fn();
+
+    const { ethers } = require('ethers');
+    ethers.BrowserProvider.mockImplementation((provider: any) => {
+      // If no provider (window.ethereum), throw the error that ethers would throw
+      if (!provider) {
+        throw new Error('No provider detected');
+      }
+      return {
+        send: mockSend,
+        getNetwork: mockGetNetwork,
+        getSigner: mockGetSigner,
+        getBalance: mockGetBalance,
+        lookupAddress: mockLookupAddress,
+      };
+    });
     
     // Mock window.ethereum
     mockEthereum = {
@@ -41,6 +62,7 @@ describe('Web3Context', () => {
     Object.defineProperty(window, 'ethereum', {
       value: mockEthereum,
       writable: true,
+      configurable: true,
     });
 
     // Reset all mocks
@@ -85,15 +107,12 @@ describe('Web3Context', () => {
     it('should connect wallet successfully', async () => {
       const mockAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
       
-      mockEthereum.request.mockResolvedValue([mockAddress]);
-
-      // Mock ethers provider methods
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue({});
-      mockProvider.getBalance.mockResolvedValue(BigInt('1500000000000000000')); // 1.5 ETH
-      mockProvider.lookupAddress.mockResolvedValue(null);
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue([mockAddress]);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1500000000000000000')); // 1.5 ETH
+      mockLookupAddress.mockResolvedValue(null);
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -107,12 +126,15 @@ describe('Web3Context', () => {
       expect(result.current.walletAddress).toBe(mockAddress);
       expect(result.current.balance).toBe('1.5000');
       expect(result.current.error).toBeNull();
-      expect(mockEthereum.request).toHaveBeenCalledWith({ method: 'eth_requestAccounts' });
+      expect(mockSend).toHaveBeenCalledWith('eth_requestAccounts', []);
     });
 
     it('should handle wallet not installed error', async () => {
-      // Remove ethereum object
+      // Remove ethereum object and recreate wrapper to pick up the change
       delete (window as any).ethereum;
+      
+      // Verify it's really deleted
+      expect((window as any).ethereum).toBeUndefined();
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -127,10 +149,17 @@ describe('Web3Context', () => {
       expect(result.current.isConnected).toBe(false);
       expect(result.current.error).toBeInstanceOf(Web3Error);
       expect(result.current.error?.type).toBe(Web3ErrorType.WALLET_NOT_INSTALLED);
+      
+      // Restore ethereum for other tests
+      Object.defineProperty(window, 'ethereum', {
+        value: mockEthereum,
+        writable: true,
+        configurable: true,
+      });
     });
 
     it('should handle user rejection (4001)', async () => {
-      mockEthereum.request.mockRejectedValue({
+      mockSend.mockRejectedValue({
         code: 4001,
         message: 'User rejected the request'
       });
@@ -151,7 +180,7 @@ describe('Web3Context', () => {
     });
 
     it('should handle pending request error (-32002)', async () => {
-      mockEthereum.request.mockRejectedValue({
+      mockSend.mockRejectedValue({
         code: -32002,
         message: 'Request already pending'
       });
@@ -176,7 +205,12 @@ describe('Web3Context', () => {
         resolveConnection = resolve;
       });
 
-      mockEthereum.request.mockReturnValue(connectionPromise);
+      // Mock the send method to return a promise
+      mockSend.mockReturnValue(connectionPromise);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1000000000000000000'));
+      mockLookupAddress.mockResolvedValue(null);
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -192,14 +226,6 @@ describe('Web3Context', () => {
       // Complete connection
       await act(async () => {
         resolveConnection(['0x742d35Cc6634C0532925a3b844Bc454e4438f44e']);
-        
-        // Mock the rest of the connection flow
-        const { ethers } = require('ethers');
-        const mockProvider = new ethers.BrowserProvider();
-        mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-        mockProvider.getSigner.mockResolvedValue({});
-        mockProvider.getBalance.mockResolvedValue(BigInt('1000000000000000000'));
-        mockProvider.lookupAddress.mockResolvedValue(null);
       });
 
       await waitFor(() => {
@@ -210,14 +236,12 @@ describe('Web3Context', () => {
     it('should set correct access level for known addresses', async () => {
       const directorAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
       
-      mockEthereum.request.mockResolvedValue([directorAddress]);
-
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue({});
-      mockProvider.getBalance.mockResolvedValue(BigInt('1000000000000000000'));
-      mockProvider.lookupAddress.mockResolvedValue(null);
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue([directorAddress]);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1000000000000000000'));
+      mockLookupAddress.mockResolvedValue(null);
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -233,14 +257,12 @@ describe('Web3Context', () => {
       const mockAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
       const mockEnsName = 'test.eth';
 
-      mockEthereum.request.mockResolvedValue([mockAddress]);
-
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue({});
-      mockProvider.getBalance.mockResolvedValue(BigInt('1000000000000000000'));
-      mockProvider.lookupAddress.mockResolvedValue(mockEnsName);
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue([mockAddress]);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1000000000000000000'));
+      mockLookupAddress.mockResolvedValue(mockEnsName);
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -254,14 +276,12 @@ describe('Web3Context', () => {
     it('should handle ENS resolution failure gracefully', async () => {
       const mockAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
 
-      mockEthereum.request.mockResolvedValue([mockAddress]);
-
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue({});
-      mockProvider.getBalance.mockResolvedValue(BigInt('1000000000000000000'));
-      mockProvider.lookupAddress.mockRejectedValue(new Error('ENS lookup failed'));
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue([mockAddress]);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1000000000000000000'));
+      mockLookupAddress.mockRejectedValue(new Error('ENS lookup failed'));
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -279,14 +299,12 @@ describe('Web3Context', () => {
       // First connect
       const mockAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
       
-      mockEthereum.request.mockResolvedValue([mockAddress]);
-
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue({});
-      mockProvider.getBalance.mockResolvedValue(BigInt('1500000000000000000'));
-      mockProvider.lookupAddress.mockResolvedValue('test.eth');
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue([mockAddress]);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1500000000000000000'));
+      mockLookupAddress.mockResolvedValue('test.eth');
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -316,14 +334,12 @@ describe('Web3Context', () => {
 
     it('should remove event listeners on disconnect', async () => {
       // First connect
-      mockEthereum.request.mockResolvedValue(['0x742d35Cc6634C0532925a3b844Bc454e4438f44e']);
-
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue({});
-      mockProvider.getBalance.mockResolvedValue(BigInt('1000000000000000000'));
-      mockProvider.lookupAddress.mockResolvedValue(null);
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue(['0x742d35Cc6634C0532925a3b844Bc454e4438f44e']);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue({});
+      mockGetBalance.mockResolvedValue(BigInt('1000000000000000000'));
+      mockLookupAddress.mockResolvedValue(null);
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 
@@ -396,18 +412,16 @@ describe('Web3Context', () => {
       const mockAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
       const mockSignature = '0xsignature123';
       
-      mockEthereum.request.mockResolvedValue([mockAddress]);
-
       const mockSigner = {
         signMessage: jest.fn().mockResolvedValue(mockSignature)
       };
 
-      const { ethers } = require('ethers');
-      const mockProvider = new ethers.BrowserProvider();
-      mockProvider.getNetwork.mockResolvedValue({ chainId: BigInt(1) });
-      mockProvider.getSigner.mockResolvedValue(mockSigner);
-      mockProvider.getBalance.mockResolvedValue(BigInt('1000000000000000000'));
-      mockProvider.lookupAddress.mockResolvedValue(null);
+      // Mock the send method that will be called by BrowserProvider
+      mockSend.mockResolvedValue([mockAddress]);
+      mockGetNetwork.mockResolvedValue({ chainId: BigInt(1) });
+      mockGetSigner.mockResolvedValue(mockSigner);
+      mockGetBalance.mockResolvedValue(BigInt('1000000000000000000'));
+      mockLookupAddress.mockResolvedValue(null);
 
       const { result } = renderHook(() => useWeb3(), { wrapper });
 

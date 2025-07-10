@@ -138,9 +138,9 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   const determineAccessLevel = (address: string): AccessLevel => {
     // Phase 1: Simple lookup from mapping (will be enhanced in future phases)
     const permissionMap: Record<string, AccessLevel> = {
-      '0x71C7656EC7ab88b098defB751B7401B5f6d8976F': AccessLevel.DIRECTOR,
-      '0x742d35Cc6634C0532925a3b844Bc454e4438f44e': AccessLevel.ANALYST,
-      '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199': AccessLevel.FIELD_OPERATIVE,
+      '0x71c7656ec7ab88b098defb751b7401b5f6d8976f': AccessLevel.DIRECTOR,
+      '0x742d35cc6634c0532925a3b844bc454e4438f44e': AccessLevel.ANALYST,
+      '0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199': AccessLevel.FIELD_OPERATIVE,
     };
     
     return permissionMap[address.toLowerCase()] || AccessLevel.PUBLIC;
@@ -152,6 +152,13 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   };
 
   const handleError = (error: any): Web3Error => {
+    // If it's already a Web3Error, just set it and return it
+    if (error instanceof Web3Error) {
+      setError(error);
+      return error;
+    }
+    
+    // Otherwise, convert from Ethereum error
     const web3Error = Web3Error.fromEthereumError(error);
     setError(web3Error);
     return web3Error;
@@ -177,7 +184,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
       // Request account access
       const accounts = await ethersProvider.send('eth_requestAccounts', []);
       
-      if (accounts.length === 0) {
+      if (!accounts || !Array.isArray(accounts) || accounts.length === 0) {
         throw new Web3Error(
           Web3ErrorType.WALLET_NOT_CONNECTED,
           'No accounts available'
