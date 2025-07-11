@@ -6,7 +6,18 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   build: {
-    sourcemap: true, // Enable source maps
+    sourcemap: process.env.NODE_ENV !== 'production', // Only generate source maps in development
+    chunkSizeWarningLimit: 1000, // Increase chunk size warning limit
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          crypto: ['ethers', 'crypto-js'],
+          ui: ['axios', 'nanoid']
+        }
+      }
+    }
   },
   css: {
     // Enable CSS source maps for easier debugging

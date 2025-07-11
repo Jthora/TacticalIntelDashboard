@@ -61,6 +61,13 @@ export interface Settings {
       enabled: boolean;
       sound: boolean;
     };
+    export?: {
+      format: 'json' | 'csv' | 'xml' | 'pdf';
+      autoExport: boolean;
+      includeMetadata: boolean;
+      compress: boolean;
+      encrypt: boolean;
+    };
   };
 }
 
@@ -122,6 +129,13 @@ const defaultSettings: Settings = {
     notifications: {
       enabled: true,
       sound: false
+    },
+    export: {
+      format: 'json',
+      autoExport: false,
+      includeMetadata: true,
+      compress: false,
+      encrypt: true
     }
   }
 };

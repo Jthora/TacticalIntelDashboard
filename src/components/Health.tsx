@@ -126,21 +126,21 @@ const Health: React.FC<HealthProps> = ({
         
         <div className="diagnostic-actions">
           <button 
-            className={`diagnostic-btn ${healthState.isScanning ? 'scanning' : ''}`}
+            className={`diagnostic-btn scan ${healthState.isScanning ? 'scanning' : ''}`}
             onClick={handleScan}
             disabled={isOperationInProgress}
           >
             {healthState.isScanning ? '⏳ SCANNING...' : '🔍 SCAN'}
           </button>
           <button 
-            className={`diagnostic-btn ${healthState.isCleaning ? 'cleaning' : ''}`}
+            className={`diagnostic-btn clean ${healthState.isCleaning ? 'cleaning' : ''}`}
             onClick={handleClean}
             disabled={isOperationInProgress}
           >
             {healthState.isCleaning ? '⏳ CLEANING...' : '🧹 CLEAN'}
           </button>
           <button 
-            className={`diagnostic-btn ${healthState.isRepairing ? 'repairing' : ''}`}
+            className={`diagnostic-btn repair ${healthState.isRepairing ? 'repairing' : ''}`}
             onClick={handleRepair}
             disabled={isOperationInProgress}
           >

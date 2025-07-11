@@ -8,6 +8,7 @@ import { FeedModeProvider } from './contexts/FeedModeContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { Web3Provider } from './contexts/Web3Context';
 import { IPFSProvider } from './contexts/IPFSContext';
+import { IntelligenceProvider } from './contexts/IntelligenceContext';
 import AppRoutes from './routes/AppRoutes';
 import SearchResults from './components/SearchResults';
 import DevelopmentNotice from './components/DevelopmentNotice';
@@ -28,24 +29,26 @@ const App: React.FC = () => {
     <Router>
       <SettingsProvider>
         <ThemeProvider>
-          <Web3Provider>
-            <IPFSProvider>
-              <SearchProvider>
-                <FilterProvider>
-                  <HealthProvider>
-                    <FeedModeProvider>
-                      <div className="App">
-                        <DevelopmentNotice />
-                        <RouteValidator />
-                        <AppRoutes />
-                        <SearchResults />
-                      </div>
-                    </FeedModeProvider>
-                  </HealthProvider>
-                </FilterProvider>
-              </SearchProvider>
-            </IPFSProvider>
-          </Web3Provider>
+          <IntelligenceProvider>
+            <Web3Provider>
+              <IPFSProvider>
+                <SearchProvider>
+                  <FilterProvider>
+                    <HealthProvider>
+                      <FeedModeProvider>
+                        <div className="App">
+                          <DevelopmentNotice />
+                          <RouteValidator />
+                          <AppRoutes />
+                          <SearchResults />
+                        </div>
+                      </FeedModeProvider>
+                    </HealthProvider>
+                  </FilterProvider>
+                </SearchProvider>
+              </IPFSProvider>
+            </Web3Provider>
+          </IntelligenceProvider>
         </ThemeProvider>
       </SettingsProvider>
     </Router>

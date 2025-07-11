@@ -7,35 +7,50 @@ import { parseFeedData as parseHTMLFeedData, isValidHTML } from '../parsers/html
 import { convertFeedsToFeedItems } from './feedConversion';
 import { LocalStorageUtil } from './LocalStorageUtil';
 import { handleFetchError, handleXMLParsingError, handleJSONParsingError, handleTXTParsingError, handleHTMLParsingError } from './errorHandler';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
+import { CORSStrategy } from '../contexts/SettingsContext';
 
-// Configuration for different proxy strategies
-const PROXY_CONFIG = {
-  // Vercel Edge Function (Production)
+// Legacy configuration for backward compatibility
+const LEGACY_PROXY_CONFIG = {
   vercel: '/api/proxy-feed?url=',
-  // Public CORS proxies (Fallback)
   fallback: [
     'https://api.allorigins.win/get?url=',
     'https://api.codetabs.com/v1/proxy?quest=',
     'https://cors-anywhere.herokuapp.com/',
   ],
-  // Local development
   local: import.meta.env.VITE_PROXY_URL || 'http://localhost:8081/',
 };
 
-// Determine which proxy strategy to use
+// Get proxy URL using user's CORS settings
 const getProxyUrl = (targetUrl: string): string => {
-  // In production/Vercel environment
+  // Get CORS strategy from user settings
+  try {
+    const strategy = SettingsIntegrationService.getCORSStrategy();
+    const proxyUrl = SettingsIntegrationService.getProxyUrl(targetUrl);
+    
+    // If settings provide a specific proxy URL, use it
+    if (proxyUrl !== targetUrl) {
+      return proxyUrl;
+    }
+    
+    // If strategy is DIRECT, return original URL
+    if (strategy === CORSStrategy.DIRECT) {
+      return targetUrl;
+    }
+  } catch (error) {
+    console.warn('Failed to get CORS settings, falling back to legacy configuration:', error);
+  }
+  
+  // Fallback to legacy logic if settings are not available
   if (import.meta.env.PROD || window.location.hostname.includes('vercel.app')) {
-    return `${PROXY_CONFIG.vercel}${encodeURIComponent(targetUrl)}`;
+    return `${LEGACY_PROXY_CONFIG.vercel}${encodeURIComponent(targetUrl)}`;
   }
   
-  // In development, use public CORS proxy since no backend is running
   if (import.meta.env.DEV) {
-    return `${PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
+    return `${LEGACY_PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
   }
   
-  // Fallback to public proxy
-  return `${PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
+  return `${LEGACY_PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
 };
 
 const handleCORSError = (url: string, error: Error): void => {
@@ -67,7 +82,7 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
   const proxyUrl = getProxyUrl(url);
   
   try {
-    // Try primary proxy
+    // Try primary proxy (from settings or legacy)
     console.log(`Attempting to fetch via primary proxy: ${proxyUrl}`);
     const response = await fetchWithRetry(proxyUrl, options);
     
@@ -79,10 +94,20 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
   } catch (primaryError) {
     console.warn(`Primary proxy failed, trying fallbacks:`, primaryError);
     
+    // Get fallback proxy chain from settings
+    let fallbackProxies: string[] = [];
+    try {
+      fallbackProxies = SettingsIntegrationService.getCORSProxyChain();
+    } catch (error) {
+      // Fallback to legacy proxies if settings unavailable
+      fallbackProxies = LEGACY_PROXY_CONFIG.fallback.map(proxy => `${proxy}`);
+    }
+    
     // Try fallback proxies in sequence
-    for (let i = 0; i < PROXY_CONFIG.fallback.length; i++) {
+    for (let i = 0; i < fallbackProxies.length; i++) {
       try {
-        const fallbackUrl = `${PROXY_CONFIG.fallback[i]}${encodeURIComponent(url)}`;
+        const fallbackProxy = fallbackProxies[i];
+        const fallbackUrl = fallbackProxy === '' ? url : `${fallbackProxy}${encodeURIComponent(url)}`;
         console.log(`Attempting fallback proxy ${i + 1}: ${fallbackUrl}`);
         
         const response = await fetchWithRetry(fallbackUrl, {

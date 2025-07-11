@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, memo } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import { SettingsService, SystemSettings } from '../services/SettingsService';
+import { useSettings } from '../contexts/SettingsContext';
 
 interface SystemControlProps {
   // Optional props for parent components to control or observe system settings
@@ -19,59 +19,106 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
   onAutoExportChange,
 }) => {
   const { theme, compactMode, setTheme, setCompactMode } = useTheme();
-  const [settings, setSettings] = useState<SystemSettings>();
-  const [settingsService] = useState(() => SettingsService.getInstance());
-
-  useEffect(() => {
-    // Load initial settings
-    const currentSettings = settingsService.getSettings();
-    setSettings(currentSettings);
-
-    // Subscribe to settings changes
-    const unsubscribe = settingsService.subscribe((newSettings) => {
-      setSettings(newSettings);
-    });
-
-    return unsubscribe;
-  }, [settingsService]);
+  const { settings, updateSettings } = useSettings();
 
   const handleThemeChange = useCallback((newTheme: 'dark' | 'night' | 'combat') => {
     setTheme(newTheme);
-    settingsService.updateSettingWithNotification('theme', newTheme);
+    updateSettings({
+      display: {
+        ...settings.display,
+        theme: newTheme as any
+      }
+    });
     onThemeChange?.(newTheme);
-  }, [setTheme, settingsService, onThemeChange]);
+  }, [setTheme, settings.display, updateSettings, onThemeChange]);
 
   const handleCompactModeToggle = useCallback(() => {
     const newMode = !compactMode;
     setCompactMode(newMode);
-    settingsService.updateSettingWithNotification('compactMode', newMode);
+    updateSettings({
+      display: {
+        ...settings.display,
+        density: newMode ? 'compact' : 'comfortable'
+      }
+    });
     onCompactModeChange?.(newMode);
-  }, [compactMode, setCompactMode, settingsService, onCompactModeChange]);
+  }, [compactMode, setCompactMode, settings.display, updateSettings, onCompactModeChange]);
 
   const handleRealTimeUpdatesToggle = useCallback(() => {
-    if (!settings) return;
-    const newUpdates = !settings.realTimeUpdates;
-    settingsService.updateSettingWithNotification('realTimeUpdates', newUpdates);
-    onRealTimeUpdatesChange?.(newUpdates);
-  }, [settings, settingsService, onRealTimeUpdatesChange]);
+    const currentRefreshInterval = settings.general?.refreshInterval ?? 300000;
+    const newInterval = currentRefreshInterval === 300000 ? 60000 : 300000; // Toggle between 1min and 5min
+    
+    updateSettings({
+      general: {
+        refreshInterval: newInterval,
+        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
+        notifications: settings.general?.notifications ?? { enabled: true, sound: false },
+        export: settings.general?.export ?? {
+          format: 'json',
+          autoExport: false,
+          includeMetadata: true,
+          compress: false,
+          encrypt: true
+        }
+      }
+    });
+    
+    onRealTimeUpdatesChange?.(newInterval === 60000);
+  }, [settings.general, updateSettings, onRealTimeUpdatesChange]);
 
   const handleHealthAlertsToggle = useCallback(() => {
-    if (!settings) return;
-    const newAlerts = !settings.healthAlerts;
-    settingsService.updateSettingWithNotification('healthAlerts', newAlerts);
-    onHealthAlertsChange?.(newAlerts);
-  }, [settings, settingsService, onHealthAlertsChange]);
+    const currentNotifications = settings.general?.notifications?.enabled ?? true;
+    
+    updateSettings({
+      general: {
+        refreshInterval: settings.general?.refreshInterval ?? 300000,
+        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
+        notifications: {
+          enabled: !currentNotifications,
+          sound: settings.general?.notifications?.sound ?? false
+        },
+        export: settings.general?.export ?? {
+          format: 'json',
+          autoExport: false,
+          includeMetadata: true,
+          compress: false,
+          encrypt: true
+        }
+      }
+    });
+    
+    onHealthAlertsChange?.(!currentNotifications);
+  }, [settings.general, updateSettings, onHealthAlertsChange]);
 
   const handleAutoExportToggle = useCallback(() => {
-    if (!settings) return;
-    const newAutoExport = !settings.autoExport;
-    settingsService.updateSettingWithNotification('autoExport', newAutoExport);
-    onAutoExportChange?.(newAutoExport);
-  }, [settings, settingsService, onAutoExportChange]);
+    const currentAutoExport = settings.general?.export?.autoExport ?? false;
+    
+    updateSettings({
+      general: {
+        refreshInterval: settings.general?.refreshInterval ?? 300000,
+        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
+        notifications: settings.general?.notifications ?? { enabled: true, sound: false },
+        export: {
+          format: settings.general?.export?.format ?? 'json',
+          autoExport: !currentAutoExport,
+          includeMetadata: settings.general?.export?.includeMetadata ?? true,
+          compress: settings.general?.export?.compress ?? false,
+          encrypt: settings.general?.export?.encrypt ?? true
+        }
+      }
+    });
+    
+    onAutoExportChange?.(!currentAutoExport);
+  }, [settings.general, updateSettings, onAutoExportChange]);
 
   if (!settings) {
     return <div className="tactical-module module-system-control">Loading...</div>;
   }
+
+  // Derived state from settings
+  const realTimeUpdates = (settings.general?.refreshInterval ?? 300000) === 60000;
+  const healthAlerts = settings.general?.notifications?.enabled ?? true;
+  const autoExport = settings.general?.export?.autoExport ?? false;
 
   return (
     <div className="tactical-module module-system-control">
@@ -99,7 +146,7 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
             ▣
           </button>
           <button 
-            className={`micro-btn ${settings.realTimeUpdates ? 'active' : ''}`}
+            className={`micro-btn ${realTimeUpdates ? 'active' : ''}`}
             onClick={handleRealTimeUpdatesToggle}
             title="Real-time Updates"
           >
@@ -112,19 +159,19 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
           <div className="control-group">
             <label className="control-label">ALERTS</label>
             <button 
-              className={`control-toggle ${settings.healthAlerts ? 'active' : ''}`}
+              className={`control-toggle ${healthAlerts ? 'active' : ''}`}
               onClick={handleHealthAlertsToggle}
             >
-              {settings.healthAlerts ? '◉' : '○'}
+              {healthAlerts ? '◉' : '○'}
             </button>
           </div>
           <div className="control-group">
             <label className="control-label">AUTO-EXPORT</label>
             <button 
-              className={`control-toggle ${settings.autoExport ? 'active' : ''}`}
+              className={`control-toggle ${autoExport ? 'active' : ''}`}
               onClick={handleAutoExportToggle}
             >
-              {settings.autoExport ? '◉' : '○'}
+              {autoExport ? '◉' : '○'}
             </button>
           </div>
         </div>

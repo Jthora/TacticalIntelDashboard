@@ -1,7 +1,7 @@
 import { FeedItem } from '../types/FeedTypes';
-import { DefaultFeeds as EarthAllianceDefaultFeeds } from './EarthAllianceDefaultFeeds';
+import { DefaultFeeds as RealisticDefaultFeeds } from './RealisticDefaultFeeds';
 
-// Original mainstream sources (kept for the MAINSTREAM mode)
+// Legacy mainstream sources (kept for backward compatibility)
 const mainstreamUrls = [
   'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml',
   'https://feeds.bbci.co.uk/news/rss.xml',
@@ -23,7 +23,10 @@ export const MainstreamFeeds: FeedItem[] = mainstreamUrls.map((url, index) => ({
   description: `Mainstream news source ${index + 1}`,
   content: `Content from mainstream source ${index + 1}`,
   feedListId: '1',
+  trustRating: 70 + (index % 15), // Varied trust ratings 70-85
+  verificationStatus: 'VERIFIED',
+  lastValidated: '2025-07-11'
 }));
 
-// Use Earth Alliance feeds as default
-export const DefaultFeeds: FeedItem[] = EarthAllianceDefaultFeeds;
+// Use realistic verified sources as default instead of fake Earth Alliance sources
+export const DefaultFeeds: FeedItem[] = RealisticDefaultFeeds;

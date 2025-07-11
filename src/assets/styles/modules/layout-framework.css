@@ -1,0 +1,51 @@
+/* ===========================================
+   LAYOUT FRAMEWORK
+   =========================================== */
+
+.tactical-dashboard {
+  display: grid;
+  grid-template-areas: 
+    "header header header"
+    "sidebar-left main sidebar-right"
+    "quickactions quickactions quickactions";
+  grid-template-columns: 280px 1fr 320px;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: var(--primary-bg);
+}
+
+.tactical-header-main {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  max-height: 40px;
+  overflow: hidden;
+}
+
+.tactical-sidebar-left {
+  grid-area: sidebar-left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.tactical-main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.tactical-sidebar-right {
+  grid-area: sidebar-right;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.tactical-quickactions {
+  grid-area: quickactions;
+}

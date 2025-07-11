@@ -1,0 +1,36 @@
+# Vercel ignore file
+# Exclude development files from deployment
+
+# Development files
+tests/
+backups/
+docs/
+
+# Environment files (secrets should be set in Vercel dashboard)
+.env.local
+
+# Development scripts
+deploy-*.sh
+test-*.sh
+debug-*.sh
+
+# Cache directories
+.vite/
+coverage/
+.nyc_output/
+.cache/
+.parcel-cache/
+.next/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git files
+.gitignore

@@ -1,0 +1,99 @@
+/* ===========================================
+   TACTICAL INTEL DASHBOARD - CSS VARIABLES
+   =========================================== */
+
+/* CSS Variables for Consistent Theming */
+:root {
+  /* Color Palette */
+  --primary-bg: #000000;
+  --secondary-bg: #0a0a0a;
+  --tertiary-bg: #151515;
+  --accent-cyan: #00ffaa;
+  --accent-blue: #0099ff;
+  --accent-orange: #ff6600;
+  --accent-red: #ff3333;
+  --accent-purple: #9933ff;
+  --accent-yellow: #ffff00;
+  --accent-green: #00ff00;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-muted: #666666;
+  --text-accent: #00ffaa;
+  --text-warning: #ffaa00;
+  --text-error: #ff0040;
+  
+  /* Cyber Theme Colors */
+  --cyber-glow: #00ff41;
+  --cyber-warning: #ff9500;
+  --cyber-critical: #ff0040;
+  --cyber-data: #00d4ff;
+  
+  /* Shadows & Effects */
+  --shadow-light: 0 1px 4px rgba(0, 255, 170, 0.1);
+  --shadow-medium: 0 2px 8px rgba(0, 255, 170, 0.2);
+  --shadow-heavy: 0 4px 16px rgba(0, 255, 170, 0.3);
+  --glow-cyan: 0 0 10px rgba(0, 255, 170, 0.4);
+  --glow-green: 0 0 10px rgba(0, 255, 65, 0.4);
+  --glow-orange: 0 0 10px rgba(255, 149, 0, 0.4);
+  
+  /* Minimal Spacing - Even More Compact */
+  --spacing-xs: 1px;
+  --spacing-sm: 2px;
+  --spacing-md: 3px;
+  --spacing-lg: 4px;
+  --spacing-xl: 6px;
+  --spacing-xxl: 8px;
+  
+  /* Border Radius - Ultra Minimal */
+  --radius-sm: 1px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+  
+  /* Typography - Micro Sizes */
+  --font-size-xs: 8px;
+  --font-size-sm: 10px;
+  --font-size-md: 12px;
+  --font-size-lg: 14px;
+  --font-size-xl: 16px;
+  --font-size-xxl: 20px;
+  
+  /* Font Families - Enhanced with new fonts */
+  --font-primary: 'Aldrich', 'Electrolize', 'Orbitron', monospace;
+  --font-secondary: 'Rajdhani', 'Exo 2', sans-serif;
+  --font-mono: 'Share Tech Mono', 'Space Mono', 'Ubuntu Mono', monospace;
+  --font-display: 'Major Mono Display', 'Orbitron', 'Aldrich', monospace;
+  --font-tactical: 'Electrolize', 'Rajdhani', sans-serif;
+  
+  /* Transitions */
+  --transition-fast: 0.1s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  
+  /* Control States - Tactical UI System */
+  --control-inactive: rgba(176, 176, 176, 0.3);
+  --control-active: var(--accent-cyan);
+  --control-hover: rgba(0, 255, 170, 0.6);
+  --control-disabled: rgba(102, 102, 102, 0.5);
+  
+  /* Status Colors - Operational States */
+  --status-operational: #00ff41;
+  --status-warning: #ff9500;
+  --status-critical: #ff0040;
+  --status-offline: #666666;
+  
+  /* Badge System Colors */
+  --badge-classification: rgba(255, 255, 255, 0.6);
+  --badge-category: rgba(0, 191, 255, 0.6);
+  --badge-reliability: rgba(0, 255, 170, 0.6);
+  --badge-status: rgba(0, 255, 65, 0.6);
+  
+  /* Micro-Interface Dimensions */
+  --list-item-height: 18px;
+  --badge-font-size: 6px;
+  --status-dot-size: 4px;
+  --micro-margin: 1px;
+  --micro-padding: 2px;
+}

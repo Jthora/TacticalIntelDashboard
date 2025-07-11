@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSettings } from '../contexts/SettingsContext';
 import './Export.css';
 
 export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf';
@@ -29,18 +30,57 @@ const Export: React.FC<ExportProps> = ({
   initialAutoExport = false,
   initialOptions = {},
 }) => {
-  const [autoExport, setAutoExport] = useState<boolean>(initialAutoExport);
-  const [selectedFormat, setSelectedFormat] = useState<ExportFormat | null>(null);
+  const { settings, updateSettings } = useSettings();
+  
+  // Initialize from settings instead of props
+  const [autoExport, setAutoExport] = useState<boolean>(() => 
+    settings?.general?.export?.autoExport ?? initialAutoExport
+  );
+  const [selectedFormat, setSelectedFormat] = useState<ExportFormat | null>(() =>
+    settings?.general?.export?.format as ExportFormat ?? null
+  );
   const [exportOptions, setExportOptions] = useState<ExportOptions>({
-    includeMetadata: true,
-    compress: false,
-    encrypt: true,
+    includeMetadata: settings?.general?.export?.includeMetadata ?? true,
+    compress: settings?.general?.export?.compress ?? false,
+    encrypt: settings?.general?.export?.encrypt ?? true,
     ...initialOptions,
   });
+
+  // Sync with settings when they change
+  useEffect(() => {
+    if (settings?.general?.export) {
+      const exportSettings = settings.general.export;
+      setAutoExport(exportSettings.autoExport ?? false);
+      setSelectedFormat(exportSettings.format as ExportFormat ?? null);
+      setExportOptions(prev => ({
+        ...prev,
+        includeMetadata: exportSettings.includeMetadata ?? prev.includeMetadata,
+        compress: exportSettings.compress ?? prev.compress,
+        encrypt: exportSettings.encrypt ?? prev.encrypt,
+      }));
+    }
+  }, [settings?.general?.export]);
 
   const handleAutoExportToggle = () => {
     const newAutoExport = !autoExport;
     setAutoExport(newAutoExport);
+    
+    // Update settings
+    updateSettings({
+      general: {
+        refreshInterval: settings.general?.refreshInterval ?? 300000,
+        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
+        notifications: settings.general?.notifications ?? { enabled: true, sound: false },
+        export: {
+          format: settings.general?.export?.format ?? 'json',
+          autoExport: newAutoExport,
+          includeMetadata: settings.general?.export?.includeMetadata ?? true,
+          compress: settings.general?.export?.compress ?? false,
+          encrypt: settings.general?.export?.encrypt ?? true,
+        }
+      }
+    });
+    
     onAutoExportChange?.(newAutoExport);
   };
 
@@ -50,6 +90,23 @@ const Export: React.FC<ExportProps> = ({
 
   const handleFormatClick = (format: ExportFormat) => {
     setSelectedFormat(format);
+    
+    // Update settings
+    updateSettings({
+      general: {
+        refreshInterval: settings.general?.refreshInterval ?? 300000,
+        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
+        notifications: settings.general?.notifications ?? { enabled: true, sound: false },
+        export: {
+          format: format,
+          autoExport: settings.general?.export?.autoExport ?? false,
+          includeMetadata: settings.general?.export?.includeMetadata ?? true,
+          compress: settings.general?.export?.compress ?? false,
+          encrypt: settings.general?.export?.encrypt ?? true,
+        }
+      }
+    });
+    
     onFormatSelect?.(format);
   };
 
@@ -59,6 +116,23 @@ const Export: React.FC<ExportProps> = ({
       [option]: !exportOptions[option],
     };
     setExportOptions(newOptions);
+    
+    // Update settings
+    updateSettings({
+      general: {
+        refreshInterval: settings.general?.refreshInterval ?? 300000,
+        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
+        notifications: settings.general?.notifications ?? { enabled: true, sound: false },
+        export: {
+          format: settings.general?.export?.format ?? 'json',
+          autoExport: settings.general?.export?.autoExport ?? false,
+          includeMetadata: option === 'includeMetadata' ? newOptions.includeMetadata : settings.general?.export?.includeMetadata ?? true,
+          compress: option === 'compress' ? newOptions.compress : settings.general?.export?.compress ?? false,
+          encrypt: option === 'encrypt' ? newOptions.encrypt : settings.general?.export?.encrypt ?? true,
+        }
+      }
+    });
+    
     onOptionsChange?.(newOptions);
   };
 

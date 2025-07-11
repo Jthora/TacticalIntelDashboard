@@ -71,5 +71,9 @@
     "nanoid": "^5.1.5",
     "parse-duration": "^2.1.4",
     "cookie": "^0.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

@@ -9,6 +9,11 @@ export interface FeedItem {
   author?: string;
   categories?: string[];
   media?: { url: string, type: string }[];
+  // Enhanced metadata for realistic sources
+  trustRating?: number;
+  verificationStatus?: 'VERIFIED' | 'UNVERIFIED';
+  lastValidated?: string;
+  responseTime?: number;
 }
 
 export interface FeedList {
