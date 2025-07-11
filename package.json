@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@ensdomains/ensjs": "^4.0.2",
+    "@metamask/eth-sig-util": "^8.2.0",
     "axios": "^1.7.9",
     "buffer": "^6.0.3",
     "crypto-js": "^4.2.0",

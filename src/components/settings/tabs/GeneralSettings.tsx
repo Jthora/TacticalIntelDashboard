@@ -7,7 +7,7 @@ import ConfirmationDialog from '../ConfirmationDialog';
 import '../../../assets/styles/components/general-settings.css';
 
 const GeneralSettings: React.FC = memo(() => {
-  const { settings } = useSettings();
+  const { settings, resetSettings } = useSettings();
   const [hasChanges, setHasChanges] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [refreshInterval, setRefreshInterval] = useState(300); // 5 minutes default

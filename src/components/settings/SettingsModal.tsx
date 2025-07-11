@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSettings, SettingsTab } from '../../contexts/SettingsContext';
-import { CORSSettings } from './tabs/CORSSettings';
+import CORSSettings from './tabs/CORSSettings';
 
 interface SettingsModalProps {
   onClose: () => void;

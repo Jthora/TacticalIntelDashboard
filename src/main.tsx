@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { displaySettings } from './utils/DisplaySettingsManager';
+// import { displaySettings } from './utils/DisplaySettingsManager';
 
 // Import CSS files for styling - tactical-ui.css contains critical base styles
 import './assets/styles/tactical-ui.css';
