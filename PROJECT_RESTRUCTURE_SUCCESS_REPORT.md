@@ -8,7 +8,7 @@ Successfully completed the **complete project restructure** of the Tactical Inte
 
 ### **1. Project Relocation**
 - **Source**: `/home/jono/Documents/github/tacticalIntelDashboard/TacticalIntelDashboard/`
-- **Target**: `/home/jono/TacticalIntelDashboard/`
+- **Target**: `/home/jono/workspace/github/TacticalIntelDashboard/`
 - **Method**: Full directory move with preserved git history
 - **Status**: ✅ **COMPLETE**
 
@@ -29,7 +29,7 @@ Successfully completed the **complete project restructure** of the Tactical Inte
 ## 🏗️ **FINAL PROJECT STRUCTURE**
 
 ```
-/home/jono/TacticalIntelDashboard/
+/home/jono/workspace/github/TacticalIntelDashboard/
 ├── src/                           # Main application source
 ├── public/                        # Static assets
 ├── docs/                          # Documentation (original)
@@ -84,7 +84,7 @@ The project is now properly structured for Vercel deployment:
 
 ### **Next Steps for Deployment**
 ```bash
-# From /home/jono/TacticalIntelDashboard/
+# From /home/jono/workspace/github/TacticalIntelDashboard/
 vercel --prod
 ```
 
@@ -204,5 +204,5 @@ The Tactical Intel Dashboard has been successfully restructured from a nested su
 
 **Generated**: July 10, 2025  
 **Project**: Tactical Intel Dashboard  
-**Location**: `/home/jono/TacticalIntelDashboard/`  
+**Location**: `/home/jono/workspace/github/TacticalIntelDashboard/`  
 **Status**: ✅ **DEPLOYMENT READY**
