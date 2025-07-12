@@ -5,11 +5,14 @@ import { LoadingSpinner } from '../shared/components/LoadingStates';
 import SourceManager from './SourceManager';
 import { useIntelligence } from '../contexts/IntelligenceContext';
 import { 
-  TACTICAL_INTEL_SOURCES, 
-  INTELLIGENCE_CATEGORIES,
+  getModernIntelligenceSourcesAsLegacy, 
+  MODERN_INTELLIGENCE_CATEGORIES,
+  getCategoryStats
+} from '../adapters/ModernIntelSourcesAdapter';
+import { 
   TacticalIntelSource,
   IntelligenceCategory
-} from '../constants/TacticalIntelSources';
+} from '../types/TacticalIntelligence';
 
 interface IntelSourcesProps {
   setSelectedFeedList: (feedListId: string | null) => void;
@@ -47,12 +50,10 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
         // Load from intelligence context first
         let sources = intelState.sources;
         
-        // If no sources in context, load from tactical intel sources (now mapped from realistic sources)
+        // If no sources in context, load from modern intelligence sources
         if (sources.length === 0) {
-          // Use tactical intel sources (which are now mapped from realistic verified sources)
-          sources = TACTICAL_INTEL_SOURCES.filter(source => 
-            source.cost === 'free' || source.classification === 'UNCLASSIFIED'
-          );
+          // Use modern API sources (CORS-friendly, real-time JSON APIs)
+          sources = getModernIntelligenceSourcesAsLegacy();
           // Add to intelligence context
           sources.forEach(source => intelActions.addSource(source));
         }
@@ -198,7 +199,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   };
 
   const getCategoryTooltip = (category: string) => {
-    const categoryData = INTELLIGENCE_CATEGORIES[category as keyof typeof INTELLIGENCE_CATEGORIES];
+    const categoryData = MODERN_INTELLIGENCE_CATEGORIES[category as keyof typeof MODERN_INTELLIGENCE_CATEGORIES];
     return categoryData ? `${categoryData.name} - ${categoryData.description || 'Intelligence category'}` : 'Unknown category';
   };
 
@@ -344,7 +345,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                   title="Filter by Category"
                 >
                   <option value="">ALL CATEGORIES</option>
-                  {Object.entries(INTELLIGENCE_CATEGORIES).map(([key, cat]) => (
+                  {Object.entries(MODERN_INTELLIGENCE_CATEGORIES).map(([key, cat]) => (
                     <option key={key} value={key}>{cat.name}</option>
                   ))}
                 </select>
@@ -466,8 +467,8 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                           <span 
                             className="category-badge" 
                             style={{ 
-                              '--category-color': INTELLIGENCE_CATEGORIES[source.category]?.color,
-                              borderColor: INTELLIGENCE_CATEGORIES[source.category]?.color
+                              '--category-color': MODERN_INTELLIGENCE_CATEGORIES[source.category]?.color,
+                              borderColor: MODERN_INTELLIGENCE_CATEGORIES[source.category]?.color
                             } as React.CSSProperties}
                             title={getCategoryTooltip(source.category)}
                           >
@@ -524,14 +525,16 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                               <span className="stat-icon">🔄</span>
                               <span className="stat-value">{source.updateFrequency}m</span>
                             </span>
-                            <span className="stat-item">
-                              <span className="stat-icon">💰</span>
-                              <span className="stat-value">{source.cost.toUpperCase()}</span>
-                            </span>
                             {source.requiresAuth && (
                               <span className="stat-item">
-                                <span className="stat-icon">🔐</span>
+                                <span className="stat-icon">�</span>
                                 <span className="stat-value">AUTH</span>
+                              </span>
+                            )}
+                            {source.protocol === 'API' && (
+                              <span className="stat-item">
+                                <span className="stat-icon">�</span>
+                                <span className="stat-value">API</span>
                               </span>
                             )}
                           </div>
