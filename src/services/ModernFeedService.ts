@@ -311,11 +311,35 @@ class ModernFeedService {
       feedListId: 'modern-api',
       author: item.source,
       categories: item.tags,
+      tags: item.tags, // Add tags field for new UI
+      priority: item.priority, // Add priority for badge display
+      contentType: this.mapCategoryToContentType(item.category),
+      source: item.source,
       trustRating: item.trustRating,
       verificationStatus: item.verificationStatus,
       lastValidated: new Date().toISOString(),
       responseTime: item.responseTime
     }));
+  }
+
+  /**
+   * Map API category to content type
+   */
+  private mapCategoryToContentType(category: string): 'INTEL' | 'NEWS' | 'ALERT' | 'THREAT' {
+    const categoryMap: Record<string, 'INTEL' | 'NEWS' | 'ALERT' | 'THREAT'> = {
+      'security': 'THREAT',
+      'weather-alert': 'ALERT',
+      'earthquake': 'ALERT',
+      'space': 'INTEL',
+      'financial': 'NEWS',
+      'technology': 'INTEL',
+      'social': 'NEWS',
+      'government': 'INTEL',
+      'military': 'INTEL',
+      'cyberdefense': 'THREAT'
+    };
+    
+    return categoryMap[category] || 'NEWS';
   }
 
   private convertFromLegacyFormat(feedItems: FeedItem[]): NormalizedDataItem[] {
