@@ -75,7 +75,7 @@ const defaultSettings: Settings = {
   version: '1.0.0',
   lastTab: SettingsTab.GENERAL,
   cors: {
-    defaultStrategy: CORSStrategy.RSS2JSON,
+    defaultStrategy: CORSStrategy.DIRECT, // Changed to DIRECT to use CORS proxies directly
     protocolStrategies: {},
     services: {
       rss2json: [
@@ -85,14 +85,14 @@ const defaultSettings: Settings = {
         'https://rss-to-json-serverless-api.vercel.app'
       ],
       corsProxies: [
+        'https://api.codetabs.com/v1/proxy?quest=',
         'https://corsproxy.io/?',
-        'https://api.allorigins.win/raw?url=',
-        'https://api.codetabs.com/v1/proxy?quest='
+        'https://api.allorigins.win/raw?url='
       ]
     },
     fallbackChain: [
+      CORSStrategy.DIRECT, // Try CORS proxies first
       CORSStrategy.RSS2JSON,
-      CORSStrategy.DIRECT,
       CORSStrategy.SERVICE_WORKER,
       CORSStrategy.JSONP,
       CORSStrategy.EXTENSION

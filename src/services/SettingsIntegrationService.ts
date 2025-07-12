@@ -67,11 +67,12 @@ export class SettingsIntegrationService {
           const service = settings.cors.services.rss2json[0];
           return `${service}?rss_url=${encodeURIComponent(targetUrl)}`;
         }
-        // Fallback to direct if no services available
-        return targetUrl;
+        // Fallback to CORS proxy if no RSS2JSON services available
+        return this.getFirstWorkingProxy(targetUrl, settings);
         
       case CORSStrategy.DIRECT:
-        return targetUrl;
+        // For DIRECT strategy, use the first available CORS proxy
+        return this.getFirstWorkingProxy(targetUrl, settings);
         
       case CORSStrategy.SERVICE_WORKER:
         // Implement service worker proxy logic here
@@ -86,9 +87,22 @@ export class SettingsIntegrationService {
         return targetUrl;
         
       default:
-        // Default to direct fetch
-        return targetUrl;
+        // Default to first working proxy
+        return this.getFirstWorkingProxy(targetUrl, settings);
     }
+  }
+  
+  /**
+   * Get the first working CORS proxy URL
+   * @private
+   */
+  private static getFirstWorkingProxy(targetUrl: string, settings: Settings): string {
+    if (settings.cors?.services?.corsProxies?.length > 0) {
+      const firstProxy = settings.cors.services.corsProxies[0];
+      return `${firstProxy}${encodeURIComponent(targetUrl)}`;
+    }
+    // Fallback if no proxies configured
+    return `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
   }
   
   /**
@@ -99,24 +113,42 @@ export class SettingsIntegrationService {
     const settings = this.loadSettings();
     const proxies: string[] = [];
     
+    // Always start with our known working proxy
+    proxies.push('https://api.codetabs.com/v1/proxy?quest=');
+    
+    // Add configured CORS proxies
+    if (settings.cors?.services?.corsProxies) {
+      for (const proxy of settings.cors.services.corsProxies) {
+        if (!proxies.includes(proxy)) {
+          proxies.push(proxy);
+        }
+      }
+    }
+    
     // Add proxies based on the fallback chain order
     if (settings.cors?.fallbackChain && settings.cors.services) {
       for (const strategy of settings.cors.fallbackChain) {
         switch (strategy) {
           case CORSStrategy.RSS2JSON:
             if (settings.cors.services.rss2json) {
-              proxies.push(...settings.cors.services.rss2json.map(
-                service => `${service}?rss_url=`
-              ));
+              for (const service of settings.cors.services.rss2json) {
+                const rssProxyUrl = `${service}?rss_url=`;
+                if (!proxies.includes(rssProxyUrl)) {
+                  proxies.push(rssProxyUrl);
+                }
+              }
             }
             break;
             
           case CORSStrategy.DIRECT:
-            proxies.push(''); // Empty string means direct fetch
+            // DIRECT strategy uses CORS proxies, already added above
             break;
             
           case CORSStrategy.SERVICE_WORKER:
-            proxies.push(`${window.location.origin}/sw-proxy?url=`);
+            const swProxy = `${window.location.origin}/sw-proxy?url=`;
+            if (!proxies.includes(swProxy)) {
+              proxies.push(swProxy);
+            }
             break;
             
           case CORSStrategy.JSONP:
@@ -125,17 +157,13 @@ export class SettingsIntegrationService {
             
           case CORSStrategy.EXTENSION:
             // Not directly applicable as a proxy URL
+            proxies.push(''); // Empty string means direct fetch (might work with extension)
             break;
         }
       }
-      
-      // Always add generic CORS proxies at the end of the chain
-      if (settings.cors.services.corsProxies) {
-        proxies.push(...settings.cors.services.corsProxies);
-      }
     }
     
-    return proxies.length > 0 ? proxies : [''];
+    return proxies.length > 0 ? proxies : ['https://api.codetabs.com/v1/proxy?quest='];
   }
   
   /**

@@ -30,27 +30,22 @@ const getProxyUrl = (targetUrl: string): string => {
     
     // If settings provide a specific proxy URL, use it
     if (proxyUrl !== targetUrl) {
+      console.log(`Using configured proxy: ${proxyUrl}`);
       return proxyUrl;
     }
     
-    // If strategy is DIRECT, return original URL
+    // If strategy is DIRECT, use the working CORS proxy
     if (strategy === CORSStrategy.DIRECT) {
-      return targetUrl;
+      const workingProxy = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
+      console.log(`Using working CORS proxy: ${workingProxy}`);
+      return workingProxy;
     }
   } catch (error) {
-    console.warn('Failed to get CORS settings, falling back to legacy configuration:', error);
+    console.warn('Failed to get CORS settings, falling back to working proxy:', error);
   }
   
-  // Fallback to legacy logic if settings are not available
-  if (import.meta.env.PROD || window.location.hostname.includes('vercel.app')) {
-    return `${LEGACY_PROXY_CONFIG.vercel}${encodeURIComponent(targetUrl)}`;
-  }
-  
-  if (import.meta.env.DEV) {
-    return `${LEGACY_PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
-  }
-  
-  return `${LEGACY_PROXY_CONFIG.fallback[0]}${encodeURIComponent(targetUrl)}`;
+  // Fallback to working proxy
+  return `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`;
 };
 
 const handleCORSError = (url: string, error: Error): void => {
@@ -82,11 +77,12 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
   const proxyUrl = getProxyUrl(url);
   
   try {
-    // Try primary proxy (from settings or legacy)
+    // Try primary proxy (from settings or working proxy)
     console.log(`Attempting to fetch via primary proxy: ${proxyUrl}`);
     const response = await fetchWithRetry(proxyUrl, options);
     
     if (response.ok) {
+      console.log(`Primary proxy succeeded`);
       return response;
     }
     
@@ -98,16 +94,34 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
     let fallbackProxies: string[] = [];
     try {
       fallbackProxies = SettingsIntegrationService.getCORSProxyChain();
+      console.log(`Got fallback proxies:`, fallbackProxies);
     } catch (error) {
-      // Fallback to legacy proxies if settings unavailable
-      fallbackProxies = LEGACY_PROXY_CONFIG.fallback.map(proxy => `${proxy}`);
+      // Fallback to known working proxy if settings unavailable
+      fallbackProxies = [
+        'https://api.codetabs.com/v1/proxy?quest=',
+        'https://api.allorigins.win/raw?url=',
+        'https://corsproxy.io/?'
+      ];
+      console.log(`Using hardcoded fallback proxies:`, fallbackProxies);
     }
     
     // Try fallback proxies in sequence
     for (let i = 0; i < fallbackProxies.length; i++) {
       try {
         const fallbackProxy = fallbackProxies[i];
-        const fallbackUrl = fallbackProxy === '' ? url : `${fallbackProxy}${encodeURIComponent(url)}`;
+        let fallbackUrl: string;
+        
+        if (fallbackProxy === '') {
+          // Direct fetch
+          fallbackUrl = url;
+        } else if (fallbackProxy.includes('?rss_url=')) {
+          // RSS2JSON format
+          fallbackUrl = `${fallbackProxy}${encodeURIComponent(url)}`;
+        } else {
+          // Standard CORS proxy format
+          fallbackUrl = `${fallbackProxy}${encodeURIComponent(url)}`;
+        }
+        
         console.log(`Attempting fallback proxy ${i + 1}: ${fallbackUrl}`);
         
         const response = await fetchWithRetry(fallbackUrl, {
@@ -149,11 +163,39 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
     }
 
     const contentType = response.headers.get('content-type');
-    const textData = await response.text();
-    console.log(`Feed data fetched for URL: ${url}`, textData);
+    let textData = await response.text();
+    console.log(`Feed data fetched for URL: ${url}`, textData.substring(0, 200));
+
+    // Handle different proxy response formats
+    if (contentType && contentType.includes('application/json')) {
+      try {
+        const jsonResponse = JSON.parse(textData);
+        // Handle allorigins response format
+        if (jsonResponse.contents) {
+          textData = jsonResponse.contents;
+          console.log(`Extracted content from allorigins response`);
+        }
+        // Handle other JSON proxy formats
+        else if (typeof jsonResponse === 'object' && jsonResponse.data) {
+          textData = jsonResponse.data;
+          console.log(`Extracted data from JSON proxy response`);
+        }
+      } catch (e) {
+        console.warn(`Failed to parse JSON response, treating as plain text`);
+      }
+    }
 
     let feeds: Feed[] = [];
-    if (contentType && (contentType.includes('application/xml') || contentType.includes('text/xml'))) {
+    
+    // Determine content type from the actual content if not provided correctly by proxy
+    let actualContentType = contentType;
+    if (textData.trim().startsWith('<?xml') || textData.includes('<rss') || textData.includes('<feed')) {
+      actualContentType = 'application/xml';
+    } else if (textData.trim().startsWith('{') || textData.trim().startsWith('[')) {
+      actualContentType = 'application/json';
+    }
+    
+    if (actualContentType && (actualContentType.includes('application/xml') || actualContentType.includes('text/xml') || textData.includes('<rss') || textData.includes('<feed'))) {
       if (!isValidXML(textData)) {
         handleXMLParsingError(url, new Error('Invalid XML'), textData);
         return null;
@@ -165,20 +207,23 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
         return null;
       }
       feeds = parseXMLFeedData(xmlDoc, url);
-    } else if (contentType && contentType.includes('application/json')) {
+      console.log(`Parsed ${feeds.length} feeds from XML`);
+    } else if (actualContentType && actualContentType.includes('application/json')) {
       if (!isValidJSON(textData)) {
         handleJSONParsingError(url, new Error('Invalid JSON'), textData);
         return null;
       }
       const jsonData = JSON.parse(textData);
       feeds = parseJSONFeedData(jsonData, url);
-    } else if (contentType && contentType.includes('text/plain')) {
+      console.log(`Parsed ${feeds.length} feeds from JSON`);
+    } else if (actualContentType && actualContentType.includes('text/plain')) {
       if (!isValidTXT(textData)) {
         handleTXTParsingError(url, new Error('Invalid TXT'), textData);
         return null;
       }
       feeds = parseTXTFeedData(textData, url);
-    } else if (contentType && contentType.includes('text/html')) {
+      console.log(`Parsed ${feeds.length} feeds from TXT`);
+    } else if (actualContentType && actualContentType.includes('text/html')) {
       if (!isValidHTML(textData)) {
         handleHTMLParsingError(url, new Error('Invalid HTML'), textData);
         return null;
@@ -186,11 +231,26 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       const parser = new DOMParser();
       const htmlDoc = parser.parseFromString(textData, "text/html");
       feeds = parseHTMLFeedData(htmlDoc.documentElement, url, '1');
+      console.log(`Parsed ${feeds.length} feeds from HTML`);
     } else {
-      throw new Error(`Unsupported content type: ${contentType}`);
+      console.error(`Unsupported content type: ${actualContentType}, attempting XML parsing as fallback`);
+      // Try XML parsing as a last resort
+      try {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(textData, "application/xml");
+        if (xmlDoc.getElementsByTagName("parsererror").length === 0) {
+          feeds = parseXMLFeedData(xmlDoc, url);
+          console.log(`Fallback XML parsing succeeded, parsed ${feeds.length} feeds`);
+        } else {
+          throw new Error(`Unable to parse content as XML`);
+        }
+      } catch (xmlError) {
+        throw new Error(`Unsupported content type: ${actualContentType} and fallback XML parsing failed`);
+      }
     }
 
     const convertedFeedItems = convertFeedsToFeedItems(feeds);
+    console.log(`Converted to ${convertedFeedItems.length} feed items`);
 
     return {
       feeds: convertedFeedItems,

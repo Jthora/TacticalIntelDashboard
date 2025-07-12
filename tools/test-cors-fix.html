@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Fix Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .test-section {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .success { color: #4caf50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        .info { color: #2196f3; }
+        button {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #005fa3;
+        }
+        pre {
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 10px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .feed-item {
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .feed-title {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .feed-description {
+            color: #cccccc;
+            margin-top: 5px;
+        }
+        .feed-link {
+            color: #4fc3f7;
+            text-decoration: none;
+        }
+        .feed-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ CORS Fix Test Tool</h1>
+    <p>This tool tests the CORS proxy solution for RSS feed fetching in the Tactical Intelligence Dashboard.</p>
+
+    <div class="test-section">
+        <h2>Test Configuration</h2>
+        <label for="testUrl">RSS Feed URL:</label>
+        <input type="text" id="testUrl" value="https://rss.cnn.com/rss/edition.rss" style="width: 400px; padding: 5px; margin: 5px;">
+        <button onclick="runSingleTest()">Test Single URL</button>
+        <button onclick="runBatchTest()">Test Multiple URLs</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <script>
+        // Test URLs from our verified sources
+        const testUrls = [
+            'https://rss.cnn.com/rss/edition.rss',
+            'https://feeds.reuters.com/reuters/worldNews',
+            'https://rss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml',
+            'https://feeds.npr.org/1001/rss.xml',
+            'https://feeds.washingtonpost.com/rss/world',
+        ];
+
+        // CORS proxy configurations to test
+        const proxies = [
+            {
+                name: 'CodeTabs (Working)',
+                url: 'https://api.codetabs.com/v1/proxy?quest=',
+                format: 'direct'
+            },
+            {
+                name: 'AllOrigins (Raw)',
+                url: 'https://api.allorigins.win/raw?url=',
+                format: 'direct'
+            },
+            {
+                name: 'AllOrigins (JSON)',
+                url: 'https://api.allorigins.win/get?url=',
+                format: 'json'
+            },
+            {
+                name: 'CorsProxy.io',
+                url: 'https://corsproxy.io/?',
+                format: 'direct'
+            }
+        ];
+
+        function logResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('testResults');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.innerHTML = `[${timestamp}] ${message}`;
+            resultsDiv.appendChild(logEntry);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function clearResults() {
+            document.getElementById('testResults').innerHTML = '';
+        }
+
+        async function testProxy(proxyConfig, targetUrl) {
+            const proxyUrl = `${proxyConfig.url}${encodeURIComponent(targetUrl)}`;
+            
+            try {
+                logResult(`Testing ${proxyConfig.name} with ${targetUrl}`, 'info');
+                
+                const startTime = Date.now();
+                const response = await fetch(proxyUrl, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                const responseTime = Date.now() - startTime;
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                let content = await response.text();
+                
+                // Handle different proxy response formats
+                if (proxyConfig.format === 'json') {
+                    try {
+                        const jsonResponse = JSON.parse(content);
+                        if (jsonResponse.contents) {
+                            content = jsonResponse.contents;
+                        }
+                    } catch (e) {
+                        logResult(`⚠️ ${proxyConfig.name}: Failed to parse JSON response`, 'warning');
+                    }
+                }
+
+                // Check if content looks like RSS/XML
+                const isXML = content.trim().startsWith('<?xml') || content.includes('<rss') || content.includes('<feed');
+                const contentLength = content.length;
+
+                if (isXML && contentLength > 100) {
+                    logResult(`✅ ${proxyConfig.name}: SUCCESS (${responseTime}ms, ${contentLength} chars)`, 'success');
+                    
+                    // Try to parse and extract some feed data
+                    try {
+                        const parser = new DOMParser();
+                        const xmlDoc = parser.parseFromString(content, 'application/xml');
+                        const items = xmlDoc.querySelectorAll('item, entry');
+                        
+                        if (items.length > 0) {
+                            logResult(`📰 Found ${items.length} feed items`, 'success');
+                            
+                            // Show first few items
+                            for (let i = 0; i < Math.min(3, items.length); i++) {
+                                const item = items[i];
+                                const title = item.querySelector('title')?.textContent || 'No title';
+                                const description = item.querySelector('description, summary')?.textContent || 'No description';
+                                const link = item.querySelector('link')?.textContent || item.querySelector('link')?.getAttribute('href') || '#';
+                                
+                                const feedItem = document.createElement('div');
+                                feedItem.className = 'feed-item';
+                                feedItem.innerHTML = `
+                                    <div class="feed-title">${title}</div>
+                                    <div class="feed-description">${description.substring(0, 200)}...</div>
+                                    <a href="${link}" class="feed-link" target="_blank">Read more →</a>
+                                `;
+                                document.getElementById('testResults').appendChild(feedItem);
+                            }
+                        } else {
+                            logResult(`⚠️ Content looks like XML but no feed items found`, 'warning');
+                        }
+                    } catch (parseError) {
+                        logResult(`⚠️ XML parsing failed: ${parseError.message}`, 'warning');
+                    }
+                    
+                    return { success: true, responseTime, contentLength };
+                } else {
+                    logResult(`❌ ${proxyConfig.name}: Content doesn't look like RSS (${contentLength} chars)`, 'error');
+                    return { success: false, responseTime, contentLength };
+                }
+
+            } catch (error) {
+                logResult(`❌ ${proxyConfig.name}: ${error.message}`, 'error');
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function runSingleTest() {
+            const url = document.getElementById('testUrl').value.trim();
+            if (!url) {
+                logResult('❌ Please enter a URL to test', 'error');
+                return;
+            }
+
+            logResult(`🚀 Starting single URL test: ${url}`, 'info');
+            
+            for (const proxy of proxies) {
+                await testProxy(proxy, url);
+                // Small delay between tests
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            logResult('✨ Single URL test complete', 'info');
+        }
+
+        async function runBatchTest() {
+            logResult('🚀 Starting batch test with multiple URLs...', 'info');
+            
+            let totalTests = 0;
+            let successfulTests = 0;
+            
+            for (const url of testUrls) {
+                logResult(`\n📡 Testing URL: ${url}`, 'info');
+                
+                for (const proxy of proxies) {
+                    totalTests++;
+                    const result = await testProxy(proxy, url);
+                    if (result.success) {
+                        successfulTests++;
+                    }
+                    // Small delay between tests
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                }
+            }
+            
+            const successRate = ((successfulTests / totalTests) * 100).toFixed(1);
+            logResult(`\n✨ Batch test complete: ${successfulTests}/${totalTests} tests passed (${successRate}% success rate)`, 'info');
+            
+            if (successfulTests > 0) {
+                logResult('🎉 CORS solution is working! Real RSS content can be fetched.', 'success');
+            } else {
+                logResult('💥 All tests failed. CORS solution needs more work.', 'error');
+            }
+        }
+
+        // Auto-run a quick test when page loads
+        window.addEventListener('load', () => {
+            logResult('🌟 CORS Fix Test Tool loaded. Ready to test RSS feed fetching!', 'info');
+            logResult('💡 Click "Test Single URL" to test one feed, or "Test Multiple URLs" for comprehensive testing.', 'info');
+        });
+    </script>
+</body>
+</html>

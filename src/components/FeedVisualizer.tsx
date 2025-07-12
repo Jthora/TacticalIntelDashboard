@@ -66,7 +66,10 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
   } = useAlerts();
 
   const loadFeeds = useCallback(async (showLoading = true) => {
+    console.log('🔍 FeedVisualizer: loadFeeds called with selectedFeedList:', selectedFeedList);
+    
     if (!selectedFeedList) {
+      console.log('⚠️ FeedVisualizer: No selectedFeedList, clearing feeds');
       setFeeds([]);
       setLoading(false);
       return;
@@ -80,6 +83,8 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     try {
       log.debug("Component", `Loading feeds for list: ${selectedFeedList}`);
       const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
+      console.log('📊 FeedVisualizer: Loaded feeds count:', feedsByList.length);
+      console.log('📊 FeedVisualizer: Feed sample:', feedsByList.slice(0, 2));
       log.debug("Component", `Loaded ${feedsByList.length} feeds`);
       
       // Process feeds for alert monitoring

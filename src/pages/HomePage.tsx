@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
 import CentralView from '../components/CentralView';
@@ -10,6 +10,13 @@ import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel'
  */
 const HomePage: React.FC = () => {
   const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);
+
+  // Auto-select the default feed list on component mount
+  useEffect(() => {
+    if (!selectedFeedList) {
+      setSelectedFeedList('1'); // Default feed list ID
+    }
+  }, [selectedFeedList]);
 
   const handleRefreshAll = () => {
     window.location.reload();

@@ -4,12 +4,8 @@ import { FeedList } from '../types/FeedTypes';
 import { LoadingSpinner } from '../shared/components/LoadingStates';
 import SourceManager from './SourceManager';
 import { useIntelligence } from '../contexts/IntelligenceContext';
-import { 
-  TACTICAL_INTEL_SOURCES, 
-  INTELLIGENCE_CATEGORIES,
-  TacticalIntelSource,
-  IntelligenceCategory
-} from '../constants/TacticalIntelSources';
+import { REALISTIC_INTELLIGENCE_SOURCES, RealisticFeedCategory } from '../constants/RealisticIntelligenceSources';
+import { RealisticFeedSource } from '../constants/RealisticIntelligenceSources';
 
 interface IntelSourcesProps {
   setSelectedFeedList: (feedListId: string | null) => void;
@@ -32,11 +28,11 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'compact'>('grid');
   const [sortBy, setSortBy] = useState<'name' | 'reliability' | 'category' | 'priority'>('category');
   const [filterActive, setFilterActive] = useState<boolean>(false);
-  const [categoryFilter, setCategoryFilter] = useState<IntelligenceCategory[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<RealisticFeedCategory[]>([]);
   const [showMetrics, setShowMetrics] = useState<boolean>(true);
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [showSourceManager, setShowSourceManager] = useState<boolean>(false);
-  const [tacticalSources, setTacticalSources] = useState<TacticalIntelSource[]>([]);
+  const [tacticalSources, setTacticalSources] = useState<RealisticFeedSource[]>([]);
 
   // Load tactical intelligence sources
   useEffect(() => {
@@ -44,19 +40,10 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
       setLoading(true);
       setError(null);
       try {
-        // Load from intelligence context first
-        let sources = intelState.sources;
-        
-        // If no sources in context, load from tactical intel sources (now mapped from realistic sources)
-        if (sources.length === 0) {
-          // Use tactical intel sources (which are now mapped from realistic verified sources)
-          sources = TACTICAL_INTEL_SOURCES.filter(source => 
-            source.cost === 'free' || source.classification === 'UNCLASSIFIED'
-          );
-          // Add to intelligence context
-          sources.forEach(source => intelActions.addSource(source));
-        }
-        
+        // Load realistic verified sources directly
+        const sources = REALISTIC_INTELLIGENCE_SOURCES.filter(source => 
+          source.verificationStatus === 'VERIFIED'
+        );
         setTacticalSources(sources);
         
         // Also load legacy feed lists for compatibility
@@ -70,7 +57,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
       }
     };
     loadTacticalSources();
-  }, [intelState.sources, intelActions]);
+  }, []);
 
   useEffect(() => {
     if (autoRefresh) {
@@ -79,11 +66,12 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
         tacticalSources.forEach(source => {
           // Simulate health check - in real implementation this would be actual API calls
           const healthStatus = Math.random() > 0.1 ? 'operational' : 'degraded';
-          // Update source in intelligence context
-          intelActions.updateSource(source.id, { 
-            healthStatus: healthStatus as any,
-            lastUpdated: new Date()
-          });
+          if (source.healthStatus !== healthStatus) {
+            intelActions.updateSource(source.id, { 
+              healthStatus,
+              lastUpdated: new Date()
+            });
+          }
         });
       }, 30000); // Check every 30 seconds
 
@@ -104,14 +92,14 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
     return [...filtered].sort((a, b) => {
       switch (sortBy) {
         case 'reliability':
-          return b.reliability - a.reliability; // Use reliability from TacticalIntelSource
+          return (b.trustRating || 0) - (a.trustRating || 0);
         case 'category':
           return a.category.localeCompare(b.category);
         case 'priority':
-          // Priority based on reliability and health status
-          const getPriority = (source: TacticalIntelSource) => {
-            let priority = source.reliability;
-            if (source.healthStatus === 'operational') priority += 20;
+          // Priority based on trust rating and verification status
+          const getPriority = (source: RealisticFeedSource) => {
+            let priority = source.trustRating || 0;
+            if (source.verificationStatus === 'VERIFIED') priority += 2;
             return priority;
           };
           return getPriority(b) - getPriority(a);

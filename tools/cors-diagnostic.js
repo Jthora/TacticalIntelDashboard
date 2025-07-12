@@ -5,7 +5,7 @@
  * Usage: node cors-diagnostic.js https://example.com/feed.xml
  */
 
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 // RSS/Feed converter services
 const RSS2JSON_SERVICES = [

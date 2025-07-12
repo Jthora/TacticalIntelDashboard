@@ -13,6 +13,8 @@ class FeedService {
   private feedLists: FeedList[] = [];
   private readonly feedsStorageKey = 'feeds';
   private readonly feedListsStorageKey = 'feedLists';
+  private readonly feedsVersionKey = 'feedsVersion';
+  private readonly currentFeedsVersion = '2.1-cors-fixed'; // Increment this when feeds change
 
   constructor() {
     this.loadFeeds();
@@ -22,13 +24,29 @@ class FeedService {
 
   private loadFeeds() {
     try {
+      console.log('🔍 FeedService: loadFeeds called');
       log.debug("Component", 'Loading feeds from local storage');
+      
+      // Check if we need to upgrade feeds to new version
+      const storedVersion = LocalStorageUtil.getItem<string>(this.feedsVersionKey);
+      console.log('🔍 FeedService: Stored version:', storedVersion, 'Current version:', this.currentFeedsVersion);
+      
       const storedFeeds = LocalStorageUtil.getItem<Feed[]>(this.feedsStorageKey);
-      if (storedFeeds && storedFeeds.length > 0) {
-        this.feeds = storedFeeds;
-      } else {
+      console.log('🔍 FeedService: storedFeeds from localStorage:', storedFeeds?.length || 0, 'items');
+      
+      // Force reload if version mismatch or no stored feeds
+      if (storedVersion !== this.currentFeedsVersion || !storedFeeds || storedFeeds.length === 0) {
+        console.log('� FeedService: Version mismatch or no feeds, forcing upgrade to realistic feeds');
         this.feeds = this.getDefaultFeeds();
+        // Save new version and feeds
+        LocalStorageUtil.setItem(this.feedsVersionKey, this.currentFeedsVersion);
+        this.saveFeeds();
+      } else {
+        console.log('� FeedService: Using stored feeds from localStorage');
+        console.log('📦 FeedService: Stored feeds sample:', storedFeeds.slice(0, 2));
+        this.feeds = storedFeeds;
       }
+      console.log('✅ FeedService: Final feeds count:', this.feeds.length);
     } catch (error) {
       console.error('Failed to load feeds:', error);
       this.feeds = this.getDefaultFeeds();
@@ -75,7 +93,16 @@ class FeedService {
   }
 
   private getDefaultFeeds(): Feed[] {
-    return convertFeedItemsToFeeds(DefaultFeeds);
+    console.log('🔍 FeedService: getDefaultFeeds called');
+    const defaultFeedItems = DefaultFeeds;
+    console.log('🔍 FeedService: DefaultFeeds length:', defaultFeedItems.length);
+    console.log('🔍 FeedService: DefaultFeeds sample:', defaultFeedItems.slice(0, 2));
+    
+    const convertedFeeds = convertFeedItemsToFeeds(defaultFeedItems);
+    console.log('🔍 FeedService: Converted feeds length:', convertedFeeds.length);
+    console.log('🔍 FeedService: Converted feeds sample:', convertedFeeds.slice(0, 2));
+    
+    return convertedFeeds;
   }
 
   public resetToDefault() {
@@ -111,9 +138,14 @@ class FeedService {
   }
 
   public getFeedsByList(feedListId: string): Feed[] {
+    console.log('🔍 FeedService: getFeedsByList called with ID:', feedListId);
+    console.log('🔍 FeedService: Total feeds available:', this.feeds.length);
+    console.log('🔍 FeedService: Feed sample:', this.feeds.slice(0, 2).map(f => ({ id: f.id, feedListId: f.feedListId, title: f.title })));
+    
     log.debug("Component", `Getting feeds for list ID: ${feedListId}`);
     try {
       const feeds = this.feeds.filter(feed => feed.feedListId === feedListId);
+      console.log('🔍 FeedService: Filtered feeds count:', feeds.length);
       log.debug("Component", `Feeds for list ID ${feedListId}:`, feeds);
       return feeds;
     } catch (error) {
@@ -195,36 +227,45 @@ class FeedService {
   }
 
   public async updateFeedsFromServer() {
+    console.log('🌐 FeedService: updateFeedsFromServer called');
+    console.log('🌐 FeedService: Will attempt to fetch', this.feeds.length, 'feeds');
     log.debug("Component", 'Updating feeds from server');
     log.debug("Component", 'Current feeds:', this.feeds);
 
     const updatedFeeds: Feed[] = [];
     for (const feed of this.feeds) {
+      console.log(`🌐 Fetching RSS for: ${feed.name} (${feed.url})`);
       const startTime = Date.now();
       try {
         const feedResults = await fetchFeed(feed.url); // Use fetchFeed to get feed data
         const responseTime = Date.now() - startTime;
         
+        console.log(`📡 RSS fetch result for ${feed.name}:`, feedResults ? 'SUCCESS' : 'FAILED');
         if (feedResults) {
+          console.log(`📡 RSS data for ${feed.name}:`, feedResults.feeds?.length || 0, 'items');
+          if (feedResults.feeds && feedResults.feeds.length > 0) {
+            console.log(`📡 First RSS item:`, feedResults.feeds[0]);
+          }
           const updatedFeed = { ...feed, ...feedResults.feeds[0] }; // Assuming feedResults.feeds[0] contains the updated feed data
           updatedFeeds.push(updatedFeed);
           // Track successful fetch
           FeedHealthService.updateFeedHealth(feed.id, feed.url, true, responseTime);
         } else {
-          console.error(`Failed to fetch feed from ${feed.url}`);
+          console.error(`❌ Failed to fetch feed from ${feed.url} - no results`);
           updatedFeeds.push(feed); // Keep the old feed if fetch fails
           // Track failed fetch
           FeedHealthService.updateFeedHealth(feed.id, feed.url, false, undefined, 'Feed fetch returned null');
         }
       } catch (error) {
         const responseTime = Date.now() - startTime;
-        console.error(`Error fetching feed from ${feed.url}:`, error);
+        console.error(`❌ Error fetching feed from ${feed.url}:`, error);
         updatedFeeds.push(feed); // Keep the old feed if fetch fails
         // Track error
         FeedHealthService.updateFeedHealth(feed.id, feed.url, false, responseTime, error instanceof Error ? error.message : 'Unknown error');
       }
     }
 
+    console.log('🌐 FeedService: Feed update complete. Updated', updatedFeeds.length, 'feeds');
     this.feeds = updatedFeeds;
     this.saveFeeds();
     log.debug("Component", 'Feeds updated from server:', this.feeds);

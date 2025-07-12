@@ -1,5 +1,5 @@
 import { FeedItem } from '../types/FeedTypes';
-import { DefaultFeeds as RealisticDefaultFeeds } from './RealisticDefaultFeeds';
+import { DefaultFeeds as RealisticDefaultFeedsBalanced } from './RealisticDefaultFeeds';
 
 // Legacy mainstream sources (kept for backward compatibility)
 const mainstreamUrls = [
@@ -29,4 +29,4 @@ export const MainstreamFeeds: FeedItem[] = mainstreamUrls.map((url, index) => ({
 }));
 
 // Use realistic verified sources as default instead of fake Earth Alliance sources
-export const DefaultFeeds: FeedItem[] = RealisticDefaultFeeds;
+export const DefaultFeeds: FeedItem[] = RealisticDefaultFeedsBalanced;
