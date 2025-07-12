@@ -11,7 +11,7 @@ export interface FeedItem {
   media?: { url: string, type: string }[];
   // Enhanced metadata for realistic sources
   trustRating?: number;
-  verificationStatus?: 'VERIFIED' | 'UNVERIFIED';
+  verificationStatus?: 'VERIFIED' | 'UNVERIFIED' | 'OFFICIAL';
   lastValidated?: string;
   responseTime?: number;
 }

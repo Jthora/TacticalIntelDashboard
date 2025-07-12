@@ -56,7 +56,15 @@ const handleCORSError = (url: string, error: Error): void => {
 const fetchWithRetry = async (url: string, options: RequestInit, retries = 3, backoff = 300): Promise<Response> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const response = await fetch(url, options);
+      // Use simple fetch options to avoid preflight requests
+      const simpleOptions: RequestInit = {
+        method: 'GET',
+        mode: 'cors',
+        // Remove headers that trigger preflight requests
+        // Only use simple headers that don't require preflight
+      };
+      
+      const response = await fetch(url, simpleOptions);
       if (response.ok) {
         return response;
       }

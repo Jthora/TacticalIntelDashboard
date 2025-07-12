@@ -7,6 +7,7 @@ import { DefaultFeeds } from '../../../constants/DefaultFeeds';
 import { convertFeedItemsToFeeds } from '../../../utils/feedConversion';
 import { fetchFeed } from '../../../utils/fetchFeed'; // Import fetchFeed
 import { FeedHealthService } from '../../../services/FeedHealthService';
+import { modernFeedService } from '../../../services/ModernFeedService'; // Import modern service
 
 class FeedService {
   private feeds: Feed[] = [];
@@ -14,7 +15,7 @@ class FeedService {
   private readonly feedsStorageKey = 'feeds';
   private readonly feedListsStorageKey = 'feedLists';
   private readonly feedsVersionKey = 'feedsVersion';
-  private readonly currentFeedsVersion = '2.1-cors-fixed'; // Increment this when feeds change
+  private readonly currentFeedsVersion = '3.0-modern-api'; // Updated for modern API integration
 
   constructor() {
     this.loadFeeds();
@@ -227,48 +228,126 @@ class FeedService {
   }
 
   public async updateFeedsFromServer() {
-    console.log('🌐 FeedService: updateFeedsFromServer called');
-    console.log('🌐 FeedService: Will attempt to fetch', this.feeds.length, 'feeds');
-    log.debug("Component", 'Updating feeds from server');
-    log.debug("Component", 'Current feeds:', this.feeds);
+    console.log('🚀 FeedService: updateFeedsFromServer called - using Modern API Service');
+    log.debug("Component", 'Updating feeds using modern API architecture');
 
+    try {
+      // Use modern API service to fetch intelligence data
+      const intelligenceResults = await modernFeedService.fetchAllIntelligenceData(true);
+      
+      console.log('🚀 Modern API fetch result:', intelligenceResults.feeds?.length || 0, 'items');
+      
+      if (intelligenceResults.feeds && intelligenceResults.feeds.length > 0) {
+        // Convert modern API results to legacy Feed format for compatibility
+        const modernFeeds = this.convertIntelligenceToFeeds(intelligenceResults.feeds);
+        
+        console.log('🚀 Converted to legacy format:', modernFeeds.length, 'feeds');
+        
+        // Merge with existing feeds, prioritizing modern API data
+        this.feeds = [...modernFeeds, ...this.feeds.filter(feed => !modernFeeds.find(mf => mf.id === feed.id))];
+        
+        this.saveFeeds();
+        log.info("Component", `Successfully updated with ${modernFeeds.length} modern intelligence feeds`);
+      }
+      
+      // Fallback to RSS for any remaining legacy feeds
+      await this.updateLegacyRSSFeeds();
+      
+    } catch (error) {
+      console.error('❌ Error in modern feed update:', error);
+      log.error("Component", `Modern feed update failed: ${error}`);
+      
+      // Fallback to legacy RSS method
+      await this.updateLegacyRSSFeeds();
+    }
+  }
+
+  private async updateLegacyRSSFeeds() {
+    console.log('📡 FeedService: Falling back to legacy RSS fetching');
+    
+    const rssFeeds = this.feeds.filter(feed => 
+      feed.url && (feed.url.includes('rss') || feed.url.includes('xml') || feed.url.includes('feed'))
+    );
+    
+    if (rssFeeds.length === 0) {
+      console.log('📡 No RSS feeds to update');
+      return;
+    }
+    
+    console.log('📡 Updating', rssFeeds.length, 'legacy RSS feeds');
+    
     const updatedFeeds: Feed[] = [];
-    for (const feed of this.feeds) {
-      console.log(`🌐 Fetching RSS for: ${feed.name} (${feed.url})`);
+    for (const feed of rssFeeds) {
+      console.log(`📡 Fetching RSS for: ${feed.name} (${feed.url})`);
       const startTime = Date.now();
       try {
-        const feedResults = await fetchFeed(feed.url); // Use fetchFeed to get feed data
+        const feedResults = await fetchFeed(feed.url);
         const responseTime = Date.now() - startTime;
         
-        console.log(`📡 RSS fetch result for ${feed.name}:`, feedResults ? 'SUCCESS' : 'FAILED');
         if (feedResults) {
-          console.log(`📡 RSS data for ${feed.name}:`, feedResults.feeds?.length || 0, 'items');
-          if (feedResults.feeds && feedResults.feeds.length > 0) {
-            console.log(`📡 First RSS item:`, feedResults.feeds[0]);
-          }
-          const updatedFeed = { ...feed, ...feedResults.feeds[0] }; // Assuming feedResults.feeds[0] contains the updated feed data
+          console.log(`📡 RSS success for ${feed.name}:`, feedResults.feeds?.length || 0, 'items');
+          const updatedFeed = { ...feed, ...feedResults.feeds?.[0] };
           updatedFeeds.push(updatedFeed);
-          // Track successful fetch
           FeedHealthService.updateFeedHealth(feed.id, feed.url, true, responseTime);
         } else {
-          console.error(`❌ Failed to fetch feed from ${feed.url} - no results`);
-          updatedFeeds.push(feed); // Keep the old feed if fetch fails
-          // Track failed fetch
+          console.warn(`⚠️ RSS failed for ${feed.url} - no results`);
+          updatedFeeds.push(feed);
           FeedHealthService.updateFeedHealth(feed.id, feed.url, false, undefined, 'Feed fetch returned null');
         }
       } catch (error) {
         const responseTime = Date.now() - startTime;
-        console.error(`❌ Error fetching feed from ${feed.url}:`, error);
-        updatedFeeds.push(feed); // Keep the old feed if fetch fails
-        // Track error
+        console.error(`❌ RSS error for ${feed.url}:`, error);
+        updatedFeeds.push(feed);
         FeedHealthService.updateFeedHealth(feed.id, feed.url, false, responseTime, error instanceof Error ? error.message : 'Unknown error');
       }
     }
 
-    console.log('🌐 FeedService: Feed update complete. Updated', updatedFeeds.length, 'feeds');
-    this.feeds = updatedFeeds;
+    // Update feeds with RSS results
+    this.feeds = [...this.feeds.filter(f => !rssFeeds.includes(f)), ...updatedFeeds];
     this.saveFeeds();
-    log.debug("Component", 'Feeds updated from server:', this.feeds);
+  }
+
+  private convertIntelligenceToFeeds(feedItems: any[]): Feed[] {
+    return feedItems.map(item => ({
+      id: item.id,
+      name: item.title,
+      title: item.title,
+      description: item.description,
+      content: item.content,
+      url: item.link,
+      link: item.link,
+      pubDate: item.pubDate || new Date().toISOString(), // Required field
+      feedListId: item.feedListId || '1',
+      categories: item.categories || [],
+      author: item.author,
+      media: item.media,
+      priority: this.mapPriorityToFeedPriority(item.priority),
+      contentType: this.mapCategoryToContentType(item.categories?.[0]),
+      region: 'GLOBAL',
+      tags: item.categories || [],
+      classification: item.verificationStatus,
+      timestamp: item.pubDate || new Date().toISOString(),
+      source: item.author
+    }));
+  }
+
+  private mapPriorityToFeedPriority(priority?: string): 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' {
+    switch (priority?.toLowerCase()) {
+      case 'critical': return 'CRITICAL';
+      case 'high': return 'HIGH';
+      case 'medium': return 'MEDIUM';
+      case 'low': return 'LOW';
+      default: return 'MEDIUM';
+    }
+  }
+
+  private mapCategoryToContentType(category?: string): 'INTEL' | 'NEWS' | 'ALERT' | 'THREAT' {
+    if (!category) return 'NEWS';
+    const cat = category.toLowerCase();
+    if (cat.includes('alert') || cat.includes('weather') || cat.includes('emergency')) return 'ALERT';
+    if (cat.includes('security') || cat.includes('threat') || cat.includes('vulnerability')) return 'THREAT';
+    if (cat.includes('intel') || cat.includes('government') || cat.includes('official')) return 'INTEL';
+    return 'NEWS';
   }
 
   public getFeedResults(url: string): FeedResults | null {

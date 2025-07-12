@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS-Enabled Feed Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .cors-enabled { background: #1b5e20; }
+        .cors-blocked { background: #b71c1c; }
+        .testing { background: #e65100; }
+        pre { 
+            background: #333; 
+            padding: 10px; 
+            border-radius: 4px; 
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 CORS-Enabled Feed Finder</h1>
+    <p>Testing which RSS/data sources are actually CORS-enabled and can be fetched directly from browser.</p>
+    
+    <button onclick="testFeeds()">Test All Feeds</button>
+    <button onclick="testAlternatives()">Test Alternative Data Sources</button>
+    <button onclick="clearResults()">Clear Results</button>
+    
+    <div id="results"></div>
+    
+    <script>
+        // Your verified RSS sources
+        const RSS_SOURCES = [
+            'https://feeds.bbci.co.uk/news/world/rss.xml',
+            'https://feeds.npr.org/1001/rss.xml',
+            'https://rss.cnn.com/rss/edition.rss',
+            'https://feeds.reuters.com/reuters/worldNews',
+            'https://feeds.washingtonpost.com/rss/world',
+            'https://rss.nytimes.com/services/xml/rss/nyt/World.xml',
+            'https://feeds.theguardian.com/theguardian/world/rss',
+            'https://feeds.foxnews.com/foxnews/latest',
+            'https://www.reddit.com/r/worldnews.rss'
+        ];
+        
+        // Alternative CORS-enabled data sources
+        const CORS_FRIENDLY_SOURCES = [
+            'https://api.github.com/repos/microsoft/vscode/releases',
+            'https://www.reddit.com/r/worldnews.json',
+            'https://hacker-news.firebaseio.com/v0/topstories.json',
+            'https://api.coindesk.com/v1/bpi/currentprice.json',
+            'https://api.weather.gov/zones/public',
+            'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson',
+            'https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY',
+            'https://jsonplaceholder.typicode.com/posts',
+            'https://httpbin.org/json'
+        ];
+        
+        function logResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('results');
+            const result = document.createElement('div');
+            result.className = `test-result ${type}`;
+            result.innerHTML = message;
+            resultsDiv.appendChild(result);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        async function testSingleSource(url, type = 'RSS') {
+            logResult(`🧪 Testing ${type}: ${url}`, 'testing');
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'cors', // This will fail if CORS not enabled
+                    headers: {
+                        'Accept': 'application/rss+xml, application/xml, text/xml, application/json, */*'
+                    }
+                });
+                
+                const responseTime = Date.now() - startTime;
+                
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    const text = await response.text();
+                    
+                    logResult(`✅ CORS ENABLED: ${url}<br/>
+                              📊 Status: ${response.status}<br/>
+                              ⏱️ Response Time: ${responseTime}ms<br/>
+                              📄 Content-Type: ${contentType}<br/>
+                              📝 Content Length: ${text.length} chars<br/>
+                              🔍 Preview: ${text.substring(0, 200)}...`, 'cors-enabled');
+                    
+                    return { success: true, url, responseTime, contentType, contentLength: text.length };
+                } else {
+                    logResult(`❌ HTTP Error: ${url} - ${response.status} ${response.statusText}`, 'cors-blocked');
+                    return { success: false, url, error: `HTTP ${response.status}` };
+                }
+                
+            } catch (error) {
+                if (error.name === 'TypeError' && error.message.includes('CORS')) {
+                    logResult(`🚫 CORS BLOCKED: ${url}<br/>Error: ${error.message}`, 'cors-blocked');
+                } else {
+                    logResult(`❌ ERROR: ${url}<br/>Error: ${error.message}`, 'cors-blocked');
+                }
+                return { success: false, url, error: error.message };
+            }
+        }
+        
+        async function testFeeds() {
+            logResult('🚀 Testing RSS feeds for CORS support...', 'testing');
+            
+            let corsEnabled = 0;
+            let total = 0;
+            
+            for (const url of RSS_SOURCES) {
+                const result = await testSingleSource(url, 'RSS');
+                if (result.success) corsEnabled++;
+                total++;
+                // Small delay to avoid overwhelming servers
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            logResult(`📊 RSS TEST SUMMARY: ${corsEnabled}/${total} feeds are CORS-enabled (${((corsEnabled/total)*100).toFixed(1)}%)`, 
+                     corsEnabled > 0 ? 'cors-enabled' : 'cors-blocked');
+        }
+        
+        async function testAlternatives() {
+            logResult('🚀 Testing alternative CORS-friendly data sources...', 'testing');
+            
+            let corsEnabled = 0;
+            let total = 0;
+            
+            for (const url of CORS_FRIENDLY_SOURCES) {
+                const result = await testSingleSource(url, 'API');
+                if (result.success) corsEnabled++;
+                total++;
+                // Small delay
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            logResult(`📊 ALTERNATIVE SOURCES SUMMARY: ${corsEnabled}/${total} sources are CORS-enabled (${((corsEnabled/total)*100).toFixed(1)}%)`, 
+                     corsEnabled > 0 ? 'cors-enabled' : 'cors-blocked');
+        }
+        
+        // Auto-run test when page loads
+        window.addEventListener('load', () => {
+            logResult('🌟 CORS Feed Finder loaded. This will test which sources can be fetched directly from browser.', 'testing');
+            logResult('💡 CORS-enabled sources can be used in your static Vite app without any proxy!', 'testing');
+        });
+    </script>
+</body>
+</html>

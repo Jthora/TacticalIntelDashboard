@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern API CORS Test</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0f0f0f;
+            color: #00ff00;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .api-test {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+        }
+        .status {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .loading { color: #ffff00; }
+        .data {
+            background: #1a1a1a;
+            padding: 10px;
+            border-radius: 3px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        button {
+            background: #003300;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        button:hover {
+            background: #005500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Modern API CORS Test</h1>
+        <p>Testing CORS-enabled intelligence APIs that replace RSS feeds</p>
+        
+        <div class="api-test">
+            <h3>🌤️ NOAA Weather Alerts</h3>
+            <div id="noaa-status" class="status loading">Ready to test...</div>
+            <button onclick="testNOAA()">Test NOAA API</button>
+            <div id="noaa-data" class="data"></div>
+        </div>
+
+        <div class="api-test">
+            <h3>🌍 USGS Earthquake Data</h3>
+            <div id="usgs-status" class="status loading">Ready to test...</div>
+            <button onclick="testUSGS()">Test USGS API</button>
+            <div id="usgs-data" class="data"></div>
+        </div>
+
+        <div class="api-test">
+            <h3>🔐 GitHub Security Advisories</h3>
+            <div id="github-status" class="status loading">Ready to test...</div>
+            <button onclick="testGitHub()">Test GitHub API</button>
+            <div id="github-data" class="data"></div>
+        </div>
+
+        <div class="api-test">
+            <h3>💻 Hacker News</h3>
+            <div id="hn-status" class="status loading">Ready to test...</div>
+            <button onclick="testHackerNews()">Test Hacker News API</button>
+            <div id="hn-data" class="data"></div>
+        </div>
+
+        <div class="api-test">
+            <h3>💰 CoinGecko Crypto</h3>
+            <div id="crypto-status" class="status loading">Ready to test...</div>
+            <button onclick="testCrypto()">Test CoinGecko API</button>
+            <div id="crypto-data" class="data"></div>
+        </div>
+
+        <button onclick="testAll()" style="font-size: 16px; margin-top: 20px;">🚀 Test All APIs</button>
+    </div>
+
+    <script>
+        async function testAPI(name, url, statusId, dataId, transformer = null) {
+            const statusElement = document.getElementById(statusId);
+            const dataElement = document.getElementById(dataId);
+            
+            statusElement.textContent = `Testing ${name}...`;
+            statusElement.className = 'status loading';
+            dataElement.textContent = '';
+
+            try {
+                console.log(`Testing ${name}: ${url}`);
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                let displayData = transformer ? transformer(data) : data;
+                
+                statusElement.textContent = `✅ ${name} - SUCCESS (${response.status})`;
+                statusElement.className = 'status success';
+                
+                dataElement.textContent = JSON.stringify(displayData, null, 2);
+                
+                return { success: true, data: displayData };
+                
+            } catch (error) {
+                console.error(`${name} error:`, error);
+                statusElement.textContent = `❌ ${name} - ERROR: ${error.message}`;
+                statusElement.className = 'status error';
+                dataElement.textContent = `Error: ${error.message}\n\nThis may be a CORS issue if the API doesn't include proper headers.`;
+                
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function testNOAA() {
+            return await testAPI(
+                'NOAA Weather',
+                'https://api.weather.gov/alerts/active',
+                'noaa-status',
+                'noaa-data',
+                (data) => ({
+                    totalAlerts: data.features?.length || 0,
+                    sampleAlert: data.features?.[0]?.properties || 'No alerts'
+                })
+            );
+        }
+
+        async function testUSGS() {
+            return await testAPI(
+                'USGS Earthquake',
+                'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_week.geojson',
+                'usgs-status',
+                'usgs-data',
+                (data) => ({
+                    earthquakeCount: data.metadata?.count || 0,
+                    recentEarthquake: data.features?.[0]?.properties || 'No recent earthquakes'
+                })
+            );
+        }
+
+        async function testGitHub() {
+            return await testAPI(
+                'GitHub Security',
+                'https://api.github.com/advisories?per_page=3',
+                'github-status',
+                'github-data',
+                (data) => ({
+                    advisoryCount: data.length,
+                    latestAdvisory: {
+                        id: data[0]?.ghsa_id,
+                        summary: data[0]?.summary,
+                        severity: data[0]?.severity
+                    }
+                })
+            );
+        }
+
+        async function testHackerNews() {
+            return await testAPI(
+                'Hacker News',
+                'https://hacker-news.firebaseio.com/v0/topstories.json',
+                'hn-status',
+                'hn-data',
+                (data) => ({
+                    totalStories: data.length,
+                    topStoryIds: data.slice(0, 5)
+                })
+            );
+        }
+
+        async function testCrypto() {
+            return await testAPI(
+                'CoinGecko',
+                'https://api.coingecko.com/api/v3/search/trending',
+                'crypto-status',
+                'crypto-data',
+                (data) => ({
+                    trendingCoins: data.coins?.length || 0,
+                    topTrending: data.coins?.slice(0, 3).map(coin => ({
+                        name: coin.item?.name,
+                        symbol: coin.item?.symbol
+                    }))
+                })
+            );
+        }
+
+        async function testAll() {
+            console.log('🚀 Testing all modern APIs...');
+            
+            const results = await Promise.allSettled([
+                testNOAA(),
+                testUSGS(),
+                testGitHub(),
+                testHackerNews(),
+                testCrypto()
+            ]);
+
+            const successCount = results.filter(r => r.status === 'fulfilled' && r.value.success).length;
+            const totalCount = results.length;
+
+            console.log(`✅ API Test Results: ${successCount}/${totalCount} successful`);
+            
+            if (successCount === totalCount) {
+                alert(`🎉 All ${totalCount} modern APIs working! Ready to replace RSS feeds.`);
+            } else {
+                alert(`⚠️ ${successCount}/${totalCount} APIs working. Some may have CORS restrictions.`);
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            console.log('🧪 Modern API Test Page Loaded');
+            console.log('📋 Click "Test All APIs" to verify CORS compatibility');
+        });
+    </script>
+</body>
+</html>
