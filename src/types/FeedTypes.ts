@@ -14,6 +14,11 @@ export interface FeedItem {
   verificationStatus?: 'VERIFIED' | 'UNVERIFIED' | 'OFFICIAL';
   lastValidated?: string;
   responseTime?: number;
+  // Extended properties from modern API service
+  tags?: string[];
+  priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  contentType?: 'INTEL' | 'NEWS' | 'ALERT' | 'THREAT';
+  source?: string;
 }
 
 export interface FeedList {

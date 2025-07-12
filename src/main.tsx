@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import { CacheClearUtility } from './utils/CacheClearUtility';
 // import { displaySettings } from './utils/DisplaySettingsManager';
+
+// Clear any cached fake intelligence sources on app startup
+CacheClearUtility.clearIntelligenceCache();
 
 // Import CSS files for styling - tactical-ui.css contains critical base styles
 import './assets/styles/tactical-ui.css';

@@ -63,6 +63,13 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
         // Also load legacy feed lists for compatibility
         const lists = await FeedService.getFeedLists();
         setFeedLists(lists);
+        
+        // Auto-select modern API feed list if we're using modern sources
+        if (sources.length > 0 && !selectedId) {
+          console.log('🚀 Auto-selecting modern-api feed list for modern intelligence sources');
+          setSelectedId('modern-api');
+          setSelectedFeedList('modern-api');
+        }
       } catch (err) {
         console.error('Failed to load tactical sources:', err);
         setError('Failed to load intelligence sources');

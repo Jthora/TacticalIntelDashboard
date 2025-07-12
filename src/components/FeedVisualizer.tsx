@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import FeedItem from './FeedItem';
 import FeedService from '../services/FeedService';
+import { modernFeedService } from '../services/ModernFeedService';
 import { Feed } from '../models/Feed';
 import useAlerts from '../hooks/alerts/useAlerts';
 import { FeedVisualizerSkeleton, ErrorOverlay } from '../shared/components/LoadingStates';
@@ -67,6 +68,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
 
   const loadFeeds = useCallback(async (showLoading = true) => {
     console.log('🔍 FeedVisualizer: loadFeeds called with selectedFeedList:', selectedFeedList);
+    console.log('🔍 FeedVisualizer: showLoading:', showLoading);
     
     if (!selectedFeedList) {
       console.log('⚠️ FeedVisualizer: No selectedFeedList, clearing feeds');
@@ -82,42 +84,100 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
 
     try {
       log.debug("Component", `Loading feeds for list: ${selectedFeedList}`);
-      const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
-      console.log('📊 FeedVisualizer: Loaded feeds count:', feedsByList.length);
-      console.log('📊 FeedVisualizer: Feed sample:', feedsByList.slice(0, 2));
-      log.debug("Component", `Loaded ${feedsByList.length} feeds`);
+      console.log('🎯 FeedVisualizer: About to check feed list type for:', selectedFeedList);
       
-      // Process feeds for alert monitoring
-      if (isMonitoring && feedsByList.length > 0) {
-        log.debug("Component", `🚨 Checking ${feedsByList.length} feed items for alerts...`);
+      // Use modern feed service to get rich intelligence data
+      if (selectedFeedList === 'modern-api' || selectedFeedList === '1' || selectedFeedList === 'primary-intel' || selectedFeedList === 'security-feeds') {
+        console.log('📡 Using Modern Feed Service for intelligence data');
+        console.log('🚀 FeedVisualizer: Calling modernFeedService.fetchAllIntelligenceData()...');
         
-        // Convert Feed objects to format expected by alert system
-        const feedItemsForAlerts = feedsByList.map(feed => ({
-          title: feed.title,
-          description: feed.description || '',
-          content: feed.content || '',
-          link: feed.link,
-          url: feed.url,
-          source: feed.name,
-          feedTitle: feed.name,
-          pubDate: feed.pubDate,
-          author: feed.author,
-          categories: feed.categories
+        const modernResults = await modernFeedService.fetchAllIntelligenceData();
+        console.log('📊 Modern Feed Service Raw Results:', modernResults);
+        
+        const modernFeeds = modernResults.feeds;
+        console.log('📊 Modern Feeds Array:', modernFeeds);
+        
+        // Convert FeedItem to Feed format for compatibility
+        const modernFeedsAsFeeds: Feed[] = modernFeeds.map(feedItem => ({
+          ...feedItem,
+          name: feedItem.author || 'Modern API',
+          url: feedItem.link,
+          description: feedItem.description || feedItem.content || '',
+          // Map enhanced metadata from modern service
+          priority: feedItem.priority,
+          contentType: feedItem.contentType,
+          tags: feedItem.tags || feedItem.categories,
+          source: feedItem.source || feedItem.author,
         }));
         
-        const triggers = checkFeedItems(feedItemsForAlerts);
+        console.log('📊 FeedVisualizer: Loaded modern feeds count:', modernFeedsAsFeeds.length);
+        console.log('📊 FeedVisualizer: Modern feed sample:', modernFeedsAsFeeds.slice(0, 2));
         
-        if (triggers.length > 0) {
-          log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
-          setRecentAlertTriggers(triggers.length);
+        // Process feeds for alert monitoring
+        if (isMonitoring && modernFeedsAsFeeds.length > 0) {
+          log.debug("Component", `🚨 Checking ${modernFeedsAsFeeds.length} feed items for alerts...`);
           
-          // Reset the trigger count after 30 seconds
-          setTimeout(() => setRecentAlertTriggers(0), 30000);
+          const feedItemsForAlerts = modernFeedsAsFeeds.map(feed => ({
+            title: feed.title,
+            description: feed.description || '',
+            content: feed.content || '',
+            link: feed.link,
+            url: feed.link,
+            source: feed.author || 'Unknown',
+            feedTitle: feed.author || 'Unknown',
+            pubDate: feed.pubDate,
+            author: feed.author,
+            categories: feed.categories
+          }));
+          
+          const triggers = checkFeedItems(feedItemsForAlerts);
+          
+          if (triggers.length > 0) {
+            log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
+            setRecentAlertTriggers(triggers.length);
+            setTimeout(() => setRecentAlertTriggers(0), 30000);
+          }
         }
+        
+        setFeeds(modernFeedsAsFeeds);
+        setLastUpdated(new Date());
+        
+      } else {
+        // Fallback to legacy RSS service for other feed lists
+        console.log('📰 Using Legacy Feed Service for RSS feeds');
+        const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
+        console.log('📊 FeedVisualizer: Loaded legacy feeds count:', feedsByList.length);
+        
+        // Process feeds for alert monitoring (legacy format)
+        if (isMonitoring && feedsByList.length > 0) {
+          const feedItemsForAlerts = feedsByList.map(feed => ({
+            title: feed.title,
+            description: feed.description || '',
+            content: feed.content || '',
+            link: feed.link,
+            url: feed.url,
+            source: feed.name,
+            feedTitle: feed.name,
+            pubDate: feed.pubDate,
+            author: feed.author,
+            categories: feed.categories
+          }));
+          
+          const triggers = checkFeedItems(feedItemsForAlerts);
+          
+          if (triggers.length > 0) {
+            log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
+            setRecentAlertTriggers(triggers.length);
+            setTimeout(() => setRecentAlertTriggers(0), 30000);
+          }
+        }
+        
+        setFeeds(feedsByList);
+        setLastUpdated(new Date());
       }
       
-      setFeeds(feedsByList);
-      setLastUpdated(new Date());
+      log.debug("Component", `Successfully loaded feeds`);
+      
     } catch (err) {
       console.error('Failed to load feeds:', err);
       setError(`Failed to load feeds: ${err instanceof Error ? err.message : 'Unknown error'}`);

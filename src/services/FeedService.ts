@@ -89,6 +89,9 @@ class FeedService {
   private getDefaultFeedLists(): FeedList[] {
     return [
       { id: '1', name: 'Default List' },
+      { id: 'modern-api', name: 'Modern Intelligence Sources' },
+      { id: 'primary-intel', name: 'Primary Intelligence' },
+      { id: 'security-feeds', name: 'Security & Threat Intelligence' }
     ];
   }
 

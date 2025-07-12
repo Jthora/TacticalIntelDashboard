@@ -312,7 +312,7 @@ class ModernFeedService {
       author: item.source,
       categories: item.tags,
       tags: item.tags, // Add tags field for new UI
-      priority: item.priority, // Add priority for badge display
+      priority: this.mapPriorityToUppercase(item.priority), // Convert to uppercase
       contentType: this.mapCategoryToContentType(item.category),
       source: item.source,
       trustRating: item.trustRating,
@@ -320,6 +320,19 @@ class ModernFeedService {
       lastValidated: new Date().toISOString(),
       responseTime: item.responseTime
     }));
+  }
+
+  /**
+   * Convert lowercase priority to uppercase for UI compatibility
+   */
+  private mapPriorityToUppercase(priority: string): 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' {
+    switch (priority.toLowerCase()) {
+      case 'critical': return 'CRITICAL';
+      case 'high': return 'HIGH';
+      case 'medium': return 'MEDIUM';
+      case 'low': return 'LOW';
+      default: return 'MEDIUM';
+    }
   }
 
   /**
