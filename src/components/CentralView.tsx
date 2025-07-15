@@ -6,6 +6,8 @@ interface CentralViewProps {
 }
 
 const CentralView: React.FC<CentralViewProps> = ({ selectedFeedList }) => {
+  console.log('🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList:', selectedFeedList);
+  
   return (
     <div className="tactical-main">
       <div className="tactical-module module-intelligence animate-fade-in-up">

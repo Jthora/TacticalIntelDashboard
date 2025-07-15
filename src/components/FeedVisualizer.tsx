@@ -11,11 +11,53 @@ import PerformanceManager from '../services/PerformanceManager';
 import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 import { log } from '../utils/LoggerService';
 
+// TDD Error Tracking for FeedVisualizer
+const TDD_UI_ERRORS = {
+  logError: (id: string, location: string, issue: string, data?: any) => {
+    console.error(`TDD_ERROR_${id}`, {
+      location: `FeedVisualizer.${location}`,
+      issue,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  },
+  logSuccess: (id: string, location: string, message: string, data?: any) => {
+    console.log(`TDD_SUCCESS_${id}`, {
+      location: `FeedVisualizer.${location}`,
+      message,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  },
+  logWarning: (id: string, location: string, message: string, data?: any) => {
+    console.warn(`TDD_WARNING_${id}`, {
+      location: `FeedVisualizer.${location}`,
+      message,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  }
+};
+
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
 }
 
 const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }) => {
+  // TDD_ERROR_044: Track component mount and props
+  React.useEffect(() => {
+    TDD_UI_ERRORS.logSuccess('044', 'FeedVisualizer_Mount', 'FeedVisualizer component mounted', { selectedFeedList });
+  }, []);
+  
+  React.useEffect(() => {
+    TDD_UI_ERRORS.logSuccess('045', 'FeedVisualizer_PropsChange', 'selectedFeedList prop changed', { 
+      selectedFeedList,
+      type: typeof selectedFeedList,
+      isNull: selectedFeedList === null,
+      isEmpty: selectedFeedList === ''
+    });
+  }, [selectedFeedList]);
+
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   
@@ -67,10 +109,16 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
   } = useAlerts();
 
   const loadFeeds = useCallback(async (showLoading = true) => {
+    TDD_UI_ERRORS.logSuccess('046', 'loadFeeds', 'loadFeeds called', { 
+      selectedFeedList, 
+      showLoading,
+      callStack: new Error().stack?.split('\n').slice(1, 4).join('\n')
+    });
     console.log('🔍 FeedVisualizer: loadFeeds called with selectedFeedList:', selectedFeedList);
     console.log('🔍 FeedVisualizer: showLoading:', showLoading);
     
     if (!selectedFeedList) {
+      TDD_UI_ERRORS.logWarning('047', 'loadFeeds', 'No selectedFeedList provided, clearing feeds', { selectedFeedList });
       console.log('⚠️ FeedVisualizer: No selectedFeedList, clearing feeds');
       setFeeds([]);
       setLoading(false);
@@ -78,6 +126,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     }
 
     if (showLoading) {
+      TDD_UI_ERRORS.logSuccess('048', 'loadFeeds', 'Setting loading state', { selectedFeedList });
       setLoading(true, 'Loading intelligence feeds...');
       setError(null);
     }
@@ -85,13 +134,26 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     try {
       log.debug("Component", `Loading feeds for list: ${selectedFeedList}`);
       console.log('🎯 FeedVisualizer: About to check feed list type for:', selectedFeedList);
+      TDD_UI_ERRORS.logSuccess('049', 'loadFeeds', 'About to determine feed list type', { selectedFeedList });
       
       // Use modern feed service to get rich intelligence data
       if (selectedFeedList === 'modern-api' || selectedFeedList === '1' || selectedFeedList === 'primary-intel' || selectedFeedList === 'security-feeds') {
+        TDD_UI_ERRORS.logSuccess('050', 'loadFeeds', 'Using Modern Feed Service path', { 
+          selectedFeedList,
+          modernFeedServiceExists: !!modernFeedService,
+          modernFeedServiceType: typeof modernFeedService
+        });
         console.log('📡 Using Modern Feed Service for intelligence data');
         console.log('🚀 FeedVisualizer: Calling modernFeedService.fetchAllIntelligenceData()...');
         
         const modernResults = await modernFeedService.fetchAllIntelligenceData();
+        TDD_UI_ERRORS.logSuccess('051', 'loadFeeds', 'Modern Feed Service returned results', { 
+          selectedFeedList,
+          resultType: typeof modernResults,
+          hasFeeds: !!modernResults.feeds,
+          feedsLength: modernResults.feeds?.length,
+          fetchedAt: modernResults.fetchedAt
+        });
         console.log('📊 Modern Feed Service Raw Results:', modernResults);
         
         const modernFeeds = modernResults.feeds;

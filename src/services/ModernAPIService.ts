@@ -14,6 +14,26 @@ import {
 import { DataNormalizer } from './DataNormalizer';
 import { log } from '../utils/LoggerService';
 
+// TDD Error Tracking for ModernAPIService
+const TDD_API_ERRORS = {
+  logError: (id: string, location: string, issue: string, data?: any) => {
+    console.error(`TDD_ERROR_${id}`, {
+      location: `ModernAPIService.${location}`,
+      issue,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  },
+  logSuccess: (id: string, location: string, message: string, data?: any) => {
+    console.log(`TDD_SUCCESS_${id}`, {
+      location: `ModernAPIService.${location}`,
+      message,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  }
+};
+
 export class ModernAPIService {
   private healthMetrics: Map<string, APIHealthMetrics> = new Map();
   private cache: Map<string, { data: any; timestamp: number; maxAge: number }> = new Map();
@@ -30,34 +50,85 @@ export class ModernAPIService {
     const startTime = Date.now();
     const cacheKey = `${endpoint.id}-${apiPath}`;
     
+    // TDD_ERROR_008: Validate inputs
+    if (!endpoint) {
+      TDD_API_ERRORS.logError('008', 'fetchFromAPI', 'Endpoint parameter is null/undefined', { apiPath, options });
+      throw new Error('Endpoint parameter is required');
+    }
+    if (!endpoint.id) {
+      TDD_API_ERRORS.logError('009', 'fetchFromAPI', 'Endpoint missing id', endpoint);
+      throw new Error('Endpoint must have an id');
+    }
+    if (!endpoint.baseUrl) {
+      TDD_API_ERRORS.logError('010', 'fetchFromAPI', 'Endpoint missing baseUrl', endpoint);
+      throw new Error('Endpoint must have a baseUrl');
+    }
+    if (!apiPath) {
+      TDD_API_ERRORS.logError('011', 'fetchFromAPI', 'apiPath parameter is null/undefined', { endpoint: endpoint.id, options });
+      throw new Error('apiPath parameter is required');
+    }
+    
+    TDD_API_ERRORS.logSuccess('012', 'fetchFromAPI', 'Starting API fetch', { 
+      endpointId: endpoint.id, 
+      apiPath, 
+      corsEnabled: endpoint.corsEnabled,
+      requiresAuth: endpoint.requiresAuth 
+    });
+    
     try {
       // Check cache first
       if (options.cache !== false) {
         const cached = this.getCachedData<T>(cacheKey, options.maxAge);
         if (cached) {
           log.info('ModernAPIService', `Cache hit for ${endpoint.name}: ${apiPath}`);
+          TDD_API_ERRORS.logSuccess('013', 'fetchFromAPI', 'Cache hit', { endpointId: endpoint.id, apiPath });
           return cached;
+        } else {
+          TDD_API_ERRORS.logSuccess('014', 'fetchFromAPI', 'Cache miss', { endpointId: endpoint.id, apiPath });
         }
       }
 
       // Check rate limits
       if (!this.checkRateLimit(endpoint)) {
+        TDD_API_ERRORS.logError('015', 'fetchFromAPI', 'Rate limit exceeded', { endpointId: endpoint.id, apiPath });
         throw new Error(`Rate limit exceeded for ${endpoint.name}`);
       }
 
       // Build URL
       const url = this.buildURL(endpoint, apiPath);
+      TDD_API_ERRORS.logSuccess('016', 'fetchFromAPI', 'URL built successfully', { endpointId: endpoint.id, url });
       log.info('ModernAPIService', `Fetching from ${endpoint.name}: ${url}`);
 
       // Make request
+      TDD_API_ERRORS.logSuccess('017', 'fetchFromAPI', 'About to make HTTP request', { endpointId: endpoint.id, url });
       const response = await this.makeRequest(url, endpoint, options);
       const responseTime = Date.now() - startTime;
+      
+      TDD_API_ERRORS.logSuccess('018', 'fetchFromAPI', 'HTTP request completed', { 
+        endpointId: endpoint.id, 
+        status: response.status, 
+        ok: response.ok,
+        responseTime 
+      });
 
       if (!response.ok) {
+        TDD_API_ERRORS.logError('019', 'fetchFromAPI', `HTTP error response`, { 
+          endpointId: endpoint.id, 
+          status: response.status, 
+          statusText: response.statusText,
+          url 
+        });
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
+      TDD_API_ERRORS.logSuccess('020', 'fetchFromAPI', 'About to parse JSON', { endpointId: endpoint.id });
       const data = await response.json();
+      TDD_API_ERRORS.logSuccess('021', 'fetchFromAPI', 'JSON parsed successfully', { 
+        endpointId: endpoint.id, 
+        dataType: typeof data,
+        hasData: !!data,
+        dataKeys: typeof data === 'object' ? Object.keys(data) : 'not-object'
+      });
       
       // Update health metrics
       this.updateHealthMetrics(endpoint.id, true, responseTime);
@@ -83,6 +154,14 @@ export class ModernAPIService {
     } catch (error) {
       const responseTime = Date.now() - startTime;
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      
+      TDD_API_ERRORS.logError('022', 'fetchFromAPI', `Fetch failed`, { 
+        endpointId: endpoint.id, 
+        apiPath,
+        error: errorMessage,
+        responseTime,
+        errorType: error instanceof Error ? error.constructor.name : typeof error
+      });
       
       log.error('ModernAPIService', `Error fetching from ${endpoint.name}: ${errorMessage}`);
       

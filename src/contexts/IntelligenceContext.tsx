@@ -170,6 +170,12 @@ function intelligenceReducer(state: IntelligenceState, action: IntelligenceActio
       };
 
     case 'ADD_SOURCE':
+      // Check if source already exists to prevent duplicates
+      const sourceExists = state.sources.some(source => source.id === action.payload.id);
+      if (sourceExists) {
+        console.warn(`TDD_WARNING: Attempted to add duplicate source with id: ${action.payload.id}`);
+        return state; // Return unchanged state if source already exists
+      }
       return {
         ...state,
         sources: [...state.sources, action.payload],

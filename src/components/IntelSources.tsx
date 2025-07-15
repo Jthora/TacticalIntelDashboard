@@ -44,37 +44,48 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   // Load tactical intelligence sources
   useEffect(() => {
     const loadTacticalSources = async () => {
+      console.log('🔍 TDD_ERROR_052: IntelSources component loading tactical sources');
       setLoading(true);
       setError(null);
       try {
         // Load from intelligence context first
         let sources = intelState.sources;
+        console.log('🔍 TDD_ERROR_053: Sources from intelligence context:', sources.length);
         
         // If no sources in context, load from modern intelligence sources
         if (sources.length === 0) {
+          console.log('🔍 TDD_ERROR_054: No sources in context, loading modern intelligence sources');
           // Use modern API sources (CORS-friendly, real-time JSON APIs)
           sources = getModernIntelligenceSourcesAsLegacy();
+          console.log('🔍 TDD_SUCCESS_055: Loaded modern intelligence sources:', sources.length);
           // Add to intelligence context
           sources.forEach(source => intelActions.addSource(source));
         }
         
         setTacticalSources(sources);
+        console.log('🔍 TDD_SUCCESS_056: Set tactical sources state:', sources.length);
         
         // Also load legacy feed lists for compatibility
+        console.log('🔍 TDD_ERROR_057: Loading legacy feed lists from FeedService');
         const lists = await FeedService.getFeedLists();
+        console.log('🔍 TDD_SUCCESS_058: Loaded feed lists:', lists.length, 'lists:', lists.map(l => l.id));
         setFeedLists(lists);
         
         // Auto-select modern API feed list if we're using modern sources
         if (sources.length > 0 && !selectedId) {
-          console.log('🚀 Auto-selecting modern-api feed list for modern intelligence sources');
+          console.log('� TDD_SUCCESS_059: Auto-selecting modern-api feed list for modern intelligence sources');
           setSelectedId('modern-api');
           setSelectedFeedList('modern-api');
+          console.log('🔍 TDD_SUCCESS_060: Feed list selection complete - modern-api');
+        } else {
+          console.log('🔍 TDD_WARNING_061: No auto-selection:', { sourcesLength: sources.length, selectedId });
         }
       } catch (err) {
-        console.error('Failed to load tactical sources:', err);
+        console.error('🔍 TDD_ERROR_062: Failed to load tactical sources:', err);
         setError('Failed to load intelligence sources');
       } finally {
         setLoading(false);
+        console.log('🔍 TDD_SUCCESS_063: Tactical sources loading complete');
       }
     };
     loadTacticalSources();
@@ -100,8 +111,10 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   }, [autoRefresh, tacticalSources, intelActions]);
 
   const handleFeedListSelect = (listId: string) => {
+    console.log('🔍 TDD_SUCCESS_064: IntelSources handleFeedListSelect called with:', listId);
     setSelectedId(listId);
     setSelectedFeedList(listId);
+    console.log('🔍 TDD_SUCCESS_065: Feed list selection state updated to:', listId);
   };
 
   const getSortedTacticalSources = () => {

@@ -16,6 +16,18 @@ import {
   getImmediateReadyEndpoints
 } from './APIEndpoints';
 
+// TDD Error Tracking
+const TDD_ERRORS = {
+  logError: (id: string, location: string, issue: string, data?: any) => {
+    console.error(`TDD_ERROR_${id}`, {
+      location,
+      issue,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  }
+};
+
 /**
  * Primary Intelligence Sources - Ready for immediate deployment
  * These sources require no authentication and have CORS enabled
@@ -82,6 +94,40 @@ export const PRIMARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     lastFetched: undefined
   }
 ];
+
+// TDD_ERROR_001: Verify sources array is defined and populated
+if (!PRIMARY_INTELLIGENCE_SOURCES) {
+  TDD_ERRORS.logError('001', 'ModernIntelligenceSources.PRIMARY_INTELLIGENCE_SOURCES', 'PRIMARY_INTELLIGENCE_SOURCES is undefined');
+} else if (PRIMARY_INTELLIGENCE_SOURCES.length === 0) {
+  TDD_ERRORS.logError('002', 'ModernIntelligenceSources.PRIMARY_INTELLIGENCE_SOURCES', 'PRIMARY_INTELLIGENCE_SOURCES is empty array');
+} else {
+  console.log('TDD_LOG_001: PRIMARY_INTELLIGENCE_SOURCES loaded successfully', {
+    count: PRIMARY_INTELLIGENCE_SOURCES.length,
+    sources: PRIMARY_INTELLIGENCE_SOURCES.map(s => ({ id: s.id, name: s.name, enabled: s.enabled }))
+  });
+}
+
+// TDD_ERROR_003-007: Validate each source configuration
+PRIMARY_INTELLIGENCE_SOURCES.forEach((source, index) => {
+  if (!source.id) {
+    TDD_ERRORS.logError(`003_${index}`, 'ModernIntelligenceSources.source.id', `Source at index ${index} missing id`, source);
+  }
+  if (!source.endpoint) {
+    TDD_ERRORS.logError(`004_${index}`, 'ModernIntelligenceSources.source.endpoint', `Source ${source.id} missing endpoint`, source);
+  }
+  if (!source.normalizer) {
+    TDD_ERRORS.logError(`005_${index}`, 'ModernIntelligenceSources.source.normalizer', `Source ${source.id} missing normalizer`, source);
+  }
+  if (!source.enabled) {
+    console.warn(`TDD_WARN_${index}: Source ${source.id} is disabled`);
+  }
+  if (!source.endpoint?.baseUrl) {
+    TDD_ERRORS.logError(`006_${index}`, 'ModernIntelligenceSources.source.endpoint.baseUrl', `Source ${source.id} missing baseUrl`, source.endpoint);
+  }
+  if (!source.endpoint?.endpoints) {
+    TDD_ERRORS.logError(`007_${index}`, 'ModernIntelligenceSources.source.endpoint.endpoints', `Source ${source.id} missing endpoints`, source.endpoint);
+  }
+});
 
 /**
  * Secondary Intelligence Sources - Require API keys but available

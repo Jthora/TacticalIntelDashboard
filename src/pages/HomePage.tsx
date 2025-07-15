@@ -13,9 +13,18 @@ const HomePage: React.FC = () => {
 
   // Auto-select the default feed list on component mount
   useEffect(() => {
+    console.log('🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList:', selectedFeedList);
     if (!selectedFeedList) {
+      console.log('🔍 TDD_WARNING_067: No feed list selected, setting default to "1"');
       setSelectedFeedList('1'); // Default feed list ID
+    } else {
+      console.log('🔍 TDD_SUCCESS_068: Feed list already selected:', selectedFeedList);
     }
+  }, [selectedFeedList]);
+
+  // Add effect to track selectedFeedList changes
+  useEffect(() => {
+    console.log('🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to:', selectedFeedList);
   }, [selectedFeedList]);
 
   const handleRefreshAll = () => {

@@ -8,7 +8,8 @@ module.exports = {
   },
   testMatch: [
     '<rootDir>/src/**/__tests__/**/*.(ts|tsx)',
-    '<rootDir>/src/**/*.(test|spec).(ts|tsx)'
+    '<rootDir>/src/**/*.(test|spec).(ts|tsx)',
+    '<rootDir>/tests/**/*.(test|spec).(ts|tsx)'
   ],
   collectCoverageFrom: [
     'src/**/*.(ts|tsx)',

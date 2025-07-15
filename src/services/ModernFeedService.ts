@@ -16,6 +16,34 @@ import {
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { log } from '../utils/LoggerService';
 
+// TDD Error Tracking for ModernFeedService
+const TDD_FEED_ERRORS = {
+  logError: (id: string, location: string, issue: string, data?: any) => {
+    console.error(`TDD_ERROR_${id}`, {
+      location: `ModernFeedService.${location}`,
+      issue,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  },
+  logSuccess: (id: string, location: string, message: string, data?: any) => {
+    console.log(`TDD_SUCCESS_${id}`, {
+      location: `ModernFeedService.${location}`,
+      message,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  },
+  logWarning: (id: string, location: string, message: string, data?: any) => {
+    console.warn(`TDD_WARNING_${id}`, {
+      location: `ModernFeedService.${location}`,
+      message,
+      data,
+      timestamp: new Date().toISOString()
+    });
+  }
+};
+
 class ModernFeedService {
   private lastFetchTime: Map<string, number> = new Map();
   private cachedResults: Map<string, NormalizedDataItem[]> = new Map();
@@ -46,31 +74,109 @@ class ModernFeedService {
    * Fetch intelligence data from all enabled sources
    */
   async fetchAllIntelligenceData(forceRefresh: boolean = false): Promise<FeedResults> {
+    TDD_FEED_ERRORS.logSuccess('023', 'fetchAllIntelligenceData', 'Starting intelligence data fetch', { forceRefresh });
     log.info('ModernFeedService', 'Fetching intelligence data from modern APIs');
     
-    const enabledSources = getEnabledSources();
-    const fetchPromises = enabledSources.map(source => 
-      this.fetchSourceData(source, forceRefresh)
-    );
+    // TDD_ERROR_024: Validate getEnabledSources function
+    let enabledSources: IntelligenceSource[];
+    try {
+      enabledSources = getEnabledSources();
+      TDD_FEED_ERRORS.logSuccess('024', 'fetchAllIntelligenceData', 'Enabled sources retrieved', { 
+        count: enabledSources.length,
+        sources: enabledSources.map(s => ({ id: s.id, name: s.name, enabled: s.enabled }))
+      });
+    } catch (error) {
+      TDD_FEED_ERRORS.logError('025', 'fetchAllIntelligenceData', 'Failed to get enabled sources', error);
+      throw error;
+    }
+    
+    // TDD_ERROR_026: Check if we have any sources
+    if (enabledSources.length === 0) {
+      TDD_FEED_ERRORS.logError('026', 'fetchAllIntelligenceData', 'No enabled sources found', { PRIMARY_INTELLIGENCE_SOURCES });
+      return { feeds: [], fetchedAt: new Date().toISOString() };
+    }
+    
+    const fetchPromises = enabledSources.map(source => {
+      TDD_FEED_ERRORS.logSuccess('027', 'fetchAllIntelligenceData', 'Creating fetch promise for source', { 
+        sourceId: source.id, 
+        sourceName: source.name,
+        enabled: source.enabled,
+        hasEndpoint: !!source.endpoint
+      });
+      return this.fetchSourceData(source, forceRefresh);
+    });
 
     try {
+      TDD_FEED_ERRORS.logSuccess('028', 'fetchAllIntelligenceData', 'Starting Promise.allSettled', { promiseCount: fetchPromises.length });
       const results = await Promise.allSettled(fetchPromises);
+      TDD_FEED_ERRORS.logSuccess('029', 'fetchAllIntelligenceData', 'Promise.allSettled completed', { 
+        totalResults: results.length,
+        fulfilled: results.filter(r => r.status === 'fulfilled').length,
+        rejected: results.filter(r => r.status === 'rejected').length
+      });
+      
       const allItems: NormalizedDataItem[] = [];
 
       results.forEach((result, index) => {
+        const source = enabledSources[index];
         if (result.status === 'fulfilled') {
+          const itemCount = result.value.length;
           allItems.push(...result.value);
+          TDD_FEED_ERRORS.logSuccess('030', 'fetchAllIntelligenceData', 'Source fetch succeeded', { 
+            sourceId: source.id,
+            sourceName: source.name,
+            itemCount,
+            sampleItems: result.value.slice(0, 2).map(item => ({ id: item.id, title: item.title.substring(0, 50) }))
+          });
           log.debug('ModernFeedService', `Fetched ${result.value.length} items from ${enabledSources[index].name}`);
         } else {
+          TDD_FEED_ERRORS.logError('031', 'fetchAllIntelligenceData', 'Source fetch failed', {
+            sourceId: source.id,
+            sourceName: source.name,
+            error: result.reason,
+            endpoint: source.endpoint?.baseUrl
+          });
           log.warn('ModernFeedService', `Failed to fetch from ${enabledSources[index].name}: ${result.reason}`);
         }
       });
 
+      // TDD_ERROR_032: Check total items collected
+      TDD_FEED_ERRORS.logSuccess('032', 'fetchAllIntelligenceData', 'All items collected', { 
+        totalItems: allItems.length,
+        sources: enabledSources.length,
+        sampleItems: allItems.slice(0, 3).map(item => ({ 
+          id: item.id, 
+          title: item.title.substring(0, 50),
+          source: item.source
+        }))
+      });
+      
+      if (allItems.length === 0) {
+        TDD_FEED_ERRORS.logWarning('033', 'fetchAllIntelligenceData', 'No items collected from any source', {
+          enabledSourcesCount: enabledSources.length,
+          enabledSources: enabledSources.map(s => ({ id: s.id, name: s.name, enabled: s.enabled }))
+        });
+      }
+
       // Sort by priority and recency
+      TDD_FEED_ERRORS.logSuccess('034', 'fetchAllIntelligenceData', 'Starting data sorting', { itemCount: allItems.length });
       const sortedItems = this.sortIntelligenceData(allItems);
+      TDD_FEED_ERRORS.logSuccess('035', 'fetchAllIntelligenceData', 'Data sorting completed', { itemCount: sortedItems.length });
       
       // Convert to legacy FeedItem format for compatibility
+      TDD_FEED_ERRORS.logSuccess('036', 'fetchAllIntelligenceData', 'Starting legacy format conversion', { itemCount: sortedItems.length });
       const feedItems = this.convertToLegacyFormat(sortedItems);
+      TDD_FEED_ERRORS.logSuccess('037', 'fetchAllIntelligenceData', 'Legacy format conversion completed', { 
+        itemCount: feedItems.length,
+        sampleFeedItems: feedItems.slice(0, 2).map(item => ({
+          id: item.id,
+          title: item.title.substring(0, 50),
+          description: item.description?.substring(0, 50),
+          author: item.author,
+          priority: item.priority,
+          tags: item.tags
+        }))
+      });
 
       const feedResults: FeedResults = {
         feeds: feedItems,
@@ -78,17 +184,36 @@ class ModernFeedService {
       };
 
       // Cache the results
+      TDD_FEED_ERRORS.logSuccess('038', 'fetchAllIntelligenceData', 'Caching results', { itemCount: feedItems.length });
       this.cacheResults(feedResults);
+      
+      TDD_FEED_ERRORS.logSuccess('039', 'fetchAllIntelligenceData', 'Intelligence data fetch completed successfully', { 
+        totalItems: feedItems.length,
+        fetchedAt: feedResults.fetchedAt,
+        finalResult: feedResults.feeds.length > 0 ? 'SUCCESS' : 'EMPTY_RESULT'
+      });
       
       log.info('ModernFeedService', `Fetched total of ${feedItems.length} intelligence items`);
       
       return feedResults;
 
     } catch (error) {
+      TDD_FEED_ERRORS.logError('040', 'fetchAllIntelligenceData', 'Critical error in fetch process', {
+        error: error instanceof Error ? error.message : error,
+        errorType: error instanceof Error ? error.constructor.name : typeof error,
+        stack: error instanceof Error ? error.stack : 'No stack trace'
+      });
+      
       log.error('ModernFeedService', `Error fetching intelligence data: ${error}`);
       
       // Return cached data as fallback
+      TDD_FEED_ERRORS.logWarning('041', 'fetchAllIntelligenceData', 'Attempting to return cached data as fallback', {});
       const cachedResults = this.getCachedResults();
+      if (cachedResults) {
+        TDD_FEED_ERRORS.logSuccess('042', 'fetchAllIntelligenceData', 'Cached data returned as fallback', { itemCount: cachedResults.feeds.length });
+      } else {
+        TDD_FEED_ERRORS.logError('043', 'fetchAllIntelligenceData', 'No cached data available, returning empty result', {});
+      }
       return cachedResults || { feeds: [], fetchedAt: new Date().toISOString() };
     }
   }
@@ -301,25 +426,72 @@ class ModernFeedService {
   }
 
   private convertToLegacyFormat(items: NormalizedDataItem[]): FeedItem[] {
-    return items.map(item => ({
-      id: item.id,
-      title: item.title,
-      link: item.url,
-      pubDate: item.publishedAt.toISOString(),
-      description: item.summary,
-      content: item.summary,
-      feedListId: 'modern-api',
-      author: item.source,
-      categories: item.tags,
-      tags: item.tags, // Add tags field for new UI
-      priority: this.mapPriorityToUppercase(item.priority), // Convert to uppercase
-      contentType: this.mapCategoryToContentType(item.category),
-      source: item.source,
-      trustRating: item.trustRating,
-      verificationStatus: item.verificationStatus,
-      lastValidated: new Date().toISOString(),
-      responseTime: item.responseTime
-    }));
+    console.log(`TDD_DEBUG: Converting ${items.length} items to legacy format`);
+    
+    const validItems: FeedItem[] = [];
+    let skippedCount = 0;
+    
+    items.forEach((item, index) => {
+      try {
+        // Validate required fields - skip item if critical fields are missing
+        if (!item.id && !item.title) {
+          console.warn(`TDD_WARNING: Item ${index} missing both id and title, skipping`);
+          skippedCount++;
+          return;
+        }
+        
+        if (!item.url) {
+          console.warn(`TDD_WARNING: Item ${index} missing url, skipping`);
+          skippedCount++;
+          return;
+        }
+
+        // Ensure publishedAt is a valid Date
+        let pubDateStr: string;
+        if (item.publishedAt instanceof Date) {
+          pubDateStr = item.publishedAt.toISOString();
+        } else if (typeof item.publishedAt === 'string') {
+          try {
+            pubDateStr = new Date(item.publishedAt).toISOString();
+          } catch (dateError) {
+            console.warn(`TDD_WARNING: Invalid date string for item ${index}, using current time`);
+            pubDateStr = new Date().toISOString();
+          }
+        } else {
+          console.warn(`TDD_WARNING: Invalid publishedAt for item ${index}, using current time`);
+          pubDateStr = new Date().toISOString(); // Fallback to current time
+        }
+
+        const legacyItem: FeedItem = {
+          id: item.id || `item-${index}-${Date.now()}`,
+          title: item.title || 'Untitled',
+          link: item.url,
+          pubDate: pubDateStr,
+          description: item.summary || '',
+          content: item.summary || '',
+          feedListId: 'modern-api',
+          author: item.source || 'Unknown',
+          categories: item.tags || [],
+          tags: item.tags || [], // Add tags field for new UI
+          priority: this.mapPriorityToUppercase(item.priority || 'medium'), // Convert to uppercase
+          contentType: this.mapCategoryToContentType(item.category || 'general'),
+          source: item.source || 'Unknown',
+          trustRating: item.trustRating || 50,
+          verificationStatus: item.verificationStatus || 'UNVERIFIED',
+          lastValidated: new Date().toISOString(),
+          responseTime: item.responseTime || 0
+        };
+
+        validItems.push(legacyItem);
+      } catch (error) {
+        console.error(`TDD_ERROR: Failed to convert item ${index} to legacy format:`, error, item);
+        skippedCount++;
+        // Don't throw - just skip this item and continue with others
+      }
+    });
+    
+    console.log(`TDD_DEBUG: Conversion complete - ${validItems.length} valid items, ${skippedCount} skipped`);
+    return validItems;
   }
 
   /**
