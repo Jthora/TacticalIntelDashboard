@@ -479,7 +479,9 @@ class ModernFeedService {
           trustRating: item.trustRating || 50,
           verificationStatus: item.verificationStatus || 'UNVERIFIED',
           lastValidated: new Date().toISOString(),
-          responseTime: item.responseTime || 0
+          responseTime: item.responseTime || 0,
+          // Include metadata for additional features like comment counts
+          metadata: item.metadata
         };
 
         validItems.push(legacyItem);

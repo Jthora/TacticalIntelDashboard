@@ -53,6 +53,13 @@ export const convertFeedItemsToFeeds = (feedItems: FeedItem[]): Feed[] => {
       author: feedItem.author,
       categories: feedItem.categories,
       media: feedItem.media,
+      // Preserve extended properties from modern API
+      priority: feedItem.priority,
+      contentType: feedItem.contentType,
+      tags: feedItem.tags,
+      source: feedItem.source,
+      // Include metadata for additional features
+      metadata: feedItem.metadata,
     };
 
     // Additional conversion logic can be added here
@@ -76,5 +83,12 @@ export const convertFeedItemToFeed = (feedItem: FeedItem): Feed => {
     author: feedItem.author,
     categories: feedItem.categories,
     media: feedItem.media,
+    // Preserve extended properties from modern API
+    priority: feedItem.priority,
+    contentType: feedItem.contentType,
+    tags: feedItem.tags,
+    source: feedItem.source,
+    // Include metadata for additional features
+    metadata: feedItem.metadata,
   };
 };

@@ -19,6 +19,14 @@ export interface FeedItem {
   priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   contentType?: 'INTEL' | 'NEWS' | 'ALERT' | 'THREAT';
   source?: string;
+  // Extended metadata for modern API sources
+  metadata?: {
+    numComments?: number;
+    score?: number;
+    subreddit?: string;
+    author?: string;
+    [key: string]: any;
+  };
 }
 
 export interface FeedList {

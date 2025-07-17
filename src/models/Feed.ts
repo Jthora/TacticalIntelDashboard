@@ -20,4 +20,13 @@ export interface Feed {
   classification?: string;
   timestamp?: string | Date;
   source?: string;
+  
+  // Extended metadata for modern API sources
+  metadata?: {
+    numComments?: number;
+    score?: number;
+    subreddit?: string;
+    author?: string;
+    [key: string]: any;
+  };
 }

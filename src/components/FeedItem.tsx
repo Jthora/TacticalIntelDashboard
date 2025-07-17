@@ -7,7 +7,6 @@ interface FeedItemProps {
 }
 
 const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
-  const [expanded, setExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   // Animate item in when it mounts
@@ -25,38 +24,63 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
     }
   };
 
-  const truncateText = (text: string, maxLength: number = 200) => {
-    if (!text || text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+  const getRedditCommentInfo = () => {
+    // Check if this is a Reddit feed with comment metadata
+    if (feed.source?.includes('Reddit') && feed.metadata?.numComments !== undefined) {
+      const commentCount = feed.metadata.numComments;
+      const commentText = commentCount === 1 ? 'comment' : 'comments';
+      
+      return {
+        text: `${commentCount} ${commentText}`,
+        count: commentCount,
+        // Use the enhanced comments URL from metadata if available, otherwise create one
+        commentsUrl: feed.metadata.commentsUrl || createRedditCommentsUrl(feed.link)
+      };
+    }
+    return null;
   };
 
-  const createSummary = () => {
-    // Always prioritize the feed description/summary if available
-    if (feed.description && feed.description.length > 10) {
-      return feed.description;
+  const createRedditCommentsUrl = (postUrl: string): string => {
+    // Handle various Reddit URL formats and convert to comments view
+    if (postUrl.includes('reddit.com')) {
+      // If it's already a reddit.com URL, ensure it points to comments
+      if (postUrl.includes('/comments/')) {
+        // Already a comments URL, return as-is
+        return postUrl;
+      } else if (postUrl.includes('/r/')) {
+        // Convert subreddit post URL to comments URL
+        // Pattern: /r/subreddit/comments/postid/title/
+        const redditPostMatch = postUrl.match(/\/r\/([^\/]+)\/comments\/([^\/]+)/);
+        if (redditPostMatch) {
+          return postUrl; // Already has comments in path
+        }
+        
+        // Try to extract post ID and construct comments URL
+        const postIdMatch = postUrl.match(/\/([a-z0-9]+)\/?$/);
+        if (postIdMatch) {
+          const baseUrl = postUrl.substring(0, postUrl.lastIndexOf('/'));
+          return `${baseUrl}/comments/${postIdMatch[1]}/`;
+        }
+      }
+      
+      // Fallback: if URL ends with post ID, add comments path
+      if (!postUrl.includes('/comments/') && !postUrl.endsWith('/')) {
+        return postUrl + '/';
+      }
     }
     
-    // Create a meaningful summary from available metadata
-    let summary = `${feed.title}`;
-    
-    // Add source information
-    if (feed.source && feed.source !== 'Unknown') {
-      summary += ` | Source: ${feed.source}`;
-    }
-    
-    // Add content type context
-    if (feed.contentType) {
-      summary += ` | Type: ${feed.contentType}`;
-    }
-    
-    // Add key categories/tags for context
-    if (feed.categories && feed.categories.length > 0) {
-      summary += ` | Categories: ${feed.categories.slice(0, 2).join(', ')}`;
-    } else if (feed.tags && feed.tags.length > 0) {
-      summary += ` | Tags: ${feed.tags.slice(0, 3).join(', ')}`;
-    }
-    
-    return summary;
+    // If not a reddit.com URL or can't parse, return original
+    return postUrl;
+  };
+
+  const handleCommentsClick = (commentsUrl: string) => {
+    log.debug("Component", 'Opening Reddit comments:', { 
+      commentsUrl, 
+      feedId: feed.id, 
+      feedTitle: feed.title,
+      metadata: feed.metadata 
+    });
+    window.open(commentsUrl, '_blank', 'noopener,noreferrer');
   };
 
   const getPriorityBadge = () => {
@@ -126,10 +150,6 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
     );
   };
 
-  const toggleExpanded = () => {
-    setExpanded(!expanded);
-  };
-
   const getSourceFromUrl = (url: string) => {
     try {
       const domain = new URL(url).hostname.replace('www.', '');
@@ -139,44 +159,52 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
     }
   };
 
-  const getStatusIndicators = () => {
-    const indicators = [];
-    
-    // Determine status based on source, tags, and content
-    if (feed.source && feed.source.toLowerCase().includes('reddit')) {
-      indicators.push({ type: 'reddit', label: 'REDDIT', color: '#ff4500' });
+  const getRootDomainUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      return `${urlObj.protocol}//${urlObj.hostname}`;
+    } catch {
+      return url;
     }
-    
-    if (feed.tags && feed.tags.some(tag => tag.toLowerCase().includes('discussion'))) {
-      indicators.push({ type: 'discussion', label: 'DISCUSSION', color: '#00bfff' });
-    }
-    
-    // Check for phishing indicators
-    const phishingKeywords = ['phish', 'scam', 'fraud', 'suspicious', 'malicious'];
-    const contentText = `${feed.title} ${feed.description || ''} ${feed.content || ''}`.toLowerCase();
-    if (phishingKeywords.some(keyword => contentText.includes(keyword))) {
-      indicators.push({ type: 'phishing', label: 'PHISHING', color: '#ff0066' });
-    }
-    
-    // Check for unknown/unverified sources
-    if (feed.source === 'Unknown' || !feed.source || 
-        feed.source === 'UNKNOWN' || feed.author === 'Unknown') {
-      indicators.push({ type: 'unknown', label: 'UNKNOWN', color: '#888888' });
-    }
-    
-    return indicators;
+  };
+
+  const handleSourceClick = (url: string) => {
+    const rootUrl = getRootDomainUrl(url);
+    log.debug("Component", 'Opening source website:', { 
+      rootUrl, 
+      originalUrl: url,
+      feedId: feed.id 
+    });
+    window.open(rootUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
-    <div className={`feed-item ${expanded ? 'expanded' : ''} ${isVisible ? 'visible' : 'mounting'}`}>
+    <div className={`feed-item ${isVisible ? 'visible' : 'mounting'}`}>
       <div className="feed-item-header">
-        <div className="feed-source-badge">
-          {getSourceFromUrl(feed.link)}
+        <div className="feed-header-left">
+          <button 
+            className="feed-source-badge clickable"
+            onClick={() => handleSourceClick(feed.link)}
+            title={`Visit ${getRootDomainUrl(feed.link)}`}
+          >
+            {getSourceFromUrl(feed.link)}
+          </button>
+          {getPriorityBadge()}
+          {getContentTypeBadge()}
+          {getRedditCommentInfo() && (
+            <button 
+              className="reddit-comments-badge clickable"
+              onClick={() => handleCommentsClick(getRedditCommentInfo()!.commentsUrl)}
+              title={`View ${getRedditCommentInfo()!.text} on Reddit`}
+            >
+              💬 {getRedditCommentInfo()!.text}
+            </button>
+          )}
         </div>
-        {getPriorityBadge()}
-        {getContentTypeBadge()}
-        <div className="feed-timestamp">
-          {formatDate(feed.pubDate)}
+        <div className="feed-header-right">
+          <div className="feed-timestamp">
+            {formatDate(feed.pubDate)}
+          </div>
         </div>
       </div>
 
@@ -191,39 +219,9 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
         </a>
       </h3>
 
-      {/* Always show summary information */}
-      <div className="feed-summary">
-        <p>
-          {expanded ? createSummary() : truncateText(createSummary())}
-        </p>
-        {createSummary().length > 200 && (
-          <button 
-            onClick={toggleExpanded}
-            className="expand-button"
-          >
-            {expanded ? '📜 Show Less' : '📋 Read More'}
-          </button>
-        )}
-      </div>
-
-      {/* Show tags if available */}
-      {feed.tags && feed.tags.length > 0 && (
-        <div className="feed-tags">
-          {feed.tags.slice(0, 4).map((tag, index) => (
-            <span key={index} className="tag-badge">
-              {tag}
-            </span>
-          ))}
-          {feed.tags.length > 4 && (
-            <span className="tag-badge more-tags">
-              +{feed.tags.length - 4} more
-            </span>
-          )}
-        </div>
-      )}
-
-      <div className="feed-actions">
-        <div className="action-buttons">
+      {/* Bottom row with actions and tags */}
+      <div className="feed-bottom-row">
+        <div className="feed-actions">
           <button 
             onClick={() => window.open(feed.link, '_blank')}
             className="action-button primary"
@@ -246,23 +244,22 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
             ⭐ Bookmark
           </button>
         </div>
-        
-        <div className="status-indicators">
-          {getStatusIndicators().map((indicator, index) => (
-            <span 
-              key={index}
-              className={`status-indicator ${indicator.type}`}
-              style={{ 
-                backgroundColor: indicator.color + '20',
-                borderColor: indicator.color,
-                color: indicator.color
-              }}
-              title={`Source type: ${indicator.label}`}
-            >
-              {indicator.label}
-            </span>
-          ))}
-        </div>
+
+        {/* Tags/categories moved to the right side */}
+        {feed.tags && feed.tags.length > 0 && (
+          <div className="feed-tags">
+            {feed.tags.slice(0, 4).map((tag, index) => (
+              <span key={index} className="tag-badge">
+                {tag}
+              </span>
+            ))}
+            {feed.tags.length > 4 && (
+              <span className="tag-badge more-tags">
+                +{feed.tags.length - 4} more
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

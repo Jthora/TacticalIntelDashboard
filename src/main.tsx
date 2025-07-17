@@ -14,6 +14,12 @@ import './assets/styles/tactical-ui.css';
 import './assets/styles/layout.css';
 import './assets/styles/main.css';
 
+// Import enhanced feeds styles
+import './assets/styles/enhanced-feeds.css';
+
+// Import intelligence feed improvements
+import './assets/styles/intelligence-feed-improvements.css';
+
 // Import component-specific styles
 import './assets/styles/components/settings-page.css';
 import './assets/styles/components/settings-error.css';
