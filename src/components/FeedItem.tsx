@@ -139,6 +139,34 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
     }
   };
 
+  const getStatusIndicators = () => {
+    const indicators = [];
+    
+    // Determine status based on source, tags, and content
+    if (feed.source && feed.source.toLowerCase().includes('reddit')) {
+      indicators.push({ type: 'reddit', label: 'REDDIT', color: '#ff4500' });
+    }
+    
+    if (feed.tags && feed.tags.some(tag => tag.toLowerCase().includes('discussion'))) {
+      indicators.push({ type: 'discussion', label: 'DISCUSSION', color: '#00bfff' });
+    }
+    
+    // Check for phishing indicators
+    const phishingKeywords = ['phish', 'scam', 'fraud', 'suspicious', 'malicious'];
+    const contentText = `${feed.title} ${feed.description || ''} ${feed.content || ''}`.toLowerCase();
+    if (phishingKeywords.some(keyword => contentText.includes(keyword))) {
+      indicators.push({ type: 'phishing', label: 'PHISHING', color: '#ff0066' });
+    }
+    
+    // Check for unknown/unverified sources
+    if (feed.source === 'Unknown' || !feed.source || 
+        feed.source === 'UNKNOWN' || feed.author === 'Unknown') {
+      indicators.push({ type: 'unknown', label: 'UNKNOWN', color: '#888888' });
+    }
+    
+    return indicators;
+  };
+
   return (
     <div className={`feed-item ${expanded ? 'expanded' : ''} ${isVisible ? 'visible' : 'mounting'}`}>
       <div className="feed-item-header">
@@ -195,27 +223,46 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
       )}
 
       <div className="feed-actions">
-        <button 
-          onClick={() => window.open(feed.link, '_blank')}
-          className="action-button primary"
-        >
-          🔗 Open
-        </button>
-        <button 
-          onClick={() => navigator.clipboard?.writeText(feed.link)}
-          className="action-button"
-        >
-          📋 Copy
-        </button>
-        <button 
-          onClick={() => {
-            // TODO: Implement bookmark functionality
-            log.debug("Component", 'Bookmark:', feed.title);
-          }}
-          className="action-button"
-        >
-          ⭐ Bookmark
-        </button>
+        <div className="action-buttons">
+          <button 
+            onClick={() => window.open(feed.link, '_blank')}
+            className="action-button primary"
+          >
+            🔗 Open
+          </button>
+          <button 
+            onClick={() => navigator.clipboard?.writeText(feed.link)}
+            className="action-button"
+          >
+            📋 Copy
+          </button>
+          <button 
+            onClick={() => {
+              // TODO: Implement bookmark functionality
+              log.debug("Component", 'Bookmark:', feed.title);
+            }}
+            className="action-button"
+          >
+            ⭐ Bookmark
+          </button>
+        </div>
+        
+        <div className="status-indicators">
+          {getStatusIndicators().map((indicator, index) => (
+            <span 
+              key={index}
+              className={`status-indicator ${indicator.type}`}
+              style={{ 
+                backgroundColor: indicator.color + '20',
+                borderColor: indicator.color,
+                color: indicator.color
+              }}
+              title={`Source type: ${indicator.label}`}
+            >
+              {indicator.label}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -128,7 +128,7 @@ export class DataNormalizer {
       title: post.data.title,
       summary: post.data.selftext ? 
         post.data.selftext.substring(0, 500) + '...' : 
-        'Click to view discussion',
+        `Discussion thread with ${post.data.num_comments || 0} comments`,
       url: post.data.url.startsWith('http') ? post.data.url : `https://reddit.com${post.data.url}`,
       publishedAt: new Date(post.data.created_utc * 1000),
       source: `Reddit r/${subreddit}`,
@@ -186,7 +186,7 @@ export class DataNormalizer {
     return {
       id: `hn-${item.id}`,
       title: item.title || 'Hacker News Discussion',
-      summary: item.text ? item.text.substring(0, 500) + '...' : 'Click to view discussion',
+      summary: item.text ? item.text.substring(0, 500) + '...' : `Technical discussion (${item.descendants || 0} comments)`,
       url: item.url || `https://news.ycombinator.com/item?id=${item.id}`,
       publishedAt: new Date(item.time * 1000),
       source: 'Hacker News',
