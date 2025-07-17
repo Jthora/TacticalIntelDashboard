@@ -6,6 +6,7 @@ import { DefaultFeeds } from '../constants/DefaultFeeds';
 import { convertFeedItemsToFeeds } from '../utils/feedConversion';
 import { log } from '../utils/LoggerService';
 import { fetchFeed } from '../utils/fetchFeed'; // Import fetchFeed
+import { cleanupStoredFeeds } from '../utils/feedCleanup';
 
 class FeedService {
   private feeds: Feed[] = [];
@@ -14,6 +15,9 @@ class FeedService {
   private readonly feedListsStorageKey = 'feedLists';
 
   constructor() {
+    // Clean up any invalid cached feeds before loading
+    cleanupStoredFeeds();
+    
     this.loadFeeds();
     this.loadFeedLists();
     this.updateFeedsFromServer();

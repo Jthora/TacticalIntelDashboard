@@ -2,32 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 const Header: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [threatLevel, setThreatLevel] = useState('NORMAL');
-  const [systemStatus, setSystemStatus] = useState('OPERATIONAL');
+  // Fixed status indicators - no more random flickering
+  const [threatLevel] = useState('NORMAL');
+  const [systemStatus] = useState('OPERATIONAL');
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
-    // Simulate dynamic threat level changes (for demonstration)
-    const threatTimer = setInterval(() => {
-      const levels = ['NORMAL', 'ELEVATED', 'HIGH', 'CRITICAL'];
-      const randomLevel = levels[Math.floor(Math.random() * levels.length)];
-      setThreatLevel(randomLevel);
-    }, 30000);
-
-    // Simulate system status updates
-    const statusTimer = setInterval(() => {
-      const statuses = ['OPERATIONAL', 'DEGRADED', 'MAINTENANCE'];
-      const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-      setSystemStatus(randomStatus);
-    }, 45000);
-
     return () => {
       clearInterval(timer);
-      clearInterval(threatTimer);
-      clearInterval(statusTimer);
     };
   }, []);
 

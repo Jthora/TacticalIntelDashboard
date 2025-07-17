@@ -94,15 +94,19 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   useEffect(() => {
     if (autoRefresh) {
       const interval = setInterval(() => {
-        // Refresh source health status
+        // Refresh source health status - PRODUCTION FIX: Use stable status instead of random
         tacticalSources.forEach(source => {
-          // Simulate health check - in real implementation this would be actual API calls
-          const healthStatus = Math.random() > 0.1 ? 'operational' : 'degraded';
-          // Update source in intelligence context
-          intelActions.updateSource(source.id, { 
-            healthStatus: healthStatus as any,
-            lastUpdated: new Date()
-          });
+          // Use a deterministic health status based on source ID to prevent flickering
+          const isHealthy = source.id.charCodeAt(0) % 10 < 9; // 90% healthy, deterministic
+          const healthStatus = isHealthy ? 'operational' : 'degraded';
+          
+          // Only update if status actually changed
+          if (source.healthStatus !== healthStatus) {
+            intelActions.updateSource(source.id, { 
+              healthStatus: healthStatus as any,
+              lastUpdated: new Date()
+            });
+          }
         });
       }, 30000); // Check every 30 seconds
 

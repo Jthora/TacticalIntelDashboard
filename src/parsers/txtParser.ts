@@ -48,7 +48,14 @@ export const isValidTXT = (textData: string): boolean => {
       textData.includes('<?xml') ||
       textData.includes('<rss') ||
       textData.includes('<feed') ||
-      textData.includes('<html')) {
+      textData.includes('<html') ||
+      textData.includes('<!DOCTYPE') ||
+      textData.includes('<head>') ||
+      textData.includes('<body>') ||
+      textData.includes('<meta ') ||
+      textData.includes('<link ') ||
+      textData.includes('<script') ||
+      textData.includes('<style')) {
     return false;
   }
   

@@ -136,10 +136,15 @@
   width: 100%;
   padding: 10px;
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #1a1d26; /* Much darker gunmetal background */
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.2);
   margin-bottom: 15px;
+}
+
+.feed-mode-select option {
+  background-color: #1a1d26; /* Much darker gunmetal background */
+  color: white;
 }
 
 .mode-description {

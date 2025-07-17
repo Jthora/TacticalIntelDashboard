@@ -8,6 +8,7 @@ import { convertFeedItemsToFeeds } from '../../../utils/feedConversion';
 import { fetchFeed } from '../../../utils/fetchFeed'; // Import fetchFeed
 import { FeedHealthService } from '../../../services/FeedHealthService';
 import { modernFeedService } from '../../../services/ModernFeedService'; // Import modern service
+import { cleanupStoredFeeds } from '../../../utils/feedCleanup';
 
 class FeedService {
   private feeds: Feed[] = [];
@@ -18,6 +19,9 @@ class FeedService {
   private readonly currentFeedsVersion = '3.0-modern-api'; // Updated for modern API integration
 
   constructor() {
+    // Clean up any invalid cached feeds before loading
+    cleanupStoredFeeds();
+    
     this.loadFeeds();
     this.loadFeedLists();
     this.updateFeedsFromServer();
