@@ -7,6 +7,9 @@
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
+  /* Prevent content expansion issues */
+  position: relative !important;
+  flex-shrink: 0 !important;
 }
 
 .feed-content {
@@ -15,11 +18,25 @@
   flex-direction: column !important;
   overflow: hidden !important;
   min-height: 0 !important; /* Critical for flex child to allow overflow */
+  max-height: 100% !important;
+  /* Prevent auto-expansion */
+  position: relative !important;
+  flex-shrink: 0 !important;
 }
 
+/* CRITICAL: Prevent auto-expansion of child elements that cause scrollbar clipping */
+.feed-content, 
+.feed-content > *,
+.feed-scroll-container > * {
+  max-height: none !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+/* Ensure scroll container has stable dimensions */
 .feed-scroll-container {
   flex: 1 !important;
-  overflow-y: scroll !important; /* Force scroll instead of auto */
+  overflow-y: scroll !important; /* Always show scrollbar */
   overflow-x: hidden !important;
   height: 100% !important;
   max-height: 100% !important;
@@ -27,6 +44,37 @@
   /* Enhanced scrollbar styling */
   scrollbar-width: thin !important;
   scrollbar-color: rgba(0, 255, 127, 0.8) rgba(0, 0, 0, 0.2) !important;
+  /* Prevent content reflow issues */
+  position: relative !important;
+  flex-shrink: 0 !important;
+  /* Stable dimensions */
+  min-height: 200px !important;
+  box-sizing: border-box !important;
+}
+
+/* Force stable layout for parent containers */
+.tactical-main {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.tactical-module {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  min-height: 0 !important;
+}
+
+.tactical-content {
+  flex: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
 }
 
 /* Enhanced WebKit scrollbar styling */
@@ -55,17 +103,50 @@
   background: rgba(0, 255, 127, 1) !important;
 }
 
-/* Debug: Make scroll container visible - remove this in production */
-.feed-scroll-container {
-  border: 1px solid rgba(255, 0, 0, 0.3) !important; /* Red border for debugging */
-  min-height: 400px !important; /* Ensure minimum height for testing */
-}
-
 /* Reduce spacing and corner rounding for feed items */
 .feed-item {
   padding: 8px 12px !important;
   margin-bottom: 8px !important;
   border-radius: 4px !important;
+  /* Prevent expansion and reflow issues */
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  /* Stable height to prevent layout shifts */
+  min-height: 80px !important;
+}
+
+/* Prevent animations from causing layout reflow */
+.feed-item.mounting,
+.feed-item.visible {
+  animation: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Disable problematic animations that cause reflow */
+.feed-item:hover {
+  transform: none !important; /* Disable transform on hover that might cause reflow */
+}
+
+/* Ensure no content causes auto-expansion */
+.feed-item-header,
+.feed-header-left,
+.feed-header-right,
+.feed-title,
+.feed-bottom-row {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.feed-title {
+  white-space: normal !important; /* Allow title to wrap but control it */
+  line-height: 1.2 !important;
+  max-height: 2.4em !important; /* Max 2 lines */
+  overflow: hidden !important;
 }
 
 /* Reduce margin and padding for action buttons row */
@@ -158,7 +239,7 @@
   scrollbar-color: #00ff7f #1a233a !important; /* More visible colors */
   border: 1px solid rgba(0, 255, 127, 0.2) !important;
   border-radius: 4px !important;
-  min-height: 400px !important; /* Ensure content is tall enough to scroll */
+  /* REMOVED: min-height that was causing auto-expansion issues */
 }
 
 .feed-scroll-container::-webkit-scrollbar {
@@ -184,25 +265,8 @@
   background: rgba(0, 255, 127, 1) !important;
 }
 
-/* Ensure proper height constraints for scrolling */
-.feed-visualizer-container {
-  height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.feed-content {
-  flex: 1 !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.feed-scroll-container {
-  flex: 1 !important;
-  overflow-y: auto !important;
-  max-height: 100% !important;
-}
+/* FIXED: Remove conflicting overflow rules that cause auto-expansion */
+/* These rules were duplicates and conflicting with the main rules above */
 
 /* Clickable source badge styling */
 .feed-source-badge.clickable {
@@ -222,4 +286,11 @@
 .feed-source-badge.clickable:active {
   transform: translateY(0) !important;
   box-shadow: 0 1px 2px rgba(0, 255, 127, 0.3) !important;
+}
+
+/* Prevent any animations or transitions from affecting scrollbar */
+.feed-scroll-container,
+.feed-scroll-container > *,
+.feed-item {
+  will-change: auto !important; /* Disable problematic will-change properties */
 }
