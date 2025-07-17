@@ -52,10 +52,10 @@
   box-sizing: border-box !important;
 }
 
-/* Force stable layout for parent containers */
+/* FIXED: Correct height constraints for container within grid layout */
 .tactical-main {
-  height: 100vh !important;
-  max-height: 100vh !important;
+  height: 100% !important; /* Use 100% to fit within grid cell, not 100vh */
+  max-height: 100% !important;
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
@@ -75,6 +75,29 @@
   display: flex !important;
   flex-direction: column !important;
   min-height: 0 !important;
+}
+
+/* CRITICAL FIX: Ensure proper height inheritance for container layout */
+.home-page-container {
+  height: 100% !important; /* Fill the available space in tactical-main-content */
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Ensure tactical-main-content provides proper height context */
+.tactical-main-content {
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure tactical-main within home-page-container fits properly */
+.home-page-container .tactical-main {
+  height: 100% !important; /* Fill grid cell height */
+  max-height: 100% !important;
+  overflow: hidden !important;
 }
 
 /* Enhanced WebKit scrollbar styling */
@@ -293,4 +316,27 @@
 .feed-scroll-container > *,
 .feed-item {
   will-change: auto !important; /* Disable problematic will-change properties */
+}
+
+/* FINAL FIX: Ensure consistent height calculations and prevent footer overlap */
+.tactical-footer {
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  flex-shrink: 0 !important; /* Prevent footer from shrinking */
+}
+
+/* Ensure the intelligence feed can scroll to the very bottom */
+.feed-scroll-container {
+  /* Add bottom padding to ensure last item is fully visible */
+  padding-bottom: 12px !important;
+  /* Ensure scroll area accounts for any fixed elements */
+  margin-bottom: 0 !important;
+}
+
+/* Prevent any element from overlapping the feed content */
+.tactical-main .tactical-module {
+  /* Ensure intelligence feed module doesn't get clipped */
+  max-height: calc(100% - 8px) !important; /* Account for any margins */
+  overflow: visible !important; /* Allow the internal scroll container to handle overflow */
 }
