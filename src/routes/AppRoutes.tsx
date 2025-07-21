@@ -5,6 +5,8 @@ import SettingsPage from '../pages/SettingsPage';
 import ProfilePageSimple from '../components/web3/ProfilePageSimple';
 import Web3TestPage from '../pages/Web3TestPage';
 import FeedPage from '../pages/FeedPage';
+import MarketplaceDashboard from '../components/marketplace/MarketplaceDashboard';
+import GovernancePanel from '../components/governance/GovernancePanel';
 import MainLayout from '../layouts/MainLayout';
 import NotFoundPage from '../pages/NotFoundPage';
 import SettingsError from '../components/settings/SettingsError';
@@ -22,6 +24,12 @@ const AppRoutes: React.FC = () => (
       
       {/* Feed routes */}
       <Route path="/feed/:id" element={<FeedPage />} />
+      
+      {/* Web3 Intelligence Exchange Marketplace */}
+      <Route path="/marketplace" element={<MarketplaceDashboard />} />
+      
+      {/* DAO Governance */}
+      <Route path="/governance" element={<GovernancePanel />} />
       
       {/* Settings routes */}
       <Route path="/settings" element={<SettingsPage />}>

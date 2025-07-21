@@ -12,6 +12,7 @@ import { IntelligenceProvider } from './contexts/IntelligenceContext';
 import AppRoutes from './routes/AppRoutes';
 import SearchResults from './components/SearchResults';
 import DevelopmentNotice from './components/DevelopmentNotice';
+import WTTPStatus from './components/WTTPStatus/WTTPStatus';
 import PerformanceManager from './services/PerformanceManager';
 import RouteValidator from './components/RouteValidator';
 
@@ -41,6 +42,7 @@ const App: React.FC = () => {
                           <RouteValidator />
                           <AppRoutes />
                           <SearchResults />
+                          <WTTPStatus />
                         </div>
                       </FeedModeProvider>
                     </HealthProvider>

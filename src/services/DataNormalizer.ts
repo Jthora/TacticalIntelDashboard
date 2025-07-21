@@ -123,34 +123,57 @@ export class DataNormalizer {
    * Reddit Post Normalization
    */
   static normalizeRedditPosts(response: RedditPostResponse, subreddit: string): NormalizedDataItem[] {
-    return response.data.children.map(post => ({
-      id: `reddit-${post.data.id}`,
-      title: post.data.title,
-      summary: post.data.selftext ? 
-        post.data.selftext.substring(0, 500) + '...' : 
-        'Click to view discussion',
-      url: post.data.url.startsWith('http') ? post.data.url : `https://reddit.com${post.data.url}`,
-      publishedAt: new Date(post.data.created_utc * 1000),
-      source: `Reddit r/${subreddit}`,
-      category: 'social',
-      tags: ['reddit', 'discussion', subreddit],
-      priority: this.mapRedditContentToPriority(post.data.title, post.data.selftext, post.data.subreddit, post.data.score),
-      trustRating: 60, // Social media content
-      verificationStatus: 'UNVERIFIED',
-      dataQuality: 70,
-      metadata: {
-        author: post.data.author,
-        score: post.data.score,
-        numComments: post.data.num_comments,
-        ups: post.data.ups,
-        downs: post.data.downs,
-        subreddit: post.data.subreddit,
-        // Add Reddit-specific URLs for better deep linking
-        redditPostId: post.data.id,
-        commentsUrl: `https://reddit.com/r/${subreddit}/comments/${post.data.id}/`,
-        originalUrl: post.data.url
+    return response.data.children.map(post => {
+      // Validate timestamp for Reddit post
+      const createdUtc = post.data.created_utc;
+      let publishedDate: Date;
+      
+      try {
+        if (typeof createdUtc === 'number' && !isNaN(createdUtc)) {
+          publishedDate = new Date(createdUtc * 1000);
+          // Check if the date is valid
+          if (isNaN(publishedDate.getTime())) {
+            console.warn(`TDD_WARNING: Invalid timestamp for Reddit post ${post.data.id}, using current time`);
+            publishedDate = new Date();
+          }
+        } else {
+          console.warn(`TDD_WARNING: Missing or invalid created_utc for Reddit post ${post.data.id}:`, createdUtc);
+          publishedDate = new Date();
+        }
+      } catch (error) {
+        console.warn(`TDD_WARNING: Error creating date for Reddit post ${post.data.id}:`, error);
+        publishedDate = new Date();
       }
-    }));
+
+      return {
+        id: `reddit-${post.data.id}`,
+        title: post.data.title,
+        summary: post.data.selftext ? 
+          post.data.selftext.substring(0, 500) + '...' : 
+          'Click to view discussion',
+        url: post.data.url.startsWith('http') ? post.data.url : `https://reddit.com${post.data.url}`,
+        publishedAt: publishedDate,
+        source: `Reddit r/${subreddit}`,
+        category: 'social',
+        tags: ['reddit', 'discussion', subreddit],
+        priority: this.mapScoreToPriority(post.data.score),
+        trustRating: 60, // Social media content
+        verificationStatus: 'UNVERIFIED',
+        dataQuality: 70,
+        metadata: {
+          author: post.data.author,
+          score: post.data.score,
+          numComments: post.data.num_comments,
+          ups: post.data.ups,
+          downs: post.data.downs,
+          subreddit: post.data.subreddit,
+          // Add Reddit-specific URLs for better deep linking
+          redditPostId: post.data.id,
+          commentsUrl: `https://reddit.com/r/${subreddit}/comments/${post.data.id}/`,
+          originalUrl: post.data.url
+        }
+      };
+    });
   }
 
   /**
@@ -187,12 +210,30 @@ export class DataNormalizer {
    * Hacker News Normalization
    */
   static normalizeHackerNewsItem(item: any): NormalizedDataItem {
+    // Validate required fields and provide fallbacks
+    const itemId = item.id || 'unknown';
+    const itemTime = item.time && typeof item.time === 'number' ? item.time : Math.floor(Date.now() / 1000);
+    
+    // Create a valid date, with fallback to current time if invalid
+    let publishedDate: Date;
+    try {
+      publishedDate = new Date(itemTime * 1000);
+      // Check if the date is valid
+      if (isNaN(publishedDate.getTime())) {
+        console.warn(`TDD_WARNING: Invalid timestamp for Hacker News item ${itemId}, using current time`);
+        publishedDate = new Date();
+      }
+    } catch (error) {
+      console.warn(`TDD_WARNING: Error creating date for Hacker News item ${itemId}:`, error);
+      publishedDate = new Date();
+    }
+
     return {
-      id: `hn-${item.id}`,
+      id: `hn-${itemId}`,
       title: item.title || 'Hacker News Discussion',
       summary: item.text ? item.text.substring(0, 500) + '...' : 'Click to view discussion',
-      url: item.url || `https://news.ycombinator.com/item?id=${item.id}`,
-      publishedAt: new Date(item.time * 1000),
+      url: item.url || `https://news.ycombinator.com/item?id=${itemId}`,
+      publishedAt: publishedDate,
       source: 'Hacker News',
       category: 'technology',
       tags: ['hackernews', 'technology', 'discussion'],
@@ -240,67 +281,6 @@ export class DataNormalizer {
     if (magnitude >= 7.0) return 'critical';
     if (magnitude >= 6.0) return 'high';
     if (magnitude >= 4.0) return 'medium';
-    return 'low';
-  }
-
-  /**
-   * Map Reddit content to priority based on intelligence relevance, not just popularity
-   */
-  private static mapRedditContentToPriority(
-    title: string, 
-    selftext: string, 
-    subreddit: string, 
-    score: number
-  ): 'low' | 'medium' | 'high' | 'critical' {
-    const text = `${title} ${selftext || ''}`.toLowerCase();
-    const sub = subreddit.toLowerCase();
-    
-    // Critical intelligence keywords
-    const criticalKeywords = [
-      'security breach', 'data leak', 'vulnerability', 'exploit', 'malware',
-      'ransomware', 'cyber attack', 'ddos', 'breach notification', 'zero day',
-      'threat actor', 'apt', 'nation state', 'critical infrastructure'
-    ];
-    
-    // High priority keywords  
-    const highKeywords = [
-      'security', 'cybersecurity', 'threat', 'attack', 'hack', 'phishing',
-      'social engineering', 'fraud', 'scam', 'incident response', 'forensics',
-      'penetration test', 'red team', 'blue team', 'soc', 'siem'
-    ];
-    
-    // Medium priority keywords
-    const mediumKeywords = [
-      'privacy', 'compliance', 'gdpr', 'regulation', 'policy', 'governance',
-      'audit', 'risk management', 'business continuity', 'disaster recovery'
-    ];
-    
-    // Intelligence-relevant subreddits
-    const criticalSubs = ['netsec', 'cybersecurity', 'security', 'malware', 'blueteamsec'];
-    const highSubs = ['sysadmin', 'infosec', 'computerforensics', 'sociengineering', 'privacy'];
-    const mediumSubs = ['technology', 'programming', 'devops', 'it', 'networking'];
-    
-    // Check for critical content
-    if (criticalKeywords.some(keyword => text.includes(keyword)) || 
-        criticalSubs.includes(sub)) {
-      return 'critical';
-    }
-    
-    // Check for high priority content
-    if (highKeywords.some(keyword => text.includes(keyword)) || 
-        highSubs.includes(sub)) {
-      return 'high';
-    }
-    
-    // Check for medium priority content
-    if (mediumKeywords.some(keyword => text.includes(keyword)) || 
-        mediumSubs.includes(sub)) {
-      return 'medium';
-    }
-    
-    // For non-intelligence content, use a very conservative score-based approach
-    // Only extremely viral posts (10k+) get medium priority, everything else is low
-    if (score > 10000) return 'medium';
     return 'low';
   }
 

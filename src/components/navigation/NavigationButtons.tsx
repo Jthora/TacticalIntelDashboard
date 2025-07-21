@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 /**
  * NavigationButtons component for main page navigation
- * Displays two main buttons for Dashboard and Settings
+ * Displays navigation buttons for Dashboard, Marketplace, and Settings
  */
 const NavigationButtons: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +24,20 @@ const NavigationButtons: React.FC = () => {
         title="Tactical Dashboard"
       >
         📡
+      </button>
+      <button 
+        className={`control-btn-micro ${isActive('/marketplace') ? 'active' : ''}`}
+        onClick={() => navigate('/marketplace')}
+        title="Intelligence Exchange Marketplace"
+      >
+        🌐
+      </button>
+      <button 
+        className={`control-btn-micro ${isActive('/governance') ? 'active' : ''}`}
+        onClick={() => navigate('/governance')}
+        title="DAO Governance"
+      >
+        🏛️
       </button>
       <button 
         className={`control-btn-micro ${isActive('/settings') ? 'active' : ''}`}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
 import { displaySettings } from '../../../utils/DisplaySettingsManager';
+import '../../../assets/styles/components/general-settings.css';
 
 const DisplaySettings: React.FC = React.memo(() => {
   const { settings, updateSettings, resetSettings } = useSettings();
@@ -71,94 +72,96 @@ const DisplaySettings: React.FC = React.memo(() => {
     <div className="settings-form">
       <h2>Tactical Display Configuration</h2>
       
-      <div className="settings-section">
-        <h3>Visual Theme</h3>
-        
-        <div className="form-group">
-          <label htmlFor="theme-select">Interface Theme</label>
-          <select
-            id="theme-select"
-            value={settings.display.theme}
-            onChange={handleThemeChange}
-          >
-            <option value="dark">Dark Ops (Default)</option>
-            <option value="night">Night Operations</option>
-            <option value="combat">Combat Mode</option>
-            <option value="light">Daylight Operations</option>
-            <option value="system">System-Matched</option>
-            <option value="alliance">Earth Alliance Standard</option>
-          </select>
-          <p className="settings-description">
-            Select the visual theme for your tactical interface.
-          </p>
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="density-select">Information Density</label>
-          <select
-            id="density-select"
-            value={settings.display.density}
-            onChange={handleDensityChange}
-          >
-            <option value="compact">Compact (Maximum Intel)</option>
-            <option value="comfortable">Comfortable (Balanced)</option>
-            <option value="spacious">Spacious (Enhanced Readability)</option>
-          </select>
-          <p className="settings-description">
-            Controls how densely information is displayed on your dashboard.
-          </p>
-        </div>
-      </div>
-      
-      <div className="settings-section">
-        <h3>Text Configuration</h3>
-        
-        <div className="form-group">
-          <label htmlFor="font-size-slider">Base Font Size: {settings.display.fontSize}px</label>
-          <input
-            id="font-size-slider"
-            type="range"
-            min="10"
-            max="20"
-            step="1"
-            value={settings.display.fontSize}
-            onChange={handleFontSizeChange}
-          />
-          <div className="font-size-example" style={{ fontSize: `${settings.display.fontSize}px` }}>
-            Sample text at current size
+      <div className="settings-grid">
+        <div className="settings-section">
+          <h3>Visual Theme</h3>
+          
+          <div className="form-group">
+            <label htmlFor="theme-select">Interface Theme</label>
+            <select
+              id="theme-select"
+              value={settings.display.theme}
+              onChange={handleThemeChange}
+            >
+              <option value="dark">Dark Ops (Default)</option>
+              <option value="night">Night Operations</option>
+              <option value="combat">Combat Mode</option>
+              <option value="light">Daylight Operations</option>
+              <option value="system">System-Matched</option>
+              <option value="alliance">Earth Alliance Standard</option>
+            </select>
+            <p className="settings-description">
+              Select the visual theme for your tactical interface.
+            </p>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="density-select">Information Density</label>
+            <select
+              id="density-select"
+              value={settings.display.density}
+              onChange={handleDensityChange}
+            >
+              <option value="compact">Compact (Maximum Intel)</option>
+              <option value="comfortable">Comfortable (Balanced)</option>
+              <option value="spacious">Spacious (Enhanced Readability)</option>
+            </select>
+            <p className="settings-description">
+              Controls how densely information is displayed on your dashboard.
+            </p>
           </div>
         </div>
         
-        <div className="form-group">
-          <label>
-            <input type="checkbox" defaultChecked />
-            Use high-contrast text for critical data
-          </label>
+        <div className="settings-section">
+          <h3>Text Configuration</h3>
+          
+          <div className="form-group">
+            <label htmlFor="font-size-slider">Base Font Size: {settings.display.fontSize}px</label>
+            <input
+              id="font-size-slider"
+              type="range"
+              min="10"
+              max="20"
+              step="1"
+              value={settings.display.fontSize}
+              onChange={handleFontSizeChange}
+            />
+            <div className="font-size-example" style={{ fontSize: `${settings.display.fontSize}px` }}>
+              Sample text at current size
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <label>
+              <input type="checkbox" defaultChecked />
+              Use high-contrast text for critical data
+            </label>
+          </div>
         </div>
-      </div>
-      
-      <div className="settings-section">
-        <h3>Dashboard Layout</h3>
         
-        <div className="form-group">
-          <label>
-            <input type="checkbox" defaultChecked />
-            Show timestamp for all intelligence items
-          </label>
-        </div>
-        
-        <div className="form-group">
-          <label>
-            <input type="checkbox" defaultChecked />
-            Show source indicator badges
-          </label>
-        </div>
-        
-        <div className="form-group">
-          <label>
-            <input type="checkbox" defaultChecked />
-            Enable tactical animations
-          </label>
+        <div className="settings-section">
+          <h3>Dashboard Layout</h3>
+          
+          <div className="form-group">
+            <label>
+              <input type="checkbox" defaultChecked />
+              Show timestamp for all intelligence items
+            </label>
+          </div>
+          
+          <div className="form-group">
+            <label>
+              <input type="checkbox" defaultChecked />
+              Show source indicator badges
+            </label>
+          </div>
+          
+          <div className="form-group">
+            <label>
+              <input type="checkbox" defaultChecked />
+              Enable tactical animations
+            </label>
+          </div>
         </div>
       </div>
       

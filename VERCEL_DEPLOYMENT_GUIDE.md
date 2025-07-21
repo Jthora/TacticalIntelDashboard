@@ -41,7 +41,7 @@ Before deployment, you'll need to set up environment variables in your Vercel da
 ```bash
 # 1. Clean and build
 rm -rf dist/ .vercel/
-npm install --legacy-peer-deps
+npm install
 npm run build
 
 # 2. Deploy to production

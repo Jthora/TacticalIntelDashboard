@@ -27,7 +27,10 @@ export default defineConfig({
     // Polyfill for process.env in the browser
     'process.env': {
       VITE_INFURA_PROJECT_ID: JSON.stringify(process.env.VITE_INFURA_PROJECT_ID || ''),
-      VITE_INFURA_API_SECRET: JSON.stringify(process.env.VITE_INFURA_API_SECRET || '')
+      VITE_INFURA_API_SECRET: JSON.stringify(process.env.VITE_INFURA_API_SECRET || ''),
+      VITE_WTTP_MODE: JSON.stringify(process.env.VITE_WTTP_MODE || 'false'),
+      VITE_WTTP_SITE_ADDRESS: JSON.stringify(process.env.VITE_WTTP_SITE_ADDRESS || ''),
+      VITE_WTTP_NETWORK: JSON.stringify(process.env.VITE_WTTP_NETWORK || 'sepolia')
     }
   },
   server: {

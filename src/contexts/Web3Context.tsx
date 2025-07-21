@@ -122,28 +122,50 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
     }
   };
 
-  // Function to get account balance
+  // Function to get account balance and marketplace tokens
   const getAccountBalance = async (address: string, web3Provider: BrowserProvider) => {
     try {
       const balanceWei = await web3Provider.getBalance(address);
       const balanceEth = ethers.formatEther(balanceWei);
-      setBalance(parseFloat(balanceEth).toFixed(4));
+
+      // TODO: Add $INTEL token balance check for marketplace integration
+      // const intelTokenBalance = await getIntelTokenBalance(address, web3Provider);
+      
+      return parseFloat(balanceEth).toFixed(4);
     } catch (error) {
-      console.error('Error getting account balance:', error);
-      setBalance('0.00');
+      console.error('Error getting balance:', error);
+      return '0.00';
     }
   };
 
-  // Function to determine access level based on address
-  const determineAccessLevel = (address: string): AccessLevel => {
-    // Phase 1: Simple lookup from mapping (will be enhanced in future phases)
-    const permissionMap: Record<string, AccessLevel> = {
-      '0x71c7656ec7ab88b098defb751b7401b5f6d8976f': AccessLevel.DIRECTOR,
-      '0x742d35cc6634c0532925a3b844bc454e4438f44e': AccessLevel.ANALYST,
-      '0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199': AccessLevel.FIELD_OPERATIVE,
+  // Function to determine access level based on wallet address and token holdings
+  const determineAccessLevel = async (address: string, web3Provider?: BrowserProvider): Promise<AccessLevel> => {
+    // Enhanced access control for Intelligence Exchange Marketplace
+    // Access levels now correlate to marketplace participation tiers
+    
+    // Hardcoded addresses for demo (in production, this would check $INTEL token balance)
+    const permissionMap: { [key: string]: AccessLevel } = {
+      // Demo addresses for different marketplace tiers
+      '0x742d35cc6634c0532925a3b844bc454e4438f44e': AccessLevel.DIRECTOR,     // Full marketplace access
+      '0x1234567890123456789012345678901234567890': AccessLevel.COMMANDER,    // Intel Report minting rights
+      '0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199': AccessLevel.ANALYST,      // Premium feed access
+      '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd': AccessLevel.FIELD_OPERATIVE, // Basic marketplace access
     };
     
-    return permissionMap[address.toLowerCase()] || AccessLevel.PUBLIC;
+    const level = permissionMap[address.toLowerCase()] || AccessLevel.PUBLIC;
+    
+    // TODO: Implement token-based access control
+    // if (web3Provider) {
+    //   const intelBalance = await getIntelTokenBalance(address, web3Provider);
+    //   const stakedAmount = await getStakedIntelBalance(address, web3Provider);
+    //   
+    //   if (stakedAmount >= 10000) return AccessLevel.DIRECTOR;
+    //   if (stakedAmount >= 5000) return AccessLevel.COMMANDER;
+    //   if (intelBalance >= 1000) return AccessLevel.ANALYST;
+    //   if (intelBalance >= 100) return AccessLevel.FIELD_OPERATIVE;
+    // }
+    
+    return level;
   };
 
   // Error handling utilities
@@ -208,7 +230,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
         await resolveEnsName(address, ethersProvider);
         
         // Determine access level
-        const level = determineAccessLevel(address);
+        const level = await determineAccessLevel(address, ethersProvider);
         setAccessLevel(level);
         
         // Set provider and connected state
@@ -240,7 +262,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
       if (provider) {
         await getAccountBalance(accounts[0], provider);
         await resolveEnsName(accounts[0], provider);
-        const level = determineAccessLevel(accounts[0]);
+        const level = await determineAccessLevel(accounts[0], provider);
         setAccessLevel(level);
       }
     }

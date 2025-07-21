@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSettings, SettingsTab } from '../../contexts/SettingsContext';
 import CORSSettings from './tabs/CORSSettings';
+import IntegrationSettings from './tabs/IntegrationSettings';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -28,6 +29,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
         return <div>Verification Settings Content</div>;
       case SettingsTab.DISPLAY:
         return <div>Display Settings Content</div>;
+      case SettingsTab.INTEGRATION:
+        return <IntegrationSettings />;
       case SettingsTab.ADVANCED:
         return <div>Advanced Settings Content</div>;
       default:

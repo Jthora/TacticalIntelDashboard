@@ -423,3 +423,53 @@
     display: none;
   }
 }
+
+/* Settings Row Layout for Protocol Organization */
+.settings-row {
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+}
+
+.settings-row:hover {
+  border-color: rgba(0, 255, 170, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.settings-row .settings-section {
+  margin-bottom: 0; /* Remove bottom margin since rows handle spacing */
+}
+
+.settings-row h3 {
+  color: var(--accent-cyan);
+  border-bottom: 1px solid rgba(0, 255, 170, 0.3);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Protocol-specific styling for better visual separation */
+.settings-row:nth-child(1) {
+  border-left: 3px solid var(--accent-cyan);
+}
+
+.settings-row:nth-child(2) {
+  border-left: 3px solid var(--accent-blue);
+}
+
+.settings-row:nth-child(3) {
+  border-left: 3px solid var(--accent-green);
+}
+
+/* Responsive adjustments for rows */
+@media (max-width: 768px) {
+  .settings-row {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+}

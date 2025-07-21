@@ -1,0 +1,347 @@
+/* Intel Report NFT Component Styles */
+
+.intel-report-nft {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #404040;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.intel-report-nft:hover {
+  border-color: #007aff;
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.nft-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #404040;
+}
+
+.nft-id {
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #8e8e93;
+  font-weight: bold;
+}
+
+.nft-rarity {
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nft-content {
+  margin-bottom: 16px;
+}
+
+.nft-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.nft-description {
+  font-size: 14px;
+  color: #b0b0b0;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.nft-metadata {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metadata-item .label {
+  font-size: 12px;
+  color: #8e8e93;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.metadata-item .value {
+  font-size: 14px;
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+}
+
+.nft-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  background: rgba(0, 122, 255, 0.2);
+  color: #007aff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 122, 255, 0.3);
+}
+
+.nft-verification {
+  margin-bottom: 16px;
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(52, 199, 89, 0.2);
+  color: #34c759;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(52, 199, 89, 0.3);
+}
+
+.nft-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #404040;
+}
+
+.nft-price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.price-label {
+  font-size: 12px;
+  color: #8e8e93;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.price-value {
+  font-size: 16px;
+  color: #ff9500;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+}
+
+.purchase-button {
+  background: linear-gradient(135deg, #007aff 0%, #0056d3 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.purchase-button:hover {
+  background: linear-gradient(135deg, #0056d3 0%, #003d9a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.purchase-button:disabled {
+  background: #404040;
+  color: #8e8e93;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.locked-button {
+  background: #404040;
+  color: #8e8e93;
+  border: 1px solid #606060;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: not-allowed;
+}
+
+.connection-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.overlay-content p {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Mint Interface Styles */
+
+.intel-report-mint {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #404040;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 16px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mint-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #404040;
+}
+
+.mint-header h2 {
+  color: #ffffff;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.access-requirement {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.access-granted {
+  color: #34c759;
+}
+
+.access-denied {
+  color: #ff3b30;
+}
+
+.mint-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  background: #2d2d2d;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 12px;
+  color: #ffffff;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007aff;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background: #1a1a1a;
+  color: #8e8e93;
+  cursor: not-allowed;
+}
+
+.mint-button {
+  background: linear-gradient(135deg, #34c759 0%, #248a3d 100%);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.mint-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #248a3d 0%, #1d6b2f 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+}
+
+.mint-button:disabled {
+  background: #404040;
+  color: #8e8e93;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .nft-metadata {
+    grid-template-columns: 1fr;
+  }
+  
+  .nft-footer {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .nft-tags {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .intel-report-nft,
+  .intel-report-mint {
+    padding: 16px;
+    margin: 12px 0;
+  }
+  
+  .nft-title {
+    font-size: 16px;
+  }
+  
+  .nft-description {
+    font-size: 13px;
+  }
+}

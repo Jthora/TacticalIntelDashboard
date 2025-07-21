@@ -12,11 +12,21 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "wttp:install": "npm install wttp-handler @tw3/solidity",
+    "wttp:compile": "npx hardhat compile",
+    "wttp:deploy-contract": "npx hardhat run scripts/deploy-wttp-site.js",
+    "wttp:deploy-content": "node scripts/wttp-deploy-content.cjs",
+    "wttp:deploy": "npm run build && npm run wttp:deploy-content",
+    "wttp:full-deploy": "npm run wttp:compile && npm run wttp:deploy-contract && npm run wttp:deploy",
+    "wttp:test": "node scripts/wttp-test.cjs",
+    "wttp:integration-test": "node scripts/wttp-integration-test.cjs",
+    "wttp:prepare": "node scripts/wttp-prepare-content.cjs"
   },
   "dependencies": {
     "@ensdomains/ensjs": "^4.0.2",
     "@metamask/eth-sig-util": "^8.2.0",
+    "@tw3/solidity": "^0.1.5",
     "axios": "^1.7.9",
     "buffer": "^6.0.3",
     "crypto-js": "^4.2.0",
@@ -28,7 +38,8 @@
     "parse-duration": "^2.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.5"
+    "react-router-dom": "^7.1.5",
+    "wttp-handler": "^0.2.2"
   },
   "devDependencies": {
     "@cypress/react": "^9.0.1",
@@ -47,7 +58,7 @@
     "@types/react-dom": "^18.0.0",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "chai": "^5.2.1",
+    "chai": "^4.5.0",
     "cypress": "^14.5.1",
     "dotenv": "^17.2.0",
     "eslint": "^9.17.0",

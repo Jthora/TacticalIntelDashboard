@@ -159,36 +159,13 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
     }
   };
 
-  const getRootDomainUrl = (url: string) => {
-    try {
-      const urlObj = new URL(url);
-      return `${urlObj.protocol}//${urlObj.hostname}`;
-    } catch {
-      return url;
-    }
-  };
-
-  const handleSourceClick = (url: string) => {
-    const rootUrl = getRootDomainUrl(url);
-    log.debug("Component", 'Opening source website:', { 
-      rootUrl, 
-      originalUrl: url,
-      feedId: feed.id 
-    });
-    window.open(rootUrl, '_blank', 'noopener,noreferrer');
-  };
-
   return (
     <div className={`feed-item ${isVisible ? 'visible' : 'mounting'}`}>
       <div className="feed-item-header">
         <div className="feed-header-left">
-          <button 
-            className="feed-source-badge clickable"
-            onClick={() => handleSourceClick(feed.link)}
-            title={`Visit ${getRootDomainUrl(feed.link)}`}
-          >
+          <div className="feed-source-badge">
             {getSourceFromUrl(feed.link)}
-          </button>
+          </div>
           {getPriorityBadge()}
           {getContentTypeBadge()}
           {getRedditCommentInfo() && (

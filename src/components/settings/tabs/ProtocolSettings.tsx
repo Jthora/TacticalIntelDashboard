@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
 import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
+import '../../../assets/styles/components/general-settings.css';
 
 // Helper component for drag-and-drop reordering
 const DraggableProtocolItem: React.FC<{
@@ -169,157 +170,171 @@ const ProtocolSettings: React.FC = memo(() => {
     <div className="settings-form">
       <h2>Protocol Configuration</h2>
       
-      <div className="settings-section">
-        <h3>Intelligence Protocol Priority</h3>
-        
-        <div className="form-group">
-          <p className="settings-description">
-            Drag to reorder protocols by priority. Higher priority protocols will be used first.
-          </p>
+      <div className="settings-grid">
+        <div className="settings-section">
+          <h3>Intelligence Protocol Priority</h3>
           
-          <div className="protocol-list">
-            {protocolPriority.map((protocol, index) => (
-              <DraggableProtocolItem 
-                key={protocol}
-                protocol={protocol}
-                index={index}
-                moveProtocol={moveProtocol}
+          <div className="form-group">
+            <p className="settings-description">
+              Drag to reorder protocols by priority. Higher priority protocols will be used first.
+            </p>
+            
+            <div className="protocol-list">
+              {protocolPriority.map((protocol, index) => (
+                <DraggableProtocolItem 
+                  key={protocol}
+                  protocol={protocol}
+                  index={index}
+                  moveProtocol={moveProtocol}
+                />
+              ))}
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={settings.protocols.autoDetect !== false}
+                onChange={(e) => {
+                  updateSettings({
+                    protocols: {
+                      ...settings.protocols,
+                      autoDetect: e.target.checked
+                    }
+                  });
+                  setHasChanges(true);
+                }}
               />
+              Automatically detect and use optimal protocol for feeds
+            </label>
+            <p className="settings-description">
+              When enabled, the system will attempt to determine the best protocol for each feed
+            </p>
+          </div>
+        </div>
+        
+        <div className="settings-section">
+          <h3>Protocol-Specific Settings</h3>
+          
+          <div className="protocol-settings-tabs">
+            {protocolPriority.map(protocol => (
+              <button 
+                key={protocol} 
+                className={`protocol-tab ${protocol === activeProtocol ? 'active' : ''}`}
+                onClick={() => setActiveProtocol(protocol)}
+              >
+                {protocol.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          
+          <div className="protocol-settings-content">
+            {protocolPriority.map(protocol => (
+              <div 
+                key={protocol}
+                className={`protocol-settings-panel ${protocol === activeProtocol ? 'active' : 'hidden'}`}
+              >
+                <div className="form-group">
+                  <label>Protocol Status</label>
+                  <select 
+                    className="form-control"
+                    value={protocolSettings[protocol]?.enabled ? 'enabled' : 'disabled'}
+                    onChange={(e) => handleProtocolStatusChange(
+                      protocol, 
+                      e.target.value === 'enabled'
+                    )}
+                  >
+                    <option value="enabled">Enabled</option>
+                    <option value="disabled">Disabled</option>
+                  </select>
+                </div>
+                
+                <div className="form-group">
+                  <label>Fetch Limit</label>
+                  <input 
+                    type="number" 
+                    className="form-control" 
+                    value={protocolSettings[protocol]?.fetchLimit || 50}
+                    min="1" 
+                    max="100"
+                    onChange={(e) => handleFetchLimitChange(
+                      protocol,
+                      parseInt(e.target.value, 10)
+                    )}
+                  />
+                  <p className="settings-description">
+                    Maximum number of items to fetch per feed
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
-      </div>
-      
-      <div className="settings-section">
-        <h3>Protocol-Specific Settings</h3>
         
-        <div className="protocol-settings-tabs">
-          {protocolPriority.map(protocol => (
-            <button 
-              key={protocol} 
-              className={`protocol-tab ${protocol === activeProtocol ? 'active' : ''}`}
-              onClick={() => setActiveProtocol(protocol)}
-            >
-              {protocol.toUpperCase()}
-            </button>
-          ))}
-        </div>
-        
-        <div className="protocol-settings-content">
-          {protocolPriority.map(protocol => (
-            <div 
-              key={protocol}
-              className={`protocol-settings-panel ${protocol === activeProtocol ? 'active' : 'hidden'}`}
-            >
-              <div className="form-group">
-                <label>Protocol Status</label>
-                <select 
-                  className="form-control"
-                  value={protocolSettings[protocol]?.enabled ? 'enabled' : 'disabled'}
-                  onChange={(e) => handleProtocolStatusChange(
-                    protocol, 
-                    e.target.value === 'enabled'
-                  )}
-                >
-                  <option value="enabled">Enabled</option>
-                  <option value="disabled">Disabled</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label>Fetch Limit</label>
-                <input 
-                  type="number" 
-                  className="form-control" 
-                  value={protocolSettings[protocol]?.fetchLimit || 50}
-                  min="1" 
-                  max="100"
-                  onChange={(e) => handleFetchLimitChange(
-                    protocol,
-                    parseInt(e.target.value, 10)
-                  )}
-                />
-                <p className="settings-description">
-                  Maximum number of items to fetch per feed
-                </p>
-              </div>
-              
-              <div className="form-group">
-                <label>Content Parsing</label>
-                <select 
-                  className="form-control"
-                  value={protocolSettings[protocol]?.contentParsing || 'full'}
-                  onChange={(e) => handleContentParsingChange(
-                    protocol,
-                    e.target.value
-                  )}
-                >
-                  <option value="full">Full Content</option>
-                  <option value="summary">Summary Only</option>
-                  <option value="metadata">Metadata Only</option>
-                </select>
-              </div>
-              
-              <div className="form-group">
-                <label>
-                  <input 
-                    type="checkbox" 
-                    checked={protocolSettings[protocol]?.extractMedia || false}
-                    onChange={(e) => handleMediaExtractionChange(
+        <div className="settings-section">
+          <h3>Advanced Protocol Options</h3>
+          
+          <div className="protocol-settings-content">
+            {protocolPriority.map(protocol => (
+              <div 
+                key={protocol}
+                className={`protocol-settings-panel ${protocol === activeProtocol ? 'active' : 'hidden'}`}
+              >
+                <div className="form-group">
+                  <label>Content Parsing</label>
+                  <select 
+                    className="form-control"
+                    value={protocolSettings[protocol]?.contentParsing || 'full'}
+                    onChange={(e) => handleContentParsingChange(
                       protocol,
-                      e.target.checked
+                      e.target.value
                     )}
-                  />
-                  Enable content media extraction
-                </label>
+                  >
+                    <option value="full">Full Content</option>
+                    <option value="summary">Summary Only</option>
+                    <option value="metadata">Metadata Only</option>
+                  </select>
+                </div>
+                
+                <div className="form-group">
+                  <label>
+                    <input 
+                      type="checkbox" 
+                      checked={protocolSettings[protocol]?.extractMedia || false}
+                      onChange={(e) => handleMediaExtractionChange(
+                        protocol,
+                        e.target.checked
+                      )}
+                    />
+                    Enable content media extraction
+                  </label>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <div className="settings-section">
-        <h3>Protocol Auto-Detection</h3>
-        
-        <div className="form-group">
-          <label>
-            <input 
-              type="checkbox" 
-              checked={settings.protocols.autoDetect !== false}
-              onChange={(e) => {
-                updateSettings({
-                  protocols: {
-                    ...settings.protocols,
-                    autoDetect: e.target.checked
-                  }
-                });
-                setHasChanges(true);
-              }}
-            />
-            Automatically detect and use optimal protocol for feeds
-          </label>
-          <p className="settings-description">
-            When enabled, the system will attempt to determine the best protocol for each feed
-          </p>
-        </div>
-        
-        <div className="form-group">
-          <label>
-            <input 
-              type="checkbox" 
-              checked={settings.protocols.fallbackEnabled !== false}
-              onChange={(e) => {
-                updateSettings({
-                  protocols: {
-                    ...settings.protocols,
-                    fallbackEnabled: e.target.checked
-                  }
-                });
-                setHasChanges(true);
-              }}
-            />
-            Fallback to alternative protocols on failure
-          </label>
+            ))}
+          </div>
+          
+          <div className="form-group">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={settings.protocols.fallbackEnabled !== false}
+                onChange={(e) => {
+                  updateSettings({
+                    protocols: {
+                      ...settings.protocols,
+                      fallbackEnabled: e.target.checked
+                    }
+                  });
+                  setHasChanges(true);
+                }}
+              />
+              Fallback to alternative protocols on failure
+            </label>
+            <p className="settings-description">
+              Enable automatic fallback to other protocols when the primary protocol fails
+            </p>
+          </div>
         </div>
       </div>
       

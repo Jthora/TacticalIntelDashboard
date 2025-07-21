@@ -14,6 +14,7 @@ export enum SettingsTab {
   PROTOCOLS = 'protocols',
   VERIFICATION = 'verification',
   DISPLAY = 'display',
+  INTEGRATION = 'integration',
   ADVANCED = 'advanced'
 }
 

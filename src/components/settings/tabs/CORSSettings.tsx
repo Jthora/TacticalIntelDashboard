@@ -4,6 +4,7 @@ import DebugInfo from '../../debug/DebugInfo';
 import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
 import { FetchService } from '../../../services/FetchService';
 import '../../../assets/styles/components/cors-settings.css';
+import '../../../assets/styles/components/general-settings.css';
 
 const CORSSettings: React.FC = memo(() => {
   const { settings, updateSettings, resetSettings } = useSettings();
@@ -218,156 +219,179 @@ const CORSSettings: React.FC = memo(() => {
       <DebugInfo componentName="CORSSettings" />
       <h2>CORS Management</h2>
       
-      <div className="settings-section">
-        <h3>CORS Strategy Selection</h3>
-        
-        <div className="form-group">
-          <label htmlFor="default-cors-strategy">Default CORS Strategy</label>
-          <select 
-            id="default-cors-strategy"
-            value={settings.cors.defaultStrategy}
-            onChange={handleDefaultStrategyChange}
-          >
-            <option value={CORSStrategy.RSS2JSON}>RSS2JSON Services (Recommended)</option>
-            <option value={CORSStrategy.JSONP}>JSONP Approach</option>
-            <option value={CORSStrategy.SERVICE_WORKER}>Browser Service Worker Proxy</option>
-            <option value={CORSStrategy.DIRECT}>Direct Fetch (CORS-Friendly Only)</option>
-            <option value={CORSStrategy.EXTENSION}>Browser Extension</option>
-          </select>
-          <p className="settings-description">
-            The primary method used to bypass CORS restrictions when fetching feeds.
-          </p>
-        </div>
-        
-        <div className="form-group">
-          <h4>Protocol-Specific Strategies</h4>
+      <div className="settings-grid">
+        <div className="settings-section">
+          <h3>CORS Strategy Selection</h3>
           
-          {['RSS', 'JSON', 'API', 'IPFS', 'MASTODON', 'SSB'].map(protocol => (
-            <div className="protocol-strategy form-group" key={protocol}>
-              <label htmlFor={`${protocol}-strategy`}>{protocol}</label>
-              <select
-                id={`${protocol}-strategy`}
-                value={settings.cors.protocolStrategies[protocol] || 'DEFAULT'}
-                onChange={(e) => handleProtocolStrategyChange(protocol, e.target.value)}
-              >
-                <option value="DEFAULT">Use Default Strategy</option>
-                <option value={CORSStrategy.RSS2JSON}>RSS2JSON Services</option>
-                <option value={CORSStrategy.JSONP}>JSONP Approach</option>
-                <option value={CORSStrategy.SERVICE_WORKER}>Browser Service Worker Proxy</option>
-                <option value={CORSStrategy.DIRECT}>Direct Fetch</option>
-                <option value={CORSStrategy.EXTENSION}>Browser Extension</option>
-              </select>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <div className="settings-section">
-        <h3>RSS2JSON Service Configuration</h3>
-        
-        <div className="form-group">
-          <h4>Available Services:</h4>
-          {settings.cors.services.rss2json.map(service => (
-            <div className="service-item" key={service}>
-              <div className="service-url">{service}</div>
-              <button 
-                className="btn-icon remove-service" 
-                onClick={() => removeService('rss2json', service)}
-                title="Remove service"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-          
-          <div className="add-service-form">
-            <input
-              type="text"
-              placeholder="Enter new RSS2JSON service URL"
-              value={newServiceUrl}
-              onChange={(e) => setNewServiceUrl(e.target.value)}
-            />
-            <button 
-              className="btn-primary"
-              onClick={addRSS2JSONService}
+          <div className="form-group">
+            <label htmlFor="default-cors-strategy">Default CORS Strategy</label>
+            <select 
+              id="default-cors-strategy"
+              value={settings.cors.defaultStrategy}
+              onChange={handleDefaultStrategyChange}
             >
-              Add Service
-            </button>
+              <option value={CORSStrategy.RSS2JSON}>RSS2JSON Services (Recommended)</option>
+              <option value={CORSStrategy.JSONP}>JSONP Approach</option>
+              <option value={CORSStrategy.SERVICE_WORKER}>Browser Service Worker Proxy</option>
+              <option value={CORSStrategy.DIRECT}>Direct Fetch (CORS-Friendly Only)</option>
+              <option value={CORSStrategy.EXTENSION}>Browser Extension</option>
+            </select>
+            <p className="settings-description">
+              The primary method used to bypass CORS restrictions when fetching feeds.
+            </p>
           </div>
-        </div>
-        
-        <div className="form-group">
-          <h4>CORS Proxies:</h4>
-          {settings.cors.services.corsProxies.map(proxy => (
-            <div className="service-item" key={proxy}>
-              <div className="service-url">{proxy}</div>
-              <button 
-                className="btn-icon remove-service" 
-                onClick={() => removeService('corsProxies', proxy)}
-                title="Remove proxy"
-              >
-                ✕
-              </button>
-            </div>
-          ))}
           
-          <div className="add-service-form">
-            <input
-              type="text"
-              placeholder="Enter new CORS proxy URL"
-              value={newProxyUrl}
-              onChange={(e) => setNewProxyUrl(e.target.value)}
-            />
-            <button 
-              className="btn-primary"
-              onClick={addCORSProxy}
-            >
-              Add Proxy
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="settings-section">
-        <h3>CORS Test Utility</h3>
-        <div className="cors-test-form">
-          <input
-            type="text"
-            placeholder="Enter URL to test CORS strategies"
-            value={testUrl}
-            onChange={(e) => setTestUrl(e.target.value)}
-          />
-          <button 
-            className={`btn-primary ${testStatus === 'testing' ? 'loading' : ''}`}
-            onClick={testAllStrategies}
-            disabled={testStatus === 'testing'}
-          >
-            {testStatus === 'testing' ? 'Testing...' : 'Test CORS Strategies'}
-          </button>
-        </div>
-        
-        {testStatus !== 'idle' && (
-          <div className={`test-results ${testStatus}`}>
-            <p className="test-message">{testMessage}</p>
+          <div className="form-group">
+            <h4>Protocol-Specific Strategies</h4>
             
-            <div className="strategy-results">
-              {Object.entries(testResults).map(([strategy, result]) => (
-                <div className={`strategy-result ${result.status}`} key={strategy}>
-                  <div className="strategy-name">{strategy}</div>
-                  <div className="strategy-status">
-                    {result.status === 'success' ? 
-                      `✓ Success (${result.time}ms)` : 
-                      result.status === 'testing' ? 
-                      '⟳ Testing...' : 
-                      result.status === 'error' ? 
-                      `✕ Failed${result.message ? `: ${result.message}` : ''}` :
-                      '◯ Not tested'}
-                  </div>
-                </div>
-              ))}
+            {['RSS', 'JSON', 'API'].map(protocol => (
+              <div className="protocol-strategy form-group" key={protocol}>
+                <label htmlFor={`${protocol}-strategy`}>{protocol}</label>
+                <select
+                  id={`${protocol}-strategy`}
+                  value={settings.cors.protocolStrategies[protocol] || 'DEFAULT'}
+                  onChange={(e) => handleProtocolStrategyChange(protocol, e.target.value)}
+                >
+                  <option value="DEFAULT">Use Default Strategy</option>
+                  <option value={CORSStrategy.RSS2JSON}>RSS2JSON Services</option>
+                  <option value={CORSStrategy.JSONP}>JSONP Approach</option>
+                  <option value={CORSStrategy.SERVICE_WORKER}>Browser Service Worker Proxy</option>
+                  <option value={CORSStrategy.DIRECT}>Direct Fetch</option>
+                  <option value={CORSStrategy.EXTENSION}>Browser Extension</option>
+                </select>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="settings-section">
+          <h3>Service Configuration</h3>
+          
+          <div className="form-group">
+            <h4>RSS2JSON Services:</h4>
+            {settings.cors.services.rss2json.map(service => (
+              <div className="service-item" key={service}>
+                <div className="service-url">{service}</div>
+                <button 
+                  className="btn-icon remove-service" 
+                  onClick={() => removeService('rss2json', service)}
+                  title="Remove service"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+            
+            <div className="add-service-form">
+              <input
+                type="text"
+                placeholder="Enter new RSS2JSON service URL"
+                value={newServiceUrl}
+                onChange={(e) => setNewServiceUrl(e.target.value)}
+              />
+              <button 
+                className="btn-primary"
+                onClick={addRSS2JSONService}
+              >
+                Add Service
+              </button>
             </div>
           </div>
-        )}
+          
+          <div className="form-group">
+            <h4>CORS Proxies:</h4>
+            {settings.cors.services.corsProxies.map(proxy => (
+              <div className="service-item" key={proxy}>
+                <div className="service-url">{proxy}</div>
+                <button 
+                  className="btn-icon remove-service" 
+                  onClick={() => removeService('corsProxies', proxy)}
+                  title="Remove proxy"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+            
+            <div className="add-service-form">
+              <input
+                type="text"
+                placeholder="Enter new CORS proxy URL"
+                value={newProxyUrl}
+                onChange={(e) => setNewProxyUrl(e.target.value)}
+              />
+              <button 
+                className="btn-primary"
+                onClick={addCORSProxy}
+              >
+                Add Proxy
+              </button>
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <h4>Additional Protocols</h4>
+            {['IPFS', 'MASTODON', 'SSB'].map(protocol => (
+              <div className="protocol-strategy form-group" key={protocol}>
+                <label htmlFor={`${protocol}-strategy`}>{protocol}</label>
+                <select
+                  id={`${protocol}-strategy`}
+                  value={settings.cors.protocolStrategies[protocol] || 'DEFAULT'}
+                  onChange={(e) => handleProtocolStrategyChange(protocol, e.target.value)}
+                >
+                  <option value="DEFAULT">Use Default Strategy</option>
+                  <option value={CORSStrategy.RSS2JSON}>RSS2JSON Services</option>
+                  <option value={CORSStrategy.JSONP}>JSONP Approach</option>
+                  <option value={CORSStrategy.SERVICE_WORKER}>Browser Service Worker Proxy</option>
+                  <option value={CORSStrategy.DIRECT}>Direct Fetch</option>
+                  <option value={CORSStrategy.EXTENSION}>Browser Extension</option>
+                </select>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="settings-section">
+          <h3>CORS Test Utility</h3>
+          <div className="cors-test-form">
+            <input
+              type="text"
+              placeholder="Enter URL to test CORS strategies"
+              value={testUrl}
+              onChange={(e) => setTestUrl(e.target.value)}
+            />
+            <button 
+              className={`btn-primary ${testStatus === 'testing' ? 'loading' : ''}`}
+              onClick={testAllStrategies}
+              disabled={testStatus === 'testing'}
+            >
+              {testStatus === 'testing' ? 'Testing...' : 'Test CORS Strategies'}
+            </button>
+          </div>
+          
+          {testStatus !== 'idle' && (
+            <div className={`test-results ${testStatus}`}>
+              <p className="test-message">{testMessage}</p>
+              
+              <div className="strategy-results">
+                {Object.entries(testResults).map(([strategy, result]) => (
+                  <div className={`strategy-result ${result.status}`} key={strategy}>
+                    <div className="strategy-name">{strategy}</div>
+                    <div className="strategy-status">
+                      {result.status === 'success' ? 
+                        `✓ Success (${result.time}ms)` : 
+                        result.status === 'testing' ? 
+                        '⟳ Testing...' : 
+                        result.status === 'error' ? 
+                        `✕ Failed${result.message ? `: ${result.message}` : ''}` :
+                        '◯ Not tested'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       
       <div className="settings-actions">

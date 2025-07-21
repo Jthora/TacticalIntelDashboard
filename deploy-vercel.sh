@@ -50,7 +50,7 @@ rm -rf .vercel/
 
 # Install dependencies
 print_status "Installing dependencies..."
-npm install --legacy-peer-deps
+npm install
 if [ $? -ne 0 ]; then
     print_error "Failed to install dependencies"
     exit 1

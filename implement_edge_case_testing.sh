@@ -45,12 +45,12 @@ log_step "Installing additional testing dependencies..."
 # Check if dependencies are installed
 if ! npm list @testing-library/react-hooks >/dev/null 2>&1; then
     log_step "Installing @testing-library/react-hooks..."
-    npm install --save-dev @testing-library/react-hooks --legacy-peer-deps || log_warning "Could not install react-hooks"
+    npm install --save-dev @testing-library/react-hooks || log_warning "Could not install react-hooks"
 fi
 
 if ! npm list @testing-library/user-event >/dev/null 2>&1; then
     log_step "Installing @testing-library/user-event..."
-    npm install --save-dev @testing-library/user-event --legacy-peer-deps || log_warning "Could not install user-event"
+    npm install --save-dev @testing-library/user-event || log_warning "Could not install user-event"
 fi
 
 log_success "Testing dependencies setup complete"

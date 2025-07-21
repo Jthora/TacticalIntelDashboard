@@ -449,16 +449,28 @@ class ModernFeedService {
         // Ensure publishedAt is a valid Date
         let pubDateStr: string;
         if (item.publishedAt instanceof Date) {
-          pubDateStr = item.publishedAt.toISOString();
+          // Check if the Date object is valid
+          if (isNaN(item.publishedAt.getTime())) {
+            console.warn(`TDD_WARNING: Invalid Date object for item ${index}, using current time`);
+            pubDateStr = new Date().toISOString();
+          } else {
+            pubDateStr = item.publishedAt.toISOString();
+          }
         } else if (typeof item.publishedAt === 'string') {
           try {
-            pubDateStr = new Date(item.publishedAt).toISOString();
+            const dateObj = new Date(item.publishedAt);
+            if (isNaN(dateObj.getTime())) {
+              console.warn(`TDD_WARNING: Invalid date string "${item.publishedAt}" for item ${index}, using current time`);
+              pubDateStr = new Date().toISOString();
+            } else {
+              pubDateStr = dateObj.toISOString();
+            }
           } catch (dateError) {
-            console.warn(`TDD_WARNING: Invalid date string for item ${index}, using current time`);
+            console.warn(`TDD_WARNING: Error parsing date string "${item.publishedAt}" for item ${index}:`, dateError);
             pubDateStr = new Date().toISOString();
           }
         } else {
-          console.warn(`TDD_WARNING: Invalid publishedAt for item ${index}, using current time`);
+          console.warn(`TDD_WARNING: Invalid publishedAt type for item ${index}:`, typeof item.publishedAt, item.publishedAt);
           pubDateStr = new Date().toISOString(); // Fallback to current time
         }
 
