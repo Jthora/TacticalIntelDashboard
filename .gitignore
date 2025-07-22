@@ -139,6 +139,10 @@ backups/
 reports/
 wttp-integration-test-report.json
 
+# Build and deployment directories (complete paths)
+wttp-content/
+deployment/
+
 # Additional temporary documentation patterns
 *_DEPLOYMENT*.md
 *_PROJECT_STATUS*.md
@@ -181,6 +185,18 @@ VISION_AND_ROADMAP.md
 *.backup
 directory-structure.txt
 
+# Utility JavaScript files
+analyze-data-flow.js
+aws-lambda-edge.js
+browser-test-utility.js
+clear-*.js
+cloudflare-worker.js
+comprehensive-test.js
+create-tdd-tests.js
+css-mock.js
+debug-*.js
+netlify-edge-function.js
+
 # Additional script patterns
 tools/**/*.sh
 scripts/**/*.sh
@@ -191,12 +207,23 @@ fix_*.sh
 expand_*.sh
 ea_*.sh
 debug*.sh
+run_*.sh
+start-*.sh
+quick-*.sh
+update-*.sh
+collect*.sh
+implement*.sh
+post_tdd*.sh
+ui-*.sh
 
 # Additional config patterns that are temporary
 *.cjs
 jest.config.*
 wttp-*.cjs
 deploy-*.cjs
+package-proxy.json
+wttp.package.json
+post_tdd*.ts
 
 # Local development files
 .local/
