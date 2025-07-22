@@ -142,3 +142,54 @@ wttp-integration-test-report.json
 # Local development files
 .local/
 local/
+
+# Build and deployment content
+wttp-content/
+deployment/
+
+# Temporary markdown reports (keep only essential docs)
+*_REPORT.md
+*_SUMMARY.md
+*_COMPLETE.md
+*_SUCCESS.md
+*_STRATEGY.md
+*_GUIDE.md
+*_ANALYSIS.md
+*_IMPLEMENTATION*.md
+BATTLE_REPORT.md
+CLEANUP_SUMMARY.md
+CORS_*.md
+DEPLOYMENT_*.md
+DEVELOPER_GUIDE_*.md
+DROPDOWN_*.md
+ENHANCEMENT_*.md
+FEED_*.md
+FILTER_*.md
+FRONTEND_*.md
+INTELLIGENCE_*.md
+INTEL_*.md
+MISSION_*.md
+OUTSTANDING_*.md
+PERFORMANCE_*.md
+PHASE*.md
+POST_*.md
+PRODUCTION_*.md
+PROJECT_*.md
+
+# Utility and test scripts (keep only essential ones)
+analyze-data-flow.js
+aws-lambda-edge.js
+browser-test-utility.js
+clear-feed-cache.js
+cloudflare-worker.js
+comprehensive-test.js
+create-tdd-tests.js
+css-mock.js
+debug-feeds.js
+debug-rss.js
+netlify-edge-function.js
+test-*.js
+*-test.js
+*-debug.js
+*.test.cjs
+hardhat.config.cjs
