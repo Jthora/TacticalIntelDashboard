@@ -1,0 +1,23 @@
+{
+  "name": "tactical-intel-dashboard-wttp",
+  "version": "1.0.0",
+  "description": "Tactical Intel Dashboard deployed on WTTP",
+  "main": "wttp-deploy.js",
+  "type": "module",
+  "scripts": {
+    "wttp:install": "npm install wttp-handler @tw3/solidity",
+    "wttp:compile": "npx hardhat compile",
+    "wttp:deploy-contract": "npx hardhat run scripts/deploy-wttp-site.js",
+    "wttp:deploy-content": "node scripts/wttp-deploy-content.js",
+    "wttp:test": "node scripts/wttp-test.js",
+    "wttp:build": "npm run build && node scripts/wttp-prepare-content.js"
+  },
+  "dependencies": {
+    "wttp-handler": "latest",
+    "@tw3/solidity": "latest",
+    "ethers": "^6.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "keywords": ["wttp", "web3", "blockchain", "decentralized", "tactical-intel"],
+  "license": "MIT"
+}
