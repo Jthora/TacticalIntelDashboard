@@ -2,35 +2,59 @@ import JSZip from 'jszip';
 import { Feed } from '../../models/Feed';
 import { robustExportFeed } from './FeedIntelAdapter';
 
+interface BatchWarning { type: string; message: string; }
+
 // Build individual deterministic .intel documents for provided feeds and bundle into a zip
-export async function exportFeedsAsIntelZip(feeds: Feed[], opts: { limit?: number } = {}): Promise<{ fileName: string, count: number }> {
+export async function exportFeedsAsIntelZip(feeds: Feed[], opts: { limit?: number } = {}): Promise<{ fileName: string, count: number, warnings: BatchWarning[] }> {
+  const warnings: BatchWarning[] = [];
   const limit = opts.limit ?? 200;
+  if (!Array.isArray(feeds) || feeds.length === 0) warnings.push({ type: 'empty', message: 'No feeds provided' });
   const selected = feeds.slice(0, limit);
+  if (feeds.length > limit) warnings.push({ type: 'truncate', message: `Truncated from ${feeds.length} to ${limit}` });
   const zip = new JSZip();
-  const docs: { id: string; serialized: string }[] = [];
+  let count = 0;
   for (const feed of selected) {
-    const result = robustExportFeed(feed, { cache: false, deterministic: true });
-    if (result.serialized) {
-      docs.push({ id: result.record.id, serialized: result.serialized });
-      zip.file(`${result.record.id}.intel`, result.serialized);
+    try {
+      const result = robustExportFeed(feed, { cache: false, deterministic: true });
+      if (result.serialized) {
+        zip.file(`${result.record.id}.intel`, result.serialized);
+        count++;
+      } else {
+        warnings.push({ type: 'serialize', message: `Serialization failed for ${feed.id}` });
+      }
+    } catch (e:any) {
+      warnings.push({ type: 'exception', message: `Exception for ${feed.id}: ${e?.message || e}` });
     }
   }
+  if (count === 0) warnings.push({ type: 'emptyOutput', message: 'No .intel documents produced' });
   const ts = new Date().toISOString().replace(/[-:TZ.]/g, '').slice(0, 14);
   const fileName = `intel-articles-${ts}.zip`;
-  const blob = await zip.generateAsync({ type: 'blob' });
-  triggerBlobDownload(blob, fileName);
-  return { fileName, count: docs.length };
+  try {
+    const blob = await zip.generateAsync({ type: 'blob' });
+    triggerBlobDownload(blob, fileName);
+  } catch (e:any) {
+    warnings.push({ type: 'zip', message: `Zip generation failed: ${e?.message || e}` });
+  }
+  return { fileName, count, warnings };
+}
+
+// Generic builder for intel report style payload (shared with JSON export)
+function buildIntelReportPayload(feeds: Feed[], limit: number) {
+  const selected = feeds.slice(0, limit);
+  const articleExports = selected.map(f => robustExportFeed(f, { cache: false, deterministic: true })).filter(r => !!r.serialized);
+  return articleExports;
 }
 
 // Build a single Intel Report that embeds metadata + every article .intel payload inside JSON in body.
-export function exportIntelReport(feeds: Feed[], opts: { limit?: number } = {}): { fileName: string, serialized: string } {
+export function exportIntelReport(feeds: Feed[], opts: { limit?: number } = {}): { fileName: string, serialized: string, warnings: string[] } {
+  const warnings: string[] = [];
   const limit = opts.limit ?? 200;
-  const selected = feeds.slice(0, limit);
-  const articleExports = selected.map(f => robustExportFeed(f, { cache: false, deterministic: true })).filter(r => !!r.serialized);
+  if (!Array.isArray(feeds) || feeds.length === 0) warnings.push('No feeds provided');
+  if (feeds.length > limit) warnings.push(`Truncated from ${feeds.length} to ${limit}`);
+  const articleExports = buildIntelReportPayload(feeds, limit);
   const ts = new Date().toISOString();
   const reportId = `intel-report-${ts.replace(/[-:TZ.]/g, '').slice(0,14)}`;
 
-  // Build frontmatter
   const frontmatter: Record<string, any> = {
     id: reportId,
     title: 'Intelligence Batch Report',
@@ -50,7 +74,6 @@ export function exportIntelReport(feeds: Feed[], opts: { limit?: number } = {}):
     else lines.push(`${key}: ${JSON.stringify(value)}`);
   }
   lines.push('---','');
-  // Body with JSON payload
   const payload = articleExports.map(e => ({
     id: e.record.id,
     title: e.record.title,
@@ -60,20 +83,60 @@ export function exportIntelReport(feeds: Feed[], opts: { limit?: number } = {}):
     tags: e.record.tags,
     summary: e.record.summary,
     intelFile: `${e.record.id}.intel`,
-    intelContent: e.serialized, // full serialized doc
+    intelContent: e.serialized,
   }));
   lines.push('# Intelligence Batch Report');
   lines.push('');
   lines.push(`Contains ${articleExports.length} articles.`);
+  if (articleExports.length === 0) warnings.push('Report has no articles');
   lines.push('');
   lines.push('```json');
   lines.push(JSON.stringify(payload, null, 2));
   lines.push('```');
   const serialized = lines.join('\n');
   const fileName = `${reportId}.intelreport`;
-  const blob = new Blob([serialized], { type: 'text/markdown;charset=utf-8' });
-  triggerBlobDownload(blob, fileName);
-  return { fileName, serialized };
+  try {
+    const blob = new Blob([serialized], { type: 'text/markdown;charset=utf-8' });
+    triggerBlobDownload(blob, fileName);
+  } catch (e:any) {
+    warnings.push(`Download failed: ${e?.message || e}`);
+  }
+  return { fileName, serialized, warnings };
+}
+
+// JSON export variant using same structure but outputting .json with pure JSON body (no frontmatter)
+export function exportIntelReportJson(feeds: Feed[], opts: { limit?: number } = {}): { fileName: string, json: string, warnings: string[] } {
+  const warnings: string[] = [];
+  const limit = opts.limit ?? 200;
+  if (!Array.isArray(feeds) || feeds.length === 0) warnings.push('No feeds provided');
+  if (feeds.length > limit) warnings.push(`Truncated from ${feeds.length} to ${limit}`);
+  const articleExports = buildIntelReportPayload(feeds, limit);
+  const ts = new Date().toISOString();
+  const payload = {
+    id: `intel-report-json-${ts.replace(/[-:TZ.]/g, '').slice(0,14)}`,
+    created: ts,
+    articleCount: articleExports.length,
+    articles: articleExports.map(e => ({
+      id: e.record.id,
+      title: e.record.title,
+      created: e.record.created,
+      priority: e.record.priority,
+      sources: e.record.sources,
+      tags: e.record.tags,
+      summary: e.record.summary,
+      intelContent: e.serialized
+    }))
+  };
+  if (articleExports.length === 0) warnings.push('No articles in JSON export');
+  const json = JSON.stringify(payload, null, 2);
+  const fileName = payload.id + '.json';
+  try {
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+    triggerBlobDownload(blob, fileName);
+  } catch (e:any) {
+    warnings.push(`Download failed: ${e?.message || e}`);
+  }
+  return { fileName, json, warnings };
 }
 
 function dedupe(list: string[]): string[] { return Array.from(new Set(list)); }
