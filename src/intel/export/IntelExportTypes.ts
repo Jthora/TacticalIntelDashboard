@@ -9,11 +9,11 @@ export interface IntelExportRecord {
   classification: string; // e.g. UNCLASS (placeholder)
   priority: 'critical' | 'high' | 'medium' | 'low';
   sources: string[];
-  tags?: string[];
-  location?: { lat: number; lon: number; name?: string };
-  summary?: string;
+  tags?: string[] | undefined;
+  location?: { lat: number; lon: number; name?: string } | undefined;
+  summary?: string | undefined;
   body: string;
-  confidence?: number | string;
+  confidence?: number | string | undefined;
 }
 
 export interface IntelValidationIssue {
