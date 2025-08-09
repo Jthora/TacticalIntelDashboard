@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Header from '../components/Header';
+import MarqueeBar from '../components/MarqueeBar';
 
 /**
  * MainLayout provides the persistent structure for all pages in the application.
@@ -14,6 +15,7 @@ const MainLayout: React.FC = () => {
       <div className="tactical-header-main">
         <Header />
       </div>
+      <MarqueeBar />
       <div className="tactical-main-content">
         <Outlet />
       </div>

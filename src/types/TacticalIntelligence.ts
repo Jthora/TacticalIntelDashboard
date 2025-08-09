@@ -125,6 +125,9 @@ export interface TacticalIntelSource {
   lastUpdated?: Date;
   healthStatus: HealthStatus;
   verificationRequired: boolean;
+  // UI toggle flags
+  marqueeEnabled?: boolean; // when true show in MarqueeBar
+  feedEnabled?: boolean; // when true include in Intelligence Feed aggregation
   
   // Access control
   minimumClearance: ClassificationLevel;

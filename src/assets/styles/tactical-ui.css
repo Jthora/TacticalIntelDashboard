@@ -2392,4 +2392,85 @@ body {
   box-shadow: none !important;
 }
 
+/* ===========================================
+   MARQUEE BAR STYLES
+   =========================================== */
+
+.marquee-bar {
+  grid-area: marquee;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 15, 15, 0.85);
+  border: 1px solid rgba(0, 255, 170, 0.2);
+  border-radius: var(--radius-lg);
+  height: 28px;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 32px;
+  animation: marquee-scroll 40s linear infinite;
+}
+
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 4px;
+  color: var(--text-secondary);
+}
+
+.marquee-item .marquee-source-name {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.marquee-health {
+  font-weight: 600;
+}
+
+.marquee-updated {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===========================================
+   SOURCE TOGGLE BUTTONS
+   =========================================== */
+
+.source-toggle-btn {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 255, 170, 0.3);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  padding: 2px 4px;
+  margin-left: 4px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+}
+
+.source-toggle-btn.active {
+  background: rgba(0, 255, 170, 0.18);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.source-toggle-btn:hover {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
 

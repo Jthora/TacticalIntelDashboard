@@ -513,6 +513,22 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                       </div>
                       <div className="source-controls">
                         <span className="source-type">TACTICAL</span>
+                        <button
+                          type="button"
+                          className={`source-toggle-btn toggle-marquee ${source.marqueeEnabled ? 'active' : ''}`}
+                          title={source.marqueeEnabled ? 'Remove from Marquee' : 'Add to Marquee'}
+                          onClick={(e) => { e.stopPropagation(); intelActions.updateSource(source.id, { marqueeEnabled: !source.marqueeEnabled }); }}
+                        >
+                          📰
+                        </button>
+                        <button
+                          type="button"
+                          className={`source-toggle-btn toggle-feed ${source.feedEnabled !== false ? 'active' : ''}`}
+                          title={source.feedEnabled !== false ? 'Disable in Feed' : 'Enable in Feed'}
+                          onClick={(e) => { e.stopPropagation(); intelActions.updateSource(source.id, { feedEnabled: !(source.feedEnabled !== false) }); }}
+                        >
+                          📥
+                        </button>
                       </div>
                     </div>
                     
