@@ -5,8 +5,9 @@ import { robustExportFeed } from './FeedIntelAdapter';
 interface BatchWarning { type: string; message: string; }
 
 // Build individual deterministic .intel documents for provided feeds and bundle into a zip
-export async function exportFeedsAsIntelZip(feeds: Feed[], opts: { limit?: number } = {}): Promise<{ fileName: string, count: number, warnings: BatchWarning[] }> {
+export async function exportFeedsAsIntelZip(feeds: Feed[], opts: { limit?: number } = {}): Promise<{ fileName: string, count: number, warnings: BatchWarning[], fileNames: string[] }> {
   const warnings: BatchWarning[] = [];
+  const fileNames: string[] = [];
   const limit = opts.limit ?? 200;
   if (!Array.isArray(feeds) || feeds.length === 0) warnings.push({ type: 'empty', message: 'No feeds provided' });
   const selected = feeds.slice(0, limit);
@@ -17,7 +18,16 @@ export async function exportFeedsAsIntelZip(feeds: Feed[], opts: { limit?: numbe
     try {
       const result = robustExportFeed(feed, { cache: false, deterministic: true });
       if (result.serialized) {
-        zip.file(`${result.record.id}.intel`, result.serialized);
+        let baseName = `${result.record.id}.intel`;
+        let name = baseName;
+        let suffix = 2;
+        while (zip.file(name)) { // collision
+            name = `${result.record.id}-${suffix}.intel`;
+            suffix++;
+        }
+        if (name !== baseName) warnings.push({ type: 'collision', message: `ID collision for ${result.record.id}, stored as ${name}` });
+        zip.file(name, result.serialized);
+        fileNames.push(name);
         count++;
       } else {
         warnings.push({ type: 'serialize', message: `Serialization failed for ${feed.id}` });
@@ -35,7 +45,7 @@ export async function exportFeedsAsIntelZip(feeds: Feed[], opts: { limit?: numbe
   } catch (e:any) {
     warnings.push({ type: 'zip', message: `Zip generation failed: ${e?.message || e}` });
   }
-  return { fileName, count, warnings };
+  return { fileName, count, warnings, fileNames };
 }
 
 // Generic builder for intel report style payload (shared with JSON export)
