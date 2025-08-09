@@ -4,7 +4,7 @@ import React, { useEffect,useState } from 'react';
 
 import { useSettings } from '../contexts/SettingsContext';
 
-export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf' | 'intel';
+export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf' | 'intel' | 'intelreport';
 
 export interface ExportOptions {
   includeMetadata: boolean;
@@ -74,7 +74,7 @@ const Export: React.FC<ExportProps> = ({
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
         export: {
-          format: settings.general?.export?.format ?? 'json',
+          format: settings.general?.export?.format as any ?? 'json',
           autoExport: newAutoExport,
           includeMetadata: settings.general?.export?.includeMetadata ?? true,
           compress: settings.general?.export?.compress ?? false,
@@ -100,7 +100,7 @@ const Export: React.FC<ExportProps> = ({
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
         export: {
-          format: format,
+          format: format as any,
           autoExport: settings.general?.export?.autoExport ?? false,
           includeMetadata: settings.general?.export?.includeMetadata ?? true,
           compress: settings.general?.export?.compress ?? false,
@@ -126,7 +126,7 @@ const Export: React.FC<ExportProps> = ({
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
         export: {
-          format: settings.general?.export?.format ?? 'json',
+          format: settings.general?.export?.format as any ?? 'json',
           autoExport: settings.general?.export?.autoExport ?? false,
           includeMetadata: option === 'includeMetadata' ? newOptions.includeMetadata : settings.general?.export?.includeMetadata ?? true,
           compress: option === 'compress' ? newOptions.compress : settings.general?.export?.compress ?? false,
@@ -197,6 +197,12 @@ const Export: React.FC<ExportProps> = ({
             onClick={() => handleFormatClick('intel')}
           >
             INTEL
+          </button>
+          <button 
+            className={`export-btn-micro intel ${selectedFormat === 'intelreport' ? 'selected' : ''}`}
+            onClick={() => handleFormatClick('intelreport')}
+          >
+            INTELREPORT
           </button>
         </div>
         

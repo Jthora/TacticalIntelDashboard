@@ -49,6 +49,7 @@
     "ethers": "^6.15.0",
     "ipfs-http-client": "^60.0.1",
     "jspdf": "^3.0.1",
+    "jszip": "^3.10.1",
     "nanoid": "^5.1.5",
     "node-fetch": "^3.3.2",
     "parse-duration": "^2.1.4",
