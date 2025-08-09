@@ -1,6 +1,7 @@
 import React from 'react';
-import { useFeedMode } from '../contexts/FeedModeContext';
+
 import { FeedMode } from '../constants/EarthAllianceDefaultFeeds';
+import { useFeedMode } from '../contexts/FeedModeContext';
 
 const FeedModeSelector: React.FC = () => {
   const { feedMode, setFeedMode } = useFeedMode();

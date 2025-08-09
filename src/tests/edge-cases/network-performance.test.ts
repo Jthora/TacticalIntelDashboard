@@ -3,9 +3,10 @@
  * Tests for network failures, timeouts, memory leaks, and performance stress
  */
 
-import { describe, test, expect, beforeEach, beforeAll, afterAll, jest } from '@jest/globals';
-import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
+import { afterAll, beforeAll, beforeEach, describe, expect, jest,test } from '@jest/globals';
+
 import { CORSStrategy } from '../../contexts/SettingsContext';
+import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 
 // Mock fetch for network tests
 const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>;

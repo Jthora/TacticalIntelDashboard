@@ -1,9 +1,11 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import GovernancePage from '../GovernancePage';
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserProvider } from 'ethers';
-import { GovernanceProposal, ProposalStatus, ProposalType, getProposals } from '../../../web3/dao/governanceProposal';
+import React from 'react';
+
+import { getProposals,GovernanceProposal, ProposalStatus, ProposalType } from '../../../web3/dao/governanceProposal';
+import GovernancePage from '../GovernancePage';
 
 // Mock the governanceProposal module
 jest.mock('../../../web3/dao/governanceProposal', () => ({

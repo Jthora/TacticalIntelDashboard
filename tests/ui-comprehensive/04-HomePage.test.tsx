@@ -4,14 +4,15 @@
  * Focus: Main layout, state management, component orchestration
  */
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
-import HomePage from '../../src/pages/HomePage';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+
 import { FilterProvider } from '../../src/contexts/FilterContext';
 import { IntelligenceProvider } from '../../src/contexts/IntelligenceContext';
+import HomePage from '../../src/pages/HomePage';
 
 // Mock all child components
 jest.mock('../../src/components/LeftSidebar', () => {

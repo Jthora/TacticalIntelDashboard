@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams, Outlet, useLocation } from 'react-router-dom';
-import { useSettings, SettingsTab } from '../contexts/SettingsContext';
-import SettingsErrorBoundary from '../components/settings/SettingsErrorBoundary';
+import { Outlet, useLocation,useNavigate, useParams } from 'react-router-dom';
+
 import SettingsDebug from '../components/settings/SettingsDebug';
+import SettingsErrorBoundary from '../components/settings/SettingsErrorBoundary';
+import { SettingsTab,useSettings } from '../contexts/SettingsContext';
 
 /**
  * SettingsPage displays the settings interface with tabs for different sections.

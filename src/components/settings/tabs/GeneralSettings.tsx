@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useCallback, memo } from 'react';
-import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
+import '../../../assets/styles/components/general-settings.css';
+
+import React, { memo,useCallback, useEffect, useState } from 'react';
+
+import { SettingsTab,useSettings } from '../../../contexts/SettingsContext';
 import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
 import DebugInfo from '../../debug/DebugInfo';
-import SettingsChangeIndicator from '../SettingsChangeIndicator';
 import ConfirmationDialog from '../ConfirmationDialog';
-import '../../../assets/styles/components/general-settings.css';
+import SettingsChangeIndicator from '../SettingsChangeIndicator';
 
 const GeneralSettings: React.FC = memo(() => {
   const { settings, resetSettings } = useSettings();

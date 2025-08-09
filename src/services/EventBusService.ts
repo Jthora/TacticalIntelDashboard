@@ -67,12 +67,15 @@ class EventBusService {
    * Emit an event
    */
   emit(eventType: string, data: any, source?: string): void {
-    const message: EventBusMessage = {
+    const messageBase = {
       type: eventType,
       data,
-      timestamp: new Date(),
-      source
-    };
+      timestamp: new Date()
+    } as const;
+
+    const message: EventBusMessage = source !== undefined
+      ? { ...messageBase, source }
+      : { ...messageBase };
 
     // Add to history
     this.messageHistory.push(message);

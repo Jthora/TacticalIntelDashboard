@@ -1,8 +1,9 @@
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { afterEach, beforeEach, describe, expect, jest,test } from '@jest/globals';
 import { render } from '@testing-library/react';
 import React from 'react';
-import FeedVisualizer from '../FeedVisualizer';
+
 import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
+import FeedVisualizer from '../FeedVisualizer';
 
 // Mock dependencies
 jest.mock('../../services/FeedService');

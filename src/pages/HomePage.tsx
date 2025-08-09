@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
+
+import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel';
+import CentralView from '../components/CentralView';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
-import CentralView from '../components/CentralView';
-import QuickActions from '../components/QuickActions';
-import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel';
 
 /**
  * HomePage displays the main dashboard with a 3-column layout.
@@ -15,8 +15,8 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     console.log('🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList:', selectedFeedList);
     if (!selectedFeedList) {
-      console.log('🔍 TDD_WARNING_067: No feed list selected, setting default to "1"');
-      setSelectedFeedList('1'); // Default feed list ID
+      console.log('🔍 TDD_WARNING_067: No feed list selected, setting default to "modern-api"');
+      setSelectedFeedList('modern-api'); // Default to modern API aggregate
     } else {
       console.log('🔍 TDD_SUCCESS_068: Feed list already selected:', selectedFeedList);
     }
@@ -26,27 +26,6 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     console.log('🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to:', selectedFeedList);
   }, [selectedFeedList]);
-
-  const handleRefreshAll = () => {
-    window.location.reload();
-  };
-
-  const handleExportData = () => {
-    // TODO: Implement proper export functionality
-    const data = {
-      timestamp: new Date().toISOString(),
-      selectedFeedList,
-      exportedAt: new Date().toLocaleString()
-    };
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `tactical-intel-export-${Date.now()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div className="home-page-container">
@@ -63,11 +42,6 @@ const HomePage: React.FC = () => {
       </div>
       
       <div className="tactical-footer">
-        <QuickActions 
-          selectedFeedList={selectedFeedList}
-          onRefreshAll={handleRefreshAll}
-          onExportData={handleExportData}
-        />
         <AlertNotificationPanel />
       </div>
     </div>

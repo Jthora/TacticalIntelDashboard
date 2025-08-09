@@ -1,5 +1,5 @@
-import { ethers } from "hardhat";
 import fs from "fs";
+import { ethers } from "hardhat";
 import path from "path";
 
 async function main() {

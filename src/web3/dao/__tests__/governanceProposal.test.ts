@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
-import { GovernanceProposal, ProposalStatus, ProposalType, createProposal, getProposalById, getProposals, voteOnProposal } from '../governanceProposal';
+
+import { createProposal, getProposalById, getProposals, ProposalType, voteOnProposal } from '../governanceProposal';
 
 // Mock the provider and signer
 jest.mock('ethers', () => {

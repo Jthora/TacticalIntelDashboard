@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
 import './ConfirmationDialog.css';
+
+import React, { useCallback } from 'react';
 
 interface ConfirmationDialogProps {
   isOpen: boolean;

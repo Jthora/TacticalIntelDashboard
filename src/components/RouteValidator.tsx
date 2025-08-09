@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 
 /**
  * RouteValidator - A simple component that logs routing information

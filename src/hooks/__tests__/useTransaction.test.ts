@@ -1,7 +1,8 @@
 // src/hooks/__tests__/useTransaction.test.ts
-import { renderHook, act } from '@testing-library/react';
-import { useTransaction } from '../useTransaction';
+import { act,renderHook } from '@testing-library/react';
+
 import { Web3Error, Web3ErrorType } from '../../types/web3Errors';
+import { useTransaction } from '../useTransaction';
 
 // Mock ethers
 const mockTx = {

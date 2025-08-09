@@ -1,5 +1,5 @@
-import { ethers } from "hardhat";
 import fs from "fs";
+import { ethers } from "hardhat";
 import path from "path";
 
 async function main() {
@@ -23,7 +23,7 @@ async function main() {
   const tacticalAuth = await TacticalAuthContract.deploy(deployerAddress);
   
   // Wait for deployment to be mined
-  const deployedContract = await tacticalAuth.waitForDeployment();
+  await tacticalAuth.waitForDeployment();
   
   console.log("✅ Contract deployed successfully!");
   const contractAddress = await tacticalAuth.getAddress();
@@ -73,7 +73,6 @@ async function main() {
   // Generate contract artifacts for frontend
   console.log("\n📦 Generating frontend integration files...");
   
-  const contractAddress = await tacticalAuth.getAddress();
   const txHash = tacticalAuth.deploymentTransaction()?.hash || "";
   
   const contractArtifact = {
@@ -102,10 +101,9 @@ async function main() {
 // Network: ${networkName}
 
 export const TACTICAL_AUTH_CONTRACT = {
-  address: "${tacticalAuth.address}",
+  address: "${contractAddress}",
   network: "${networkName}",
   chainId: ${(await ethers.provider.getNetwork()).chainId},
-  deploymentBlock: ${contractArtifact.deploymentBlock},
 } as const;
 
 export const ACCESS_LEVELS = {
@@ -136,12 +134,12 @@ export const TACTICAL_AUTH_ABI = ${JSON.stringify(TacticalAuthContract.interface
   console.log("├── ✅ Initial access levels configured");
   console.log("├── ✅ Frontend integration files generated");
   console.log("├── ✅ Ready for production use");
-  console.log(`└── 🌐 Contract URL: https://sepolia.etherscan.io/address/${tacticalAuth.address}`);
+  console.log(`└── 🌐 Contract URL: https://sepolia.etherscan.io/address/${contractAddress}`);
   
   return {
     contract: tacticalAuth,
-    address: tacticalAuth.address,
-    deploymentHash: tacticalAuth.deployTransaction.hash
+    address: contractAddress,
+    deploymentHash: txHash,
   };
 }
 

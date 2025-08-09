@@ -52,30 +52,30 @@ export interface SystemHealthState {
 
 class DiagnosticService {
   private static instance: DiagnosticService;
-  private healthState: SystemHealthState;
-  private listeners: Set<(state: SystemHealthState) => void> = new Set();
-  private scanInterval?: NodeJS.Timeout;
+  private listeners: Array<(state: SystemHealthState) => void> = [];
+  private healthState: SystemHealthState = {
+    overallStatus: 'OPTIMAL',
+    connectionStatus: 'ONLINE',
+    securityStatus: 'SECURE',
+    issues: [],
+    metrics: {
+      responseTime: 50,
+      errorRate: 0,
+      dataIntegrity: 100,
+      connectionStability: 98,
+      memoryUsage: 45,
+      feedHealth: 95,
+      lastScanTime: new Date(),
+      uptime: 0
+    },
+    isScanning: false,
+    isCleaning: false,
+    isRepairing: false
+  };
+  private scanInterval?: NodeJS.Timeout | undefined;
   private startTime = Date.now();
 
-  private constructor() {
-    this.healthState = {
-      overallStatus: 'OPTIMAL',
-      connectionStatus: 'ONLINE',
-      securityStatus: 'SECURE',
-      issues: [],
-      metrics: this.getInitialMetrics(),
-      isScanning: false,
-      isCleaning: false,
-      isRepairing: false
-    };
-  }
-
-  static getInstance(): DiagnosticService {
-    if (!DiagnosticService.instance) {
-      DiagnosticService.instance = new DiagnosticService();
-    }
-    return DiagnosticService.instance;
-  }
+  private constructor() {}
 
   private getInitialMetrics(): HealthMetrics {
     return {
@@ -86,8 +86,15 @@ class DiagnosticService {
       memoryUsage: 45,
       feedHealth: 95,
       lastScanTime: new Date(),
-      uptime: 0
+      uptime: Math.round((Date.now() - this.startTime) / 1000)
     };
+  }
+
+  static getInstance(): DiagnosticService {
+    if (!DiagnosticService.instance) {
+      DiagnosticService.instance = new DiagnosticService();
+    }
+    return DiagnosticService.instance;
   }
 
   private notifyListeners(): void {
@@ -95,12 +102,12 @@ class DiagnosticService {
   }
 
   subscribe(listener: (state: SystemHealthState) => void): () => void {
-    this.listeners.add(listener);
+    this.listeners.push(listener);
     // Immediately notify with current state
     listener(this.healthState);
     
     return () => {
-      this.listeners.delete(listener);
+      this.listeners = this.listeners.filter(l => l !== listener);
     };
   }
 

@@ -3,10 +3,11 @@
  * Focus: FeedItem, QuickActions, SearchAndFilter, ExportPanel
  */
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 import FeedItem from '../../src/components/FeedItem';
 import { Feed } from '../../src/models/Feed';

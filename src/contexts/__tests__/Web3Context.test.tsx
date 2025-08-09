@@ -1,6 +1,7 @@
 // src/contexts/__tests__/Web3Context.test.tsx
-import { render, act, waitFor, screen, fireEvent } from '@testing-library/react';
-import { Web3Provider, useWeb3 } from '../Web3Context';
+import { act, fireEvent,render, screen, waitFor } from '@testing-library/react';
+
+import { useWeb3,Web3Provider } from '../Web3Context';
 
 // Create a mock provider that will be reused
 let mockProvider: any;

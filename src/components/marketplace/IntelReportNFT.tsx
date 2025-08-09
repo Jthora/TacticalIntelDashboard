@@ -1,8 +1,10 @@
 // src/components/marketplace/IntelReportNFT.tsx
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/components/intel-report-nft.css';
+
+import React, {useState } from 'react';
+
 import { useWeb3 } from '../../contexts/Web3Context';
 import { AccessLevel } from '../../contexts/Web3Context';
-import '../../assets/styles/components/intel-report-nft.css';
 
 interface IntelReportData {
   id: string;
@@ -27,7 +29,7 @@ const IntelReportNFT: React.FC<IntelReportNFTProps> = ({
   reportData, 
   showMintInterface = false 
 }) => {
-  const { isConnected, accessLevel, walletAddress } = useWeb3();
+  const { isConnected, accessLevel } = useWeb3();
   const [isLoading, setIsLoading] = useState(false);
   const [mintingData, setMintingData] = useState({
     title: '',

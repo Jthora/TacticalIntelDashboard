@@ -1,11 +1,12 @@
 /**
  * Unit tests for EnhancedFeedFetcherService
  */
-import { describe, test, expect, jest, beforeEach, afterEach } from '@jest/globals';
-import { EnhancedFeedFetcherService } from '../EnhancedFeedFetcherService';
-import { EARTH_ALLIANCE_SOURCES } from '../../../../constants/EarthAllianceSources';
+import { afterEach,beforeEach, describe, expect, jest, test } from '@jest/globals';
+
 import { FeedMode } from '../../../../constants/EarthAllianceDefaultFeeds';
+import { EARTH_ALLIANCE_SOURCES } from '../../../../constants/EarthAllianceSources';
 import { protocolAdapter } from '../../../../constants/SourceProtocolAdapter';
+import { EnhancedFeedFetcherService } from '../EnhancedFeedFetcherService';
 
 // Mock the protocol adapter
 jest.mock('../../../../constants/SourceProtocolAdapter', () => {

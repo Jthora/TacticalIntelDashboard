@@ -1,4 +1,4 @@
-import { validateAlertForm, sanitizeInput, parseKeywords } from '../alertValidation';
+import { parseKeywords,sanitizeInput, validateAlertForm } from '../alertValidation';
 
 describe('Alert Validation Utilities', () => {
   describe('validateAlertForm', () => {

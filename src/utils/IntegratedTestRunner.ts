@@ -3,8 +3,8 @@
  * Provides utilities for testing interconnected components
  */
 
-import { eventBus, EventTypes } from '../services/EventBusService';
 import { configService } from '../services/ConfigurationService';
+import { eventBus, EventTypes } from '../services/EventBusService';
 import { log } from '../utils/LoggerService';
 
 export interface TestContext {

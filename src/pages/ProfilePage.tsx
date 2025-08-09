@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useWeb3, AccessLevel } from '../contexts/Web3Context';
-import { createVerificationMessage } from '../utils/signatureUtils';
-import IPFSStoragePanel from '../components/ipfs/IPFSStoragePanel';
-import ContentVerificationPanel from '../components/ipfs/ContentVerificationPanel';
-import BatchVerificationPanel from '../components/ipfs/BatchVerificationPanel';
-import ContractDeploymentPanel from '../components/admin/ContractDeploymentPanel';
-import FeedSourceValidator from '../components/feed/FeedSourceValidator';
 import '../assets/styles/components/profile-page.css';
 import '../assets/styles/components/web3-verification.css';
 import '../assets/styles/components/content-verification-panel.css';
 import '../assets/styles/components/feed-source-validator.css';
 import '../assets/styles/components/batch-verification-panel.css';
 import '../assets/styles/components/contract-deployment-panel.css';
+
+import React, { useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import ContractDeploymentPanel from '../components/admin/ContractDeploymentPanel';
+import FeedSourceValidator from '../components/feed/FeedSourceValidator';
+import BatchVerificationPanel from '../components/ipfs/BatchVerificationPanel';
+import ContentVerificationPanel from '../components/ipfs/ContentVerificationPanel';
+import IPFSStoragePanel from '../components/ipfs/IPFSStoragePanel';
+import { AccessLevel,useWeb3 } from '../contexts/Web3Context';
+import { createVerificationMessage } from '../utils/signatureUtils';
 
 /**
  * ProfilePage component for user profile management

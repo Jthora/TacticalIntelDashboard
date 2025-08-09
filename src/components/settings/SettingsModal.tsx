@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSettings, SettingsTab } from '../../contexts/SettingsContext';
+
+import { SettingsTab,useSettings } from '../../contexts/SettingsContext';
 import CORSSettings from './tabs/CORSSettings';
 import IntegrationSettings from './tabs/IntegrationSettings';
 

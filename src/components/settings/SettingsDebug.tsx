@@ -1,5 +1,6 @@
 import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useLocation,useParams } from 'react-router-dom';
+
 import { SettingsTab } from '../../contexts/SettingsContext';
 
 /**

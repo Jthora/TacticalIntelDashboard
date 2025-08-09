@@ -1,6 +1,6 @@
-import { BrowserProvider, ethers } from 'ethers';
-import { encrypt, decrypt } from '@metamask/eth-sig-util';
+import {encrypt } from '@metamask/eth-sig-util';
 import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
+import { BrowserProvider } from 'ethers';
 
 /**
  * Utility functions for secure communication between Earth Alliance operatives

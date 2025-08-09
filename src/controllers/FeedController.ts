@@ -1,6 +1,6 @@
-import { FeedResults, FeedItem } from '../types/FeedTypes';
-import { log } from '../utils/LoggerService';
+import { FeedItem,FeedResults } from '../types/FeedTypes';
 import { fetchFeed } from '../utils/fetchFeed_new';
+import { log } from '../utils/LoggerService';
 
 interface FetchedFeedItem {
   id: string;
@@ -54,9 +54,9 @@ class FeedController {
       description: feed.description || '',
       content: feed.content || '',
       feedListId: feed.feedListId,
-      author: feed.author,
-      categories: feed.categories,
-      media: feed.media,
+      ...(feed.author ? { author: feed.author } : {}),
+      ...(feed.categories ? { categories: feed.categories } : {}),
+      ...(feed.media ? { media: feed.media } : {})
     }));
 
     return {

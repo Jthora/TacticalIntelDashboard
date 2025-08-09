@@ -1,8 +1,10 @@
-import { renderHook, act } from '@testing-library/react';
-import { SettingsProvider, useSettings, SettingsTab, CORSStrategy } from '../SettingsContext';
-import React from 'react';
 import '@testing-library/jest-dom';
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+import { act,renderHook } from '@testing-library/react';
+import React from 'react';
+
+import { CORSStrategy,SettingsProvider, SettingsTab, useSettings } from '../SettingsContext';
 
 // Mock localStorage
 const mockLocalStorage = (() => {

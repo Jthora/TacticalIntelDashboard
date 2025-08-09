@@ -1,4 +1,5 @@
 import React from 'react';
+
 import IntelSources from './IntelSources';
 
 interface LeftSidebarProps {

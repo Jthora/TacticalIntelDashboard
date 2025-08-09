@@ -1,8 +1,10 @@
 // src/components/settings/tabs/IntegrationSettings.tsx
 
-import React from 'react';
-import CrossPlatformIntelPanel from '../../intelligence/CrossPlatformIntelPanel';
 import '../../../assets/styles/components/general-settings.css';
+
+import React from 'react';
+
+import CrossPlatformIntelPanel from '../../intelligence/CrossPlatformIntelPanel';
 
 /**
  * IntegrationSettings component

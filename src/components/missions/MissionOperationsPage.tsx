@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import '../../styles/missions/MissionOperations.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { useWeb3 } from '../../hooks/useWeb3';
 import { 
-  deployMissionContract,
-  getMissions,
-  submitEvidence,
-  completeIfCriteriaMet,
   claimResources,
-  MissionData,
+  completeIfCriteriaMet,
+  deployMissionContract,
   EvidenceData,
+  EvidenceType,
+  getMissions,
+  MissionData,
   MissionStatus,
-  EvidenceType
-} from '../../web3/missions/missionOperations';
-import '../../styles/missions/MissionOperations.css';
+  submitEvidence} from '../../web3/missions/missionOperations';
 
 /**
  * Main page for mission operations

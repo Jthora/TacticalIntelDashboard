@@ -4,14 +4,13 @@
  * for backward compatibility with existing UI components
  */
 
-import { IntelligenceSource } from '../types/ModernAPITypes';
-import { TacticalIntelSource, IntelligenceCategory, ClassificationLevel, SourceCost, HealthStatus, AuthType } from '../types/TacticalIntelligence';
 import { 
   PRIMARY_INTELLIGENCE_SOURCES,
   SECONDARY_INTELLIGENCE_SOURCES,
-  SOCIAL_INTELLIGENCE_SOURCES,
-  SOURCE_CATEGORIES
+  SOCIAL_INTELLIGENCE_SOURCES
 } from '../constants/ModernIntelligenceSources';
+import { IntelligenceSource } from '../types/ModernAPITypes';
+import { AuthType,ClassificationLevel, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
 
 /**
  * Convert modern API intelligence sources to legacy format

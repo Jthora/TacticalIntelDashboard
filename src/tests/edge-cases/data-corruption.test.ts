@@ -1,8 +1,8 @@
 // Edge Case Tests for Settings System - Data Corruption & Recovery
 // These tests follow TDD principles to ensure graceful handling of corrupted data
 
-import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 import { CORSStrategy, Settings } from '../../contexts/SettingsContext';
+import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 
 // Mock localStorage for testing
 const mockLocalStorage = (() => {

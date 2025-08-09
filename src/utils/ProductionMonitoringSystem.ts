@@ -1,8 +1,8 @@
 // src/utils/ProductionMonitoringSystem.ts
 import { ProductionPerformanceMonitor } from './ProductionPerformanceMonitor';
-import { StackOverflowPrevention } from './StackOverflowPrevention';
-import { ResourceExhaustionPrevention } from './ResourceExhaustionPrevention';
 import { ProductionTestingStrategy } from './ProductionTestingStrategy';
+import { ResourceExhaustionPrevention } from './ResourceExhaustionPrevention';
+import { StackOverflowPrevention } from './StackOverflowPrevention';
 
 export interface MonitoringConfig {
   enablePerformanceMonitoring?: boolean;

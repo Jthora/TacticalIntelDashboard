@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { AlertConfig, AlertTrigger } from '../../types/AlertTypes';
+import { useCallback,useEffect, useState } from 'react';
+
 import AlertService from '../../services/alerts/AlertService';
+import { AlertConfig, AlertTrigger } from '../../types/AlertTypes';
 
 export interface UseAlertsReturn {
   // Alert management

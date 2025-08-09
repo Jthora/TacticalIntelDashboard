@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { EarthAllianceFeedSource } from '../constants/EarthAllianceSources';
 
 interface SourceInfoProps {

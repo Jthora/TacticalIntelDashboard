@@ -1,6 +1,8 @@
-import React from 'react';
-import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 import './VerificationIndicator.css';
+
+import React from 'react';
+
+import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 
 interface VerificationIndicatorProps {
   trustRating?: number;

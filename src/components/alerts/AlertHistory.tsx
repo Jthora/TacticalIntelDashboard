@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { AlertTrigger } from '../../types/AlertTypes';
 import './AlertHistory.css';
+
+import React, { useState } from 'react';
+
+import { AlertTrigger } from '../../types/AlertTypes';
 
 interface AlertHistoryProps {
   history: AlertTrigger[];

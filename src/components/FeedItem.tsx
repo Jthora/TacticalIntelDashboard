@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { log } from '../utils/LoggerService';
+import React, { useEffect,useState } from 'react';
+
 import { Feed } from '../models/Feed';
+import { log } from '../utils/LoggerService';
 
 interface FeedItemProps {
   feed: Feed;
@@ -50,7 +51,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
       } else if (postUrl.includes('/r/')) {
         // Convert subreddit post URL to comments URL
         // Pattern: /r/subreddit/comments/postid/title/
-        const redditPostMatch = postUrl.match(/\/r\/([^\/]+)\/comments\/([^\/]+)/);
+        const redditPostMatch = postUrl.match(/\/r\/([^/]+)\/comments\/([^/]+)/);
         if (redditPostMatch) {
           return postUrl; // Already has comments in path
         }

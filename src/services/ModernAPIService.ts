@@ -6,13 +6,13 @@
 
 import { 
   APIEndpoint, 
-  NormalizedDataItem, 
+  APIHealthMetrics,
   APIResponse, 
   DataFetchOptions,
-  APIHealthMetrics
-} from '../types/ModernAPITypes';
-import { DataNormalizer } from './DataNormalizer';
+  NormalizedDataItem} from '../types/ModernAPITypes';
 import { log } from '../utils/LoggerService';
+import { DataNormalizer } from './DataNormalizer';
+import { normalizerRegistry } from './NormalizerRegistry';
 
 // TDD Error Tracking for ModernAPIService
 const TDD_API_ERRORS = {
@@ -194,6 +194,28 @@ export class ModernAPIService {
         return [];
       }
 
+      // Special handling: Hacker News returns an array of IDs for lists (top/new). Fetch item details.
+      if (endpoint.id === 'hackernews' && Array.isArray(response.data) && normalizerFunction === 'normalizeHackerNewsItem') {
+        const ids = (response.data as number[]).slice(0, 20);
+        const itemPathTemplate = endpoint.endpoints.item || '/item/{id}.json';
+
+        const itemPromises = ids.map(async (id) => {
+          const itemPath = itemPathTemplate.replace('{id}', String(id));
+          const itemResp = await this.fetchFromAPI<any>(endpoint, itemPath, { ...options, cache: true, maxAge: 300000 });
+          return itemResp.success && itemResp.data ? itemResp.data : null;
+        });
+
+        const settled = await Promise.allSettled(itemPromises);
+        const items: any[] = [];
+        for (const r of settled) {
+          if (r.status === 'fulfilled' && r.value) items.push(r.value);
+        }
+
+        const normalized = items.map(item => DataNormalizer.normalizeHackerNewsItem(item));
+        log.info('ModernAPIService', `Normalized ${normalized.length} Hacker News items`);
+        return normalized;
+      }
+
       // Normalize the data using the specified function
       const normalizedData = this.normalizeData(response.data, normalizerFunction, endpoint.name);
       
@@ -301,7 +323,7 @@ export class ModernAPIService {
 
   private async makeRequest(
     url: string, 
-    endpoint: APIEndpoint, 
+    _endpoint: APIEndpoint, 
     options: DataFetchOptions
   ): Promise<Response> {
     const fetchOptions: RequestInit = {
@@ -448,6 +470,20 @@ export class ModernAPIService {
     sourceName: string
   ): NormalizedDataItem[] {
     try {
+      // Try plugin first (schema validation + normalize + enrich/classify)
+      const plugin = normalizerRegistry.get(normalizerFunction);
+      if (plugin) {
+        const validation = plugin.validate ? plugin.validate(data) : { ok: true };
+        if (!validation.ok) {
+          log.warn('ModernAPIService', `Validation failed for ${normalizerFunction}: ${validation.errors?.slice(0, 3).join('; ')}`);
+          // fall through to generic normalizer as safe fallback
+        }
+        let items = plugin.normalize(data);
+        if (plugin.enrich) items = plugin.enrich(items);
+        if (plugin.classify) items = plugin.classify(items);
+        return items;
+      }
+
       // Map normalizer function names to actual functions
       const normalizers: Record<string, Function> = {
         'normalizeNOAAAlert': DataNormalizer.normalizeNOAAAlert,
@@ -456,7 +492,8 @@ export class ModernAPIService {
         'normalizeAlphaVantageNews': DataNormalizer.normalizeAlphaVantageNews,
         'normalizeRedditPosts': (data: any) => DataNormalizer.normalizeRedditPosts(data, 'unknown'),
         'normalizeUSGSEarthquakes': DataNormalizer.normalizeUSGSEarthquakes,
-        'normalizeHackerNewsItem': (data: any) => [DataNormalizer.normalizeHackerNewsItem(data)]
+        'normalizeHackerNewsItem': (data: any) => [DataNormalizer.normalizeHackerNewsItem(data)],
+        'normalizeCoinGeckoData': DataNormalizer.normalizeCoinGeckoData
       };
 
       const normalizer = normalizers[normalizerFunction];

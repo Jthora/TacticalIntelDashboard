@@ -1,7 +1,8 @@
 /**
  * Unit tests for SettingsService
  */
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect,test } from '@jest/globals';
+
 import { SettingsService } from '../SettingsService';
 
 describe('SettingsService', () => {

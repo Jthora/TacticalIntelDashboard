@@ -1,8 +1,8 @@
+import { FetchService } from '../services/FetchService';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 import { FeedResults } from '../types/FeedTypes';
 import { log } from '../utils/LoggerService';
 import { LocalStorageUtil } from './LocalStorageUtil';
-import { FetchService } from '../services/FetchService';
-import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 
 /**
  * Fetches feed data from a URL, using the FetchService which respects user settings.

@@ -3,11 +3,11 @@
  * based on user settings from SettingsIntegrationService.
  */
 import { CORSStrategy } from '../contexts/SettingsContext';
-import { SettingsIntegrationService } from './SettingsIntegrationService';
-import { log } from '../utils/LoggerService';
-import { RSS2JSONService } from './RSS2JSONService';
 import { FeedResults } from '../types/FeedTypes';
 import { convertFeedsToFeedItems } from '../utils/feedConversion';
+import { log } from '../utils/LoggerService';
+import { RSS2JSONService } from './RSS2JSONService';
+import { SettingsIntegrationService } from './SettingsIntegrationService';
 
 export class FetchService {
   /**

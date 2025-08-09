@@ -3,7 +3,7 @@
  * Collection of React performance optimization helpers
  */
 
-import React, { useCallback, useRef, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * Debounced callback hook for performance optimization

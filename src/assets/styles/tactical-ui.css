@@ -276,10 +276,6 @@ body {
   gap: var(--spacing-md);
 }
 
-.tactical-quickactions {
-  grid-area: quickactions;
-}
-
 /* ===========================================
    SPECIALIZED MODULE THEMES
    =========================================== */
@@ -1069,6 +1065,13 @@ body {
   display: flex;
   flex-direction: column;
   background: transparent;
+  flex: 1; /* Allow container to fill available vertical space */
+  min-height: 0; /* Critical for enabling inner scroll area */
+}
+
+.feed-content {
+  flex: 1;
+  min-height: 0;
 }
 
 .feed-controls {
@@ -1132,6 +1135,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0; /* allow child scroll container to size */
 }
 
 .feed-scroll-container {
@@ -1158,6 +1162,62 @@ body {
 }
 
 .feed-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 170, 0.5);
+}
+
+/* ===========================================
+   RIGHT SIDEBAR SCROLLBAR (matches feed)
+   =========================================== */
+.tactical-sidebar-right {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 170, 0.5) rgba(0, 0, 0, 0.3);
+}
+
+/* WebKit */
+.tactical-sidebar-right::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tactical-sidebar-right::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+.tactical-sidebar-right::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 170, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+.tactical-sidebar-right::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 170, 0.5);
+}
+
+/* ===========================================
+   LEFT SIDEBAR SCROLLBAR (matches feed)
+   =========================================== */
+.tactical-sidebar-left {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 170, 0.5) rgba(0, 0, 0, 0.3);
+}
+
+/* WebKit */
+.tactical-sidebar-left::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tactical-sidebar-left::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+.tactical-sidebar-left::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 170, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+.tactical-sidebar-left::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 255, 170, 0.5);
 }
 
@@ -2260,7 +2320,7 @@ body {
 /* Status Dot Color Variants (removed obsolete pseudo-elements) */
 .intel-source-item.status-operational .status-dot {
   background-color: var(--status-operational);
-  box-shadow: 0 0 2px var(--status-operational);
+  box-shadow:  0 0 2px var(--status-operational);
 }
 
 .intel-source-item.status-degraded .status-dot {

@@ -4,11 +4,10 @@
  */
 
 import { 
-  NormalizedDataItem, 
-  NOAAAlertResponse, 
-  NASAAPODResponse, 
-  GitHubSecurityAdvisoryResponse,
   AlphaVantageNewsResponse,
+  NASAAPODResponse, 
+  NOAAAlertResponse, 
+  NormalizedDataItem, 
   RedditPostResponse
 } from '../types/ModernAPITypes';
 
@@ -17,26 +16,53 @@ export class DataNormalizer {
    * NOAA Weather Alert Normalization
    */
   static normalizeNOAAAlert(response: NOAAAlertResponse): NormalizedDataItem[] {
-    return response.features.map(alert => ({
-      id: alert.id,
-      title: alert.properties.headline,
-      summary: alert.properties.description.substring(0, 500) + '...',
-      url: alert.properties.web || '',
-      publishedAt: new Date(alert.properties.sent),
-      source: 'NOAA Weather Service',
-      category: 'weather-alert',
-      tags: [alert.properties.event, alert.properties.severity, 'weather'],
-      priority: this.mapSeverityToPriority(alert.properties.severity),
-      trustRating: 95, // Official government source
-      verificationStatus: 'OFFICIAL',
-      dataQuality: 98,
-      metadata: {
-        severity: alert.properties.severity,
-        urgency: alert.properties.urgency,
-        areas: alert.properties.areaDesc,
-        event: alert.properties.event
-      }
-    }));
+    // Guard against unexpected shapes
+    const features = Array.isArray((response as any)?.features) ? (response as any).features : [];
+    if (features.length === 0) return [];
+
+    const stripHTML = (html?: string): string => {
+      if (!html) return '';
+      return String(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    };
+
+    return features.map((alert: any) => {
+      const p = alert?.properties || {};
+      const parameters = p.parameters || {};
+      const nwsHeadline = Array.isArray(parameters.NWSheadline) ? parameters.NWSheadline[0] : parameters.NWSheadline;
+      const title = p.headline || p.event || nwsHeadline || 'NOAA Alert';
+      const desc = stripHTML(p.description) || stripHTML(p.instruction) || title;
+      const url = p.web || p['@id'] || '';
+      const publishedStr = p.sent || p.effective || p.onset || p.expires;
+      let publishedAt = new Date();
+      try {
+        if (publishedStr) {
+          const d = new Date(publishedStr);
+          if (!isNaN(d.getTime())) publishedAt = d;
+        }
+      } catch {}
+
+      return {
+        id: alert.id || p.id || `${title}-${Date.now()}`,
+        title,
+        summary: (desc || title).substring(0, 500) + '...',
+        url,
+        publishedAt,
+        source: 'NOAA Weather Service',
+        category: 'weather-alert',
+        tags: [p.event, p.severity, 'weather'].filter(Boolean) as string[],
+        priority: this.mapSeverityToPriority(p.severity),
+        trustRating: 95,
+        verificationStatus: 'OFFICIAL',
+        dataQuality: 98,
+        metadata: {
+          severity: p.severity,
+          urgency: p.urgency,
+          areas: p.areaDesc,
+          event: p.event,
+          parameters
+        }
+      };
+    });
   }
 
   /**
@@ -66,30 +92,61 @@ export class DataNormalizer {
   }
 
   /**
-   * GitHub Security Advisory Normalization
+   * GitHub Security Advisory Normalization (handles both array and object forms)
    */
-  static normalizeGitHubSecurityAdvisories(response: GitHubSecurityAdvisoryResponse): NormalizedDataItem[] {
-    return response.security_advisories.map(advisory => ({
-      id: advisory.id,
-      title: advisory.summary,
-      summary: advisory.description.substring(0, 500) + '...',
-      url: advisory.html_url,
-      publishedAt: new Date(advisory.published_at),
-      source: 'GitHub Security',
-      category: 'security',
-      tags: ['security', 'vulnerability', advisory.severity, 'github'],
-      priority: this.mapSeverityToPriority(advisory.severity),
-      trustRating: 90, // Official GitHub security
-      verificationStatus: 'OFFICIAL',
-      dataQuality: 95,
-      metadata: {
-        severity: advisory.severity,
-        cveId: advisory.cve_id,
-        updatedAt: advisory.updated_at,
-        references: advisory.references,
-        fullDescription: advisory.description
-      }
-    }));
+  static normalizeGitHubSecurityAdvisories(response: any): NormalizedDataItem[] {
+    const advisories: any[] = Array.isArray(response)
+      ? response
+      : Array.isArray(response?.security_advisories)
+      ? response.security_advisories
+      : [];
+
+    const mapCvssToPriority = (score?: number): 'low' | 'medium' | 'high' | 'critical' => {
+      if (typeof score !== 'number') return 'medium';
+      if (score >= 9.0) return 'critical';
+      if (score >= 7.0) return 'high';
+      if (score >= 4.0) return 'medium';
+      return 'low';
+    };
+
+    return advisories.map((advisory: any) => {
+      const id = advisory.id || advisory.ghsa_id || advisory.cve_id || `ghsa-${Date.now()}`;
+      const cve = advisory.cve_id || advisory.identifiers?.find?.((i: any) => i.type === 'CVE')?.value;
+      const summary = advisory.summary || advisory.description || 'Security advisory';
+      const htmlUrl = advisory.html_url || advisory.url || advisory.repository_advisory_url || '';
+      const published = advisory.published_at || advisory.github_reviewed_at || advisory.updated_at;
+      const cvssScore = advisory.cvss?.score || advisory.cvss_severities?.cvss_v3?.score || advisory.cvss_severities?.cvss_v4?.score;
+      const severity = String(advisory.severity || '').toLowerCase();
+
+      // Priority from CVSS if present, else from severity label
+      const priority = typeof cvssScore === 'number'
+        ? mapCvssToPriority(cvssScore)
+        : (severity === 'critical' ? 'critical' : severity === 'high' ? 'high' : severity === 'low' ? 'low' : 'medium');
+
+      return {
+        id,
+        title: summary,
+        summary: String(advisory.description || summary).substring(0, 500) + '...',
+        url: htmlUrl,
+        publishedAt: published ? new Date(published) : new Date(),
+        source: 'GitHub Security',
+        category: 'security',
+        tags: ['security', 'vulnerability', advisory.severity || 'unknown', cve].filter(Boolean) as string[],
+        priority,
+        trustRating: 90,
+        verificationStatus: 'OFFICIAL',
+        dataQuality: 95,
+        metadata: {
+          cveId: cve,
+          identifiers: advisory.identifiers,
+          references: advisory.references,
+          cvss: advisory.cvss || advisory.cvss_severities,
+          vulnerabilities: advisory.vulnerabilities,
+          cwes: advisory.cwes,
+          withdrawnAt: advisory.withdrawn_at
+        }
+      } as NormalizedDataItem;
+    });
   }
 
   /**
@@ -120,56 +177,47 @@ export class DataNormalizer {
   }
 
   /**
-   * Reddit Post Normalization
+   * Reddit Post Normalization (subreddit derived per item when not provided)
    */
   static normalizeRedditPosts(response: RedditPostResponse, subreddit: string): NormalizedDataItem[] {
     return response.data.children.map(post => {
-      // Validate timestamp for Reddit post
       const createdUtc = post.data.created_utc;
       let publishedDate: Date;
-      
       try {
         if (typeof createdUtc === 'number' && !isNaN(createdUtc)) {
           publishedDate = new Date(createdUtc * 1000);
-          // Check if the date is valid
-          if (isNaN(publishedDate.getTime())) {
-            console.warn(`TDD_WARNING: Invalid timestamp for Reddit post ${post.data.id}, using current time`);
-            publishedDate = new Date();
-          }
+          if (isNaN(publishedDate.getTime())) publishedDate = new Date();
         } else {
-          console.warn(`TDD_WARNING: Missing or invalid created_utc for Reddit post ${post.data.id}:`, createdUtc);
           publishedDate = new Date();
         }
-      } catch (error) {
-        console.warn(`TDD_WARNING: Error creating date for Reddit post ${post.data.id}:`, error);
+      } catch {
         publishedDate = new Date();
       }
+
+      const sub = post.data.subreddit || subreddit || 'reddit';
 
       return {
         id: `reddit-${post.data.id}`,
         title: post.data.title,
-        summary: post.data.selftext ? 
-          post.data.selftext.substring(0, 500) + '...' : 
-          'Click to view discussion',
-        url: post.data.url.startsWith('http') ? post.data.url : `https://reddit.com${post.data.url}`,
+        summary: post.data.selftext ? String(post.data.selftext).substring(0, 500) + '...' : 'Click to view discussion',
+        url: post.data.url?.startsWith('http') ? post.data.url : `https://reddit.com${post.data.url || ''}`,
         publishedAt: publishedDate,
-        source: `Reddit r/${subreddit}`,
+        source: `Reddit r/${sub}`,
         category: 'social',
-        tags: ['reddit', 'discussion', subreddit],
+        tags: ['reddit', 'discussion', sub],
         priority: this.mapScoreToPriority(post.data.score),
-        trustRating: 60, // Social media content
+        trustRating: 60,
         verificationStatus: 'UNVERIFIED',
-        dataQuality: 70,
+        dataQuality: 75,
         metadata: {
           author: post.data.author,
           score: post.data.score,
           numComments: post.data.num_comments,
           ups: post.data.ups,
           downs: post.data.downs,
-          subreddit: post.data.subreddit,
-          // Add Reddit-specific URLs for better deep linking
+          subreddit: sub,
           redditPostId: post.data.id,
-          commentsUrl: `https://reddit.com/r/${subreddit}/comments/${post.data.id}/`,
+          commentsUrl: `https://reddit.com/r/${sub}/comments/${post.data.id}/`,
           originalUrl: post.data.url
         }
       };
@@ -180,84 +228,125 @@ export class DataNormalizer {
    * USGS Earthquake Data Normalization
    */
   static normalizeUSGSEarthquakes(geoJsonResponse: any): NormalizedDataItem[] {
-    return geoJsonResponse.features.map((earthquake: any) => ({
-      id: earthquake.id,
-      title: `${earthquake.properties.title}`,
-      summary: `Magnitude ${earthquake.properties.mag} earthquake ${earthquake.properties.place}`,
-      url: earthquake.properties.url,
-      publishedAt: new Date(earthquake.properties.time),
-      source: 'USGS Earthquake Hazards',
-      category: 'seismic',
-      tags: ['earthquake', 'geology', 'hazard'],
-      priority: this.mapMagnitudeToPriority(earthquake.properties.mag),
-      trustRating: 98, // Official USGS data
-      verificationStatus: 'OFFICIAL',
-      dataQuality: 100,
-      metadata: {
-        magnitude: earthquake.properties.mag,
-        location: earthquake.properties.place,
-        depth: earthquake.geometry.coordinates[2],
-        latitude: earthquake.geometry.coordinates[1],
-        longitude: earthquake.geometry.coordinates[0],
-        magType: earthquake.properties.magType,
-        significance: earthquake.properties.sig,
-        felt: earthquake.properties.felt
-      }
-    }));
+    const features = Array.isArray(geoJsonResponse?.features) ? geoJsonResponse.features : [];
+    if (features.length === 0) return [];
+
+    return features.map((earthquake: any) => {
+      const p = earthquake?.properties || {};
+      const g = earthquake?.geometry || {};
+      const coords = Array.isArray(g.coordinates) ? g.coordinates : [];
+      const mag = typeof p.mag === 'number' ? p.mag : 0;
+      const place = p.place || 'Unknown location';
+      const title = p.title || (mag ? `M${mag} Earthquake - ${place}` : `Earthquake - ${place}`);
+      const url = p.url || `https://earthquake.usgs.gov/earthquakes/eventpage/${earthquake?.id || ''}`;
+      const time = typeof p.time === 'number' ? p.time : Date.now();
+
+      return {
+        id: earthquake?.id || `${time}-${place}`,
+        title,
+        summary: `Magnitude ${mag} earthquake ${place}`,
+        url,
+        publishedAt: new Date(time),
+        source: 'USGS Earthquake Hazards',
+        category: 'seismic',
+        tags: ['earthquake', 'geology', 'hazard'],
+        priority: this.mapMagnitudeToPriority(mag),
+        trustRating: 98,
+        verificationStatus: 'OFFICIAL',
+        dataQuality: 100,
+        metadata: {
+          magnitude: mag,
+          location: place,
+          depth: typeof coords[2] === 'number' ? coords[2] : undefined,
+          latitude: typeof coords[1] === 'number' ? coords[1] : undefined,
+          longitude: typeof coords[0] === 'number' ? coords[0] : undefined,
+          magType: p.magType,
+          significance: p.sig,
+          felt: p.felt
+        }
+      };
+    });
   }
 
   /**
-   * Hacker News Normalization
+   * CoinGecko Data Normalization
    */
-  static normalizeHackerNewsItem(item: any): NormalizedDataItem {
-    // Validate required fields and provide fallbacks
-    const itemId = item.id || 'unknown';
-    const itemTime = item.time && typeof item.time === 'number' ? item.time : Math.floor(Date.now() / 1000);
-    
-    // Create a valid date, with fallback to current time if invalid
-    let publishedDate: Date;
-    try {
-      publishedDate = new Date(itemTime * 1000);
-      // Check if the date is valid
-      if (isNaN(publishedDate.getTime())) {
-        console.warn(`TDD_WARNING: Invalid timestamp for Hacker News item ${itemId}, using current time`);
-        publishedDate = new Date();
+  static normalizeCoinGeckoData(response: any): NormalizedDataItem[] {
+    const items: NormalizedDataItem[] = [];
+
+    // /search/trending response
+    if (response && Array.isArray(response.coins)) {
+      for (const c of response.coins) {
+        const coin = c.item || c;
+        items.push({
+          id: `cg-${coin.id}`,
+          title: coin.name || coin.symbol || 'Crypto Asset',
+          summary: `Trending: ${coin.name || coin.symbol}`,
+          url: coin.id ? `https://www.coingecko.com/en/coins/${coin.id}` : 'https://www.coingecko.com',
+          publishedAt: new Date(),
+          source: 'CoinGecko',
+          category: 'financial',
+          tags: ['crypto', 'trending'],
+          priority: 'medium',
+          trustRating: 80,
+          verificationStatus: 'VERIFIED',
+          dataQuality: 85,
+          metadata: coin
+        });
       }
-    } catch (error) {
-      console.warn(`TDD_WARNING: Error creating date for Hacker News item ${itemId}:`, error);
-      publishedDate = new Date();
     }
 
-    return {
-      id: `hn-${itemId}`,
-      title: item.title || 'Hacker News Discussion',
-      summary: item.text ? item.text.substring(0, 500) + '...' : 'Click to view discussion',
-      url: item.url || `https://news.ycombinator.com/item?id=${itemId}`,
-      publishedAt: publishedDate,
-      source: 'Hacker News',
-      category: 'technology',
-      tags: ['hackernews', 'technology', 'discussion'],
-      priority: this.mapScoreToPriority(item.score || 0),
-      trustRating: 75, // Tech community content
-      verificationStatus: 'UNVERIFIED',
-      dataQuality: 80,
-      metadata: {
-        by: item.by,
-        score: item.score,
-        descendants: item.descendants,
-        type: item.type,
-        kids: item.kids
+    // /coins/markets response
+    else if (Array.isArray(response)) {
+      for (const coin of response) {
+        items.push({
+          id: `cg-${coin.id}`,
+          title: coin.name || coin.symbol || 'Crypto Asset',
+          summary: `${coin.name || coin.symbol} price: $${coin.current_price}`,
+          url: `https://www.coingecko.com/en/coins/${coin.id}`,
+          publishedAt: new Date(),
+          source: 'CoinGecko',
+          category: 'financial',
+          tags: ['crypto', 'markets'],
+          priority: 'medium',
+          trustRating: 80,
+          verificationStatus: 'VERIFIED',
+          dataQuality: 85,
+          metadata: coin
+        });
       }
-    };
+    }
+
+    // /global response
+    else if (response && response.data) {
+      items.push({
+        id: `cg-global-${Date.now()}`,
+        title: 'Crypto Market Overview',
+        summary: `Active Cryptocurrencies: ${response.data.active_cryptocurrencies}`,
+        url: 'https://www.coingecko.com',
+        publishedAt: new Date(),
+        source: 'CoinGecko',
+        category: 'financial',
+        tags: ['crypto', 'global'],
+        priority: 'medium',
+        trustRating: 80,
+        verificationStatus: 'VERIFIED',
+        dataQuality: 85,
+        metadata: response.data
+      });
+    }
+
+    return items;
   }
 
   /**
    * Priority Mapping Utilities
    */
-  private static mapSeverityToPriority(severity: string): 'low' | 'medium' | 'high' | 'critical' {
-    const severityLower = severity.toLowerCase();
+  private static mapSeverityToPriority(severity?: string): 'low' | 'medium' | 'high' | 'critical' {
+    if (!severity) return 'low';
+    const severityLower = String(severity).toLowerCase();
     if (severityLower.includes('extreme') || severityLower.includes('critical')) return 'critical';
-    if (severityLower.includes('severe') || severityLower.includes('major')) return 'high';
+    if (severityLower.includes('severe') || severityLower.includes('major') || severityLower.includes('significant')) return 'high';
     if (severityLower.includes('moderate') || severityLower.includes('minor')) return 'medium';
     return 'low';
   }
@@ -277,10 +366,11 @@ export class DataNormalizer {
     return 'low';
   }
 
-  private static mapMagnitudeToPriority(magnitude: number): 'low' | 'medium' | 'high' | 'critical' {
-    if (magnitude >= 7.0) return 'critical';
-    if (magnitude >= 6.0) return 'high';
-    if (magnitude >= 4.0) return 'medium';
+  private static mapMagnitudeToPriority(magnitude?: number | null): 'low' | 'medium' | 'high' | 'critical' {
+    const mag = typeof magnitude === 'number' ? magnitude : 0;
+    if (mag >= 7.0) return 'critical';
+    if (mag >= 6.0) return 'high';
+    if (mag >= 4.0) return 'medium';
     return 'low';
   }
 
@@ -298,10 +388,58 @@ export class DataNormalizer {
       category,
       tags: data.tags || [category],
       priority: 'medium',
-      trustRating: 50, // Unknown source
+      trustRating: 50,
       verificationStatus: 'UNVERIFIED',
       dataQuality: 60,
       metadata: data
+    };
+  }
+
+  /**
+   * Hacker News Normalization (single item) — enriched
+   */
+  static normalizeHackerNewsItem(item: any): NormalizedDataItem {
+    const itemId = item?.id || 'unknown';
+    const itemTime = item?.time && typeof item.time === 'number' ? item.time : Math.floor(Date.now() / 1000);
+
+    const stripHTML = (html?: string) => (html ? String(html).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : '');
+
+    let publishedDate: Date;
+    try {
+      publishedDate = new Date(itemTime * 1000);
+      if (isNaN(publishedDate.getTime())) publishedDate = new Date();
+    } catch {
+      publishedDate = new Date();
+    }
+
+    const title = item?.title || (item?.type === 'ask' ? 'Ask HN' : 'Hacker News Discussion');
+    const text = stripHTML(item?.text);
+    const type = String(item?.type || 'story');
+
+    const tags = ['hackernews'];
+    if (/^Ask HN/i.test(title)) tags.push('ask-hn');
+    if (/^Show HN/i.test(title)) tags.push('show-hn');
+
+    return {
+      id: `hn-${itemId}`,
+      title,
+      summary: text ? text.substring(0, 500) + '...' : 'Click to view discussion',
+      url: item?.url || `https://news.ycombinator.com/item?id=${itemId}`,
+      publishedAt: publishedDate,
+      source: 'Hacker News',
+      category: type === 'job' ? 'jobs' : 'technology',
+      tags,
+      priority: this.mapScoreToPriority(item?.score || 0),
+      trustRating: 75,
+      verificationStatus: 'UNVERIFIED',
+      dataQuality: 85,
+      metadata: {
+        by: item?.by,
+        score: item?.score,
+        descendants: item?.descendants,
+        type: item?.type,
+        kids: item?.kids
+      }
     };
   }
 }

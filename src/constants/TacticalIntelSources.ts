@@ -4,8 +4,8 @@
  * for backward compatibility while maintaining verified working sources
  */
 
+import { AuthType,ClassificationLevel, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
 import { REALISTIC_INTELLIGENCE_SOURCES, RealisticFeedCategory } from './RealisticIntelligenceSources';
-import { TacticalIntelSource, IntelligenceCategory, ClassificationLevel, SourceCost, HealthStatus, AuthType } from '../types/TacticalIntelligence';
 
 // Map realistic sources to tactical intel format
 export const TACTICAL_INTEL_SOURCES: TacticalIntelSource[] = REALISTIC_INTELLIGENCE_SOURCES.map(source => ({
@@ -105,4 +105,4 @@ export const INTELLIGENCE_CATEGORIES = {
 } as const;
 
 // Re-export types for compatibility
-export type { TacticalIntelSource, IntelligenceCategory, ClassificationLevel } from '../types/TacticalIntelligence';
+export type { ClassificationLevel,IntelligenceCategory, TacticalIntelSource } from '../types/TacticalIntelligence';

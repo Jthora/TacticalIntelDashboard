@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import FeedService from '../services/FeedService';
-import { Feed } from '../models/Feed';
-import FeedItem from './FeedItem';
-import { FeedListSkeleton } from '../shared/components/LoadingStates';
+
 import { useLoading } from '../hooks/useLoading';
+import { Feed } from '../models/Feed';
+import FeedService from '../services/FeedService';
+import { FeedListSkeleton } from '../shared/components/LoadingStates';
+import FeedItem from './FeedItem';
 
 const FeedList: React.FC = () => {
   const [feeds, setFeeds] = useState<Feed[]>([]);

@@ -1,25 +1,14 @@
-import { FeedResults } from '../types/FeedTypes';
+import { CORSStrategy } from '../contexts/SettingsContext';
 import { Feed } from '../models/Feed';
-import { parseFeedData as parseXMLFeedData, isValidXML } from '../parsers/xmlParser';
-import { parseFeedData as parseJSONFeedData, isValidJSON } from '../parsers/jsonParser';
-import { parseFeedData as parseTXTFeedData, isValidTXT } from '../parsers/txtParser';
-import { parseFeedData as parseHTMLFeedData, isValidHTML } from '../parsers/htmlParser';
+import { isValidHTML,parseFeedData as parseHTMLFeedData } from '../parsers/htmlParser';
+import { isValidJSON,parseFeedData as parseJSONFeedData } from '../parsers/jsonParser';
+import { isValidTXT,parseFeedData as parseTXTFeedData } from '../parsers/txtParser';
+import { isValidXML,parseFeedData as parseXMLFeedData } from '../parsers/xmlParser';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
+import { FeedResults } from '../types/FeedTypes';
+import { handleFetchError, handleHTMLParsingError,handleJSONParsingError, handleTXTParsingError, handleXMLParsingError } from './errorHandler';
 import { convertFeedsToFeedItems } from './feedConversion';
 import { LocalStorageUtil } from './LocalStorageUtil';
-import { handleFetchError, handleXMLParsingError, handleJSONParsingError, handleTXTParsingError, handleHTMLParsingError } from './errorHandler';
-import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
-import { CORSStrategy } from '../contexts/SettingsContext';
-
-// Legacy configuration for backward compatibility
-const LEGACY_PROXY_CONFIG = {
-  vercel: '/api/proxy-feed?url=',
-  fallback: [
-    'https://api.allorigins.win/get?url=',
-    'https://api.codetabs.com/v1/proxy?quest=',
-    'https://cors-anywhere.herokuapp.com/',
-  ],
-  local: import.meta.env.VITE_PROXY_URL || 'http://localhost:8081/',
-};
 
 // Get proxy URL using user's CORS settings
 const getProxyUrl = (targetUrl: string): string => {
@@ -53,7 +42,7 @@ const handleCORSError = (url: string, error: Error): void => {
   // Additional handling logic if needed
 };
 
-const fetchWithRetry = async (url: string, options: RequestInit, retries = 3, backoff = 300): Promise<Response> => {
+const fetchWithRetry = async (url: string, _options: RequestInit, retries = 3, backoff = 300): Promise<Response> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       // Use simple fetch options to avoid preflight requests
@@ -337,35 +326,11 @@ const cacheFeedData = (url: string, data: FeedResults): void => {
 const getCachedFeedData = (url: string): FeedResults | null => {
   try {
     const cachedData = LocalStorageUtil.getItem<FeedResults>(url);
-    if (cachedData) {
-      console.log(`Cached feed data found for URL: ${url}`);
-      return cachedData;
-    }
-    return null;
+    return cachedData ?? null;
   } catch (error) {
     console.error(`Error retrieving cached feed data for URL: ${url}`, error);
     return null;
   }
 };
 
-const validateFeedData = (data: FeedResults): boolean => {
-  // Add validation logic for feed data
-  if (!data || !data.feeds || !Array.isArray(data.feeds)) {
-    console.warn('Invalid feed data structure');
-    return false;
-  }
-  return true;
-};
-
-export const fetchFeedWithCache = async (url: string): Promise<FeedResults | null> => {
-  const cachedData = getCachedFeedData(url);
-  if (cachedData && validateFeedData(cachedData)) {
-    return cachedData;
-  }
-
-  const fetchedData = await fetchFeed(url);
-  if (fetchedData) {
-    cacheFeedData(url, fetchedData);
-  }
-  return fetchedData;
-};
+export { cacheFeedData, getCachedFeedData };

@@ -1,0 +1,50 @@
+{
+  "ids": {
+    "type": "array",
+    "length": 20,
+    "items": [
+      "number",
+      "number",
+      "number"
+    ]
+  },
+  "items": {
+    "type": "array",
+    "length": 20,
+    "items": [
+      {
+        "by": "string",
+        "descendants": "number",
+        "id": "number",
+        "kids": "array",
+        "score": "number",
+        "time": "number",
+        "title": "string",
+        "type": "string",
+        "url": "string"
+      },
+      {
+        "by": "string",
+        "descendants": "number",
+        "id": "number",
+        "kids": "array",
+        "score": "number",
+        "time": "number",
+        "title": "string",
+        "type": "string",
+        "url": "string"
+      },
+      {
+        "by": "string",
+        "descendants": "number",
+        "id": "number",
+        "kids": "array",
+        "score": "number",
+        "time": "number",
+        "title": "string",
+        "type": "string",
+        "url": "string"
+      }
+    ]
+  }
+}

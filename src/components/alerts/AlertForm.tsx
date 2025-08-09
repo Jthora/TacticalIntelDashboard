@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { AlertConfig, AlertPriority } from '../../types/AlertTypes';
 import './AlertForm.css';
+
+import React, { useState } from 'react';
+
+import { AlertConfig, AlertPriority } from '../../types/AlertTypes';
 
 interface AlertFormProps {
   initialAlert?: AlertConfig;

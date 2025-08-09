@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
-import { displaySettings } from '../../../utils/DisplaySettingsManager';
 import '../../../assets/styles/components/general-settings.css';
+
+import React, { useCallback,useEffect, useState } from 'react';
+
+import { SettingsTab,useSettings } from '../../../contexts/SettingsContext';
+import { displaySettings } from '../../../utils/DisplaySettingsManager';
 
 const DisplaySettings: React.FC = React.memo(() => {
   const { settings, updateSettings, resetSettings } = useSettings();

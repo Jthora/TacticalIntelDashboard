@@ -1,0 +1,44 @@
+{
+  "type": "string",
+  "metadata": {
+    "generated": "number",
+    "url": "string",
+    "title": "string",
+    "status": "number",
+    "api": "string",
+    "count": "number"
+  },
+  "features": {
+    "type": "array",
+    "length": 259,
+    "items": [
+      {
+        "type": "string",
+        "properties": "object",
+        "geometry": "object",
+        "id": "string"
+      },
+      {
+        "type": "string",
+        "properties": "object",
+        "geometry": "object",
+        "id": "string"
+      },
+      {
+        "type": "string",
+        "properties": "object",
+        "geometry": "object",
+        "id": "string"
+      }
+    ]
+  },
+  "bbox": {
+    "type": "array",
+    "length": 6,
+    "items": [
+      "number",
+      "number",
+      "number"
+    ]
+  }
+}

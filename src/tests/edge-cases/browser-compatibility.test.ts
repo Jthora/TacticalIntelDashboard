@@ -3,7 +3,8 @@
  * Tests for cross-browser localStorage behavior, CSS variables, and mobile quirks
  */
 
-import { describe, test, expect, beforeEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { afterAll, beforeAll, beforeEach, describe, expect, jest,test } from '@jest/globals';
+
 import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 
 // Mock various browser environments

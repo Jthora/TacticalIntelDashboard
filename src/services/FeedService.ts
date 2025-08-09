@@ -1,12 +1,12 @@
+import { DefaultFeeds } from '../constants/DefaultFeeds';
+import FeedController from '../controllers/FeedController';
 import { Feed } from '../models/Feed';
 import { FeedList, FeedResults } from '../types/FeedTypes';
-import { LocalStorageUtil } from '../utils/LocalStorageUtil';
-import FeedController from '../controllers/FeedController';
-import { DefaultFeeds } from '../constants/DefaultFeeds';
-import { convertFeedItemsToFeeds } from '../utils/feedConversion';
-import { log } from '../utils/LoggerService';
-import { fetchFeed } from '../utils/fetchFeed'; // Import fetchFeed
 import { cleanupStoredFeeds } from '../utils/feedCleanup';
+import { convertFeedItemsToFeeds } from '../utils/feedConversion';
+import { fetchFeed } from '../utils/fetchFeed'; // Import fetchFeed
+import { LocalStorageUtil } from '../utils/LocalStorageUtil';
+import { log } from '../utils/LoggerService';
 
 class FeedService {
   private feeds: Feed[] = [];

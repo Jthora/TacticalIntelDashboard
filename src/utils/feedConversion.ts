@@ -1,5 +1,5 @@
-import { FeedItem } from '../types/FeedTypes';
 import { Feed } from '../models/Feed';
+import { FeedItem } from '../types/FeedTypes';
 
 export const convertFeedsToFeedItems = (feeds: Feed[]): FeedItem[] => {
   return feeds.map((feed) => {
@@ -11,9 +11,9 @@ export const convertFeedsToFeedItems = (feeds: Feed[]): FeedItem[] => {
       description: feed.description || '',
       content: feed.content || '',
       feedListId: feed.feedListId,
-      author: feed.author,
-      categories: feed.categories,
-      media: feed.media,
+      ...(feed.author ? { author: feed.author } : {}),
+      ...(feed.categories ? { categories: feed.categories } : {}),
+      ...(feed.media ? { media: feed.media } : {})
     };
 
     // Additional conversion logic can be added here
@@ -32,9 +32,9 @@ export const convertFeedToFeedItem = (feed: Feed): FeedItem => {
     description: feed.description || '',
     content: feed.content || '',
     feedListId: feed.feedListId,
-    author: feed.author,
-    categories: feed.categories,
-    media: feed.media,
+    ...(feed.author ? { author: feed.author } : {}),
+    ...(feed.categories ? { categories: feed.categories } : {}),
+    ...(feed.media ? { media: feed.media } : {})
   };
 };
 
@@ -50,16 +50,16 @@ export const convertFeedItemsToFeeds = (feedItems: FeedItem[]): Feed[] => {
       description: feedItem.description,
       content: feedItem.content,
       feedListId: feedItem.feedListId,
-      author: feedItem.author,
-      categories: feedItem.categories,
-      media: feedItem.media,
+      ...(feedItem.author ? { author: feedItem.author } : {}),
+      ...(feedItem.categories ? { categories: feedItem.categories } : {}),
+      ...(feedItem.media ? { media: feedItem.media } : {}),
       // Preserve extended properties from modern API
-      priority: feedItem.priority,
-      contentType: feedItem.contentType,
-      tags: feedItem.tags,
-      source: feedItem.source,
+      ...(feedItem.priority ? { priority: feedItem.priority } : {}),
+      ...(feedItem.contentType ? { contentType: feedItem.contentType } : {}),
+      ...(feedItem.tags ? { tags: feedItem.tags } : {}),
+      ...(feedItem.source ? { source: feedItem.source } : {}),
       // Include metadata for additional features
-      metadata: feedItem.metadata,
+      ...(feedItem.metadata ? { metadata: feedItem.metadata } : {})
     };
 
     // Additional conversion logic can be added here
@@ -80,15 +80,15 @@ export const convertFeedItemToFeed = (feedItem: FeedItem): Feed => {
     description: feedItem.description,
     content: feedItem.content,
     feedListId: feedItem.feedListId,
-    author: feedItem.author,
-    categories: feedItem.categories,
-    media: feedItem.media,
+    ...(feedItem.author ? { author: feedItem.author } : {}),
+    ...(feedItem.categories ? { categories: feedItem.categories } : {}),
+    ...(feedItem.media ? { media: feedItem.media } : {}),
     // Preserve extended properties from modern API
-    priority: feedItem.priority,
-    contentType: feedItem.contentType,
-    tags: feedItem.tags,
-    source: feedItem.source,
+    ...(feedItem.priority ? { priority: feedItem.priority } : {}),
+    ...(feedItem.contentType ? { contentType: feedItem.contentType } : {}),
+    ...(feedItem.tags ? { tags: feedItem.tags } : {}),
+    ...(feedItem.source ? { source: feedItem.source } : {}),
     // Include metadata for additional features
-    metadata: feedItem.metadata,
+    ...(feedItem.metadata ? { metadata: feedItem.metadata } : {})
   };
 };

@@ -1,0 +1,41 @@
+{
+  "@context": {
+    "type": "array",
+    "length": 2,
+    "items": [
+      "string",
+      {
+        "@version": "string",
+        "wx": "string",
+        "@vocab": "string"
+      }
+    ]
+  },
+  "type": "string",
+  "features": {
+    "type": "array",
+    "length": 92,
+    "items": [
+      {
+        "id": "string",
+        "type": "string",
+        "geometry": "object",
+        "properties": "object"
+      },
+      {
+        "id": "string",
+        "type": "string",
+        "geometry": "null",
+        "properties": "object"
+      },
+      {
+        "id": "string",
+        "type": "string",
+        "geometry": "null",
+        "properties": "object"
+      }
+    ]
+  },
+  "title": "string",
+  "updated": "string"
+}

@@ -1,13 +1,14 @@
 // Example Edge Case Tests for Settings System
 // These tests demonstrate the TDD approach for stability and edge cases
 
-import React from 'react';
-import { render, waitFor, act } from '@testing-library/react';
+import { beforeEach, describe, expect, jest,test } from '@jest/globals';
+import { act,render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
-import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
-import { SettingsProvider } from '../contexts/SettingsContext';
+import React from 'react';
+
 import CORSSettings from '../components/settings/tabs/CORSSettings';
+import { SettingsProvider } from '../contexts/SettingsContext';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 
 // Mock console methods to test error handling
 const consoleSpy = {

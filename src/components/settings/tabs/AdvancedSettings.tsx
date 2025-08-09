@@ -1,6 +1,8 @@
-import React from 'react';
-import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
 import '../../../assets/styles/components/general-settings.css';
+
+import React from 'react';
+
+import { SettingsTab,useSettings } from '../../../contexts/SettingsContext';
 
 const AdvancedSettings: React.FC = () => {
   const { resetSettings } = useSettings();

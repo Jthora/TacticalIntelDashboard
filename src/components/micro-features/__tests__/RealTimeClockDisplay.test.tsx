@@ -1,6 +1,8 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { act,render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { RealTimeClockDisplay, RealTimeClockDisplayProps } from '../RealTimeClockDisplay';
 
 // Mock console.log to test logging functionality

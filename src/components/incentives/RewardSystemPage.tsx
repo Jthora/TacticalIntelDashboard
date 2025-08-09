@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useWeb3 } from '../../hooks/useWeb3';
+import '../../styles/incentives/RewardSystem.css';
+
 import { ethers } from 'ethers';
+import React, { useEffect,useState } from 'react';
+
+import { useWeb3 } from '../../hooks/useWeb3';
 import { 
-  rewardContribution,
+  claimAnonymousReward,
   claimRewards,
   createStake,
   getRewardBalance,
   getStakesByStaker,
   issueAnonymousReward,
-  claimAnonymousReward,
-  withdrawStake,
+  rewardContribution,
   RewardData,
-  StakeData
-} from '../../web3/incentives/rewardSystem';
-import '../../styles/incentives/RewardSystem.css';
+  StakeData,
+  withdrawStake} from '../../web3/incentives/rewardSystem';
 
 /**
  * Main page for reward system and incentives

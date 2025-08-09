@@ -1,10 +1,9 @@
 import {
   handleFetchError,
-  handleXMLParsingError,
+  handleHTMLParsingError,
   handleJSONParsingError,
   handleTXTParsingError,
-  handleHTMLParsingError
-} from '../errorHandler';
+  handleXMLParsingError} from '../errorHandler';
 
 // Mock console methods
 const originalConsole = global.console;

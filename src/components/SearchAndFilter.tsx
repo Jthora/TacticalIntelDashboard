@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect,useMemo, useState } from 'react';
+
 import { Feed } from '../models/Feed';
 
 interface SearchAndFilterProps {
@@ -38,7 +39,7 @@ const SearchAndFilter: React.FC<SearchAndFilterProps> = ({ feeds, onFilteredFeed
   const filteredFeeds = useMemo(() => {
     setIsFiltering(true);
     
-    let filtered = feeds.filter(feed => {
+    const filtered = feeds.filter(feed => {
       // Search filter
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();

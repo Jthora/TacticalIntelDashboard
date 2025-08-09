@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
-import { useSettings, CORSStrategy, SettingsTab } from '../../../contexts/SettingsContext';
-import DebugInfo from '../../debug/DebugInfo';
-import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
-import { FetchService } from '../../../services/FetchService';
 import '../../../assets/styles/components/cors-settings.css';
 import '../../../assets/styles/components/general-settings.css';
+
+import React, { memo,useCallback, useEffect, useState } from 'react';
+
+import { CORSStrategy, SettingsTab,useSettings } from '../../../contexts/SettingsContext';
+import { FetchService } from '../../../services/FetchService';
+import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
+import DebugInfo from '../../debug/DebugInfo';
 
 const CORSSettings: React.FC = memo(() => {
   const { settings, updateSettings, resetSettings } = useSettings();

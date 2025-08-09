@@ -4,18 +4,17 @@
  * Handles tactical intelligence data flow and processing
  */
 
-import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
+import React, { createContext, useCallback, useContext, useEffect,useReducer } from 'react';
+
 import {
-  IntelligenceItem,
-  TacticalIntelSource,
+  ClassificationLevel,
   IntelligenceAlert,
-  ThreatAssessment,
+  IntelligenceCategory,
+  IntelligenceItem,
   IntelligenceStatistics,
   PriorityLevel,
-  ClassificationLevel,
-  IntelligenceCategory,
-  ProcessingStatus
-} from '../types/TacticalIntelligence';
+  TacticalIntelSource,
+  ThreatAssessment} from '../types/TacticalIntelligence';
 
 // Intelligence state interface
 export interface IntelligenceState {
@@ -315,7 +314,7 @@ function generateAlert(item: IntelligenceItem): IntelligenceAlert | null {
       metadata: {
         sourceId: item.sourceId,
         classification: item.classification.level,
-        location: item.location
+        ...(item.location ? { location: item.location } : {})
       }
     };
   }

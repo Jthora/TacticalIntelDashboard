@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
 import './SettingsTooltip.css';
+
+import React, { useCallback,useState } from 'react';
 
 interface SettingsTooltipProps {
   content: string;

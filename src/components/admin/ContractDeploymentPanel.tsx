@@ -1,8 +1,10 @@
 // src/components/admin/ContractDeploymentPanel.tsx
-import React, { useState, useEffect } from 'react';
-import { useWeb3 } from '../../contexts/Web3Context';
-import { deployFeedSourceValidator, registerContractAddress, getContractAddress } from '../../utils/contractDeployment';
 import '../../assets/styles/components/contract-deployment-panel.css';
+
+import React, { useEffect,useState } from 'react';
+
+import { useWeb3 } from '../../contexts/Web3Context';
+import { deployFeedSourceValidator, getContractAddress,registerContractAddress } from '../../utils/contractDeployment';
 
 /**
  * ContractDeploymentPanel component

@@ -1,0 +1,35 @@
+/* Intel Sources Default Source Styling */
+.intel-source-item.default-source {
+  border: 2px solid #00ffaa !important;
+  background-color: rgba(0, 255, 170, 0.1) !important;
+  position: relative;
+}
+
+.intel-source-item.default-source::before {
+  content: '⭐';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 14px;
+}
+
+.default-badge {
+  background-color: #00ffaa;
+  color: #000;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+/* Always place the default source at the top of the list */
+.intel-sources-list .intel-source-item.default-source {
+  order: -1;
+}
+
+/* Make sure the intel sources list uses flex display with column direction */
+.intel-sources-list {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import { BrowserProvider } from 'ethers';
+import React, { useEffect,useState } from 'react';
+
 import { 
-  ProposalType, 
   createProposal, 
   getProposals, 
-  GovernanceProposal 
-} from '../../web3/dao/governanceProposal';
+  GovernanceProposal, 
+  ProposalType} from '../../web3/dao/governanceProposal';
 
 interface ProposalCreationPanelProps {
   provider: BrowserProvider | null;

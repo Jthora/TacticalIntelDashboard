@@ -1,13 +1,12 @@
 import {
-  validateRSSFeed,
-  validateRSSItem,
+  extractKeywords,
+  parseRSSDate,
+  RSSFeed,
+  RSSItem,
   sanitizeRSSFeed,
   sanitizeRSSItem,
-  parseRSSDate,
-  extractKeywords,
-  RSSFeed,
-  RSSItem
-} from '../rssUtils';
+  validateRSSFeed,
+  validateRSSItem} from '../rssUtils';
 
 describe('RSS Utils', () => {
   const validRSSItem: RSSItem = {

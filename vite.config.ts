@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
+import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,8 +13,7 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
-          crypto: ['ethers', 'crypto-js'],
-          ui: ['axios', 'nanoid']
+          crypto: ['ethers', 'crypto-js']
         }
       }
     }

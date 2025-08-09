@@ -2,7 +2,7 @@
 
 import { useIPFS } from '../contexts/IPFSContext';
 import { useWeb3 } from '../contexts/Web3Context';
-import { encryptContent, decryptContent } from '../utils/encryptionUtils';
+import { decryptContent,encryptContent } from '../utils/encryptionUtils';
 
 /**
  * IntelligenceBridge - Cross-platform intelligence sharing service

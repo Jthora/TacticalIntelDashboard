@@ -1,8 +1,10 @@
 // src/components/governance/GovernancePanel.tsx
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/components/governance-panel.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { useWeb3 } from '../../contexts/Web3Context';
 import { AccessLevel } from '../../contexts/Web3Context';
-import '../../assets/styles/components/governance-panel.css';
 
 interface Proposal {
   id: number;
@@ -18,9 +20,8 @@ interface Proposal {
 }
 
 const GovernancePanel: React.FC = () => {
-  const { isConnected, accessLevel, walletAddress } = useWeb3();
+  const { isConnected, accessLevel } = useWeb3();
   const [proposals, setProposals] = useState<Proposal[]>([]);
-  const [selectedProposal, setSelectedProposal] = useState<Proposal | null>(null);
   const [userVotes, setUserVotes] = useState<{ [key: number]: 'for' | 'against' | 'abstain' | null }>({});
   const [isLoading, setIsLoading] = useState(false);
 

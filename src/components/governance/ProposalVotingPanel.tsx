@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/components/proposal-voting-panel.css';
+
 import { BrowserProvider } from 'ethers';
+import React, { useEffect,useState } from 'react';
+
 import { 
+  getProposalById, 
   GovernanceProposal, 
   ProposalStatus, 
   ProposalType, 
-  VoteSupport,
-  getProposalById, 
-  voteOnProposal 
-} from '../../web3/dao/governanceProposal';
-import '../../assets/styles/components/proposal-voting-panel.css';
+  voteOnProposal, 
+  VoteSupport} from '../../web3/dao/governanceProposal';
 
 interface ProposalVotingPanelProps {
   proposalId: string;

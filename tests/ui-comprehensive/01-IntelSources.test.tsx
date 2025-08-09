@@ -15,16 +15,16 @@
       expect(viewSelect).toHaveValue('compact');
     });*/
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 // Mock all services and contexts
 import IntelSources from '../../src/components/IntelSources';
-import FeedVisualizer from '../../src/components/FeedVisualizer';
-import { IntelligenceProvider } from '../../src/contexts/IntelligenceContext';
 import { FilterProvider } from '../../src/contexts/FilterContext';
+import { IntelligenceProvider } from '../../src/contexts/IntelligenceContext';
 
 // Mock services
 jest.mock('../../src/services/FeedService', () => ({

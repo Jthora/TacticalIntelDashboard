@@ -1,9 +1,11 @@
 // src/pages/Web3TestPage.tsx
-import React from 'react';
-import { Web3Provider } from '../contexts/Web3Context';
-import Web3LoginPanel from '../components/web3/Web3LoginPanel';
-import ProfilePageSimple from '../components/web3/ProfilePageSimple';
 import './Web3TestPage.css';
+
+import React from 'react';
+
+import ProfilePageSimple from '../components/web3/ProfilePageSimple';
+import Web3LoginPanel from '../components/web3/Web3LoginPanel';
+import { Web3Provider } from '../contexts/Web3Context';
 
 const Web3TestPageContent: React.FC = () => {
   return (

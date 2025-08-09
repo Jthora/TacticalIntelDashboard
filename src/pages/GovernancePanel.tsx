@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import { BrowserProvider } from 'ethers';
+import React, { useEffect,useState } from 'react';
+
 import ProposalCreationPanel from '../components/governance/ProposalCreationPanel';
 
 const GovernancePanel: React.FC = () => {

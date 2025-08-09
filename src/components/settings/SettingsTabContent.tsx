@@ -1,13 +1,14 @@
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { Navigate,useParams } from 'react-router-dom';
+
 import { SettingsTab } from '../../contexts/SettingsContext';
-import GeneralSettings from './tabs/GeneralSettings';
+import SettingsError from './SettingsError';
+import AdvancedSettings from './tabs/AdvancedSettings';
 import CORSSettings from './tabs/CORSSettings';
+import DisplaySettings from './tabs/DisplaySettings';
+import GeneralSettings from './tabs/GeneralSettings';
 import ProtocolSettings from './tabs/ProtocolSettings';
 import VerificationSettings from './tabs/VerificationSettings';
-import DisplaySettings from './tabs/DisplaySettings';
-import AdvancedSettings from './tabs/AdvancedSettings';
-import SettingsError from './SettingsError';
 
 /**
  * Dynamic settings content loader that renders the appropriate

@@ -1,6 +1,6 @@
+import { afterEach, beforeEach, describe, expect, jest,test } from '@jest/globals';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 
 // Import components and services
 import { SettingsProvider, useSettings } from '../../contexts/SettingsContext';

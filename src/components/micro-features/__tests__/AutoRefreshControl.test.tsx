@@ -1,5 +1,7 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import { act,fireEvent, render, screen } from '@testing-library/react';
+
 import AutoRefreshControl from '../AutoRefreshControl';
 
 // Mock data for testing

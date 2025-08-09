@@ -1,5 +1,5 @@
+import { getAllTextContents, getAuthorWithFallback, getContentWithFallback, getMediaWithFallback,getTextContent } from '../helpers/xmlHelper';
 import { Feed } from '../models/Feed';
-import { getTextContent, getAllTextContents, getContentWithFallback, getAuthorWithFallback, getMediaWithFallback } from '../helpers/xmlHelper';
 
 export const parseFeedData = (xmlDoc: Document, url: string): Feed[] => {
   const feeds: Feed[] = [];

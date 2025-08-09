@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { SettingsIcon } from '../icons/SettingsIcon';
 
 interface SettingsButtonProps {

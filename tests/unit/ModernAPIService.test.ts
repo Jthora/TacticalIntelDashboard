@@ -5,7 +5,7 @@
  */
 
 import { ModernAPIService } from '../../src/services/ModernAPIService';
-import { APIEndpoint, DataFetchOptions, NormalizedDataItem } from '../../src/types/ModernAPITypes';
+import { APIEndpoint } from '../../src/types/ModernAPITypes';
 
 // Mock fetch for testing
 global.fetch = jest.fn();

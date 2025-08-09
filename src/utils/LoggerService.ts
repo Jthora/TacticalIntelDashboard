@@ -56,14 +56,17 @@ class LoggerService {
   private log(level: LogLevel, category: string, message: string, data?: any, error?: Error): void {
     if (level < this.logLevel) return;
 
-    const entry: LogEntry = {
+    const entryBase = {
       timestamp: new Date(),
       level,
       category,
       message,
-      data,
-      stack: error?.stack
-    };
+      data
+    } as const;
+
+    const entry: LogEntry = error?.stack
+      ? { ...entryBase, stack: error.stack }
+      : { ...entryBase };
 
     // Add to internal log store
     this.logs.push(entry);

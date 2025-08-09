@@ -1,13 +1,14 @@
 // src/components/feed/FeedSourceValidator.tsx
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/components/feed-source-validator.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { useWeb3 } from '../../contexts/Web3Context';
 import { 
-  isSourceVerified, 
   getSourceMetadata, 
-  registerFeedSource, 
-  getVerifiedSources 
-} from '../../utils/contractUtils';
-import '../../assets/styles/components/feed-source-validator.css';
+  getVerifiedSources, 
+  isSourceVerified, 
+  registerFeedSource} from '../../utils/contractUtils';
 
 interface SourceMetadata {
   name: string;

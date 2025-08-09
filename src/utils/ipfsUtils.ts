@@ -1,6 +1,6 @@
 // src/utils/ipfsUtils.ts
-import { create, IPFSHTTPClient } from 'ipfs-http-client';
 import { Buffer } from 'buffer';
+import { create, IPFSHTTPClient } from 'ipfs-http-client';
 
 // Safely access environment variables
 const getEnvVar = (name: string): string => {

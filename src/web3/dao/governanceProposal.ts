@@ -1,4 +1,4 @@
-import { BrowserProvider, Contract, ethers } from 'ethers';
+import { BrowserProvider, Contract } from 'ethers';
 
 // Contract addresses and ABIs would be imported from configuration
 // For now, we'll define placeholder values

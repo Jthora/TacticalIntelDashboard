@@ -1,10 +1,12 @@
+import '@testing-library/jest-dom';
+
+import { beforeEach,describe, expect, it, jest } from '@jest/globals';
+import { fireEvent,render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import Header from '../../Header';
+
 import { SearchProvider } from '../../../contexts/SearchContext';
 import { SettingsProvider } from '../../../contexts/SettingsContext';
-import '@testing-library/jest-dom';
-import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+import Header from '../../Header';
 
 // Mock the FeedManager component
 jest.mock('../../FeedManager', () => () => <div data-testid="feed-manager">Feed Manager Mock</div>);

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
 import App from './App';
 import { CacheClearUtility } from './utils/CacheClearUtility';
 // import { displaySettings } from './utils/DisplaySettingsManager';
@@ -9,17 +10,13 @@ CacheClearUtility.clearIntelligenceCache();
 
 // Import CSS files for styling - tactical-ui.css contains critical base styles
 import './assets/styles/tactical-ui.css';
-
 // Import main CSS which includes layout styles
 import './assets/styles/layout.css';
 import './assets/styles/main.css';
-
 // Import enhanced feeds styles
 import './assets/styles/enhanced-feeds.css';
-
 // Import intelligence feed improvements
 import './assets/styles/intelligence-feed-improvements.css';
-
 // Import component-specific styles
 import './assets/styles/components/settings-page.css';
 import './assets/styles/components/settings-error.css';
@@ -29,7 +26,6 @@ import './assets/styles/components/cors-settings.css';
 import './assets/styles/components/protocol-settings.css';
 import './assets/styles/components/verification-settings.css';
 import './assets/styles/components/general-settings.css';
-
 // Import new components styles
 import './components/settings/SettingsChangeIndicator.css';
 import './components/settings/ConfirmationDialog.css';

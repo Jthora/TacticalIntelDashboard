@@ -1,37 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import FeedService from '../services/FeedService';
-import { FeedList } from '../types/FeedTypes';
-import { LoadingSpinner } from '../shared/components/LoadingStates';
-import SourceManager from './SourceManager';
-import { useIntelligence } from '../contexts/IntelligenceContext';
+import '../styles/components/intel-sources.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { 
   getModernIntelligenceSourcesAsLegacy, 
-  MODERN_INTELLIGENCE_CATEGORIES,
-  getCategoryStats
+  MODERN_INTELLIGENCE_CATEGORIES
 } from '../adapters/ModernIntelSourcesAdapter';
+import { useIntelligence } from '../contexts/IntelligenceContext';
+import { LoadingSpinner } from '../shared/components/LoadingStates';
 import { 
-  TacticalIntelSource,
-  IntelligenceCategory
-} from '../types/TacticalIntelligence';
+  IntelligenceCategory,
+  TacticalIntelSource} from '../types/TacticalIntelligence';
+import SourceManager from './SourceManager';
 
 interface IntelSourcesProps {
   setSelectedFeedList: (feedListId: string | null) => void;
-  displayMode?: 'operational' | 'analysis' | 'overview';
   showClassificationLevels?: boolean;
   enableRealTimeAlerts?: boolean;
 }
 
 const IntelSources: React.FC<IntelSourcesProps> = ({ 
   setSelectedFeedList,
-  displayMode = 'operational',
   showClassificationLevels = true,
   enableRealTimeAlerts = true
 }) => {
   const { state: intelState, actions: intelActions } = useIntelligence();
-  const [feedLists, setFeedLists] = useState<FeedList[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'compact'>('grid');
   const [sortBy, setSortBy] = useState<'name' | 'reliability' | 'category' | 'priority'>('category');
   const [filterActive, setFilterActive] = useState<boolean>(false);
@@ -60,26 +55,28 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
           console.log('🔍 TDD_SUCCESS_055: Loaded modern intelligence sources:', sources.length);
           // Add to intelligence context
           sources.forEach(source => intelActions.addSource(source));
+        } else {
+          // Check if the modern-api default source exists, add it if not
+          const hasDefaultSource = sources.some(source => source.id === 'modern-api');
+          if (!hasDefaultSource) {
+            console.log('🔍 TDD_WARNING: Default modern-api source not found, adding it to the list');
+            const defaultSources = getModernIntelligenceSourcesAsLegacy();
+            defaultSources.forEach(source => {
+              if (source.id === 'modern-api') {
+                intelActions.addSource(source);
+                sources.push(source);
+              }
+            });
+          }
         }
         
         setTacticalSources(sources);
         console.log('🔍 TDD_SUCCESS_056: Set tactical sources state:', sources.length);
         
-        // Also load legacy feed lists for compatibility
-        console.log('🔍 TDD_ERROR_057: Loading legacy feed lists from FeedService');
-        const lists = await FeedService.getFeedLists();
-        console.log('🔍 TDD_SUCCESS_058: Loaded feed lists:', lists.length, 'lists:', lists.map(l => l.id));
-        setFeedLists(lists);
-        
-        // Auto-select modern API feed list if we're using modern sources
-        if (sources.length > 0 && !selectedId) {
-          console.log('� TDD_SUCCESS_059: Auto-selecting modern-api feed list for modern intelligence sources');
-          setSelectedId('modern-api');
-          setSelectedFeedList('modern-api');
-          console.log('🔍 TDD_SUCCESS_060: Feed list selection complete - modern-api');
-        } else {
-          console.log('🔍 TDD_WARNING_061: No auto-selection:', { sourcesLength: sources.length, selectedId });
-        }
+        // ALWAYS select the modern-api feed list to ensure the default feeds are available
+        // This ensures the Intelligence Feed is never blank
+        setSelectedFeedList('modern-api');
+        console.log('🔍 TDD_SUCCESS_060: Source selection complete - modern-api');
       } catch (err) {
         console.error('🔍 TDD_ERROR_062: Failed to load tactical sources:', err);
         setError('Failed to load intelligence sources');
@@ -89,10 +86,11 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
       }
     };
     loadTacticalSources();
-  }, [intelState.sources, intelActions]);
+  }, [intelState.sources, intelActions, setSelectedFeedList]);
 
+  // Set up auto-refresh if enabled
   useEffect(() => {
-    if (autoRefresh) {
+    if (autoRefresh && enableRealTimeAlerts) {
       const interval = setInterval(() => {
         // Refresh source health status - PRODUCTION FIX: Use stable status instead of random
         tacticalSources.forEach(source => {
@@ -103,7 +101,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
           // Only update if status actually changed
           if (source.healthStatus !== healthStatus) {
             intelActions.updateSource(source.id, { 
-              healthStatus: healthStatus as any,
+              healthStatus: healthStatus as 'operational' | 'degraded' | 'down' | 'maintenance',
               lastUpdated: new Date()
             });
           }
@@ -112,14 +110,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
 
       return () => clearInterval(interval);
     }
-  }, [autoRefresh, tacticalSources, intelActions]);
-
-  const handleFeedListSelect = (listId: string) => {
-    console.log('🔍 TDD_SUCCESS_064: IntelSources handleFeedListSelect called with:', listId);
-    setSelectedId(listId);
-    setSelectedFeedList(listId);
-    console.log('🔍 TDD_SUCCESS_065: Feed list selection state updated to:', listId);
-  };
+  }, [autoRefresh, tacticalSources, intelActions, enableRealTimeAlerts]);
 
   const getSortedTacticalSources = () => {
     const filtered = categoryFilter.length > 0 
@@ -134,37 +125,18 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
           return a.category.localeCompare(b.category);
         case 'priority':
           // Priority based on reliability and health status
-          const getPriority = (source: TacticalIntelSource) => {
-            let priority = source.reliability;
-            if (source.healthStatus === 'operational') priority += 20;
-            return priority;
-          };
-          return getPriority(b) - getPriority(a);
+          {
+            const getPriority = (source: TacticalIntelSource) => {
+              let priority = source.reliability;
+              if (source.healthStatus === 'operational') priority += 20;
+              return priority;
+            };
+            return getPriority(b) - getPriority(a);
+          }
         default:
           return a.name.localeCompare(b.name);
       }
     });
-  };
-
-  const getSortedFeedLists = () => {
-    const sorted = [...feedLists].sort((a, b) => {
-      switch (sortBy) {
-        case 'reliability':
-          return (b as any).reliability || 5 - (a as any).reliability || 5;
-        case 'category':
-          return (a as any).category?.localeCompare((b as any).category) || 0;
-        case 'priority':
-          return (b as any).priority || 0 - (a as any).priority || 0;
-        default:
-          return a.name.localeCompare(b.name);
-      }
-    });
-    
-    if (filterActive) {
-      return sorted.filter(list => (list as any).isActive !== false);
-    }
-    
-    return sorted;
   };
 
   const getHealthStatus = (source: TacticalIntelSource) => {
@@ -227,36 +199,42 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
     return categoryData ? `${categoryData.name} - ${categoryData.description || 'Intelligence category'}` : 'Unknown category';
   };
 
-  const getActivityStatus = (list: FeedList) => {
-    const lastActivity = (list as any).lastActivity || 0;
-    const now = Date.now();
-    const timeDiff = now - lastActivity;
-    
-    if (timeDiff < 300000) return 'active'; // 5 minutes
-    if (timeDiff < 1800000) return 'idle'; // 30 minutes
-    return 'stale';
-  };
-
-  const getActivityColor = (status: string) => {
-    switch (status) {
-      case 'active': return '#00ff41';
-      case 'idle': return '#ff9500';
-      case 'stale': return '#ff0040';
-      default: return '#666666';
-    }
-  };
-
   const handleAddSource = () => {
     setShowSourceManager(true);
   };
 
-  const handleSourceAdded = async () => {
-    try {
-      const lists = await FeedService.getFeedLists();
-      setFeedLists(lists);
-    } catch (err) {
-      console.error('Failed to refresh feed lists:', err);
-    }
+  const handleSourceAdded = () => {
+    // Source added successfully - tactical sources are managed through the intelligence context
+    // No need to manually refresh as the useEffect will handle updates
+    console.log('🔍 TDD_SUCCESS: New tactical source added via SourceManager');
+  };
+
+  const handleSourceSelect = (sourceId: string) => {
+    setSelectedFeedList(sourceId);
+    console.log(`🔍 TDD_SUCCESS: Selected source: ${sourceId}`);
+  };
+
+  const handleRestoreDefaults = () => {
+    setSelectedFeedList('modern-api');
+    console.log('🔄 Restored default selection to modern-api');
+  };
+
+  // Add a function to check if a source is the default modern-api source
+  const isDefaultSource = (sourceId: string) => {
+    return sourceId === 'modern-api';
+  };
+
+  const handleViewModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setViewMode(e.target.value as 'list' | 'grid' | 'compact');
+  };
+
+  const handleSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(e.target.value as 'name' | 'reliability' | 'category' | 'priority');
+  };
+
+  const handleCategoryFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setCategoryFilter(value ? [value as IntelligenceCategory] : []);
   };
 
   if (loading) {
@@ -333,7 +311,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
               <span className="control-label">VIEW:</span>
               <select 
                 value={viewMode} 
-                onChange={(e) => setViewMode(e.target.value as any)}
+                onChange={handleViewModeChange}
                 className="intel-select"
                 title="View Mode"
               >
@@ -346,7 +324,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
               <span className="control-label">SORT:</span>
               <select 
                 value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={handleSortByChange}
                 className="intel-select"
                 title="Sort By"
               >
@@ -356,15 +334,20 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                 <option value="priority">PRIORITY</option>
               </select>
             </div>
+            <button 
+              className="intel-toggle"
+              onClick={handleRestoreDefaults}
+              title="Restore Default Feeds"
+            >
+              <span className="toggle-icon">↺</span>
+              <span className="toggle-label">RESTORE</span>
+            </button>
             {showClassificationLevels && (
               <div className="category-controls">
                 <span className="control-label">FILTER:</span>
                 <select 
                   value={categoryFilter.length === 1 ? categoryFilter[0] : ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setCategoryFilter(value ? [value as IntelligenceCategory] : []);
-                  }}
+                  onChange={handleCategoryFilterChange}
                   className="intel-select"
                   title="Filter by Category"
                 >
@@ -419,7 +402,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
               <div className="metric-card">
                 <div className="metric-icon">📊</div>
                 <div className="metric-info">
-                  <div className="metric-value">{tacticalSources.length + feedLists.length}</div>
+                  <div className="metric-value">{tacticalSources.length}</div>
                   <div className="metric-label">TOTAL SOURCES</div>
                 </div>
               </div>
@@ -427,8 +410,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                 <div className="metric-icon">⚡</div>
                 <div className="metric-info">
                   <div className="metric-value">
-                    {tacticalSources.filter(s => s.healthStatus === 'operational').length + 
-                     feedLists.filter(f => getActivityStatus(f) === 'active').length}
+                    {tacticalSources.filter(s => s.healthStatus === 'operational').length}
                   </div>
                   <div className="metric-label">OPERATIONAL</div>
                 </div>
@@ -455,7 +437,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
 
         {/* Sources List Section */}
         <div className="intel-sources-section">
-          {tacticalSources.length === 0 && feedLists.length === 0 ? (
+          {tacticalSources.length === 0 ? (
             <div className="intel-empty-state">
               <div className="empty-content">
                 <div className="empty-icon">📭</div>
@@ -481,18 +463,22 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                 return (
                   <div
                     key={source.id}
-                    className={`intel-source-item tactical-source status-${healthStatus}`}
+                    className={`intel-source-item tactical-source status-${healthStatus} ${isDefaultSource(source.id) ? 'default-source' : ''}`}
                     style={{ animationDelay: `${index * 0.05}s` }}
+                    onClick={() => handleSourceSelect(source.id)}
                   >
                     <div className="source-item-header">
                       <div className="source-info">
-                        <div className="source-name">{source.name}</div>
+                        <div className="source-name">
+                          {isDefaultSource(source.id) && <span className="default-badge">DEFAULT</span>}
+                          {source.name}
+                        </div>
                         <div className="source-meta">
                           <span 
                             className="category-badge" 
                             style={{ 
-                              '--category-color': MODERN_INTELLIGENCE_CATEGORIES[source.category]?.color,
-                              borderColor: MODERN_INTELLIGENCE_CATEGORIES[source.category]?.color
+                              '--category-color': MODERN_INTELLIGENCE_CATEGORIES[source.category]?.color || '#666',
+                              borderColor: MODERN_INTELLIGENCE_CATEGORIES[source.category]?.color || '#666'
                             } as React.CSSProperties}
                             title={getCategoryTooltip(source.category)}
                           >
@@ -501,9 +487,8 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                           {showClassificationLevels && (
                             <span 
                               className="classification-badge" 
-                              style={{ 
-                                '--classification-color': classificationColor,
-                                borderColor: classificationColor
+                              style={{                              '--classification-color': classificationColor || '#666',
+                              borderColor: classificationColor || '#666'
                               } as React.CSSProperties}
                               title={getClassificationTooltip(source.classification)}
                             >
@@ -513,8 +498,8 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                           <span 
                             className="reliability-badge" 
                             style={{ 
-                              '--reliability-color': reliabilityColor,
-                              borderColor: reliabilityColor
+                              '--reliability-color': reliabilityColor || '#666',
+                              borderColor: reliabilityColor || '#666'
                             } as React.CSSProperties}
                             title={getReliabilityTooltip(source.reliability)}
                           >
@@ -551,13 +536,13 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                             </span>
                             {source.requiresAuth && (
                               <span className="stat-item">
-                                <span className="stat-icon">�</span>
+                                <span className="stat-icon">🔒</span>
                                 <span className="stat-value">AUTH</span>
                               </span>
                             )}
                             {source.protocol === 'API' && (
                               <span className="stat-item">
-                                <span className="stat-icon">�</span>
+                                <span className="stat-icon">📡</span>
                                 <span className="stat-value">API</span>
                               </span>
                             )}
@@ -566,64 +551,6 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                       </div>
                     )}
                   </div>
-                );
-              })}
-              
-              {/* Legacy Feed Lists */}
-              {getSortedFeedLists().map((list, index) => {
-                const activityStatus = getActivityStatus(list);
-                const activityColor = getActivityColor(activityStatus);
-                const adjustedIndex = index + tacticalSources.length;
-                
-                return (
-                  <button
-                    key={list.id}
-                    onClick={() => handleFeedListSelect(list.id)}
-                    className={`intel-source-item legacy-source ${selectedId === list.id ? 'selected' : ''} status-${activityStatus}`}
-                    style={{ animationDelay: `${adjustedIndex * 0.05}s` }}
-                  >
-                    <div className="source-item-header">
-                      <div className="source-info">
-                        <div className="source-name">{list.name}</div>
-                        <div className="source-meta">
-                          <span className="feed-count">{(list as any).feedCount || 0} feeds</span>
-                          <span className="priority-badge">P{(list as any).priority || 1}</span>
-                          <span className="source-type-badge legacy">LEGACY</span>
-                        </div>
-                      </div>
-                      <div className="source-controls">
-                        {selectedId === list.id && (
-                          <span className="selected-arrow">▶</span>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {viewMode !== 'compact' && (
-                      <div className="source-details">
-                        <div className="status-text">
-                          <span 
-                            className="status-dot"
-                            style={{ backgroundColor: activityColor }}
-                            title={`Status: ${activityStatus.toUpperCase()}`}
-                          ></span>
-                          {activityStatus === 'active' ? 'LIVE FEED' : 
-                           activityStatus === 'idle' ? 'IDLE' : 'STALE'}
-                        </div>
-                        {viewMode === 'grid' && (
-                          <div className="source-stats">
-                            <span className="stat-item">
-                              <span className="stat-icon">↑</span>
-                              <span className="stat-value">{(list as any).uptime || '99%'}</span>
-                            </span>
-                            <span className="stat-item">
-                              <span className="stat-icon">⚡</span>
-                              <span className="stat-value">{(list as any).bandwidth || 'LOW'}</span>
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </button>
                 );
               })}
             </div>

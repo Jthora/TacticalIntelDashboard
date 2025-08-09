@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import '../../styles/intelligence/IntelligenceAnalysis.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { useWeb3 } from '../../hooks/useWeb3';
 import { 
-  submitIntelligence, 
-  voteOnIntelligence, 
   getIntelligenceItems,
-  submitAnonymousIntelligence,
+  IntelAssessment,
   IntelligenceItem,
-  IntelAssessment
-} from '../../web3/intelligence/intelligenceAnalysis';
-import '../../styles/intelligence/IntelligenceAnalysis.css';
+  submitAnonymousIntelligence,
+  submitIntelligence, 
+  voteOnIntelligence} from '../../web3/intelligence/intelligenceAnalysis';
 
 /**
  * Main page for intelligence analysis features

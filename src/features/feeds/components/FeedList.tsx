@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useCallback,useEffect, useMemo, useState } from 'react';
+
+import { useOptimizedFetch, useOptimizedTimer } from '../../../hooks/usePerformanceOptimization';
+import { Feed } from '../../../models/Feed';
+import { SearchService } from '../../../services/SearchService';
 import { log } from '../../../utils/LoggerService';
 import FeedService from '../services/FeedService';
-import { SearchService } from '../../../services/SearchService';
-import { Feed } from '../../../models/Feed';
 import FeedItem from './FeedItem';
-import { useOptimizedFetch, useOptimizedTimer } from '../../../hooks/usePerformanceOptimization';
 
 const FeedList: React.FC = () => {
   const [feeds, setFeeds] = useState<Feed[]>([]);

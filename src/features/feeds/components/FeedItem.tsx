@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { log } from '../../../utils/LoggerService';
-import { Feed } from '../../../models/Feed';
+
 import FeedHealthIndicator from '../../../components/FeedHealthIndicator';
+import { Feed } from '../../../models/Feed';
+import { log } from '../../../utils/LoggerService';
 
 interface FeedItemProps {
   feed: Feed;

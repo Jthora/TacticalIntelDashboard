@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 import { useSearch } from '../contexts/SearchContext';
 import Modal from '../shared/components/Modal';
 import FeedManager from './FeedManager';
-import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
-import Web3Button from './web3/Web3Button';
 import NavigationButtons from './navigation/NavigationButtons';
+import Web3Button from './web3/Web3Button';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();

@@ -3,8 +3,9 @@
  * Provides health state management and diagnostic operations
  */
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import DiagnosticService, { SystemHealthState, DiagnosticResult } from '../services/DiagnosticService';
+import React, { createContext, ReactNode,useContext, useEffect, useState } from 'react';
+
+import DiagnosticService, { DiagnosticResult,SystemHealthState } from '../services/DiagnosticService';
 
 interface HealthContextType {
   healthState: SystemHealthState;
@@ -16,7 +17,7 @@ interface HealthContextType {
   clearIssues: () => void;
   exportHealthData: () => object;
   isOperationInProgress: boolean;
-  lastResult?: DiagnosticResult;
+  lastResult: DiagnosticResult | null;
 }
 
 const HealthContext = createContext<HealthContextType | undefined>(undefined);
@@ -46,7 +47,7 @@ export const HealthProvider: React.FC<HealthProviderProps> = ({ children }) => {
     isRepairing: false
   });
 
-  const [lastResult, setLastResult] = useState<DiagnosticResult>();
+  const [lastResult, setLastResult] = useState<DiagnosticResult | null>(null);
   const diagnosticService = DiagnosticService.getInstance();
 
   useEffect(() => {

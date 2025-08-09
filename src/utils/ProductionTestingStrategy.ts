@@ -1,7 +1,7 @@
 // src/utils/ProductionTestingStrategy.ts
 import { ProductionPerformanceMonitor } from './ProductionPerformanceMonitor';
-import { StackOverflowPrevention } from './StackOverflowPrevention';
 import { ResourceExhaustionPrevention } from './ResourceExhaustionPrevention';
+import { StackOverflowPrevention } from './StackOverflowPrevention';
 
 interface TestResult {
   testName: string;
@@ -291,7 +291,7 @@ export class ProductionTestingStrategy {
       const resourceMetrics = this.resourcePrevention.getMetrics();
       
       let passed = true;
-      let warnings: string[] = [];
+      const warnings: string[] = [];
       
       // Check various resource limits
       if (resourceMetrics.domNodeCount > resourceMetrics.limits.maxDomNodes * 0.8) {
@@ -377,7 +377,7 @@ export class ProductionTestingStrategy {
       });
       
       let passed = true;
-      let warnings: string[] = [];
+      const warnings: string[] = [];
       
       if (emptyElements.length > 50) {
         warnings.push(`High empty element count: ${emptyElements.length}`);

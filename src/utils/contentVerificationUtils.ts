@@ -1,9 +1,10 @@
 // src/utils/contentVerificationUtils.ts
-import { IPFSHTTPClient } from 'ipfs-http-client';
-import { BrowserProvider } from 'ethers';
-import { uploadToIPFS, retrieveFromIPFS } from './ipfsUtils';
-import { signMessage, verifySignature } from './signatureUtils';
 import CryptoJS from 'crypto-js';
+import { BrowserProvider } from 'ethers';
+import { IPFSHTTPClient } from 'ipfs-http-client';
+
+import { retrieveFromIPFS,uploadToIPFS } from './ipfsUtils';
+import { signMessage, verifySignature } from './signatureUtils';
 
 export interface VerifiedContent {
   content: string;

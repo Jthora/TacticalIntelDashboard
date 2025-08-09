@@ -1,14 +1,16 @@
 // src/components/ipfs/BatchVerificationPanel.tsx
-import React, { useState, useRef } from 'react';
-import { useWeb3 } from '../../contexts/Web3Context';
+import '../../assets/styles/components/batch-verification-panel.css';
+
+import React, { useRef,useState } from 'react';
+
 import { useIPFS } from '../../contexts/IPFSContext';
+import { useWeb3 } from '../../contexts/Web3Context';
 import {
-  ContentWithMetadata,
   BatchVerificationResult,
+  ContentWithMetadata,
   generateAndAnchorBatch,
   verifyBatch
 } from '../../utils/contentVerificationBatch';
-import '../../assets/styles/components/batch-verification-panel.css';
 
 /**
  * BatchVerificationPanel component

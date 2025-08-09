@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect,useRef, useState } from 'react';
 
 interface LoadingState {
   isLoading: boolean;
-  progress?: number;
-  message?: string;
-  error?: string | null;
+  progress?: number | undefined;
+  message?: string | undefined;
+  error?: string | null | undefined;
 }
 
 interface UseLoadingOptions {
@@ -28,7 +28,7 @@ export const useLoading = (options: UseLoadingOptions = {}) => {
 
   const [state, setState] = useState<LoadingState>({
     isLoading: false,
-    progress: trackProgress ? 0 : undefined,
+    ...(trackProgress ? { progress: 0 } : {}),
     message: initialMessage,
     error: null
   });
@@ -44,7 +44,7 @@ export const useLoading = (options: UseLoadingOptions = {}) => {
         isLoading: true,
         message: message || initialMessage,
         error: null,
-        progress: trackProgress ? 0 : undefined
+        ...(trackProgress ? { progress: 0 } : {})
       }));
       onStart?.();
     } else {
@@ -56,7 +56,7 @@ export const useLoading = (options: UseLoadingOptions = {}) => {
           setState(prev => ({
             ...prev,
             isLoading: false,
-            progress: trackProgress ? 100 : undefined
+            ...(trackProgress ? { progress: 100 } : {})
           }));
           onComplete?.();
         }, remaining);
@@ -64,7 +64,7 @@ export const useLoading = (options: UseLoadingOptions = {}) => {
         setState(prev => ({
           ...prev,
           isLoading: false,
-          progress: trackProgress ? 100 : undefined
+          ...(trackProgress ? { progress: 100 } : {})
         }));
         onComplete?.();
       }

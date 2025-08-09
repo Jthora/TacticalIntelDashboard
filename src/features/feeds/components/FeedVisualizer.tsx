@@ -1,11 +1,12 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { log } from '../../../utils/LoggerService';
-import FeedItem from './FeedItem';
-import SearchAndFilter from './SearchAndFilter';
-import FeedService from '../services/FeedService';
-import { Feed } from '../../../models/Feed';
+import React, { useCallback,useEffect, useState } from 'react';
+
 import useAlerts from '../../../hooks/alerts/useAlerts';
 import { useOptimizedTimer } from '../../../hooks/usePerformanceOptimization';
+import { Feed } from '../../../models/Feed';
+import { log } from '../../../utils/LoggerService';
+import FeedService from '../services/FeedService';
+import FeedItem from './FeedItem';
+import SearchAndFilter from './SearchAndFilter';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;

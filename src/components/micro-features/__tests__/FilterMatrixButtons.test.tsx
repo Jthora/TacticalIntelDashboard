@@ -1,5 +1,7 @@
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import { cleanup,fireEvent, render, screen } from '@testing-library/react';
+
 import { FilterMatrixButtons } from '../FilterMatrixButtons';
 
 // Mock timers for any animations

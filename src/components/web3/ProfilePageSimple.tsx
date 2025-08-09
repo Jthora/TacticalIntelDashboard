@@ -1,9 +1,11 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Web3LoginPanel from './Web3LoginPanel';
-import { useWeb3 } from '../../contexts/Web3Context';
 import '../../assets/styles/components/profile-page.css';
 import './ProfilePageSimple.css';
+
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useWeb3 } from '../../contexts/Web3Context';
+import Web3LoginPanel from './Web3LoginPanel';
 
 /**
  * Simplified ProfilePage - MVP Web3 Authentication

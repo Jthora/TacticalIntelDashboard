@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, ReactNode,useContext, useEffect, useReducer } from 'react';
+
 import { useSettings } from './SettingsContext';
 
 export type Theme = 'dark' | 'night' | 'combat' | 'alliance' | 'light' | 'system';

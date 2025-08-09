@@ -1,9 +1,10 @@
 /**
  * Unit tests for SourceVerificationService
  */
-import { describe, test, expect } from '@jest/globals';
-import { SourceVerificationService } from '../SourceVerificationService';
+import { describe, expect,test } from '@jest/globals';
+
 import { EARTH_ALLIANCE_SOURCES } from '../../constants/EarthAllianceSources';
+import { SourceVerificationService } from '../SourceVerificationService';
 
 describe('SourceVerificationService', () => {
   describe('verifySource', () => {

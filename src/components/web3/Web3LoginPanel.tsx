@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { useWeb3, AccessLevel } from '../../contexts/Web3Context';
 import './Web3LoginPanel.css';
+
+import React, { useState } from 'react';
+
+import { AccessLevel,useWeb3 } from '../../contexts/Web3Context';
 
 /**
  * MVP Web3 Login Panel
@@ -16,8 +18,7 @@ const Web3LoginPanel: React.FC = () => {
     ensName,
     accessLevel,
     connectWallet, 
-    disconnectWallet,
-    switchNetwork
+    disconnectWallet
   } = useWeb3();
   
   const [isLoading, setIsLoading] = useState(false);

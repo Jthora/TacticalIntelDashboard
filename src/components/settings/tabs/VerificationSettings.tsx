@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
-import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
-import VerificationIndicator from '../../verification/VerificationIndicator';
 import '../../../assets/styles/components/verification-settings.css';
 import '../../../assets/styles/components/general-settings.css';
+
+import React, { useCallback,useEffect, useState } from 'react';
+
+import { SettingsTab,useSettings } from '../../../contexts/SettingsContext';
+import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
+import VerificationIndicator from '../../verification/VerificationIndicator';
 
 const VerificationSettings: React.FC = React.memo(() => {
   const { settings, updateSettings, resetSettings } = useSettings();

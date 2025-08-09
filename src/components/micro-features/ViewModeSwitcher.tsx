@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { log } from '../../utils/LoggerService';
 
 export type ViewMode = 'list' | 'grid' | 'compact';

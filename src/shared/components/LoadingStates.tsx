@@ -1,5 +1,6 @@
-import React from 'react';
 import './LoadingStates.css';
+
+import React from 'react';
 
 interface SkeletonProps {
   width?: string;

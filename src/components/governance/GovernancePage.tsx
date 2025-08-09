@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/pages/governance-page.css';
+
 import { BrowserProvider } from 'ethers';
+import React, { useEffect,useState } from 'react';
+
+import { getProposals, GovernanceProposal, ProposalStatus } from '../../web3/dao/governanceProposal';
 import ProposalCreationPanel from './ProposalCreationPanel';
 import ProposalVotingPanel from './ProposalVotingPanel';
-import { getProposals, GovernanceProposal, ProposalStatus } from '../../web3/dao/governanceProposal';
-import '../../assets/styles/pages/governance-page.css';
 
 interface GovernancePageProps {
   provider: BrowserProvider | null;

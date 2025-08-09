@@ -3,9 +3,10 @@
  * Tests basic functionality without non-existent service methods
  */
 
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
-import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
+import { beforeEach, describe, expect, jest,test } from '@jest/globals';
+
 import { CORSStrategy } from '../contexts/SettingsContext';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 
 // Mock the logger service
 jest.mock('../utils/LoggerService', () => ({

@@ -1,5 +1,6 @@
 // src/utils/contractDeployment.ts
-import { ethers, BrowserProvider } from 'ethers';
+import { BrowserProvider,ethers } from 'ethers';
+
 import FeedSourceValidatorABI from '../contracts/abi/FeedSourceValidator.json';
 import FeedSourceValidatorBytecode from '../contracts/bytecode/FeedSourceValidator.json';
 

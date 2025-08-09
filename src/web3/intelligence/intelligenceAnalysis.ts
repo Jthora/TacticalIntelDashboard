@@ -1,7 +1,7 @@
+import { createHash, randomBytes } from 'crypto';
 import { BrowserProvider, Contract, ethers } from 'ethers';
 import { IPFSHTTPClient } from 'ipfs-http-client';
-import { v4 as uuidv4 } from 'uuid';
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'crypto';
+import { nanoid } from 'nanoid';
 
 // Contract addresses and ABIs would be imported from configuration
 // For now, we'll define placeholder values
@@ -605,7 +605,7 @@ export const createPredictionMarket = async (
     console.log('Creating prediction market:', { question, outcomes, endTime });
     
     // Generate a market ID
-    const marketId = uuidv4();
+    const marketId = nanoid();
     
     // For development purposes, we'll simulate storage in localStorage
     if (typeof window !== 'undefined') {

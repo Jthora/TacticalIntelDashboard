@@ -1,12 +1,11 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { ethers } from 'ethers';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+
 import {
-  submitIntelligence,
-  voteOnIntelligence,
   getIntelligenceItems,
+  IntelAssessment,
   submitAnonymousIntelligence,
-  IntelAssessment
-} from '../../src/web3/intelligence/intelligenceAnalysis';
+  submitIntelligence,
+  voteOnIntelligence} from '../../src/web3/intelligence/intelligenceAnalysis';
 
 // Mock ethers provider and contract
 jest.mock('ethers', () => {

@@ -1,0 +1,19 @@
+{
+  "kind": "string",
+  "data": {
+    "after": "string",
+    "dist": "number",
+    "modhash": "string",
+    "geo_filter": "string",
+    "children": {
+      "type": "array",
+      "length": 10,
+      "items": [
+        "object",
+        "object",
+        "object"
+      ]
+    },
+    "before": "null"
+  }
+}

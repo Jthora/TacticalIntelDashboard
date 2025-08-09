@@ -1,5 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import { fireEvent,render, screen } from '@testing-library/react';
+
 import ActiveFilterToggle from '../ActiveFilterToggle';
 
 // Mock data for testing

@@ -1,6 +1,7 @@
 // src/hooks/useTransaction.ts
-import { useState, useCallback } from 'react';
-import { TransactionResponse, TransactionReceipt } from 'ethers';
+import { TransactionReceipt,TransactionResponse } from 'ethers';
+import { useCallback,useState } from 'react';
+
 import { Web3Error, Web3ErrorType } from '../types/web3Errors';
 
 export interface TransactionState {
@@ -40,9 +41,7 @@ export const useTransaction = () => {
     setState(prev => ({ 
       ...prev, 
       isLoading: true, 
-      error: undefined,
-      hash: undefined,
-      receipt: undefined,
+      // omit optional fields instead of forcing undefined
       confirmations: 0
     }));
     

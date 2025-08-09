@@ -1,15 +1,18 @@
-import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
-import FeedItem from './FeedItem';
+import React, { memo,useCallback, useEffect, useMemo, useState } from 'react';
+
+import { useFilters } from '../contexts/FilterContext';
+import useAlerts from '../hooks/alerts/useAlerts';
+import { useLoading } from '../hooks/useLoading';
+import { Feed } from '../models/Feed';
 import FeedService from '../services/FeedService';
 import { modernFeedService } from '../services/ModernFeedService';
-import { Feed } from '../models/Feed';
-import useAlerts from '../hooks/alerts/useAlerts';
-import { FeedVisualizerSkeleton, ErrorOverlay } from '../shared/components/LoadingStates';
-import { useLoading } from '../hooks/useLoading';
-import { useFilters } from '../contexts/FilterContext';
 import PerformanceManager from '../services/PerformanceManager';
 import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
+import { ErrorOverlay,FeedVisualizerSkeleton } from '../shared/components/LoadingStates';
 import { log } from '../utils/LoggerService';
+import FeedItem from './FeedItem';
+import { getSourceById } from '../constants/ModernIntelligenceSources';
+import { NormalizedDataItem } from '../types/ModernAPITypes';
 
 // TDD Error Tracking for FeedVisualizer
 const TDD_UI_ERRORS = {
@@ -136,6 +139,60 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
       console.log('🎯 FeedVisualizer: About to check feed list type for:', selectedFeedList);
       TDD_UI_ERRORS.logSuccess('049', 'loadFeeds', 'About to determine feed list type', { selectedFeedList });
       
+      // If a specific modern source is selected by ID, fetch only that source
+      const modernSource = getSourceById(selectedFeedList);
+      if (modernSource) {
+        TDD_UI_ERRORS.logSuccess('049A', 'loadFeeds', 'Detected modern source selection', { sourceId: selectedFeedList, sourceName: modernSource.name });
+        console.log('📡 Using Modern Feed Service for single source:', modernSource.id);
+        const normalizedItems: NormalizedDataItem[] = await modernFeedService.fetchSourceData(modernSource);
+        // Map NormalizedDataItem -> Feed (legacy Feed model used by UI)
+        const feedsForSource: Feed[] = normalizedItems.map((item, index) => ({
+          id: item.id || `${modernSource.id}-${index}-${Date.now()}`,
+          name: modernSource.name,
+          url: item.url,
+          title: item.title,
+          link: item.url,
+          pubDate: (item.publishedAt instanceof Date ? item.publishedAt.toISOString() : new Date(item.publishedAt).toISOString()),
+          feedListId: 'modern-api',
+          description: item.summary || '',
+          content: item.summary || '',
+          author: item.source || modernSource.name,
+          categories: item.tags || [],
+          tags: item.tags || [],
+          priority: ((item.priority ? item.priority.toUpperCase() : 'MEDIUM') as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'),
+          contentType: 'INTEL',
+          source: item.source || modernSource.name,
+          ...(item.metadata ? { metadata: item.metadata } : {})
+        }));
+        
+        // Process alerts if enabled
+        if (isMonitoring && feedsForSource.length > 0) {
+          const feedItemsForAlerts = feedsForSource.map(feed => ({
+            title: feed.title,
+            description: feed.description || '',
+            content: feed.content || '',
+            link: feed.link,
+            url: feed.link,
+            source: feed.author || 'Unknown',
+            feedTitle: feed.author || 'Unknown',
+            pubDate: feed.pubDate,
+            author: feed.author,
+            categories: feed.categories
+          }));
+          const triggers = checkFeedItems(feedItemsForAlerts);
+          if (triggers.length > 0) {
+            log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
+            setRecentAlertTriggers(triggers.length);
+            setTimeout(() => setRecentAlertTriggers(0), 30000);
+          }
+        }
+        
+        setFeeds(feedsForSource);
+        setLastUpdated(new Date());
+        setLoading(false);
+        return;
+      }
+
       // Use modern feed service to get rich intelligence data
       if (selectedFeedList === 'modern-api' || selectedFeedList === '1' || selectedFeedList === 'primary-intel' || selectedFeedList === 'security-feeds') {
         TDD_UI_ERRORS.logSuccess('050', 'loadFeeds', 'Using Modern Feed Service path', { 
@@ -161,15 +218,26 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
         
         // Convert FeedItem to Feed format for compatibility
         const modernFeedsAsFeeds: Feed[] = modernFeeds.map(feedItem => ({
-          ...feedItem,
+          // Required base fields
+          id: feedItem.id,
           name: feedItem.author || 'Modern API',
           url: feedItem.link,
-          description: feedItem.description || feedItem.content || '',
-          // Map enhanced metadata from modern service
-          priority: feedItem.priority,
-          contentType: feedItem.contentType,
-          tags: feedItem.tags || feedItem.categories,
-          source: feedItem.source || feedItem.author,
+          title: feedItem.title,
+          link: feedItem.link,
+          pubDate: feedItem.pubDate,
+          feedListId: 'modern-api',
+          // Optional fields: only include if defined
+          ...(feedItem.description ? { description: feedItem.description } : {}),
+          ...(feedItem.content ? { content: feedItem.content } : {}),
+          ...(feedItem.author ? { author: feedItem.author } : {}),
+          ...(feedItem.categories ? { categories: feedItem.categories } : {}),
+          ...(feedItem.media ? { media: feedItem.media } : {}),
+          // Extended optional metadata
+          ...(feedItem.priority ? { priority: feedItem.priority } : {}),
+          ...(feedItem.contentType ? { contentType: feedItem.contentType } : {}),
+          ...(feedItem.tags ? { tags: feedItem.tags } : {}),
+          ...(feedItem.source ? { source: feedItem.source } : {}),
+          ...(feedItem.metadata ? { metadata: feedItem.metadata } : {})
         }));
         
         console.log('📊 FeedVisualizer: Loaded modern feeds count:', modernFeedsAsFeeds.length);

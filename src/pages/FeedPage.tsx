@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import FeedService from '../services/FeedService';
+import { useNavigate,useParams } from 'react-router-dom';
+
 import { Feed } from '../models/Feed';
+import FeedService from '../services/FeedService';
 
 /**
  * FeedPage displays the content of a specific feed.

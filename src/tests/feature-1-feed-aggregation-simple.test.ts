@@ -5,9 +5,11 @@
 
 /// <reference types="@testing-library/jest-dom" />
 import '@testing-library/jest-dom';
-import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+
+import { afterEach,beforeEach, describe, expect, test } from '@jest/globals';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
+
 import FeedVisualizer from '../components/FeedVisualizer';
 
 // Mock React components and services

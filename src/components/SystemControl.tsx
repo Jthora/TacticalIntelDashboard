@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+import React, { memo,useCallback } from 'react';
+
 import { useSettings } from '../contexts/SettingsContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface SystemControlProps {
   // Optional props for parent components to control or observe system settings

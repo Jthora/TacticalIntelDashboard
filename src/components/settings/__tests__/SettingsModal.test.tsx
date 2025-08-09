@@ -1,9 +1,11 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { SettingsModal } from '../SettingsModal';
-import { SettingsProvider, SettingsTab } from '../../../contexts/SettingsContext';
 import '@testing-library/jest-dom';
-import { describe, it, expect, jest, beforeEach } from '@jest/globals';
+
+import { beforeEach,describe, expect, it, jest } from '@jest/globals';
+import { fireEvent,render, screen } from '@testing-library/react';
+import React from 'react';
+
+import { SettingsProvider } from '../../../contexts/SettingsContext';
+import { SettingsModal } from '../SettingsModal';
 
 // Mock the CORSSettings component
 jest.mock('../tabs/CORSSettings', () => ({

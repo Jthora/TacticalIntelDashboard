@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+
 import SettingsError from './SettingsError';
 
 interface SettingsErrorBoundaryProps {

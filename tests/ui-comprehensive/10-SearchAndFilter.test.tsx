@@ -3,10 +3,11 @@
  * Focus: Search functionality, filtering, real-time updates
  */
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 import SearchAndFilter from '../../src/components/SearchAndFilter';
 import { FilterProvider } from '../../src/contexts/FilterContext';

@@ -1,5 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import HealthAlertsSwitch from '../HealthAlertsSwitch';
 
 // Mock data for testing

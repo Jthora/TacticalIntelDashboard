@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
 import './SettingsChangeIndicator.css';
+
+import React, { useCallback } from 'react';
 
 interface SettingsChangeIndicatorProps {
   hasChanges: boolean;

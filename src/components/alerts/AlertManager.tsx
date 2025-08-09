@@ -1,11 +1,13 @@
+import './AlertManager.css';
+
 import React, { useState } from 'react';
-import { AlertConfig } from '../../types/AlertTypes';
+
 import useAlerts from '../../hooks/alerts/useAlerts';
-import AlertList from './AlertList';
+import { AlertConfig } from '../../types/AlertTypes';
 import AlertForm from './AlertForm';
 import AlertHistory from './AlertHistory';
+import AlertList from './AlertList';
 import AlertStats from './AlertStats';
-import './AlertManager.css';
 
 interface AlertManagerProps {
   className?: string;

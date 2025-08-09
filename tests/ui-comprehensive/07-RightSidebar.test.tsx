@@ -4,15 +4,15 @@
  * Focus: System controls, filters, export panel, health dashboard
  */
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { render, screen } from '@testing-library/react';
+import React from 'react';
 
 import RightSidebar from '../../src/components/RightSidebar';
 import { FilterProvider } from '../../src/contexts/FilterContext';
-import { IntelligenceProvider } from '../../src/contexts/IntelligenceContext';
 import { HealthProvider } from '../../src/contexts/HealthContext';
+import { IntelligenceProvider } from '../../src/contexts/IntelligenceContext';
 
 // Mock child components
 jest.mock('../../src/components/SystemControl/SystemControl', () => {

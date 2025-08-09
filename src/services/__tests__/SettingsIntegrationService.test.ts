@@ -1,4 +1,5 @@
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+import { beforeEach, describe, expect, jest,test } from '@jest/globals';
+
 import { SettingsIntegrationService } from '../SettingsIntegrationService';
 
 // Mock localStorage

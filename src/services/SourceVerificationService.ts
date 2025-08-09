@@ -1,4 +1,4 @@
-import { EarthAllianceFeedSource, EARTH_ALLIANCE_SOURCES } from '../constants/EarthAllianceSources';
+import { EARTH_ALLIANCE_SOURCES } from '../constants/EarthAllianceSources';
 
 export interface SourceVerificationResult {
   isVerified: boolean;

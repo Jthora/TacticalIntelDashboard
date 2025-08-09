@@ -1,14 +1,13 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { ethers } from 'ethers';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+
 import {
-  deployMissionContract,
-  getMissions,
-  submitEvidence,
-  completeIfCriteriaMet,
   claimResources,
+  completeIfCriteriaMet,
+  deployMissionContract,
+  EvidenceType,
+  getMissions,
   MissionStatus,
-  EvidenceType
-} from '../../src/web3/missions/missionOperations';
+  submitEvidence} from '../../src/web3/missions/missionOperations';
 
 // Mock ethers provider and contracts
 jest.mock('ethers', () => {

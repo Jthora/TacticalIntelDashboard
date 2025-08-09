@@ -3,8 +3,8 @@
  * Removes invalid article URLs from stored feeds and ensures only legitimate RSS feed URLs are kept
  */
 
-import { LocalStorageUtil } from './LocalStorageUtil';
 import { Feed } from '../models/Feed';
+import { LocalStorageUtil } from './LocalStorageUtil';
 
 // URL validation function (same as in fetchFeed.ts)
 const isValidFeedURL = (url: string): boolean => {

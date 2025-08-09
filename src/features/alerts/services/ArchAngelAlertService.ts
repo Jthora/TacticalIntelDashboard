@@ -4,9 +4,9 @@
  */
 
 import { AlertConfig, AlertTrigger } from '../../../types/AlertTypes';
-import { AlertStorageService } from '../storage/AlertStorageService';
-import { AlertNotificationService } from '../notifications/AlertNotificationService';
 import { AlertMatchingService, FeedItem } from '../matching/AlertMatchingService';
+import { AlertNotificationService } from '../notifications/AlertNotificationService';
+import { AlertStorageService } from '../storage/AlertStorageService';
 
 export { AlertLevel, AlertSchedule } from '../../../services/alerts/AlertService';
 

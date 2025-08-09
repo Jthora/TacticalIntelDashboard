@@ -1,6 +1,8 @@
-import React from 'react';
-import { AlertConfig } from '../../types/AlertTypes';
 import './AlertList.css';
+
+import React from 'react';
+
+import { AlertConfig } from '../../types/AlertTypes';
 
 interface AlertListProps {
   alerts: AlertConfig[];

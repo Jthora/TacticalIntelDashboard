@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { AlertTrigger } from '../../../types/AlertTypes';
-import useAlerts from '../../../hooks/alerts/useAlerts';
 import './AlertNotificationPanel.css';
+
+import React, { useEffect,useState } from 'react';
+
+import useAlerts from '../../../hooks/alerts/useAlerts';
+import { AlertTrigger } from '../../../types/AlertTypes';
 
 interface AlertNotificationPanelProps {
   className?: string;

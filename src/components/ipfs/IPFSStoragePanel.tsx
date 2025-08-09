@@ -1,10 +1,12 @@
 // src/components/ipfs/IPFSStoragePanel.tsx
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/components/ipfs-storage-panel.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { useIPFS } from '../../contexts/IPFSContext';
 import { useWeb3 } from '../../contexts/Web3Context';
-import { encryptContent, decryptContent, createSharedEncryptionKey, encryptWithSharedKey, decryptWithSharedKey } from '../../utils/encryptionUtils';
-import { pinToMultipleServices, getPinStatus } from '../../utils/ipfsPinningService';
-import '../../assets/styles/components/ipfs-storage-panel.css';
+import { createSharedEncryptionKey, decryptContent, decryptWithSharedKey,encryptContent, encryptWithSharedKey } from '../../utils/encryptionUtils';
+import { getPinStatus,pinToMultipleServices } from '../../utils/ipfsPinningService';
 
 /**
  * IPFSStoragePanel component

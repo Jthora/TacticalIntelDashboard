@@ -1,9 +1,11 @@
 // src/components/ipfs/ContentVerificationPanel.tsx
+import '../../assets/styles/components/content-verification-panel.css';
+
 import React, { useState } from 'react';
+
 import { useIPFS } from '../../contexts/IPFSContext';
 import { useWeb3 } from '../../contexts/Web3Context';
-import { createVerifiedContent, verifyContent, ContentMetadata } from '../../utils/contentVerificationUtils';
-import '../../assets/styles/components/content-verification-panel.css';
+import { ContentMetadata,createVerifiedContent, verifyContent } from '../../utils/contentVerificationUtils';
 
 /**
  * ContentVerificationPanel component

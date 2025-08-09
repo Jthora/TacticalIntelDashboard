@@ -1,9 +1,10 @@
 // src/components/marketplace/MarketplaceDashboard.tsx
-import React, { useState, useEffect } from 'react';
+import '../../assets/styles/components/marketplace-dashboard.css';
+
+import React, { useEffect,useState } from 'react';
+
 import { useWeb3 } from '../../contexts/Web3Context';
 import { AccessLevel } from '../../contexts/Web3Context';
-import IntelReportNFT from './IntelReportNFT';
-import '../../assets/styles/components/marketplace-dashboard.css';
 
 interface MarketplaceStats {
   totalReports: number;
@@ -30,7 +31,7 @@ interface TrendingReport {
 }
 
 const MarketplaceDashboard: React.FC = () => {
-  const { isConnected, accessLevel, walletAddress } = useWeb3();
+  const { isConnected, accessLevel } = useWeb3();
   const [activeTab, setActiveTab] = useState<'overview' | 'browse' | 'create' | 'portfolio'>('overview');
   const [marketplaceStats, setMarketplaceStats] = useState<MarketplaceStats | null>(null);
   const [trendingReports, setTrendingReports] = useState<TrendingReport[]>([]);
@@ -313,7 +314,7 @@ const MarketplaceDashboard: React.FC = () => {
             )}
             
             <div className="reports-grid">
-              <IntelReportNFT />
+              {/* <IntelReportNFT /> */}
               {/* Additional report components would be rendered here */}
             </div>
           </div>
@@ -323,7 +324,7 @@ const MarketplaceDashboard: React.FC = () => {
           <div className="create-section">
             <h3>⚡ Create Intelligence Report</h3>
             {accessLevel >= AccessLevel.COMMANDER ? (
-              <IntelReportNFT showMintInterface={true} />
+              <div> {/* <IntelReportNFT showMintInterface={true} /> */} </div>
             ) : (
               <div className="access-notice">
                 <p>🔒 Commander level access required to mint Intelligence Reports.</p>

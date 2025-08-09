@@ -1,6 +1,8 @@
-import React from 'react';
-import { AlertConfig } from '../../../types/AlertTypes';
 import './AlertStats.css';
+
+import React from 'react';
+
+import { AlertConfig } from '../../../types/AlertTypes';
 
 interface AlertStatsProps {
   stats: {

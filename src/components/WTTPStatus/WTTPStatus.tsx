@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import './WTTPStatus.css';
+
+import React, { useEffect,useState } from 'react';
 
 interface WTTPConfig {
   enabled: boolean;

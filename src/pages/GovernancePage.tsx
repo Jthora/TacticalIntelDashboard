@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import '../assets/styles/pages/governance-page.css';
+
 import { BrowserProvider } from 'ethers';
+import React, { useEffect,useState } from 'react';
+import { useNavigate,useParams } from 'react-router-dom';
+
 import ProposalCreationPanel from '../components/governance/ProposalCreationPanel';
 import ProposalVotingPanel from '../components/governance/ProposalVotingPanel';
 import { getProposals, GovernanceProposal } from '../web3/dao/governanceProposal';
-import '../assets/styles/pages/governance-page.css';
 
 interface GovernancePageProps {
   provider: BrowserProvider | null;

@@ -1,7 +1,9 @@
-import React, { useState, useEffect, memo } from 'react';
-import { useSettings, SettingsTab } from '../../../contexts/SettingsContext';
-import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
 import '../../../assets/styles/components/general-settings.css';
+
+import React, { memo,useEffect, useState } from 'react';
+
+import { SettingsTab,useSettings } from '../../../contexts/SettingsContext';
+import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
 
 // Helper component for drag-and-drop reordering
 const DraggableProtocolItem: React.FC<{

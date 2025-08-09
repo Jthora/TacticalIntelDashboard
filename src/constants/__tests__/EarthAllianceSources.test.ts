@@ -1,14 +1,15 @@
 /**
  * Unit tests for Earth Alliance Sources Constants
  */
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect,test } from '@jest/globals';
+
 import { 
   EARTH_ALLIANCE_SOURCES, 
+  EarthAllianceCategory,
+  getHighAlignmentSources,
+  getHighTrustSources,
   getSourcesByCategory, 
   getSourcesByProtocol,
-  getHighTrustSources,
-  getHighAlignmentSources,
-  EarthAllianceCategory,
   SourceProtocol
 } from '../../constants/EarthAllianceSources';
 

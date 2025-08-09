@@ -4,17 +4,16 @@
  * Provides real-time intelligence data from multiple sources
  */
 
-import { NormalizedDataItem, IntelligenceSource } from '../types/ModernAPITypes';
-import { FeedItem, FeedResults } from '../types/FeedTypes';
-import { modernAPIService } from './ModernAPIService';
 import { 
-  PRIMARY_INTELLIGENCE_SOURCES,
   DEFAULT_INTELLIGENCE_CONFIG,
   getEnabledSources,
-  getSourceById
-} from '../constants/ModernIntelligenceSources';
+  getSourceById,
+  PRIMARY_INTELLIGENCE_SOURCES} from '../constants/ModernIntelligenceSources';
+import { FeedItem, FeedResults } from '../types/FeedTypes';
+import { IntelligenceSource,NormalizedDataItem } from '../types/ModernAPITypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { log } from '../utils/LoggerService';
+import { modernAPIService } from './ModernAPIService';
 
 // TDD Error Tracking for ModernFeedService
 const TDD_FEED_ERRORS = {
@@ -381,10 +380,10 @@ class ModernFeedService {
     // Build specific API paths based on source type
     switch (source.id) {
       case 'noaa-weather-alerts':
-        return '/alerts/active';
+        return '/alerts/active?status=actual&message_type=alert';
       
       case 'usgs-earthquakes':
-        return '/summary/significant_week.geojson';
+        return '/summary/all_day.geojson';
       
       case 'github-security':
         return '/advisories';
@@ -393,7 +392,7 @@ class ModernFeedService {
         return '/topstories.json';
       
       case 'coingecko-crypto':
-        return '/search/trending';
+        return '/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false';
       
       case 'reddit-worldnews':
         return '/r/worldnews/hot.json?limit=25';
@@ -493,7 +492,7 @@ class ModernFeedService {
           lastValidated: new Date().toISOString(),
           responseTime: item.responseTime || 0,
           // Include metadata for additional features like comment counts
-          metadata: item.metadata
+          ...(item.metadata ? { metadata: item.metadata } : {})
         };
 
         validItems.push(legacyItem);

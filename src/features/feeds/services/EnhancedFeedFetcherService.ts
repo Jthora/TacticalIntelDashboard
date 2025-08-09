@@ -1,7 +1,7 @@
-import { Feed } from '../../../models/Feed';
-import { protocolAdapter } from '../../../constants/SourceProtocolAdapter';
-import { EARTH_ALLIANCE_SOURCES } from '../../../constants/EarthAllianceSources';
 import { FeedMode, getFeedsByMode } from '../../../constants/EarthAllianceDefaultFeeds';
+import { EARTH_ALLIANCE_SOURCES } from '../../../constants/EarthAllianceSources';
+import { protocolAdapter } from '../../../constants/SourceProtocolAdapter';
+import { Feed } from '../../../models/Feed';
 
 /**
  * Enhanced Feed Fetcher Service

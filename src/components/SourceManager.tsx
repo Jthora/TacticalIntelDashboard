@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import FeedService from '../services/FeedService';
-import { EarthAllianceCategory, SourceProtocol } from '../constants/EarthAllianceSources';
 import './SourceManager.css';
+
+import React, { useState } from 'react';
+
+import { EarthAllianceCategory, SourceProtocol } from '../constants/EarthAllianceSources';
+import FeedService from '../services/FeedService';
 
 interface SourceManagerProps {
   onClose: () => void;

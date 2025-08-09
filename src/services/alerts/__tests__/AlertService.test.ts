@@ -1,4 +1,4 @@
-import { AlertService, AlertLevel, AlertSchedule, Alert } from '../AlertService';
+import { Alert,AlertLevel, AlertSchedule, AlertService } from '../AlertService';
 
 describe('AlertService', () => {
   let alertService: AlertService;

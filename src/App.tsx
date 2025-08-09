@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { SearchProvider } from './contexts/SearchContext';
-import { FilterProvider } from './contexts/FilterContext';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { HealthProvider } from './contexts/HealthContext';
-import { FeedModeProvider } from './contexts/FeedModeContext';
-import { SettingsProvider } from './contexts/SettingsContext';
-import { Web3Provider } from './contexts/Web3Context';
-import { IPFSProvider } from './contexts/IPFSContext';
-import { IntelligenceProvider } from './contexts/IntelligenceContext';
-import AppRoutes from './routes/AppRoutes';
-import SearchResults from './components/SearchResults';
+
 import DevelopmentNotice from './components/DevelopmentNotice';
-import WTTPStatus from './components/WTTPStatus/WTTPStatus';
-import PerformanceManager from './services/PerformanceManager';
 import RouteValidator from './components/RouteValidator';
+import SearchResults from './components/SearchResults';
+import WTTPStatus from './components/WTTPStatus/WTTPStatus';
+import { FeedModeProvider } from './contexts/FeedModeContext';
+import { FilterProvider } from './contexts/FilterContext';
+import { HealthProvider } from './contexts/HealthContext';
+import { IntelligenceProvider } from './contexts/IntelligenceContext';
+import { IPFSProvider } from './contexts/IPFSContext';
+import { SearchProvider } from './contexts/SearchContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { Web3Provider } from './contexts/Web3Context';
+import AppRoutes from './routes/AppRoutes';
+import PerformanceManager from './services/PerformanceManager';
 
 const App: React.FC = () => {
   useEffect(() => {

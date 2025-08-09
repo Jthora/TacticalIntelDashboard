@@ -1,10 +1,12 @@
 // src/components/intelligence/CrossPlatformIntelPanel.tsx
 
-import React, { useState, useEffect } from 'react';
-import { useIntelligenceBridge, TIDIntelligenceFormat } from '../../services/IntelligenceBridge';
-import { useWeb3 } from '../../contexts/Web3Context';
-import { useIPFS } from '../../contexts/IPFSContext';
 import '../../assets/styles/components/cross-platform-intel-panel.css';
+
+import React, {useState } from 'react';
+
+import { useIPFS } from '../../contexts/IPFSContext';
+import { useWeb3 } from '../../contexts/Web3Context';
+import { TIDIntelligenceFormat,useIntelligenceBridge } from '../../services/IntelligenceBridge';
 
 interface CrossPlatformIntelPanelProps {
   onIntelligencePublished?: (metadataHash: string) => void;

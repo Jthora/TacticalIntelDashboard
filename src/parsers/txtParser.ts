@@ -1,5 +1,5 @@
-import { Feed } from '../models/Feed';
 import { parseTxtContent } from '../helpers/txtHelper';
+import { Feed } from '../models/Feed';
 
 export const parseFeedData = (txtData: string, url: string): Feed[] => {
   const items = parseTxtContent(txtData);

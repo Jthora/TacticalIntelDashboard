@@ -3,7 +3,8 @@
  * Provides a clean interface for components to interact with the event bus
  */
 
-import { useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+
 import { eventBus, EventBusHandler } from '../services/EventBusService';
 
 export interface UseEventBusOptions {
@@ -25,7 +26,9 @@ export function useEventBus(options: UseEventBusOptions = {}) {
   }, []);
 
   const emit = useCallback((eventType: string, data: any) => {
-    eventBus.emit(eventType, data, options.componentName);
+    // Only pass source if defined to satisfy exactOptionalPropertyTypes
+    const source = options.componentName;
+    eventBus.emit(eventType, data, source !== undefined ? source : undefined);
   }, [options.componentName]);
 
   const on = useCallback((eventType: string, handler: EventBusHandler) => {
@@ -79,7 +82,7 @@ export function useEventSubscription(
  * Hook for emitting events
  */
 export function useEventEmitter(componentName?: string) {
-  const { emit } = useEventBus({ componentName });
+  const { emit } = componentName !== undefined ? useEventBus({ componentName }) : useEventBus();
   return emit;
 }
 

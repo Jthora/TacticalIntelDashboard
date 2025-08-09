@@ -1,0 +1,190 @@
+{
+  "type": "array",
+  "length": 10,
+  "items": [
+    {
+      "ghsa_id": "string",
+      "cve_id": "null",
+      "url": "string",
+      "html_url": "string",
+      "summary": "string",
+      "description": "string",
+      "type": "string",
+      "severity": "string",
+      "repository_advisory_url": "string",
+      "source_code_location": "string",
+      "identifiers": {
+        "type": "array",
+        "length": 1,
+        "items": [
+          "object"
+        ]
+      },
+      "references": {
+        "type": "array",
+        "length": 3,
+        "items": [
+          "string",
+          "string",
+          "string"
+        ]
+      },
+      "published_at": "string",
+      "updated_at": "string",
+      "github_reviewed_at": "string",
+      "nvd_published_at": "null",
+      "withdrawn_at": "null",
+      "vulnerabilities": {
+        "type": "array",
+        "length": 1,
+        "items": [
+          "object"
+        ]
+      },
+      "cvss_severities": {
+        "cvss_v3": "object",
+        "cvss_v4": "object"
+      },
+      "cwes": {
+        "type": "array",
+        "length": 1,
+        "items": [
+          "object"
+        ]
+      },
+      "credits": {
+        "type": "array",
+        "length": 0,
+        "items": []
+      },
+      "cvss": {
+        "vector_string": "string",
+        "score": "number"
+      }
+    },
+    {
+      "ghsa_id": "string",
+      "cve_id": "string",
+      "url": "string",
+      "html_url": "string",
+      "summary": "string",
+      "description": "string",
+      "type": "string",
+      "severity": "string",
+      "repository_advisory_url": "string",
+      "source_code_location": "string",
+      "identifiers": {
+        "type": "array",
+        "length": 2,
+        "items": [
+          "object",
+          "object"
+        ]
+      },
+      "references": {
+        "type": "array",
+        "length": 5,
+        "items": [
+          "string",
+          "string",
+          "string"
+        ]
+      },
+      "published_at": "string",
+      "updated_at": "string",
+      "github_reviewed_at": "string",
+      "nvd_published_at": "null",
+      "withdrawn_at": "null",
+      "vulnerabilities": {
+        "type": "array",
+        "length": 2,
+        "items": [
+          "object",
+          "object"
+        ]
+      },
+      "cvss_severities": {
+        "cvss_v3": "object",
+        "cvss_v4": "object"
+      },
+      "cwes": {
+        "type": "array",
+        "length": 1,
+        "items": [
+          "object"
+        ]
+      },
+      "credits": {
+        "type": "array",
+        "length": 0,
+        "items": []
+      },
+      "cvss": {
+        "vector_string": "string",
+        "score": "number"
+      }
+    },
+    {
+      "ghsa_id": "string",
+      "cve_id": "string",
+      "url": "string",
+      "html_url": "string",
+      "summary": "string",
+      "description": "string",
+      "type": "string",
+      "severity": "string",
+      "repository_advisory_url": "string",
+      "source_code_location": "string",
+      "identifiers": {
+        "type": "array",
+        "length": 2,
+        "items": [
+          "object",
+          "object"
+        ]
+      },
+      "references": {
+        "type": "array",
+        "length": 5,
+        "items": [
+          "string",
+          "string",
+          "string"
+        ]
+      },
+      "published_at": "string",
+      "updated_at": "string",
+      "github_reviewed_at": "string",
+      "nvd_published_at": "null",
+      "withdrawn_at": "null",
+      "vulnerabilities": {
+        "type": "array",
+        "length": 2,
+        "items": [
+          "object",
+          "object"
+        ]
+      },
+      "cvss_severities": {
+        "cvss_v3": "object",
+        "cvss_v4": "object"
+      },
+      "cwes": {
+        "type": "array",
+        "length": 1,
+        "items": [
+          "object"
+        ]
+      },
+      "credits": {
+        "type": "array",
+        "length": 0,
+        "items": []
+      },
+      "cvss": {
+        "vector_string": "string",
+        "score": "number"
+      }
+    }
+  ]
+}

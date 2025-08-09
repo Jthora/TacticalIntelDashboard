@@ -80,7 +80,7 @@ export class AlertService {
         this.alerts = parsed.map((alert: any) => ({
           ...alert,
           createdAt: new Date(alert.createdAt),
-          lastTriggered: alert.lastTriggered ? new Date(alert.lastTriggered) : undefined
+          ...(alert.lastTriggered ? { lastTriggered: new Date(alert.lastTriggered) } : {})
         }));
       }
     } catch (error) {
@@ -509,16 +509,15 @@ export class AlertService {
         sound: false
       },
       scheduling: {
-        activeDays: alertData.schedule === AlertSchedule.WEEKDAYS ? [1, 2, 3, 4, 5] : undefined,
-        activeHours: alertData.schedule === AlertSchedule.BUSINESS_HOURS ? 
-          { start: '09:00', end: '17:00' } : undefined
+        ...(alertData.schedule === AlertSchedule.WEEKDAYS ? { activeDays: [1, 2, 3, 4, 5] } : {}),
+        ...(alertData.schedule === AlertSchedule.BUSINESS_HOURS ? { activeHours: { start: '09:00', end: '17:00' } } : {})
       }
     };
 
     const alertId = this.createAlert(alertConfig);
     const createdAlert = this.getAlert(alertId)!;
     
-    return {
+    const legacy: Alert = {
       id: createdAlert.id,
       name: createdAlert.name,
       keywords: createdAlert.keywords,
@@ -527,9 +526,14 @@ export class AlertService {
       schedule: AlertSchedule.ALWAYS, // Simplified for compatibility
       feedSources: createdAlert.sources || [],
       notificationEnabled: createdAlert.notifications.browser,
-      createdAt: createdAlert.createdAt,
-      triggeredAt: createdAlert.lastTriggered
+      createdAt: createdAlert.createdAt
     };
+
+    if (createdAlert.lastTriggered) {
+      (legacy as any).triggeredAt = createdAlert.lastTriggered;
+    }
+
+    return legacy;
   }
 
   /**
@@ -542,7 +546,7 @@ export class AlertService {
     const updated = this.getAlert(alertId);
     if (!updated) return null;
 
-    return {
+    const legacy: Alert = {
       id: updated.id,
       name: updated.name,
       keywords: updated.keywords,
@@ -551,9 +555,14 @@ export class AlertService {
       schedule: AlertSchedule.ALWAYS,
       feedSources: updated.sources || [],
       notificationEnabled: updated.notifications.browser,
-      createdAt: updated.createdAt,
-      triggeredAt: updated.lastTriggered
+      createdAt: updated.createdAt
     };
+
+    if (updated.lastTriggered) {
+      (legacy as any).triggeredAt = updated.lastTriggered;
+    }
+
+    return legacy;
   }
 
   /**
@@ -595,7 +604,7 @@ export class AlertService {
       const alertConfig = this.getAlert(trigger.alertId);
       if (!alertConfig) continue;
 
-      const alert: Alert = {
+      const legacy: Alert = {
         id: alertConfig.id,
         name: alertConfig.name,
         keywords: alertConfig.keywords,
@@ -604,12 +613,15 @@ export class AlertService {
         schedule: AlertSchedule.ALWAYS,
         feedSources: alertConfig.sources || [],
         notificationEnabled: alertConfig.notifications.browser,
-        createdAt: alertConfig.createdAt,
-        triggeredAt: alertConfig.lastTriggered
+        createdAt: alertConfig.createdAt
       };
 
+      if (alertConfig.lastTriggered) {
+        (legacy as any).triggeredAt = alertConfig.lastTriggered;
+      }
+
       matches.push({
-        alert,
+        alert: legacy,
         feedItem: trigger.feedItem,
         matchedKeywords: trigger.matchedKeywords
       });

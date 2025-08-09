@@ -1,8 +1,9 @@
 // src/contexts/__tests__/Web3Context.simple.test.tsx
+import { act, renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { Web3Provider, useWeb3, AccessLevel } from '../Web3Context';
+
 import { Web3Error, Web3ErrorType } from '../../types/web3Errors';
+import { AccessLevel,useWeb3, Web3Provider } from '../Web3Context';
 
 // Mock ethers before any imports that use it
 jest.mock('ethers', () => ({

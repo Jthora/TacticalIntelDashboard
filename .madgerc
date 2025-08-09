@@ -1,0 +1,5 @@
+{
+  "fileExtensions": ["ts", "tsx"],
+  "tsConfig": "./tsconfig.app.json",
+  "warning": true
+}

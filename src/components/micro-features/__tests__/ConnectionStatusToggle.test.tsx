@@ -1,7 +1,9 @@
-import { render, waitFor } from '@testing-library/react';
-import { screen } from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { screen } from '@testing-library/dom';
+import { render, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { ConnectionStatusToggle, ConnectionStatusToggleProps } from '../ConnectionStatusToggle';
 
 // Mock console.log to test logging functionality

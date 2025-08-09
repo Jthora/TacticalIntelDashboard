@@ -1,5 +1,5 @@
+import { getJsonArray,getJsonValue } from '../helpers/jsonHelper';
 import { Feed } from '../models/Feed';
-import { getJsonValue, getJsonArray } from '../helpers/jsonHelper';
 
 export const parseFeedData = (jsonData: Record<string, unknown>, url: string): Feed[] => {
   const items = getJsonArray(jsonData, "items") as Record<string, unknown>[];

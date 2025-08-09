@@ -1,5 +1,5 @@
+import { getAllTextContents, getAttributeValue, getElementsByTagName,getTextContent, getTextContentWithFallback } from '../helpers/htmlHelper';
 import { Feed } from '../models/Feed';
-import { getTextContent, getAttributeValue, getAllTextContents, getTextContentWithFallback, getElementsByTagName } from '../helpers/htmlHelper';
 
 export const parseFeedData = (htmlDoc: Element, url: string, feedListId: string): Feed[] => {
   const items = getElementsByTagName(htmlDoc, "item");

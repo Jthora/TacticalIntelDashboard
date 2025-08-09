@@ -1,9 +1,8 @@
 import { FeedItem } from '../types/FeedTypes';
 import { 
+  getSourcesByMode, 
   REALISTIC_INTELLIGENCE_SOURCES, 
-  RealisticFeedMode, 
-  getSourcesByMode 
-} from './RealisticIntelligenceSources';
+  RealisticFeedMode} from './RealisticIntelligenceSources';
 
 /**
  * Realistic Default Feeds - Uses Only Verified Working Sources
@@ -13,7 +12,7 @@ import {
  */
 
 // Convert realistic sources to feed items
-const convertSourceToFeedItem = (source: any, index: number): FeedItem => ({
+const convertSourceToFeedItem = (source: any): FeedItem => ({
   id: source.id,
   title: source.name,
   link: source.url,

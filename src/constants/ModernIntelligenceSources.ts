@@ -5,16 +5,13 @@
 
 import { IntelligenceSource } from '../types/ModernAPITypes';
 import { 
-  NOAA_WEATHER_API,
-  NASA_API,
-  USGS_EARTHQUAKE_API,
+  COINGECKO_API,
   GITHUB_API,
   HACKERNEWS_API,
-  COINGECKO_API,
+  NASA_API,
+  NOAA_WEATHER_API,
   REDDIT_API,
-  getCorsEnabledEndpoints,
-  getImmediateReadyEndpoints
-} from './APIEndpoints';
+  USGS_EARTHQUAKE_API} from './APIEndpoints';
 
 // TDD Error Tracking
 const TDD_ERRORS = {
@@ -42,8 +39,7 @@ export const PRIMARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 300000, // 5 minutes
     enabled: true,
     tags: ['weather', 'alerts', 'government', 'official'],
-    healthScore: 100,
-    lastFetched: undefined
+    healthScore: 100
   },
   {
     id: 'usgs-earthquakes',
@@ -54,8 +50,7 @@ export const PRIMARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 600000, // 10 minutes
     enabled: true,
     tags: ['seismic', 'geology', 'government', 'hazards'],
-    healthScore: 100,
-    lastFetched: undefined
+    healthScore: 100
   },
   {
     id: 'github-security',
@@ -66,8 +61,7 @@ export const PRIMARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 3600000, // 1 hour
     enabled: true,
     tags: ['security', 'vulnerabilities', 'github', 'technology'],
-    healthScore: 95,
-    lastFetched: undefined
+    healthScore: 95
   },
   {
     id: 'hackernews-tech',
@@ -78,20 +72,18 @@ export const PRIMARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 900000, // 15 minutes
     enabled: true,
     tags: ['technology', 'discussion', 'innovation', 'startups'],
-    healthScore: 90,
-    lastFetched: undefined
+    healthScore: 90
   },
   {
     id: 'coingecko-crypto',
-    name: 'Cryptocurrency Intelligence',
+    name: 'CoinGecko Crypto',
     description: 'Cryptocurrency market data and trends from CoinGecko',
     endpoint: COINGECKO_API,
     normalizer: 'normalizeCoinGeckoData',
     refreshInterval: 600000, // 10 minutes
     enabled: true,
     tags: ['cryptocurrency', 'financial', 'markets', 'blockchain'],
-    healthScore: 85,
-    lastFetched: undefined
+    healthScore: 85
   }
 ];
 
@@ -142,8 +134,7 @@ export const SECONDARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 86400000, // Daily
     enabled: false, // Requires API key
     tags: ['space', 'nasa', 'astronomy', 'science'],
-    healthScore: 100,
-    lastFetched: undefined
+    healthScore: 100
   }
 ];
 
@@ -160,8 +151,7 @@ export const SOCIAL_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 900000, // 15 minutes
     enabled: true,
     tags: ['news', 'discussion', 'social', 'breaking'],
-    healthScore: 70,
-    lastFetched: undefined
+    healthScore: 70
   },
   {
     id: 'reddit-security',
@@ -172,8 +162,7 @@ export const SOCIAL_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     refreshInterval: 1800000, // 30 minutes
     enabled: true,
     tags: ['security', 'discussion', 'cybersecurity', 'threats'],
-    healthScore: 75,
-    lastFetched: undefined
+    healthScore: 75
   }
 ];
 

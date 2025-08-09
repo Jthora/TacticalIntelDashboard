@@ -1,6 +1,7 @@
-import { useEffect, useCallback, useRef, useMemo } from 'react';
-import { log } from '../utils/LoggerService';
+import { useCallback, useEffect, useMemo,useRef } from 'react';
+
 import PerformanceManager from '../services/PerformanceManager';
+import { log } from '../utils/LoggerService';
 
 /**
  * Optimized timer hook that uses PerformanceManager for intelligent intervals

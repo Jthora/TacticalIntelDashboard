@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ethers } from 'ethers';
 import { BrowserProvider, JsonRpcSigner } from 'ethers';
-import { signMessage as signMessageUtil } from '../utils/signatureUtils';
+import React, { createContext, ReactNode,useContext, useEffect, useState } from 'react';
+
 import { Web3Error, Web3ErrorType } from '../types/web3Errors';
+import { signMessage as signMessageUtil } from '../utils/signatureUtils';
 
 /**
  * Web3Context provides state management for Web3 wallet connections
@@ -139,7 +140,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   };
 
   // Function to determine access level based on wallet address and token holdings
-  const determineAccessLevel = async (address: string, web3Provider?: BrowserProvider): Promise<AccessLevel> => {
+  const determineAccessLevel = async (address: string): Promise<AccessLevel> => {
     // Enhanced access control for Intelligence Exchange Marketplace
     // Access levels now correlate to marketplace participation tiers
     
@@ -230,7 +231,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
         await resolveEnsName(address, ethersProvider);
         
         // Determine access level
-        const level = await determineAccessLevel(address, ethersProvider);
+        const level = await determineAccessLevel(address);
         setAccessLevel(level);
         
         // Set provider and connected state
@@ -262,7 +263,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
       if (provider) {
         await getAccountBalance(accounts[0], provider);
         await resolveEnsName(accounts[0], provider);
-        const level = await determineAccessLevel(accounts[0], provider);
+        const level = await determineAccessLevel(accounts[0]);
         setAccessLevel(level);
       }
     }

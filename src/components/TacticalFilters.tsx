@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
 import './TacticalFilters.css';
+
+import React, { useState } from 'react';
+
 import { useFilters, useTimeRangePresets } from '../contexts/FilterContext';
 import { TimeRange } from '../services/FilterService';
 

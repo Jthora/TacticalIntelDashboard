@@ -90,7 +90,7 @@ export const getContentWithFallback = (element: Element, defaultValue: string = 
     for (const field of contentFields) {
       const fieldElement = element.getElementsByTagName(field)[0];
       if (fieldElement && fieldElement.textContent?.trim()) {
-        let content = fieldElement.textContent.trim();
+        const content = fieldElement.textContent.trim();
         
         // If this is a description field and it's substantial, use it
         if (field === 'description' && content.length > 100) {

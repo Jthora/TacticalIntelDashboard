@@ -4,10 +4,11 @@
  * Focus: Feed list navigation, source management, filtering
  */
 
-import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
+
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 
 import LeftSidebar from '../../src/components/LeftSidebar';
 import { FilterProvider } from '../../src/contexts/FilterContext';

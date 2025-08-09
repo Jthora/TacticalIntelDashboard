@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { log } from '../utils/LoggerService';
+import React, { useEffect,useState } from 'react';
+
 import FeedService from '../features/feeds/services/FeedService';
 import { Feed } from '../models/Feed';
-import SystemControl from './SystemControl';
-import TacticalFilters from './TacticalFilters';
+import { log } from '../utils/LoggerService';
 import Export, { ExportFormat, ExportOptions } from './Export';
 import Health from './Health';
+import SystemControl from './SystemControl';
+import TacticalFilters from './TacticalFilters';
 
 const RightSidebar: React.FC = () => {
   const [feeds, setFeeds] = useState<Feed[]>([]);

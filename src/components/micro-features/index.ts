@@ -2,20 +2,16 @@
 // Tactical Intel Dashboard - Interactive Components
 
 // Header Control Features (Features 1-5)
-export { ConnectionStatusToggle } from './ConnectionStatusToggle';
-export type { ConnectionStatusToggleProps } from './ConnectionStatusToggle';
-
-export { AlertLevelCycling } from './AlertLevelCycling';
 export type { AlertLevelCyclingProps } from './AlertLevelCycling';
-
-export { RealTimeClockDisplay } from './RealTimeClockDisplay';
+export { AlertLevelCycling } from './AlertLevelCycling';
+export type { ConnectionStatusToggleProps } from './ConnectionStatusToggle';
+export { ConnectionStatusToggle } from './ConnectionStatusToggle';
 export type { RealTimeClockDisplayProps } from './RealTimeClockDisplay';
-
-export { ViewModeSwitcher } from './ViewModeSwitcher';
-export type { ViewModeSwitcherProps, ViewMode } from './ViewModeSwitcher';
-
+export { RealTimeClockDisplay } from './RealTimeClockDisplay';
+export type { SortOption,SortPreferenceSelectorProps } from './SortPreferenceSelector';
 export { SortPreferenceSelector } from './SortPreferenceSelector';
-export type { SortPreferenceSelectorProps, SortOption } from './SortPreferenceSelector';
+export type { ViewMode,ViewModeSwitcherProps } from './ViewModeSwitcher';
+export { ViewModeSwitcher } from './ViewModeSwitcher';
 
 // TODO: Add remaining micro-features as they are implemented
 // ... etc
@@ -24,18 +20,18 @@ export type { SortPreferenceSelectorProps, SortOption } from './SortPreferenceSe
 export { default as ActiveFilterToggle } from './ActiveFilterToggle';
 export { default as AutoRefreshControl } from './AutoRefreshControl';
 export { default as MetricsVisibilityToggle } from './MetricsVisibilityToggle';
+export type { PerformanceMode,PerformanceModeSelectorProps } from './PerformanceModeSelector';
 export { default as PerformanceModeSelector } from './PerformanceModeSelector';
-export type { PerformanceModeSelectorProps, PerformanceMode } from './PerformanceModeSelector';
+export type { ThemeConfiguration,ThemeMode, ThemeSwitcherProps } from './ThemeSwitcher';
 export { default as ThemeSwitcher } from './ThemeSwitcher';
-export type { ThemeSwitcherProps, ThemeMode, ThemeConfiguration } from './ThemeSwitcher';
 
 // Display Control Features (Features 11-15)
-export { default as CompactModeToggle } from './CompactModeToggle';
 export { default as AutoExportScheduler } from './AutoExportScheduler';
+export { default as CompactModeToggle } from './CompactModeToggle';
 
 // Display & Layout Features (Features 14-15)
 export { FilterMatrixButtons } from './FilterMatrixButtons';
-export { QuickFilterPresets, type FilterPreset, type FilterConfiguration } from './QuickFilterPresets';
+export { type FilterConfiguration,type FilterPreset, QuickFilterPresets } from './QuickFilterPresets';
 
 // Utility type for all micro-feature status
 export type MicroFeatureStatus = 'active' | 'inactive' | 'disabled' | 'error';

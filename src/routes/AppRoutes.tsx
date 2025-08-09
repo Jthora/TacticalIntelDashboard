@@ -1,16 +1,17 @@
 import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
-import SettingsPage from '../pages/SettingsPage';
-import ProfilePageSimple from '../components/web3/ProfilePageSimple';
-import Web3TestPage from '../pages/Web3TestPage';
-import FeedPage from '../pages/FeedPage';
-import MarketplaceDashboard from '../components/marketplace/MarketplaceDashboard';
+import { Navigate,Route, Routes } from 'react-router-dom';
+
 import GovernancePanel from '../components/governance/GovernancePanel';
-import MainLayout from '../layouts/MainLayout';
-import NotFoundPage from '../pages/NotFoundPage';
+import MarketplaceDashboard from '../components/marketplace/MarketplaceDashboard';
 import SettingsError from '../components/settings/SettingsError';
 import SettingsTabContent from '../components/settings/SettingsTabContent';
+import ProfilePageSimple from '../components/web3/ProfilePageSimple';
+import MainLayout from '../layouts/MainLayout';
+import FeedPage from '../pages/FeedPage';
+import HomePage from '../pages/HomePage';
+import NotFoundPage from '../pages/NotFoundPage';
+import SettingsPage from '../pages/SettingsPage';
+import Web3TestPage from '../pages/Web3TestPage';
 
 /**
  * AppRoutes defines the routing structure for the application.

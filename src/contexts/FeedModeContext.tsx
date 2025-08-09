@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, ReactNode,useContext, useState } from 'react';
+
 import { FeedMode } from '../constants/EarthAllianceDefaultFeeds';
 
 // Define the context interface
