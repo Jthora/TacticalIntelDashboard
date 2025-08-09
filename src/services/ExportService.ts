@@ -323,8 +323,16 @@ export class ExportService {
   private static async compressContent(content: string | Blob): Promise<Blob> {
     // Simple compression simulation - in production, use a proper compression library
     const textContent = typeof content === 'string' ? content : await content.text();
-    const compressed = new TextEncoder().encode(textContent);
-    return new Blob([compressed], { type: 'application/gzip' });
+    let uint8: Uint8Array;
+    if (typeof TextEncoder !== 'undefined') {
+      uint8 = new TextEncoder().encode(textContent);
+    } else {
+      // Fallback for environments (like Jest/node) where TextEncoder may not be defined
+      // Use Buffer to create a Uint8Array view
+      const buf = Buffer.from(textContent, 'utf-8');
+      uint8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+    }
+    return new Blob([uint8], { type: 'application/gzip' });
   }
   
   private static filterByDateRange(feeds: Feed[], dateRange?: { start: Date; end: Date }): Feed[] {
