@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 
 import Header from '../components/Header';
 import MarqueeBar from '../components/MarqueeBar';
+import '../styles/marquee.css';
 
 /**
  * MainLayout provides the persistent structure for all pages in the application.

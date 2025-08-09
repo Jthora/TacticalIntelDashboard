@@ -14,6 +14,7 @@ import { IntelligenceSource,NormalizedDataItem } from '../types/ModernAPITypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { log } from '../utils/LoggerService';
 import { modernAPIService } from './ModernAPIService';
+import { marqueeProjectionService } from './MarqueeProjectionService';
 
 // TDD Error Tracking for ModernFeedService
 const TDD_FEED_ERRORS = {
@@ -121,6 +122,9 @@ class ModernFeedService {
         if (result.status === 'fulfilled') {
           const itemCount = result.value.length;
           allItems.push(...result.value);
+          if ((source as any).marqueeEnabled !== false) {
+            try { marqueeProjectionService.ingest(source.id, result.value); } catch (e) { /* swallow */ }
+          }
           TDD_FEED_ERRORS.logSuccess('030', 'fetchAllIntelligenceData', 'Source fetch succeeded', { 
             sourceId: source.id,
             sourceName: source.name,
@@ -257,6 +261,11 @@ class ModernFeedService {
       
       // Cache the results
       this.cachedResults.set(source.id, normalizedData);
+
+      // Ingest the freshly fetched normalized data into marquee projection (if enabled)
+      if ((source as any).marqueeEnabled !== false) {
+        try { marqueeProjectionService.ingest(source.id, normalizedData); } catch {}
+      }
       
       // Update source health
       this.updateSourceHealth(source.id, true);
