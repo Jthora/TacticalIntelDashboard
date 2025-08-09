@@ -4,7 +4,7 @@ import React, { useEffect,useState } from 'react';
 
 import { useSettings } from '../contexts/SettingsContext';
 
-export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf';
+export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf' | 'intel';
 
 export interface ExportOptions {
   includeMetadata: boolean;
@@ -191,6 +191,12 @@ const Export: React.FC<ExportProps> = ({
             onClick={() => handleFormatClick('pdf')}
           >
             PDF
+          </button>
+          <button 
+            className={`export-btn-micro intel ${selectedFormat === 'intel' ? 'selected' : ''}`}
+            onClick={() => handleFormatClick('intel')}
+          >
+            INTEL
           </button>
         </div>
         

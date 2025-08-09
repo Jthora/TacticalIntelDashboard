@@ -7,6 +7,7 @@ import Export, { ExportFormat, ExportOptions } from './Export';
 import Health from './Health';
 import SystemControl from './SystemControl';
 import TacticalFilters from './TacticalFilters';
+import { exportFeedsAsIntel } from '../intel/export/FeedIntelAdapter';
 
 const RightSidebar: React.FC = () => {
   const [feeds, setFeeds] = useState<Feed[]>([]);
@@ -56,6 +57,13 @@ const RightSidebar: React.FC = () => {
 
   const handleExecuteExport = (format: ExportFormat | null, options: ExportOptions) => {
     log.debug("Component", 'Executing export:', { format, options, feedCount: feeds.length });
+    if (!format) return;
+    if (format === 'intel') {
+      // Export current feeds as individual .intel files (cached + downloaded)
+      exportFeedsAsIntel(feeds.slice(0, 50)); // limit batch for UX; adjust as needed
+      return;
+    }
+    // TODO: existing formats implementation (json/csv/xml/pdf) remains unchanged (not shown)
   };
 
   const handleHealthScan = () => {
