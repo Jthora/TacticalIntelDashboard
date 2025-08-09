@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2025-08-09T00:00:00Z",
+  "description": "Starcom Intel/IntelReport integration export bundle",
+  "models": {
+    "path": "models/Intel",
+    "files": [
+      "Classification.ts","index.ts","IntelEnums.ts","IntelLocation.ts","IntelReportMetaData.ts","IntelReport.ts","Intel.ts","IntelVisualization3D.ts","Requirements.ts","Sources.ts","Transformers.ts","TypeHierarchy.ts","Validators.ts"
+    ]
+  },
+  "types": {
+    "path": "types",
+    "files": ["DataVault.ts","IntelRepository.ts","IntelWorkspace.ts","UnifiedIntelStorage.ts","intel-foundation-index.ts"]
+  },
+  "services": {
+    "path": "services",
+    "files": ["DataVaultService.simple.ts","IntelRepositoryService.ts","IntelWorkspaceService.ts","UnifiedIntelStorageService.ts"]
+  }
+}

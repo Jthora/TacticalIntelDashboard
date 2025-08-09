@@ -210,3 +210,94 @@ export function exportFeedsAsIntel(feeds: Feed[], opts: { cache?: boolean } = { 
 
 // Future: batch zip export (Phase 2)
 // export async function downloadIntelBatchZip(records: IntelExportRecord[]): Promise<Blob> { /* impl later */ throw new Error('Not implemented'); }
+
+// Enhanced export result type
+export interface IntelExportResult {
+  record: IntelExportRecord;
+  validation: IntelValidationResult;
+  serialized: string | null;
+  errors: string[];
+  warnings: string[];
+  downloaded: boolean;
+  cached: boolean;
+}
+
+// Enhanced serialization using uniform JSON quoting for scalars
+export function serializeIntelDeterministic(record: IntelExportRecord): string {
+  const order: (keyof IntelExportRecord)[] = ['id','title','created','updated','classification','priority','sources','tags','location','summary','confidence'];
+  const lines: string[] = ['---'];
+  for (const key of order) {
+    const value = (record as any)[key];
+    if (value === undefined || value === null) continue;
+    if (Array.isArray(value) && value.length === 0) continue;
+    let serialized: string;
+    if (Array.isArray(value)) serialized = '[' + value.map(v => JSON.stringify(v)).join(', ') + ']';
+    else if (typeof value === 'object') serialized = JSON.stringify(value);
+    else serialized = JSON.stringify(value); // always quote scalars
+    lines.push(`${key}: ${serialized}`);
+  }
+  lines.push('---','');
+  lines.push(record.body);
+  return lines.join('\n');
+}
+
+// Internal helper to check large body
+function checkBodySize(body: string, warnings: string[]) {
+  const bytes = new Blob([body]).size; // approximate
+  if (bytes > 200 * 1024) warnings.push(`Body size ${bytes} bytes exceeds 200KB threshold`);
+}
+
+// Robust export function
+export function robustExportFeed(feed: Feed, opts: { cache?: boolean, deterministic?: boolean } = { cache: true, deterministic: true }): IntelExportResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  // Detect original malformed timestamp before mapping normalization replaces it
+  if (feed.timestamp && isNaN(Date.parse(feed.timestamp as any))) {
+    warnings.push('Created timestamp parse failure (original)');
+  }
+  let downloaded = false;
+  let cached = false;
+  const record = mapFeedToIntel(feed);
+  const validation = validateIntel(record);
+  if (isNaN(Date.parse(record.created))) warnings.push('Created timestamp parse failure');
+  if (!validation.valid) warnings.push(...validation.issues.filter(i=>i.severity==='error').map(i=>`Validation error: ${i.field} - ${i.message}`));
+  warnings.push(...validation.issues.filter(i=>i.severity==='warning').map(i=>`Validation warning: ${i.field} - ${i.message}`));
+  // Additional rules
+  if (record.tags && record.tags.length > 25) warnings.push(`Tag count ${record.tags.length} exceeds 25`);
+  checkBodySize(record.body, warnings);
+
+  // Serialize
+  let serialized: string | null = null;
+  try {
+    serialized = opts.deterministic ? serializeIntelDeterministic(record) : serializeIntel(record);
+  } catch (e:any) {
+    errors.push(`Serialization failed: ${e?.message || e}`);
+    serialized = null;
+  }
+
+  // Cache
+  if (opts.cache && serialized) {
+    try { cacheIntel(record); cached = true; } catch (e:any) { warnings.push(`Cache failed: ${e?.message || e}`); }
+  }
+
+  // Download (guard for DOM)
+  if (serialized) {
+    try {
+      if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+        downloadIntel(record);
+        downloaded = true;
+      } else {
+        warnings.push('Download skipped: DOM not available');
+      }
+    } catch (e:any) {
+      errors.push(`Download failed: ${e?.message || e}`);
+    }
+  }
+
+  return { record, validation, serialized, errors, warnings, downloaded, cached };
+}
+
+// Deterministic batch export returning aggregate results
+export function robustExportFeeds(feeds: Feed[], opts: { cache?: boolean, deterministic?: boolean } = { cache: true, deterministic: true }): IntelExportResult[] {
+  return feeds.map(f => robustExportFeed(f, opts));
+}
