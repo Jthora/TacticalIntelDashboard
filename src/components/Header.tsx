@@ -1,10 +1,8 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 import { useSearch } from '../contexts/SearchContext';
-import Modal from '../shared/components/Modal';
-import FeedManager from './FeedManager';
 import NavigationButtons from './navigation/NavigationButtons';
 import Web3Button from './web3/Web3Button';
 
@@ -12,7 +10,6 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const { performSearch, isSearching } = useSearch();
   const [searchQuery, setSearchQuery] = useState('');
-  const [showFeedManager, setShowFeedManager] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // Update time every second
@@ -43,13 +40,11 @@ const Header: React.FC = () => {
     <header className="tactical-header-enhanced tactical-header-compact">
       <div className="header-primary-bar">
         {/* Brand section */}
-        <div className="brand-micro">
+        <div className="brand-micro" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
           <img 
             src={WingCommanderLogo} 
             alt="TC" 
             className="brand-icon-micro"
-            onClick={() => navigate('/')}
-            style={{ cursor: 'pointer' }}
           />
           <div className="brand-text-micro">
             <span className="brand-code">TACTICAL INTEL DASHBOARD</span>
@@ -81,12 +76,14 @@ const Header: React.FC = () => {
               placeholder="SEARCH INTEL..."
               className="search-input-micro"
               disabled={isSearching}
+              aria-label="Search intelligence"
             />
             <button 
               type="submit" 
               className="search-btn-micro"
               disabled={isSearching || !searchQuery.trim()}
               title="Search"
+              aria-label="Execute search"
             >
               {isSearching ? '⟳' : '→'}
             </button>
@@ -105,20 +102,12 @@ const Header: React.FC = () => {
               });
             }}
             title="Toggle Fullscreen"
+            aria-label="Toggle fullscreen"
           >
             ⛶
           </button>
         </div>
       </div>
-      
-      <Modal
-        isOpen={showFeedManager}
-        onClose={() => setShowFeedManager(false)}
-        title="FEED MANAGEMENT CONSOLE"
-        size="fullscreen"
-      >
-        <FeedManager />
-      </Modal>
     </header>
   );
 };
