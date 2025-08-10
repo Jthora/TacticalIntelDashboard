@@ -1,5 +1,7 @@
 import React, { useEffect,useState } from 'react';
 
+// DEPRECATED: This Header variant (Arch Angel) is not used by MainLayout.
+// Retained temporarily for design reference; scheduled for removal or theme refactor.
 const Header: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   // Fixed status indicators - no more random flickering
