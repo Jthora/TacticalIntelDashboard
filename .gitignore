@@ -150,6 +150,8 @@ deployment/
 *_SUMMARY*.md
 *_REPORT*.md
 *_PLAN*.md
+# Allow canonical integration plan for intel export (explicit inclusion)
+!docs/intel/INTEL_EXPORT_INTEGRATION_PLAN.md
 *_AUDIT*.md
 *_ANALYSIS*.md
 *_SUCCESS*.md
