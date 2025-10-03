@@ -4,6 +4,8 @@
 
 import { Feed } from '../../models/Feed';
 import { IntelExportRecord, IntelValidationIssue, IntelValidationResult } from './IntelExportTypes';
+import SHA256 from 'crypto-js/sha256';
+import Hex from 'crypto-js/enc-hex';
 
 // Priority mapping table
 const PRIORITY_MAP: Record<string, IntelExportRecord['priority']> = {
@@ -222,9 +224,23 @@ export interface IntelExportResult {
   cached: boolean;
 }
 
-// Enhanced serialization using uniform JSON quoting for scalars
-export function serializeIntelDeterministic(record: IntelExportRecord): string {
-  const order: (keyof IntelExportRecord)[] = ['id','title','created','updated','classification','priority','sources','tags','location','summary','confidence'];
+// Compute SHA-256 integrity hash of the deterministic serialization body portion
+export function computeIntelIntegrity(record: IntelExportRecord, opts: { deterministic?: boolean } = {}): string {
+  const deterministic = opts.deterministic !== false; // default true
+  const base = deterministic ? serializeIntelDeterministic(record) : serializeIntel(record);
+  // Exclude trailing newline differences for hash consistency
+  const normalized = base.endsWith('\n') ? base : base + '\n';
+  // Use browser SubtleCrypto if available, else node crypto
+  if (typeof window !== 'undefined' && (window as any).crypto?.subtle) {
+    // Synchronous wrapper not possible; in browser prefer async path elsewhere
+  }
+  const hash = SHA256(normalized);
+  return hash.toString(Hex);
+}
+
+// Extend deterministic serializer to optionally inject schemaVersion + integrityHash if provided
+export function serializeIntelDeterministic(record: IntelExportRecord & { schemaVersion?: string; integrityHash?: string }): string {
+  const order: (keyof IntelExportRecord | 'schemaVersion' | 'integrityHash')[] = ['id','title','created','updated','classification','priority','sources','tags','location','summary','confidence','schemaVersion','integrityHash'];
   const lines: string[] = ['---'];
   for (const key of order) {
     const value = (record as any)[key];

@@ -1,13 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // Removed unused FeedHealthIndicator import
 import { Feed } from '../../../models/Feed';
+import { useSettings } from '../../../contexts/SettingsContext';
 import { log } from '../../../utils/LoggerService';
+import useSocialShare from '../../../hooks/useSocialShare';
 
 interface FeedItemProps { feed: Feed; }
 
 const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
+  const { settings } = useSettings();
+  const shareSettings = settings.general?.share;
+  const sharingEnabled = !!shareSettings?.enabled;
   const [expanded, setExpanded] = useState(false);
+  const [shareState, setShareState] = useState<'idle' | 'sharing' | 'error'>('idle');
+  const [shareFeedback, setShareFeedback] = useState('');
+  const feedbackTimeoutRef = useRef<number | null>(null);
+
+  const { share } = useSocialShare({
+    defaultHashtags: shareSettings?.defaultHashtags
+  });
+
+  useEffect(() => () => {
+    if (feedbackTimeoutRef.current) {
+      window.clearTimeout(feedbackTimeoutRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!sharingEnabled) {
+      setShareState('idle');
+      setShareFeedback('');
+    }
+  }, [sharingEnabled]);
 
   const formatDate = (dateString: string) => {
     try {
@@ -67,6 +92,68 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
     );
   };
 
+  const sanitizeSummary = () => {
+    const source = feed.description || feed.content;
+    if (!source) return undefined;
+    const text = source
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return text || undefined;
+  };
+
+  const scheduleFeedbackReset = () => {
+    if (feedbackTimeoutRef.current) {
+      window.clearTimeout(feedbackTimeoutRef.current);
+    }
+    feedbackTimeoutRef.current = window.setTimeout(() => {
+      setShareFeedback('');
+      setShareState('idle');
+    }, 2500);
+  };
+
+  const handleShare = async () => {
+    if (!feed.link || shareState === 'sharing' || !sharingEnabled) return;
+
+    setShareState('sharing');
+    setShareFeedback('');
+    log.info('SocialShare', 'Initiating share from feed item', {
+      feedId: feed.id,
+      link: feed.link
+    });
+
+    try {
+      const rawSummary = sanitizeSummary();
+      const summaryWithAttribution = shareSettings?.attribution
+        ? [rawSummary, shareSettings.attribution].filter(Boolean).join(' ')
+        : rawSummary;
+
+      const result = await share({
+        url: feed.link,
+        title: feed.title,
+        summary: summaryWithAttribution,
+        hashtags: feed.tags
+      });
+
+      log.info('SocialShare', 'Share workflow completed', {
+        feedId: feed.id,
+        method: result?.method || 'intent'
+      });
+      setShareFeedback('Share opened in new window');
+      setShareState('idle');
+      scheduleFeedbackReset();
+    } catch (error) {
+      const err = error instanceof Error ? error : new Error(String(error));
+      log.error('SocialShare', 'Share workflow failed', {
+        feedId: feed.id,
+        link: feed.link
+      }, err);
+      setShareState('error');
+      setShareFeedback('Unable to share');
+      scheduleFeedbackReset();
+    }
+  };
+
   return (
     <div className={`feed-item ${expanded ? 'expanded' : ''}`} data-testid="feed-item">
       <div className="feed-item-header">
@@ -102,6 +189,21 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
           <button onClick={() => window.open(feed.link, '_blank')} className="btn feed-btn feed-btn-primary" data-testid="feed-open-btn">Open</button>
           <button onClick={() => navigator.clipboard?.writeText(feed.link)} className="btn feed-btn" data-testid="feed-copy-btn">Copy</button>
           <button onClick={() => { log.debug('Component', 'Bookmark:', feed.title); }} className="btn feed-btn" data-testid="feed-bookmark-btn">Bookmark</button>
+          {sharingEnabled && (
+            <button
+              onClick={handleShare}
+              className="btn feed-btn"
+              data-testid="feed-share-btn"
+              disabled={!feed.link || shareState === 'sharing'}
+            >
+              {shareState === 'sharing' ? 'Sharing…' : 'Share'}
+            </button>
+          )}
+          {shareFeedback && (
+            <span className="feed-share-feedback" role="status" aria-live="polite">
+              {shareFeedback}
+            </span>
+          )}
         </div>
         {renderTags()}
       </div>

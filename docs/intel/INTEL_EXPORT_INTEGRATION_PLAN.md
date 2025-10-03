@@ -1,7 +1,7 @@
 # Intel Export Integration Plan
 
 Status: Phase 2 substantially complete (robustness & multi-format validation ongoing)
-Date: 2025-08-09 (Updated)
+Date: 2025-08-15 (Updated)
 Owner: Integration
 Scope: Map existing Feed items to canonical `.intel` file format, enable deterministic export, batch packaging, aggregated report, and parity exports for data science workflows.
 
@@ -29,6 +29,7 @@ Scope: Map existing Feed items to canonical `.intel` file format, enable determi
 | P2 | Edge Case Handling | Large body, tag overflow, bad timestamps, collision suffixing | DONE |
 | P2 | Multi-format Exports | JSON / CSV / XML / PDF service | DONE (core) |
 | P2 | Advanced Multi-format Tests | Date range, field filtering, escaping, encryption, compression | DONE (initial suite) |
+| P2 | Real Gzip Compression | Replace simulated gzip with pako | DONE (integrated) |
 | P3 | Classification Policy | Real mapping + redaction | PENDING |
 | P3 | Repository Integration | Persist Intel records | PENDING |
 | P3 | Performance / Stress | Large dataset scaling + memory | PENDING |
@@ -115,18 +116,19 @@ Pending / Future:
 |------|--------|-----------|
 | Future classification changes breaking backward compatibility | Medium | Version frontmatter schema; include `schemaVersion` |
 | Memory spike on large zip | Medium | Stream or chunk in Phase 3 |
-| Simulated compression misleads size expectations | Low | Replace with pako + size comparison tests |
+| Simulated compression misleads size expectations | Low | REPLACED with real gzip (pako) + add ratio assertions |
 | Encryption weak PBKDF | Medium | Migrate to WebCrypto subtle crypto + salt/IV tests |
 | Frontmatter growth (new fields) destabilizes ordering | Low | Centralized order array enforced by tests |
 
 ## 10. Next Actions (Revised)
 1. Design classification + redaction rules (spec + tests).
-2. Introduce real gzip (pako) + update compression tests.
-3. Add integrity hash (optional) and test recalculation.
+2. Add compression ratio assertions & regression thresholds.
+3. Add integrity hash (optional) and test recalculation. (SHA-256 over deterministic serialization including body, stored as `integrityHash`, plus `schemaVersion` field)
 4. Implement location & confidence enrichment if data available.
-5. Consolidate ExportService & IntelBatchExport under unified facade.
+5. Consolidate ExportService & IntelBatchExport under unified facade (single Orchestrator with strategy plugins).
 6. Add performance benchmarks & memory usage profiling harness.
-7. Evaluate WebCrypto-based encryption pipeline (salted key derivation, IV) + migration tests.
+7. Implement WebCrypto-based encryption pipeline (PBKDF2/Argon2id -> key, random IV, AES-GCM) + migration tests.
+8. Introduce schemaVersion + integrityHash frontmatter fields (conditional).
 
 ## 11. Completion Criteria
 Phase 1 (DONE): mapping + serialization + basic tests.
@@ -148,17 +150,18 @@ Phase 3 (TARGET): policy enforcement, performance, security hardening, streaming
 
 ## 13. Multi-format Export Coverage
 Implemented Formats: JSON, CSV, XML, PDF.
-Advanced Tests Added: dateRange filtering, includeFields pruning, CSV quoting of commas/quotes/newlines, XML entity escaping (<, >, &, quotes), PDF blob generation, encryption (AES) filename mutation, compression + combined encryption/compression ordering.
-Planned Enhancements: Real compression ratio assertions, PDF pagination snapshot invariants, XML schema validation (optional XSD).
+Advanced Tests Added: dateRange filtering, includeFields pruning, CSV quoting of commas/quotes/newlines, XML entity escaping (<, >, &, quotes), PDF blob generation, encryption (AES) filename mutation, REAL gzip compression + combined encryption/compression ordering.
+Planned Enhancements: Compression ratio assertions (min expected), PDF pagination snapshot invariants, XML schema validation (optional XSD).
 
 ## 14. Remaining Gaps / TODO Summary
-- Real compression implementation & size delta tests
 - WebCrypto encryption + KDF (PBKDF2/Argon2) evaluation
 - Classification & redaction pipeline
-- Integrity hash / signature (optional frontmatter field)
+- Integrity hash / signature (optional frontmatter field) (compute + verify roundtrip tests)
 - Location / confidence enrichment & tests
 - Performance profiling & thresholds (document + enforce)
 - Unified export facade & service layering refactor
+- Streaming zip / chunked export for memory control
+- Optional signing (future): detached signature (.intel.sig) using WebCrypto
 
 ---
-Document updated to reflect current implementation & forward plan.
+Document updated to reflect real gzip integration & expanded security roadmap.

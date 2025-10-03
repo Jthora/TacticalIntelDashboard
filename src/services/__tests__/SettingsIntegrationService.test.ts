@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest,test } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
 import { SettingsIntegrationService } from '../SettingsIntegrationService';
 
@@ -20,33 +20,107 @@ const localStorageMock = (() => {
 })();
 
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
+  value: localStorageMock,
+  configurable: true,
+  writable: true
 });
+
+// Ensure global scope also references the same mock
+Object.defineProperty(global, 'localStorage', {
+  value: localStorageMock,
+  configurable: true,
+  writable: true
+});
+
+const DEFAULT_GENERAL_SETTINGS = {
+  autoRefresh: false,
+  refreshInterval: 300,
+  preserveHistory: true,
+  notifications: true,
+  notificationSound: 'ping',
+  showNotificationCount: true,
+  cacheDuration: 1800,
+  storageLimit: 50,
+  export: {
+    format: 'json',
+    autoExport: false,
+    includeMetadata: true,
+    compress: false,
+    encrypt: true
+  },
+  share: {
+    enabled: true,
+    defaultHashtags: ['intelwatch'],
+    attribution: 'via Tactical Intel Dashboard'
+  }
+} as const;
 
 describe('SettingsIntegrationService', () => {
   beforeEach(() => {
     localStorageMock.clear();
     jest.clearAllMocks();
+    SettingsIntegrationService.resetCache();
   });
 
   describe('getGeneralSettings', () => {
     test('should return default settings when localStorage is empty', () => {
       const settings = SettingsIntegrationService.getGeneralSettings();
       
-      expect(settings).toEqual({
-        autoRefresh: true,
-        refreshInterval: 300,
-        preserveHistory: true,
-        notifications: true,
-        notificationSound: 'ping',
-        showNotificationCount: true,
-        cacheDuration: 1800,
-        storageLimit: 50
+      expect(settings).toEqual(DEFAULT_GENERAL_SETTINGS);
+    });
+
+    test('should derive settings from dashboardSettings general configuration', () => {
+      localStorageMock.setItem('dashboardSettings', JSON.stringify({
+        general: {
+          refreshInterval: 600000,
+          cacheSettings: {
+            enabled: true,
+            duration: 900000
+          },
+          notifications: {
+            enabled: false,
+            sound: true
+          },
+          export: {
+            format: 'csv',
+            autoExport: true,
+            includeMetadata: false,
+            compress: true,
+            encrypt: false
+          },
+          share: {
+            enabled: false,
+            defaultHashtags: ['intelwatch', 'ops'],
+            attribution: 'intel ops'
+          }
+        }
+      }));
+
+      const settings = SettingsIntegrationService.getGeneralSettings();
+
+  expect(localStorageMock.getItem).toHaveBeenCalledWith('dashboardSettings');
+
+      expect(settings.refreshInterval).toBe(600);
+  expect(settings.autoRefresh).toBe(true);
+      expect(settings.cacheDuration).toBe(900);
+      expect(settings.notifications).toBe(false);
+      expect(settings.notificationSound).toBe('ping');
+      expect(settings.export).toEqual({
+        format: 'csv',
+        autoExport: true,
+        includeMetadata: false,
+        compress: true,
+        encrypt: false
+      });
+      expect(settings.share).toEqual({
+        enabled: false,
+        defaultHashtags: ['intelwatch', 'ops'],
+        attribution: 'intel ops'
       });
     });
 
-    test('should return stored settings when localStorage has data', () => {
-      const storedSettings = {
+    test('should fall back to legacy generalSettings when dashboard settings are absent', () => {
+      const legacySettings = {
         autoRefresh: false,
         refreshInterval: 600,
         preserveHistory: false,
@@ -57,40 +131,55 @@ describe('SettingsIntegrationService', () => {
         storageLimit: 100
       };
 
-      localStorageMock.setItem('generalSettings', JSON.stringify(storedSettings));
+      localStorageMock.setItem('generalSettings', JSON.stringify(legacySettings));
 
       const settings = SettingsIntegrationService.getGeneralSettings();
-      expect(settings).toEqual(storedSettings);
+
+  expect(localStorageMock.getItem).toHaveBeenCalledWith('generalSettings');
+
+      expect(settings).toEqual(expect.objectContaining({
+        autoRefresh: legacySettings.autoRefresh,
+        refreshInterval: legacySettings.refreshInterval,
+        preserveHistory: legacySettings.preserveHistory,
+        notifications: legacySettings.notifications,
+        notificationSound: legacySettings.notificationSound,
+        showNotificationCount: legacySettings.showNotificationCount,
+        cacheDuration: legacySettings.cacheDuration,
+        storageLimit: legacySettings.storageLimit
+      }));
     });
 
-    test('should merge with defaults when localStorage has partial data', () => {
-      const partialSettings = {
-        autoRefresh: false,
-        refreshInterval: 600
-      };
-
-      localStorageMock.setItem('generalSettings', JSON.stringify(partialSettings));
+    test('should merge dashboard and defaults when share config is partially defined', () => {
+      localStorageMock.setItem('dashboardSettings', JSON.stringify({
+        general: {
+          refreshInterval: 300000,
+          share: {
+            enabled: true,
+            attribution: 'custom attribution'
+          }
+        }
+      }));
 
       const settings = SettingsIntegrationService.getGeneralSettings();
-      expect(settings.autoRefresh).toBe(false);
-      expect(settings.refreshInterval).toBe(600);
-      expect(settings.notifications).toBe(true); // Should use default
+
+      expect(settings.share).toEqual({
+        enabled: true,
+        defaultHashtags: ['intelwatch'],
+        attribution: 'custom attribution'
+      });
     });
 
     test('should handle corrupted localStorage data', () => {
-      localStorageMock.setItem('generalSettings', 'invalid-json');
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      try {
+        localStorageMock.setItem('generalSettings', 'invalid-json');
+        localStorageMock.setItem('dashboardSettings', 'invalid-json{');
 
-      const settings = SettingsIntegrationService.getGeneralSettings();
-      expect(settings).toEqual({
-        autoRefresh: true,
-        refreshInterval: 300,
-        preserveHistory: true,
-        notifications: true,
-        notificationSound: 'ping',
-        showNotificationCount: true,
-        cacheDuration: 1800,
-        storageLimit: 50
-      });
+        const settings = SettingsIntegrationService.getGeneralSettings();
+        expect(settings).toEqual(DEFAULT_GENERAL_SETTINGS);
+      } finally {
+        warnSpy.mockRestore();
+      }
     });
   });
 

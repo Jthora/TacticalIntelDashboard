@@ -2413,7 +2413,6 @@ body {
 .marquee-track {
   display: flex;
   gap: 32px;
-  animation: marquee-scroll 40s linear infinite;
 }
 
 .marquee-item {

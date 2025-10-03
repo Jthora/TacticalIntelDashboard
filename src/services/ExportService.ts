@@ -1,5 +1,6 @@
 import CryptoJS from 'crypto-js';
 import { jsPDF } from 'jspdf';
+import { gzip } from 'pako';
 
 import { Feed } from '../models/Feed';
 
@@ -321,18 +322,16 @@ export class ExportService {
   }
   
   private static async compressContent(content: string | Blob): Promise<Blob> {
-    // Simple compression simulation - in production, use a proper compression library
+    // Real gzip compression via pako
     const textContent = typeof content === 'string' ? content : await content.text();
-    let uint8: Uint8Array;
-    if (typeof TextEncoder !== 'undefined') {
-      uint8 = new TextEncoder().encode(textContent);
-    } else {
-      // Fallback for environments (like Jest/node) where TextEncoder may not be defined
-      // Use Buffer to create a Uint8Array view
-      const buf = Buffer.from(textContent, 'utf-8');
-      uint8 = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+    try {
+      const result = gzip(textContent, { level: 6 });
+      const compressed: Uint8Array = result instanceof Uint8Array ? result : new Uint8Array(result as any);
+      return new Blob([compressed], { type: 'application/gzip' });
+    } catch (e:any) {
+      const fallback = `/* gzip failed: ${e?.message || e} */\n` + textContent;
+      return new Blob([fallback], { type: 'text/plain' });
     }
-    return new Blob([uint8], { type: 'application/gzip' });
   }
   
   private static filterByDateRange(feeds: Feed[], dateRange?: { start: Date; end: Date }): Feed[] {

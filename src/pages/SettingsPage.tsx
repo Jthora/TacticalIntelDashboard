@@ -5,6 +5,14 @@ import SettingsDebug from '../components/settings/SettingsDebug';
 import SettingsErrorBoundary from '../components/settings/SettingsErrorBoundary';
 import { SettingsTab,useSettings } from '../contexts/SettingsContext';
 
+const VISIBLE_TABS: SettingsTab[] = [
+  SettingsTab.GENERAL,
+  SettingsTab.CORS,
+  SettingsTab.PROTOCOLS,
+  SettingsTab.VERIFICATION,
+  SettingsTab.DISPLAY
+];
+
 /**
  * SettingsPage displays the settings interface with tabs for different sections.
  * Each navigation item is a screen (route) with the complete cool styling.
@@ -75,7 +83,7 @@ const SettingsPage: React.FC = () => {
         </div>
         
         <div className="settings-sidebar-nav">
-          {Object.values(SettingsTab).map((tabValue) => (
+          {VISIBLE_TABS.map((tabValue) => (
             <button 
               key={tabValue}
               className={`settings-tab ${activeTab === tabValue ? 'active' : ''}`}
@@ -97,7 +105,7 @@ const SettingsPage: React.FC = () => {
         
         {/* Mobile view tabs (hidden on desktop) */}
         <div className="settings-tabs">
-          {Object.values(SettingsTab).map((tabValue) => (
+          {VISIBLE_TABS.map((tabValue) => (
             <button 
               key={tabValue}
               className={`settings-tab ${activeTab === tabValue ? 'active' : ''}`}

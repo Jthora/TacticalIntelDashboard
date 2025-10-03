@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useMarqueeItems } from '../hooks/useMarqueeItems';
 
 interface MarqueeBarProps {
@@ -6,18 +6,28 @@ interface MarqueeBarProps {
   height?: number;
 }
 
-export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 34, height = 28 }) => {
+const SPEED_SCALE = 3.35; // reduce raw speed values to a calmer baseline
+const MIN_BASE_SPEED = 1.2; // px per second
+
+const computeBaseSpeed = (rawSpeed: number): number => {
+  const scaled = (Number.isFinite(rawSpeed) && rawSpeed > 0) ? rawSpeed * SPEED_SCALE : 0;
+  return Math.max(MIN_BASE_SPEED, scaled);
+};
+
+export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 12, height = 28 }) => {
   const items = useMarqueeItems();
+  const baseSpeed = useMemo(() => computeBaseSpeed(speed), [speed]);
   const containerRef = useRef<HTMLDivElement|null>(null);
   const trackRef = useRef<HTMLDivElement|null>(null);
   const groupRef = useRef<HTMLDivElement|null>(null);
   const offsetRef = useRef(0);
   const groupWidthRef = useRef(0);
-  const currentSpeedRef = useRef(speed);
-  const targetSpeedRef = useRef(speed);
+  const currentSpeedRef = useRef(baseSpeed);
+  const targetSpeedRef = useRef(baseSpeed);
+  const hoverActiveRef = useRef(false);
+  const hoverHoldUntilRef = useRef(0);
   const [paused, setPaused] = useState(false);
-  const [hovered, setHovered] = useState(false);
-  const [displaySpeed, setDisplaySpeed] = useState(speed);
+  const [displaySpeed, setDisplaySpeed] = useState(baseSpeed);
   const lastSpeedUpdateRef = useRef(0);
 
   // Recompute group width after render when items change
@@ -27,8 +37,10 @@ export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 34, height = 28 
         groupWidthRef.current = groupRef.current.getBoundingClientRect().width;
         if (groupWidthRef.current === 0) {
           // Fallback heuristic for test/jsdom (no layout): estimate width by text length
-            const text = Array.from(groupRef.current.querySelectorAll('.marquee-segment')).map(el => el.textContent || '').join(' • ');
-            groupWidthRef.current = Math.max(300, text.length * 7); // min width safeguard
+          const text = Array.from(groupRef.current.querySelectorAll('.marquee-segment'))
+            .map(el => el.textContent || '')
+            .join(' • ');
+          groupWidthRef.current = Math.max(300, text.length * 7); // min width safeguard
         }
         if (groupWidthRef.current > 0) {
           offsetRef.current = offsetRef.current % groupWidthRef.current;
@@ -49,19 +61,33 @@ export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 34, height = 28 
       frame = requestAnimationFrame(tick);
       const dt = (now - last) / 1000;
       last = now;
-      if (paused || groupWidthRef.current === 0) return;
 
-      // Easing speed toward target (increase responsiveness)
+      if (groupWidthRef.current === 0) {
+        return;
+      }
+
+      if (hoverActiveRef.current && now > hoverHoldUntilRef.current) {
+        hoverActiveRef.current = false;
+      }
+
+      const targetSpeed = paused ? 0 : (hoverActiveRef.current ? baseSpeed / 3 : baseSpeed);
+      if (targetSpeedRef.current !== targetSpeed) {
+        targetSpeedRef.current = targetSpeed;
+      }
+
+      // Ease current speed toward the desired target so changes feel smooth.
       const cs = currentSpeedRef.current;
       const ts = targetSpeedRef.current;
-      currentSpeedRef.current = cs + (ts - cs) * 0.25; // was 0.12
+      currentSpeedRef.current = cs + (ts - cs) * 0.25;
 
-      const effectiveSpeed = currentSpeedRef.current;
-      offsetRef.current = (offsetRef.current + effectiveSpeed * dt) % groupWidthRef.current;
-      if (trackRef.current) {
-        trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+      if (!paused) {
+        const effectiveSpeed = currentSpeedRef.current;
+        offsetRef.current = (offsetRef.current + effectiveSpeed * dt) % groupWidthRef.current;
+        if (trackRef.current) {
+          trackRef.current.style.transform = `translateX(-${offsetRef.current}px)`;
+        }
       }
-      // Throttle display speed state updates (~every 120ms)
+
       if (now - lastSpeedUpdateRef.current > 120) {
         lastSpeedUpdateRef.current = now;
         setDisplaySpeed(currentSpeedRef.current);
@@ -69,12 +95,21 @@ export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 34, height = 28 
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [paused, items.length]);
+  }, [paused, items.length, baseSpeed]);
 
-  // Hover slowdown logic
   useEffect(() => {
-    targetSpeedRef.current = paused ? 0 : (hovered ? speed / 3 : speed);
-  }, [hovered, paused, speed]);
+    if (paused) {
+      targetSpeedRef.current = 0;
+      currentSpeedRef.current = 0;
+      setDisplaySpeed(0);
+    } else {
+      targetSpeedRef.current = hoverActiveRef.current ? baseSpeed / 3 : baseSpeed;
+      if (!hoverActiveRef.current) {
+        currentSpeedRef.current = baseSpeed;
+        setDisplaySpeed(baseSpeed);
+      }
+    }
+  }, [paused, baseSpeed]);
 
   // Pause on document hidden to save resources
   useEffect(() => {
@@ -108,10 +143,24 @@ export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 34, height = 28 
       ref={containerRef}
       role="marquee"
       aria-label="Intelligence Marquee"
-      data-base-speed={speed}
+      data-base-speed={baseSpeed.toFixed(2)}
       data-current-speed={displaySpeed.toFixed(2)}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => {
+        const nowMs = performance.now();
+        hoverActiveRef.current = true;
+        hoverHoldUntilRef.current = Math.max(hoverHoldUntilRef.current, nowMs + 1200);
+        if (!paused) {
+          targetSpeedRef.current = baseSpeed / 3;
+        }
+      }}
+      onMouseLeave={() => {
+        const nowMs = performance.now();
+        hoverActiveRef.current = true;
+        hoverHoldUntilRef.current = Math.max(hoverHoldUntilRef.current, nowMs + 900);
+        if (!paused) {
+          targetSpeedRef.current = baseSpeed / 3;
+        }
+      }}
     >
       <div className="marquee-track" ref={trackRef}>
         <div className="marquee-group" ref={groupRef}>{segments}</div>

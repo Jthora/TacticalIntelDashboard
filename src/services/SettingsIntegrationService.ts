@@ -5,6 +5,54 @@
 import { CORSStrategy, Settings } from '../contexts/SettingsContext';
 import { log } from '../utils/LoggerService';
 
+type NormalizedGeneralSettings = {
+  autoRefresh: boolean;
+  refreshInterval: number;
+  preserveHistory: boolean;
+  notifications: boolean;
+  notificationSound: string;
+  showNotificationCount: boolean;
+  cacheDuration: number;
+  storageLimit: number;
+  export: {
+    format: 'json' | 'csv' | 'xml' | 'pdf';
+    autoExport: boolean;
+    includeMetadata: boolean;
+    compress: boolean;
+    encrypt: boolean;
+  };
+  share: {
+    enabled: boolean;
+    defaultHashtags: string[];
+    attribution: string;
+  };
+};
+
+const GENERAL_SETTINGS_DEFAULTS: NormalizedGeneralSettings = {
+  autoRefresh: false,
+  refreshInterval: 300,
+  preserveHistory: true,
+  notifications: true,
+  notificationSound: 'ping',
+  showNotificationCount: true,
+  cacheDuration: 1800,
+  storageLimit: 50,
+  export: {
+    format: 'json',
+    autoExport: false,
+    includeMetadata: true,
+    compress: false,
+    encrypt: true
+  },
+  share: {
+    enabled: true,
+    defaultHashtags: ['intelwatch'],
+    attribution: 'via Tactical Intel Dashboard'
+  }
+};
+
+const LEGACY_GENERAL_SETTINGS_KEY = 'generalSettings';
+
 export class SettingsIntegrationService {
   // Cache the settings locally for quick access
   private static settings: Settings | null = null;
@@ -280,43 +328,27 @@ export class SettingsIntegrationService {
   /**
    * Get general settings
    */
-  static getGeneralSettings(): {
-    autoRefresh: boolean;
-    refreshInterval: number;
-    preserveHistory: boolean;
-    notifications: boolean;
-    notificationSound: string;
-    showNotificationCount: boolean;
-    cacheDuration: number;
-    storageLimit: number;
-  } {
-    // Get general settings from localStorage where they're saved by GeneralSettings component
-    const storedSettings = localStorage.getItem('generalSettings');
-    
-    // Default values if none are stored
-    const defaults = {
-      autoRefresh: false, // Disabled by default to prevent infinite loops on startup
-      refreshInterval: 300, // 5 minutes in seconds
-      preserveHistory: true,
-      notifications: true,
-      notificationSound: 'ping',
-      showNotificationCount: true,
-      cacheDuration: 1800, // 30 minutes in seconds
-      storageLimit: 50 // 50 MB
-    };
-    
-    if (storedSettings) {
-      try {
-        const parsed = JSON.parse(storedSettings);
-        // Merge with defaults to ensure all properties are present
-        return { ...defaults, ...parsed };
-      } catch (error) {
-        console.warn('Failed to parse general settings from localStorage:', error);
-        return defaults;
+  static getGeneralSettings(): NormalizedGeneralSettings {
+    const result = this.cloneDefaultGeneralSettings();
+    const loadedSettings = this.loadSettings();
+    const legacySettings = this.parseLegacyGeneralSettings(result);
+    const dashboardSettings = this.normalizeDashboardGeneralSettings(loadedSettings, result);
+
+    const legacyMeta = this.applyGeneralSettingsPatch(result, legacySettings);
+    const dashboardMeta = this.applyGeneralSettingsPatch(result, dashboardSettings);
+
+    const autoProvided = legacyMeta.autoProvided || dashboardMeta.autoProvided;
+    const refreshProvided = legacyMeta.refreshProvided || dashboardMeta.refreshProvided;
+
+    if (!autoProvided) {
+      if (refreshProvided) {
+        result.autoRefresh = result.refreshInterval > 0;
+      } else {
+        result.autoRefresh = GENERAL_SETTINGS_DEFAULTS.autoRefresh;
       }
     }
-    
-    return defaults;
+
+    return result;
   }
   
   /**
@@ -360,6 +392,196 @@ export class SettingsIntegrationService {
    */
   static resetCache(): void {
     this.settings = null;
+  }
+
+  private static cloneDefaultGeneralSettings(): NormalizedGeneralSettings {
+    return {
+      ...GENERAL_SETTINGS_DEFAULTS,
+      export: { ...GENERAL_SETTINGS_DEFAULTS.export },
+      share: {
+        ...GENERAL_SETTINGS_DEFAULTS.share,
+        defaultHashtags: [...GENERAL_SETTINGS_DEFAULTS.share.defaultHashtags]
+      }
+    };
+  }
+
+  private static parseLegacyGeneralSettings(defaults: NormalizedGeneralSettings): Partial<NormalizedGeneralSettings> {
+    const storedSettings = localStorage.getItem(LEGACY_GENERAL_SETTINGS_KEY);
+    if (!storedSettings) {
+      return {};
+    }
+
+    try {
+      const parsed = JSON.parse(storedSettings);
+      const legacy: Partial<NormalizedGeneralSettings> = {};
+
+      if (typeof parsed.autoRefresh === 'boolean') legacy.autoRefresh = parsed.autoRefresh;
+      if (typeof parsed.refreshInterval === 'number') legacy.refreshInterval = parsed.refreshInterval;
+      if (typeof parsed.preserveHistory === 'boolean') legacy.preserveHistory = parsed.preserveHistory;
+      if (typeof parsed.notifications === 'boolean') legacy.notifications = parsed.notifications;
+      if (typeof parsed.notificationSound === 'string') legacy.notificationSound = parsed.notificationSound;
+      if (typeof parsed.showNotificationCount === 'boolean') legacy.showNotificationCount = parsed.showNotificationCount;
+      if (typeof parsed.cacheDuration === 'number') legacy.cacheDuration = parsed.cacheDuration;
+      if (typeof parsed.storageLimit === 'number') legacy.storageLimit = parsed.storageLimit;
+
+      if (parsed.export && typeof parsed.export === 'object') {
+        legacy.export = {
+          ...defaults.export,
+          ...parsed.export
+        };
+      }
+
+      if (parsed.share && typeof parsed.share === 'object') {
+        const hashtags = Array.isArray(parsed.share.defaultHashtags)
+          ? parsed.share.defaultHashtags.filter((tag: unknown): tag is string => typeof tag === 'string')
+          : defaults.share.defaultHashtags;
+
+        legacy.share = {
+          ...defaults.share,
+          ...parsed.share,
+          defaultHashtags: [...hashtags]
+        };
+      }
+
+      return legacy;
+    } catch (error) {
+      console.warn('Failed to parse general settings from localStorage:', error);
+      return {};
+    }
+  }
+
+  private static normalizeDashboardGeneralSettings(
+    settings: Settings | null,
+    defaults: NormalizedGeneralSettings
+  ): Partial<NormalizedGeneralSettings> {
+    if (!settings || typeof settings !== 'object' || !settings.general) {
+      return {};
+    }
+
+    const general = settings.general;
+    const normalized: Partial<NormalizedGeneralSettings> = {};
+
+    if (typeof general.refreshInterval === 'number' && !Number.isNaN(general.refreshInterval)) {
+      const intervalSeconds = Math.max(0, Math.round(general.refreshInterval / 1000));
+      normalized.refreshInterval = intervalSeconds;
+      normalized.autoRefresh = intervalSeconds > 0;
+    } else if (typeof (general as any).autoRefresh === 'boolean') {
+      normalized.autoRefresh = Boolean((general as any).autoRefresh);
+    }
+
+    if (general.cacheSettings && typeof general.cacheSettings === 'object') {
+      const duration = general.cacheSettings.duration;
+      if (typeof duration === 'number' && !Number.isNaN(duration)) {
+        normalized.cacheDuration = Math.max(0, Math.round(duration / 1000));
+      }
+    }
+
+    if (general.notifications && typeof general.notifications === 'object') {
+      if (typeof general.notifications.enabled === 'boolean') {
+        normalized.notifications = general.notifications.enabled;
+      }
+      if (typeof general.notifications.sound === 'boolean') {
+        normalized.notificationSound = general.notifications.sound ? 'ping' : 'silent';
+      }
+    }
+
+    if (general.export && typeof general.export === 'object') {
+      normalized.export = {
+        ...defaults.export,
+        ...general.export
+      };
+    }
+
+    if (general.share && typeof general.share === 'object') {
+      const hashtags = Array.isArray(general.share.defaultHashtags)
+        ? general.share.defaultHashtags
+            .map(tag => (typeof tag === 'string' ? tag.trim() : ''))
+            .filter((tag): tag is string => typeof tag === 'string' && tag.length > 0)
+        : defaults.share.defaultHashtags;
+
+      normalized.share = {
+        ...defaults.share,
+        ...general.share,
+        defaultHashtags: [...hashtags]
+      };
+    }
+
+    return normalized;
+  }
+
+  private static applyGeneralSettingsPatch(
+    target: NormalizedGeneralSettings,
+    patch: Partial<NormalizedGeneralSettings> | undefined
+  ): { autoProvided: boolean; refreshProvided: boolean } {
+    let autoProvided = false;
+    let refreshProvided = false;
+
+    if (!patch) {
+      return { autoProvided, refreshProvided };
+    }
+
+    if (typeof patch.autoRefresh === 'boolean') {
+      target.autoRefresh = patch.autoRefresh;
+      autoProvided = true;
+    }
+
+    if (typeof patch.refreshInterval === 'number') {
+      target.refreshInterval = patch.refreshInterval;
+      refreshProvided = true;
+    }
+
+    if (typeof patch.preserveHistory === 'boolean') {
+      target.preserveHistory = patch.preserveHistory;
+    }
+
+    if (typeof patch.notifications === 'boolean') {
+      target.notifications = patch.notifications;
+    }
+
+    if (typeof patch.notificationSound === 'string') {
+      target.notificationSound = patch.notificationSound;
+    }
+
+    if (typeof patch.showNotificationCount === 'boolean') {
+      target.showNotificationCount = patch.showNotificationCount;
+    }
+
+    if (typeof patch.cacheDuration === 'number') {
+      target.cacheDuration = patch.cacheDuration;
+    }
+
+    if (typeof patch.storageLimit === 'number') {
+      target.storageLimit = patch.storageLimit;
+    }
+
+    if (patch.export) {
+      target.export = {
+        ...target.export,
+        ...patch.export
+      };
+    }
+
+    if (patch.share) {
+      const nextShare = {
+        ...target.share,
+        ...patch.share
+      };
+
+      if (patch.share.defaultHashtags !== undefined) {
+        const hashtags = Array.isArray(patch.share.defaultHashtags)
+          ? patch.share.defaultHashtags
+              .map(tag => (typeof tag === 'string' ? tag.trim() : ''))
+              .filter((tag): tag is string => typeof tag === 'string' && tag.length > 0)
+          : target.share.defaultHashtags;
+        nextShare.defaultHashtags = [...hashtags];
+      } else {
+        nextShare.defaultHashtags = [...target.share.defaultHashtags];
+      }
+
+      target.share = nextShare;
+    }
+
+    return { autoProvided, refreshProvided };
   }
   
   /**
@@ -409,15 +631,16 @@ export class SettingsIntegrationService {
    * Apply general settings to the application
    */
   static applyGeneralSettings(): void {
-    const settings = this.loadSettings();
-    
-    if (settings.general) {
-      log.debug('SettingsIntegration', 'Applied general settings', {
-        refreshInterval: settings.general.refreshInterval,
-        cacheSettings: settings.general.cacheSettings,
-        notifications: settings.general.notifications
-      });
-    }
+    const mergedGeneralSettings = this.getGeneralSettings();
+
+    log.debug('SettingsIntegration', 'Applied general settings', {
+      refreshIntervalSeconds: mergedGeneralSettings.refreshInterval,
+      autoRefresh: mergedGeneralSettings.autoRefresh,
+      notifications: mergedGeneralSettings.notifications,
+      cacheDurationSeconds: mergedGeneralSettings.cacheDuration,
+      export: mergedGeneralSettings.export,
+      share: mergedGeneralSettings.share
+    });
   }
 
   /**

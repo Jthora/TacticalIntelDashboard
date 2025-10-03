@@ -69,6 +69,11 @@ export interface Settings {
       compress: boolean;
       encrypt: boolean;
     };
+    share?: {
+      enabled: boolean;
+      defaultHashtags: string[];
+      attribution: string;
+    };
   };
 }
 
@@ -137,6 +142,11 @@ const defaultSettings: Settings = {
       includeMetadata: true,
       compress: false,
       encrypt: true
+    },
+    share: {
+      enabled: true,
+      defaultHashtags: ['intelwatch'],
+      attribution: 'via Tactical Intel Dashboard'
     }
   }
 };
@@ -174,31 +184,81 @@ export const SettingsProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
   }, [settings]);
   
   const updateSettings = (newSettings: Partial<Settings>) => {
-    setSettings(prevSettings => ({
-      ...prevSettings,
-      ...newSettings,
-      // Deep merge for nested objects
-      cors: {
-        ...prevSettings.cors,
-        ...(newSettings.cors || {}),
-        services: {
-          ...prevSettings.cors.services,
-          ...(newSettings.cors?.services || {})
+    setSettings(prevSettings => {
+      const prevGeneral = prevSettings.general ?? defaultSettings.general!;
+      const incomingGeneral = newSettings.general;
+
+      const mergedGeneral = {
+        refreshInterval: incomingGeneral?.refreshInterval ?? prevGeneral.refreshInterval,
+        cacheSettings: {
+          enabled: incomingGeneral?.cacheSettings?.enabled ?? prevGeneral.cacheSettings.enabled,
+          duration: incomingGeneral?.cacheSettings?.duration ?? prevGeneral.cacheSettings.duration
+        },
+        notifications: {
+          enabled: incomingGeneral?.notifications?.enabled ?? prevGeneral.notifications.enabled,
+          sound: incomingGeneral?.notifications?.sound ?? prevGeneral.notifications.sound
         }
-      },
-      protocols: {
-        ...prevSettings.protocols,
-        ...(newSettings.protocols || {})
-      },
-      verification: {
-        ...prevSettings.verification,
-        ...(newSettings.verification || {})
-      },
-      display: {
-        ...prevSettings.display,
-        ...(newSettings.display || {})
+      } as NonNullable<Settings['general']>;
+
+      if (prevGeneral.export || incomingGeneral?.export) {
+        const fallbackExport: NonNullable<Settings['general']>['export'] = prevGeneral.export
+          ?? defaultSettings.general?.export
+          ?? {
+            format: 'json',
+            autoExport: false,
+            includeMetadata: true,
+            compress: false,
+            encrypt: true
+          };
+
+        mergedGeneral.export = {
+          ...fallbackExport,
+          ...(incomingGeneral?.export || {})
+        };
       }
-    }));
+
+      if (prevGeneral.share || incomingGeneral?.share) {
+        const fallbackShare = prevGeneral.share
+          ?? defaultSettings.general?.share
+          ?? {
+            enabled: true,
+            defaultHashtags: ['intelwatch'],
+            attribution: 'via Tactical Intel Dashboard'
+          };
+
+        mergedGeneral.share = {
+          ...fallbackShare,
+          ...(incomingGeneral?.share || {})
+        };
+      }
+
+      return {
+        ...prevSettings,
+        ...newSettings,
+        // Deep merge for nested objects
+        cors: {
+          ...prevSettings.cors,
+          ...(newSettings.cors || {}),
+          services: {
+            ...prevSettings.cors.services,
+            ...(newSettings.cors?.services || {})
+          }
+        },
+        protocols: {
+          ...prevSettings.protocols,
+          ...(newSettings.protocols || {})
+        },
+        verification: {
+          ...prevSettings.verification,
+          ...(newSettings.verification || {})
+        },
+        display: {
+          ...prevSettings.display,
+          ...(newSettings.display || {})
+        },
+        general: mergedGeneral
+      };
+    });
   };
   
   const resetSettings = (tab?: SettingsTab) => {

@@ -43,21 +43,23 @@ describe('MarqueeBar', () => {
     expect(container).toBeInTheDocument();
 
     await act(async () => { await new Promise(r => setTimeout(r, 300)); });
+    const baseSpeed = Number(container.dataset.baseSpeed);
     const runningSpeed = Number(container.dataset.currentSpeed);
-    expect(runningSpeed).toBeGreaterThan(10);
+    expect(runningSpeed).toBeGreaterThan(baseSpeed * 0.8);
 
     await act(async () => { await userEvent.hover(container); await new Promise(r => setTimeout(r, 600)); });
     const slowed = Number(container.dataset.currentSpeed);
-    expect(slowed).toBeLessThanOrEqual(runningSpeed / 2.5); // should approach ~1/3
+    expect(slowed).toBeLessThanOrEqual(baseSpeed / 2.5); // should approach ~1/3 of baseline
   });
 
   test('pause button reduces speed toward zero', async () => {
     seedItems([{ text: 'Gamma' }, { text: 'Delta' }]);
     render(<MarqueeBar speed={30} />);
     const container = document.querySelector('.marquee-bar') as HTMLElement;
-    await act(async () => { await new Promise(r => setTimeout(r, 250)); });
-    const before = Number(container.dataset.currentSpeed);
-    expect(before).toBeGreaterThan(5);
+  await act(async () => { await new Promise(r => setTimeout(r, 250)); });
+  const baseSpeed = Number(container.dataset.baseSpeed);
+  const before = Number(container.dataset.currentSpeed);
+  expect(before).toBeGreaterThan(baseSpeed * 0.8);
     const btn = container.querySelector('.marquee-pause-btn') as HTMLButtonElement;
     await act(async () => { userEvent.click(btn); await new Promise(r => setTimeout(r, 500)); });
     const after = Number(container.dataset.currentSpeed);

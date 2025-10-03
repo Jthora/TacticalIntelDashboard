@@ -1,18 +1,16 @@
-import React, { memo,useCallback, useEffect, useMemo, useState } from 'react';
+import React, { memo, useEffect, useMemo, useState } from 'react';
 
 import { useFilters } from '../contexts/FilterContext';
 import useAlerts from '../hooks/alerts/useAlerts';
 import { useLoading } from '../hooks/useLoading';
-import { Feed } from '../models/Feed';
+import type { Feed } from '../models/Feed';
 import FeedService from '../services/FeedService';
-import { modernFeedService } from '../services/ModernFeedService';
 import PerformanceManager from '../services/PerformanceManager';
 import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
-import { ErrorOverlay,FeedVisualizerSkeleton } from '../shared/components/LoadingStates';
-import { log } from '../utils/LoggerService';
+import { ErrorOverlay, FeedVisualizerSkeleton } from '../shared/components/LoadingStates';
 import FeedItem from './FeedItem';
-import { getSourceById } from '../constants/ModernIntelligenceSources';
-import { NormalizedDataItem } from '../types/ModernAPITypes';
+import { useFeedLoader } from '../hooks/useFeedLoader';
+import { useAutoRefresh } from '../hooks/useAutoRefresh';
 
 // TDD Error Tracking for FeedVisualizer
 const TDD_UI_ERRORS = {
@@ -61,37 +59,14 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     });
   }, [selectedFeedList]);
 
-  const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  
   // Initialize autoRefresh from user settings
   const [autoRefresh, setAutoRefresh] = useState<boolean>(() => {
     const generalSettings = SettingsIntegrationService.getGeneralSettings();
     return generalSettings.autoRefresh;
   });
-  
-  const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
 
   // Filter context integration
   const { getFilteredFeeds } = useFilters();
-
-  // Performance-optimized filtered feeds with caching
-  const filteredFeeds = useMemo(() => {
-    const cacheKey = `filtered-feeds-${selectedFeedList}-${feeds.length}`;
-    const cached = PerformanceManager.getCache(cacheKey);
-    
-    if (cached) {
-      return cached;
-    }
-
-    const enrichedFeeds = feeds.map(feed => FeedService.enrichFeedWithMetadata(feed));
-    const filtered = getFilteredFeeds(enrichedFeeds);
-    
-    // Cache for 30 seconds
-    PerformanceManager.setCache(cacheKey, filtered, 30000);
-    
-    return filtered;
-  }, [feeds, getFilteredFeeds, selectedFeedList]);
 
   // Enhanced loading state management
   const { 
@@ -111,226 +86,42 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     alertStats 
   } = useAlerts();
 
-  const loadFeeds = useCallback(async (showLoading = true) => {
-    TDD_UI_ERRORS.logSuccess('046', 'loadFeeds', 'loadFeeds called', { 
-      selectedFeedList, 
-      showLoading,
-      callStack: new Error().stack?.split('\n').slice(1, 4).join('\n')
-    });
-    console.log('🔍 FeedVisualizer: loadFeeds called with selectedFeedList:', selectedFeedList);
-    console.log('🔍 FeedVisualizer: showLoading:', showLoading);
+  const {
+    feeds,
+    lastUpdated,
+    recentAlertTriggers,
+    loadFeeds
+  } = useFeedLoader(
+    {
+      selectedFeedList,
+      isMonitoring,
+      checkFeedItems,
+      setLoading,
+      setError,
+      logSuccess: TDD_UI_ERRORS.logSuccess,
+      logWarning: TDD_UI_ERRORS.logWarning
+    }
+  );
+
+  // Performance-optimized filtered feeds with caching
+  const filteredFeeds = useMemo(() => {
+    const cacheKey = `filtered-feeds-${selectedFeedList}-${feeds.length}`;
+    const cached = PerformanceManager.getCache(cacheKey);
     
-    if (!selectedFeedList) {
-      TDD_UI_ERRORS.logWarning('047', 'loadFeeds', 'No selectedFeedList provided, clearing feeds', { selectedFeedList });
-      console.log('⚠️ FeedVisualizer: No selectedFeedList, clearing feeds');
-      setFeeds([]);
-      setLoading(false);
-      return;
+    if (cached) {
+      return cached;
     }
 
-    if (showLoading) {
-      TDD_UI_ERRORS.logSuccess('048', 'loadFeeds', 'Setting loading state', { selectedFeedList });
-      setLoading(true, 'Loading intelligence feeds...');
-      setError(null);
-    }
-
-    try {
-      log.debug("Component", `Loading feeds for list: ${selectedFeedList}`);
-      console.log('🎯 FeedVisualizer: About to check feed list type for:', selectedFeedList);
-      TDD_UI_ERRORS.logSuccess('049', 'loadFeeds', 'About to determine feed list type', { selectedFeedList });
-      
-      // If a specific modern source is selected by ID, fetch only that source
-      const modernSource = getSourceById(selectedFeedList);
-      if (modernSource) {
-        TDD_UI_ERRORS.logSuccess('049A', 'loadFeeds', 'Detected modern source selection', { sourceId: selectedFeedList, sourceName: modernSource.name });
-        console.log('📡 Using Modern Feed Service for single source:', modernSource.id);
-        const normalizedItems: NormalizedDataItem[] = await modernFeedService.fetchSourceData(modernSource);
-        // Map NormalizedDataItem -> Feed (legacy Feed model used by UI)
-        const feedsForSource: Feed[] = normalizedItems.map((item, index) => ({
-          id: item.id || `${modernSource.id}-${index}-${Date.now()}`,
-          name: modernSource.name,
-          url: item.url,
-          title: item.title,
-          link: item.url,
-          pubDate: (item.publishedAt instanceof Date ? item.publishedAt.toISOString() : new Date(item.publishedAt).toISOString()),
-          feedListId: 'modern-api',
-          description: item.summary || '',
-          content: item.summary || '',
-          author: item.source || modernSource.name,
-          categories: item.tags || [],
-          tags: item.tags || [],
-          priority: ((item.priority ? item.priority.toUpperCase() : 'MEDIUM') as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'),
-          contentType: 'INTEL',
-          source: item.source || modernSource.name,
-          ...(item.metadata ? { metadata: item.metadata } : {})
-        }));
-        
-        // Process alerts if enabled
-        if (isMonitoring && feedsForSource.length > 0) {
-          const feedItemsForAlerts = feedsForSource.map(feed => ({
-            title: feed.title,
-            description: feed.description || '',
-            content: feed.content || '',
-            link: feed.link,
-            url: feed.link,
-            source: feed.author || 'Unknown',
-            feedTitle: feed.author || 'Unknown',
-            pubDate: feed.pubDate,
-            author: feed.author,
-            categories: feed.categories
-          }));
-          const triggers = checkFeedItems(feedItemsForAlerts);
-          if (triggers.length > 0) {
-            log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
-            setRecentAlertTriggers(triggers.length);
-            setTimeout(() => setRecentAlertTriggers(0), 30000);
-          }
-        }
-        
-        setFeeds(feedsForSource);
-        setLastUpdated(new Date());
-        setLoading(false);
-        return;
-      }
-
-      // Use modern feed service to get rich intelligence data
-      if (selectedFeedList === 'modern-api' || selectedFeedList === '1' || selectedFeedList === 'primary-intel' || selectedFeedList === 'security-feeds') {
-        TDD_UI_ERRORS.logSuccess('050', 'loadFeeds', 'Using Modern Feed Service path', { 
-          selectedFeedList,
-          modernFeedServiceExists: !!modernFeedService,
-          modernFeedServiceType: typeof modernFeedService
-        });
-        console.log('📡 Using Modern Feed Service for intelligence data');
-        console.log('🚀 FeedVisualizer: Calling modernFeedService.fetchAllIntelligenceData()...');
-        
-        const modernResults = await modernFeedService.fetchAllIntelligenceData();
-        TDD_UI_ERRORS.logSuccess('051', 'loadFeeds', 'Modern Feed Service returned results', { 
-          selectedFeedList,
-          resultType: typeof modernResults,
-          hasFeeds: !!modernResults.feeds,
-          feedsLength: modernResults.feeds?.length,
-          fetchedAt: modernResults.fetchedAt
-        });
-        console.log('📊 Modern Feed Service Raw Results:', modernResults);
-        
-        const modernFeeds = modernResults.feeds;
-        console.log('📊 Modern Feeds Array:', modernFeeds);
-        
-        // Convert FeedItem to Feed format for compatibility
-        const modernFeedsAsFeeds: Feed[] = modernFeeds.map(feedItem => ({
-          // Required base fields
-          id: feedItem.id,
-          name: feedItem.author || 'Modern API',
-          url: feedItem.link,
-          title: feedItem.title,
-          link: feedItem.link,
-          pubDate: feedItem.pubDate,
-          feedListId: 'modern-api',
-          // Optional fields: only include if defined
-          ...(feedItem.description ? { description: feedItem.description } : {}),
-          ...(feedItem.content ? { content: feedItem.content } : {}),
-          ...(feedItem.author ? { author: feedItem.author } : {}),
-          ...(feedItem.categories ? { categories: feedItem.categories } : {}),
-          ...(feedItem.media ? { media: feedItem.media } : {}),
-          // Extended optional metadata
-          ...(feedItem.priority ? { priority: feedItem.priority } : {}),
-          ...(feedItem.contentType ? { contentType: feedItem.contentType } : {}),
-          ...(feedItem.tags ? { tags: feedItem.tags } : {}),
-          ...(feedItem.source ? { source: feedItem.source } : {}),
-          ...(feedItem.metadata ? { metadata: feedItem.metadata } : {})
-        }));
-        
-        console.log('📊 FeedVisualizer: Loaded modern feeds count:', modernFeedsAsFeeds.length);
-        console.log('📊 FeedVisualizer: Modern feed sample:', modernFeedsAsFeeds.slice(0, 2));
-        
-        // Process feeds for alert monitoring
-        if (isMonitoring && modernFeedsAsFeeds.length > 0) {
-          log.debug("Component", `🚨 Checking ${modernFeedsAsFeeds.length} feed items for alerts...`);
-          
-          const feedItemsForAlerts = modernFeedsAsFeeds.map(feed => ({
-            title: feed.title,
-            description: feed.description || '',
-            content: feed.content || '',
-            link: feed.link,
-            url: feed.link,
-            source: feed.author || 'Unknown',
-            feedTitle: feed.author || 'Unknown',
-            pubDate: feed.pubDate,
-            author: feed.author,
-            categories: feed.categories
-          }));
-          
-          const triggers = checkFeedItems(feedItemsForAlerts);
-          
-          if (triggers.length > 0) {
-            log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
-            setRecentAlertTriggers(triggers.length);
-            setTimeout(() => setRecentAlertTriggers(0), 30000);
-          }
-        }
-        
-        setFeeds(modernFeedsAsFeeds);
-        setLastUpdated(new Date());
-        
-      } else {
-        // Fallback to legacy RSS service for other feed lists
-        console.log('📰 Using Legacy Feed Service for RSS feeds');
-        const feedsByList = await FeedService.getFeedsByList(selectedFeedList);
-        console.log('📊 FeedVisualizer: Loaded legacy feeds count:', feedsByList.length);
-        
-        // Process feeds for alert monitoring (legacy format)
-        if (isMonitoring && feedsByList.length > 0) {
-          const feedItemsForAlerts = feedsByList.map(feed => ({
-            title: feed.title,
-            description: feed.description || '',
-            content: feed.content || '',
-            link: feed.link,
-            url: feed.url,
-            source: feed.name,
-            feedTitle: feed.name,
-            pubDate: feed.pubDate,
-            author: feed.author,
-            categories: feed.categories
-          }));
-          
-          const triggers = checkFeedItems(feedItemsForAlerts);
-          
-          if (triggers.length > 0) {
-            log.debug("Component", `🚨 ${triggers.length} alert(s) triggered!`);
-            setRecentAlertTriggers(triggers.length);
-            setTimeout(() => setRecentAlertTriggers(0), 30000);
-          }
-        }
-        
-        setFeeds(feedsByList);
-        setLastUpdated(new Date());
-      }
-      
-      log.debug("Component", `Successfully loaded feeds`);
-      
-    } catch (err) {
-      console.error('Failed to load feeds:', err);
-      setError(`Failed to load feeds: ${err instanceof Error ? err.message : 'Unknown error'}`);
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedFeedList, isMonitoring, checkFeedItems, setLoading, setError]);
-
-  // Auto-refresh mechanism with user settings integration
-  useEffect(() => {
-    if (!autoRefresh || !selectedFeedList) return;
-
-    // Get user's refresh interval setting (in seconds, convert to milliseconds)
-    const generalSettings = SettingsIntegrationService.getGeneralSettings();
-    const refreshIntervalMs = generalSettings.refreshInterval * 1000;
+    const enrichedFeeds = feeds.map(feed => FeedService.enrichFeedWithMetadata(feed));
+    const filtered = getFilteredFeeds(enrichedFeeds);
     
-    const intervalId = setInterval(() => {
-      log.debug("Component", `Auto-refreshing feeds every ${generalSettings.refreshInterval} seconds...`);
-      loadFeeds(false); // Don't show loading spinner for auto-refresh
-    }, refreshIntervalMs);
+    // Cache for 30 seconds
+    PerformanceManager.setCache(cacheKey, filtered, 30000);
+    
+    return filtered;
+  }, [feeds, getFilteredFeeds, selectedFeedList]);
 
-    return () => clearInterval(intervalId);
-  }, [autoRefresh, selectedFeedList, loadFeeds]);
+  useAutoRefresh({ autoRefresh, selectedFeedList, loadFeeds });
 
   // Initial load and when selectedFeedList changes
   useEffect(() => {
@@ -342,7 +133,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
   };
 
   const toggleAutoRefresh = () => {
-    setAutoRefresh(!autoRefresh);
+    setAutoRefresh(prev => !prev);
   };
 
   if (isLoading) {

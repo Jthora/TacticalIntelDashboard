@@ -1,78 +1,46 @@
 import React, { useState } from 'react';
-
-import { SettingsTab,useSettings } from '../../contexts/SettingsContext';
+import { SettingsTab } from '../../contexts/SettingsContext';
 import CORSSettings from './tabs/CORSSettings';
-import IntegrationSettings from './tabs/IntegrationSettings';
+import ProtocolSettings from './tabs/ProtocolSettings';
+import VerificationSettings from './tabs/VerificationSettings';
+import DisplaySettings from './tabs/DisplaySettings';
+import GeneralSettings from './tabs/GeneralSettings';
+// IntegrationSettings removed from modal (deprecated)
 
-interface SettingsModalProps {
-  onClose: () => void;
-}
-
-export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
-  const { settings, updateSettings } = useSettings();
-  const [activeTab, setActiveTab] = useState<SettingsTab>(settings.lastTab);
-  
-  const handleTabChange = (tab: SettingsTab) => {
-    setActiveTab(tab);
-    updateSettings({ lastTab: tab });
-  };
-  
-  // Render the active tab content
-  const renderTabContent = () => {
+export const SettingsModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const [activeTab, setActiveTab] = useState<SettingsTab>(SettingsTab.GENERAL);
+  const tabs: { key: SettingsTab; label: string }[] = [
+    { key: SettingsTab.GENERAL, label: 'General' },
+    { key: SettingsTab.CORS, label: 'CORS' },
+    { key: SettingsTab.PROTOCOLS, label: 'Protocols' },
+    { key: SettingsTab.VERIFICATION, label: 'Verification' },
+    { key: SettingsTab.DISPLAY, label: 'Display' }
+  ];
+  const renderTab = () => {
     switch (activeTab) {
-      case SettingsTab.GENERAL:
-        return <div>General Settings Content</div>;
-      case SettingsTab.CORS:
-        return <CORSSettings />;
-      case SettingsTab.PROTOCOLS:
-        return <div>Protocol Settings Content</div>;
-      case SettingsTab.VERIFICATION:
-        return <div>Verification Settings Content</div>;
-      case SettingsTab.DISPLAY:
-        return <div>Display Settings Content</div>;
-      case SettingsTab.INTEGRATION:
-        return <IntegrationSettings />;
-      case SettingsTab.ADVANCED:
-        return <div>Advanced Settings Content</div>;
-      default:
-        return <div>General Settings Content</div>;
+      case SettingsTab.GENERAL: return <GeneralSettings />;
+      case SettingsTab.CORS: return <CORSSettings />;
+      case SettingsTab.PROTOCOLS: return <ProtocolSettings />;
+      case SettingsTab.VERIFICATION: return <VerificationSettings />;
+      case SettingsTab.DISPLAY: return <DisplaySettings />;
+      default: return null;
     }
   };
-  
   return (
-    <div className="settings-modal-overlay">
-      <div className="settings-modal">
-        <div className="settings-modal-header">
-          <h2>Settings</h2>
-          <button 
-            className="settings-modal-close" 
-            onClick={onClose}
-            aria-label="Close Settings"
-          >
-            ✕
+    <div className="settings-modal" role="dialog" aria-modal="true">
+      <div className="settings-modal-header">
+        <h2>Settings</h2>
+        <button onClick={onClose} aria-label="Close Settings">×</button>
+      </div>
+      <div className="settings-modal-tabs">
+        {tabs.map(t => (
+          <button key={t.key} className={activeTab === t.key ? 'active' : ''} onClick={() => setActiveTab(t.key)}>
+            {t.label}
           </button>
-        </div>
-        
-        <div className="settings-modal-content">
-          <div className="settings-tabs">
-            <ul>
-              {Object.values(SettingsTab).map(tab => (
-                <li 
-                  key={tab}
-                  className={tab === activeTab ? 'active' : ''}
-                >
-                  <button onClick={() => handleTabChange(tab)}>
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="settings-tab-content">
-            {renderTabContent()}
-          </div>
-        </div>
+        ))}
+      </div>
+      <div className="settings-modal-content">
+        {renderTab()}
       </div>
     </div>
   );

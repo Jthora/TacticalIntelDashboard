@@ -86,8 +86,6 @@ const DisplaySettings: React.FC = React.memo(() => {
               onChange={handleThemeChange}
             >
               <option value="dark">Dark Ops (Default)</option>
-              <option value="night">Night Operations</option>
-              <option value="combat">Combat Mode</option>
               <option value="light">Daylight Operations</option>
               <option value="system">System-Matched</option>
               <option value="alliance">Earth Alliance Standard</option>
@@ -132,44 +130,13 @@ const DisplaySettings: React.FC = React.memo(() => {
               Sample text at current size
             </div>
           </div>
-          
-          <div className="form-group">
-            <label>
-              <input type="checkbox" defaultChecked />
-              Use high-contrast text for critical data
-            </label>
-          </div>
-        </div>
-        
-        <div className="settings-section">
-          <h3>Dashboard Layout</h3>
-          
-          <div className="form-group">
-            <label>
-              <input type="checkbox" defaultChecked />
-              Show timestamp for all intelligence items
-            </label>
-          </div>
-          
-          <div className="form-group">
-            <label>
-              <input type="checkbox" defaultChecked />
-              Show source indicator badges
-            </label>
-          </div>
-          
-          <div className="form-group">
-            <label>
-              <input type="checkbox" defaultChecked />
-              Enable tactical animations
-            </label>
-          </div>
         </div>
       </div>
       
       <div className="settings-actions">
         <button 
           className="btn-primary"
+          disabled={!hasChanges}
           onClick={handleApplySettings}
         >
           Apply Display Settings
@@ -178,15 +145,9 @@ const DisplaySettings: React.FC = React.memo(() => {
           className="btn-secondary" 
           onClick={handleResetSettings}
         >
-          Reset Display
+          Reset
         </button>
       </div>
-      
-      {hasChanges && (
-        <div className="settings-feedback">
-          <p>You have unsaved changes to your display settings.</p>
-        </div>
-      )}
     </div>
   );
 });
