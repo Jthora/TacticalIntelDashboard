@@ -310,6 +310,10 @@ export class ModernAPIService {
   // Private helper methods
 
   private buildURL(endpoint: APIEndpoint, apiPath: string): string {
+    if (/^https?:\/\//i.test(apiPath)) {
+      return apiPath;
+    }
+
     let url = endpoint.baseUrl + apiPath;
     
     // Add API key if required
@@ -493,7 +497,17 @@ export class ModernAPIService {
         'normalizeRedditPosts': (data: any) => DataNormalizer.normalizeRedditPosts(data, 'unknown'),
         'normalizeUSGSEarthquakes': DataNormalizer.normalizeUSGSEarthquakes,
         'normalizeHackerNewsItem': (data: any) => [DataNormalizer.normalizeHackerNewsItem(data)],
-        'normalizeCoinGeckoData': DataNormalizer.normalizeCoinGeckoData
+        'normalizeCoinGeckoData': DataNormalizer.normalizeCoinGeckoData,
+        'normalizeEarthAllianceNews': DataNormalizer.normalizeEarthAllianceNews,
+        'normalizeInvestigativeRSS': DataNormalizer.normalizeInvestigativeRSS,
+        'normalizeCyberSecurityRSS': DataNormalizer.normalizeCyberSecurityRSS,
+        'normalizeGeopoliticalRSS': DataNormalizer.normalizeGeopoliticalRSS,
+        'normalizePrivacyAdvocacyRSS': DataNormalizer.normalizePrivacyAdvocacyRSS,
+        'normalizeFinancialTransparencyRSS': DataNormalizer.normalizeFinancialTransparencyRSS,
+        'normalizeClimateResilienceRSS': DataNormalizer.normalizeClimateResilienceRSS,
+        'normalizeAIGovernanceRSS': DataNormalizer.normalizeAIGovernanceRSS,
+        'normalizeOpenSecretsNews': DataNormalizer.normalizeOpenSecretsNews,
+        'normalizeTBIJInvestigations': DataNormalizer.normalizeTBIJInvestigations
       };
 
       const normalizer = normalizers[normalizerFunction];

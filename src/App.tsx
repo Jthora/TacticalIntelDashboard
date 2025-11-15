@@ -5,11 +5,11 @@ import DevelopmentNotice from './components/DevelopmentNotice';
 import RouteValidator from './components/RouteValidator';
 import SearchResults from './components/SearchResults';
 import WTTPStatus from './components/WTTPStatus/WTTPStatus';
-import { FeedModeProvider } from './contexts/FeedModeContext';
 import { FilterProvider } from './contexts/FilterContext';
 import { HealthProvider } from './contexts/HealthContext';
 import { IntelligenceProvider } from './contexts/IntelligenceContext';
 import { IPFSProvider } from './contexts/IPFSContext';
+import { MissionModeProvider } from './contexts/MissionModeContext';
 import { SearchProvider } from './contexts/SearchContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -37,7 +37,7 @@ const App: React.FC = () => {
                 <SearchProvider>
                   <FilterProvider>
                     <HealthProvider>
-                      <FeedModeProvider>
+                      <MissionModeProvider>
                         <div className="App">
                           <DevelopmentNotice />
                           <RouteValidator />
@@ -45,7 +45,7 @@ const App: React.FC = () => {
                           <SearchResults />
                           <WTTPStatus />
                         </div>
-                      </FeedModeProvider>
+                      </MissionModeProvider>
                     </HealthProvider>
                   </FilterProvider>
                 </SearchProvider>

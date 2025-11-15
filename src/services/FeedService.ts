@@ -1,18 +1,21 @@
 import { DefaultFeeds } from '../constants/DefaultFeeds';
 import FeedController from '../controllers/FeedController';
 import { Feed } from '../models/Feed';
-import { FeedList, FeedResults } from '../types/FeedTypes';
+import { FeedItem, FeedList, FeedResults } from '../types/FeedTypes';
 import { cleanupStoredFeeds } from '../utils/feedCleanup';
 import { convertFeedItemsToFeeds } from '../utils/feedConversion';
 import { fetchFeed } from '../utils/fetchFeed'; // Import fetchFeed
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { log } from '../utils/LoggerService';
+import { modernFeedService } from './ModernFeedService';
 
 class FeedService {
   private feeds: Feed[] = [];
   private feedLists: FeedList[] = [];
   private readonly feedsStorageKey = 'feeds';
   private readonly feedListsStorageKey = 'feedLists';
+  private legacyRefreshAttempted = false;
+  private static readonly MAX_LEGACY_RSS_FETCHES = 12;
 
   constructor() {
     // Clean up any invalid cached feeds before loading
@@ -201,31 +204,123 @@ class FeedService {
   }
 
   public async updateFeedsFromServer() {
-    log.debug("FeedService", 'Updating feeds from server');
-    log.debug("FeedService", 'Current feeds:', this.feeds);
+    log.debug("FeedService", 'Updating feeds via modern API service');
+    try {
+      const intelligenceResults = await modernFeedService.fetchAllIntelligenceData(true);
+      if (intelligenceResults.feeds && intelligenceResults.feeds.length > 0) {
+        const modernFeeds = this.convertIntelligenceToFeeds(intelligenceResults.feeds);
+        this.feeds = modernFeeds;
+        this.saveFeeds();
+        this.legacyRefreshAttempted = false;
+        log.debug("FeedService", `Modern API provided ${modernFeeds.length} feeds; legacy fallback skipped`);
+        return;
+      }
+      log.warn("FeedService", 'Modern API returned no feeds, attempting legacy RSS fallback');
+    } catch (error) {
+      log.error("FeedService", 'Modern feed update failed, attempting legacy RSS fallback:', error);
+    }
 
-    // Development mode notice removed - now using validated sources
+    await this.updateLegacyRSSFeeds();
+  }
+
+  private convertIntelligenceToFeeds(feedItems: FeedItem[]): Feed[] {
+    return feedItems.map(item => {
+      const feed: Feed = {
+        id: item.id,
+        name: item.author || item.source || 'Modern API',
+        url: item.link,
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate || new Date().toISOString(),
+        feedListId: item.feedListId || 'modern-api'
+      };
+
+      if (item.description) {
+        feed.description = item.description;
+      }
+      if (item.content) {
+        feed.content = item.content;
+      }
+      if (item.author) {
+        feed.author = item.author;
+      }
+      if (item.categories) {
+        feed.categories = item.categories;
+      }
+      if (item.media) {
+        feed.media = item.media;
+      }
+      if (item.priority) {
+        feed.priority = item.priority;
+      }
+      if (item.contentType) {
+        feed.contentType = item.contentType;
+      }
+      if (item.tags) {
+        feed.tags = item.tags;
+      }
+      if (item.source) {
+        feed.source = item.source;
+      }
+      if (item.metadata) {
+        feed.metadata = item.metadata;
+      }
+
+      feed.timestamp = item.pubDate || new Date().toISOString();
+
+      return feed;
+    });
+  }
+
+  private isLikelyRSSUrl(url?: string | null): boolean {
+    if (!url) {
+      return false;
+    }
+    const normalized = url.toLowerCase();
+    return (
+      normalized.includes('rss') ||
+      normalized.includes('atom') ||
+      normalized.endsWith('.xml') ||
+      normalized.includes('/feed') ||
+      normalized.includes('feed=')
+    );
+  }
+
+  private async updateLegacyRSSFeeds() {
+    if (this.legacyRefreshAttempted) {
+      log.debug("FeedService", 'Legacy RSS refresh already attempted, skipping repeat call');
+      return;
+    }
+    this.legacyRefreshAttempted = true;
+
+    const rssFeeds = this.feeds
+      .filter(feed => this.isLikelyRSSUrl(feed.url))
+      .slice(0, FeedService.MAX_LEGACY_RSS_FETCHES);
+
+    if (rssFeeds.length === 0) {
+      log.debug("FeedService", 'No eligible RSS feeds found for legacy fallback');
+      return;
+    }
+
+    log.debug("FeedService", `Legacy RSS fallback updating ${rssFeeds.length} feeds`);
 
     const updatedFeeds: Feed[] = [];
-    for (const feed of this.feeds) {
+    for (const feed of rssFeeds) {
       try {
-        const feedResults = await fetchFeed(feed.url); // Use fetchFeed to get feed data
-        if (feedResults) {
-          const updatedFeed = { ...feed, ...feedResults.feeds[0] }; // Assuming feedResults.feeds[0] contains the updated feed data
-          updatedFeeds.push(updatedFeed);
+        const feedResults = await fetchFeed(feed.url);
+        if (feedResults && feedResults.feeds.length > 0) {
+          updatedFeeds.push({ ...feed, ...feedResults.feeds[0] });
         } else {
-          log.error("FeedService", `Failed to fetch feed from ${feed.url}`);
-          updatedFeeds.push(feed); // Keep the old feed if fetch fails
+          updatedFeeds.push(feed);
         }
       } catch (error) {
         log.error("FeedService", `Error fetching feed from ${feed.url}:`, error);
-        updatedFeeds.push(feed); // Keep the old feed if fetch fails
+        updatedFeeds.push(feed);
       }
     }
 
-    this.feeds = updatedFeeds;
+    this.feeds = [...this.feeds.filter(feed => !rssFeeds.includes(feed)), ...updatedFeeds];
     this.saveFeeds();
-    log.debug("FeedService", 'Feeds updated from server:', this.feeds);
   }
 
   public getFeedResults(url: string): FeedResults | null {

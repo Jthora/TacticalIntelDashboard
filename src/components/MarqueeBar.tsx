@@ -124,11 +124,7 @@ export const MarqueeBar: React.FC<MarqueeBarProps> = ({ speed = 12, height = 28 
 
   const displayItems = items.slice(0, 120); // wider pool
   if (displayItems.length === 0) {
-    return (
-      <div className="marquee-bar empty" style={{ height }}>
-        <div className="marquee-empty">No live intelligence items</div>
-      </div>
-    );
+    return null;
   }
 
   const segments = displayItems.map(i => (

@@ -3,40 +3,10 @@
  * Removes invalid article URLs from stored feeds and ensures only legitimate RSS feed URLs are kept
  */
 
+import { FEED_SYSTEM_VERSION } from '../constants/FeedVersions';
 import { Feed } from '../models/Feed';
 import { LocalStorageUtil } from './LocalStorageUtil';
-
-// URL validation function (same as in fetchFeed.ts)
-const isValidFeedURL = (url: string): boolean => {
-  // Check for common feed indicators
-  const feedIndicators = [
-    '/rss', '/feed', '.xml', '/atom', 
-    'rss.xml', 'feeds/', '/rss.php'
-  ];
-  
-  // Check for article-specific patterns that should NOT be processed as feeds
-  const articlePatterns = [
-    '/2025/', '/2024/', '/2023/', '/article/',
-    '/story/', '/news/2025', '/news/2024',
-    '/post/', '/item/', 'article_'
-  ];
-  
-  const hasArticlePattern = articlePatterns.some(pattern => url.includes(pattern));
-  const hasFeedIndicator = feedIndicators.some(indicator => url.includes(indicator));
-  
-  // URL is valid if it has feed indicators OR does not have article patterns
-  // But prioritize feed indicators
-  if (hasFeedIndicator) {
-    return true;
-  }
-  
-  if (hasArticlePattern) {
-    console.warn(`🚫 Invalid article URL found in feeds: ${url}`);
-    return false;
-  }
-  
-  return true;
-};
+import { isValidFeedURL } from './feedUrlValidator';
 
 /**
  * Clean up stored feeds by removing invalid article URLs
@@ -65,8 +35,8 @@ export const cleanupStoredFeeds = (): void => {
       }
     }
     
-    // Force version update to trigger reload
-    LocalStorageUtil.setItem('feedsVersion', '3.1-cleaned');
+  // Force version update to trigger reload
+  LocalStorageUtil.setItem('feedsVersion', FEED_SYSTEM_VERSION);
     
     console.log('✅ Feed cleanup completed');
   } catch (error) {

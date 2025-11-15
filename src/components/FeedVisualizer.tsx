@@ -125,11 +125,11 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
 
   // Initial load and when selectedFeedList changes
   useEffect(() => {
-    loadFeeds();
+    loadFeeds(true, 'selected-feed-change');
   }, [loadFeeds]);
 
   const handleRefresh = () => {
-    loadFeeds(true);
+    loadFeeds(true, 'manual-refresh');
   };
 
   const toggleAutoRefresh = () => {
@@ -146,7 +146,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
         <ErrorOverlay
           title="⚠️ Feed Load Error"
           message={error}
-          onRetry={() => loadFeeds(true)}
+          onRetry={() => loadFeeds(true, 'manual-refresh')}
           suggestions={[
             "Check your internet connection",
             "Verify the feed source is available",

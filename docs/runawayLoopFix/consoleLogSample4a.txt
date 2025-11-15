@@ -1,0 +1,285 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ TDD_LOG_001: PRIMARY_INTELLIGENCE_SOURCES loaded successfully Object
+ 🧹 Starting feed cleanup...
+ 🧹 Cleaned 7 invalid feeds. Keeping 409 valid feeds.
+ ✅ Feed cleanup completed
+ TDD_SUCCESS_023 Object
+ TDD_SUCCESS_024 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_028 Object
+ 🧹 Starting feed cleanup...
+ ✅ All stored feeds are valid
+ ✅ Feed cleanup completed
+ 🔍 FeedService: loadFeeds called
+ 🔍 FeedService: Stored version: 3.2-investigative-allowlist Current version: 3.2-investigative-allowlist
+ 🔍 FeedService: storedFeeds from localStorage: 409 items
+ � FeedService: Using stored feeds from localStorage
+ 📦 FeedService: Stored feeds sample: Array(2)
+ ✅ FeedService: Final feeds count: 409
+ 🚀 FeedService: updateFeedsFromServer called - using Modern API Service
+ TDD_SUCCESS_023 Object
+ TDD_SUCCESS_024 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_028 Object
+ ✅ Cleared intelligence cache - fake sources removed
+ 📋 Valid sources that should appear:
+ - NOAA Weather Alerts (weather.gov API)
+ - USGS Earthquake Data (earthquake.usgs.gov API)
+ - GitHub Security Advisories (api.github.com)
+ - Hacker News Technology (hacker-news.firebaseio.com)
+ - Cryptocurrency Intelligence (api.coingecko.com)
+ - Reddit discussions (reddit.com APIs)
+ ❌ Fake sources that should NOT appear:
+ - FBI IC3 Cyber Alerts (fake - no RSS feed)
+ - DHS Cybersecurity Advisories (fake - no working RSS)
+ - Any military/classified sources (fake)
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: null
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: null
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+ Route changed: Object
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 0
+ TDD_SUCCESS_044 Object
+ TDD_SUCCESS_045 Object
+ TDD_SUCCESS_046 Object
+ TDD_WARNING_047 Object
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+ 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: null
+ 🔍 TDD_WARNING_067: No feed list selected, setting default to mission profile
+ 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: null
+ ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+warnOnce @ react-router-dom.js?v=38acaeb1:4393
+ ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+warnOnce @ react-router-dom.js?v=38acaeb1:4393
+ Route changed: Object
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 0
+ TDD_SUCCESS_044 Object
+ TDD_SUCCESS_045 Object
+ TDD_SUCCESS_046 Object
+ TDD_WARNING_047 Object
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+ 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: null
+ 🔍 TDD_WARNING_067: No feed list selected, setting default to mission profile
+ 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: null
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_045 Object
+ TDD_SUCCESS_046 Object
+ TDD_SUCCESS_048 Object
+ TDD_SUCCESS_049 Object
+ TDD_SUCCESS_050 Object
+ TDD_SUCCESS_023 Object
+ TDD_SUCCESS_024 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_028 Object
+HomePage.tsx:19 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: modern-api
+HomePage.tsx:24 🔍 TDD_SUCCESS_068: Feed list already selected: modern-api
+HomePage.tsx:38 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: modern-api
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 Object
+FeedVisualizer.tsx:34 TDD_WARNING_047A Object
+logWarning @ FeedVisualizer.tsx:34
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:44 TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:44
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:44 TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:44
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:44 TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:44
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:36 TDD_SUCCESS_029 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_032 Object
+ModernFeedService.ts:36 TDD_SUCCESS_034 Object
+ModernFeedService.ts:36 TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:36 TDD_SUCCESS_029 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_032 Object
+ModernFeedService.ts:36 TDD_SUCCESS_034 Object
+ModernFeedService.ts:36 TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+FeedService.ts:245 🚀 Modern API fetch result: 352 items
+FeedService.ts:251 🚀 Converted to legacy format: 352 feeds
+FeedService.ts:259 ✅ Modern API update succeeded, skipping legacy RSS fallback
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:36 TDD_SUCCESS_029 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_032 Object
+ModernFeedService.ts:36 TDD_SUCCESS_034 Object
+ModernFeedService.ts:36 TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_051 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_052 Object

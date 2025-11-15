@@ -14,7 +14,7 @@ describe('ModernIntelligenceSources', () => {
     });
 
     test('TDD_TEST_002: Each source should have required properties', () => {
-      PRIMARY_INTELLIGENCE_SOURCES.forEach((source, index) => {
+  PRIMARY_INTELLIGENCE_SOURCES.forEach(source => {
         expect(source).toHaveProperty('id');
         expect(source).toHaveProperty('name');
         expect(source).toHaveProperty('description');

@@ -9,6 +9,7 @@ import { convertFeedItemsToFeeds } from '../../../utils/feedConversion';
 import { fetchFeed } from '../../../utils/fetchFeed'; // Import fetchFeed
 import { LocalStorageUtil } from '../../../utils/LocalStorageUtil';
 import { log } from '../../../utils/LoggerService';
+import { FEED_SYSTEM_VERSION } from '../../../constants/FeedVersions';
 
 class FeedService {
   private feeds: Feed[] = [];
@@ -16,7 +17,9 @@ class FeedService {
   private readonly feedsStorageKey = 'feeds';
   private readonly feedListsStorageKey = 'feedLists';
   private readonly feedsVersionKey = 'feedsVersion';
-  private readonly currentFeedsVersion = '3.0-modern-api'; // Updated for modern API integration
+  private readonly currentFeedsVersion = FEED_SYSTEM_VERSION; // Updated for investigative allowlist rollout
+  private legacyRefreshAttempted = false;
+  private static readonly MAX_LEGACY_RSS_FETCHES = 12;
 
   constructor() {
     // Clean up any invalid cached feeds before loading
@@ -252,6 +255,9 @@ class FeedService {
         
         this.saveFeeds();
         log.info("Component", `Successfully updated with ${modernFeeds.length} modern intelligence feeds`);
+        this.legacyRefreshAttempted = false;
+        console.log('✅ Modern API update succeeded, skipping legacy RSS fallback');
+        return;
       }
       
       // Fallback to RSS for any remaining legacy feeds
@@ -266,12 +272,31 @@ class FeedService {
     }
   }
 
+  private isLikelyRSSUrl(url?: string | null): boolean {
+    if (!url) {
+      return false;
+    }
+    const normalized = url.toLowerCase();
+    return (
+      normalized.includes('rss') ||
+      normalized.includes('atom') ||
+      normalized.endsWith('.xml') ||
+      normalized.includes('/feed') ||
+      normalized.includes('feed=')
+    );
+  }
+
   private async updateLegacyRSSFeeds() {
     console.log('📡 FeedService: Falling back to legacy RSS fetching');
+    if (this.legacyRefreshAttempted) {
+      console.log('📡 Legacy RSS refresh already attempted this session, skipping to prevent loops');
+      return;
+    }
+    this.legacyRefreshAttempted = true;
     
-    const rssFeeds = this.feeds.filter(feed => 
-      feed.url && (feed.url.includes('rss') || feed.url.includes('xml') || feed.url.includes('feed'))
-    );
+    const rssFeeds = this.feeds
+      .filter(feed => this.isLikelyRSSUrl(feed.url))
+      .slice(0, FeedService.MAX_LEGACY_RSS_FETCHES);
     
     if (rssFeeds.length === 0) {
       console.log('📡 No RSS feeds to update');

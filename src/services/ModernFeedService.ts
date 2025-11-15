@@ -4,17 +4,23 @@
  * Provides real-time intelligence data from multiple sources
  */
 
-import { 
-  DEFAULT_INTELLIGENCE_CONFIG,
-  getEnabledSources,
-  getSourceById,
-  PRIMARY_INTELLIGENCE_SOURCES} from '../constants/ModernIntelligenceSources';
+import type { IntelligenceModeConfig } from '../constants/ModernIntelligenceSources';
+import { MissionMode, DEFAULT_MISSION_MODE } from '../constants/MissionMode';
+import {
+  getDefaultIntelligenceConfig,
+  getEnabledSources as getEnabledSourcesForMode,
+  getSourceById as getSourceByIdForMode,
+  getSourceCatalog,
+  getSourcesWithRuntimeState as getSourcesWithRuntimeStateForMode
+} from '../constants/MissionSourceRegistry';
 import { FeedItem, FeedResults } from '../types/FeedTypes';
 import { IntelligenceSource,NormalizedDataItem } from '../types/ModernAPITypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { log } from '../utils/LoggerService';
+import { SourceToggleStore } from '../utils/SourceToggleStore';
 import { modernAPIService } from './ModernAPIService';
 import { marqueeProjectionService } from './MarqueeProjectionService';
+import { FEED_SYSTEM_VERSION } from '../constants/FeedVersions';
 
 // TDD Error Tracking for ModernFeedService
 const TDD_FEED_ERRORS = {
@@ -47,9 +53,10 @@ const TDD_FEED_ERRORS = {
 class ModernFeedService {
   private lastFetchTime: Map<string, number> = new Map();
   private cachedResults: Map<string, NormalizedDataItem[]> = new Map();
-  private readonly cacheStorageKey = 'modernFeedCache';
-  private readonly configStorageKey = 'modernFeedConfig';
-  private readonly currentVersion = '3.0-modern-api';
+  private readonly cacheStorageKeyBase = 'modernFeedCache';
+  private readonly configStorageKeyBase = 'modernFeedConfig';
+  private readonly currentVersion = FEED_SYSTEM_VERSION;
+  private missionMode: MissionMode = DEFAULT_MISSION_MODE;
 
   constructor() {
     this.initializeService();
@@ -58,6 +65,7 @@ class ModernFeedService {
   private initializeService(): void {
     // Load cached data
     this.loadCachedData();
+    SourceToggleStore.setActiveMode(this.missionMode);
     
     // Check for version upgrade
     const storedVersion = LocalStorageUtil.getItem<string>('modernFeedVersion');
@@ -70,17 +78,51 @@ class ModernFeedService {
     log.info('ModernFeedService', 'Modern Feed Service initialized');
   }
 
+  setMissionMode(mode: MissionMode): void {
+    if (mode === this.missionMode) {
+      return;
+    }
+
+    this.missionMode = mode;
+    SourceToggleStore.setActiveMode(mode);
+    this.clearInMemoryCaches();
+    modernAPIService.clearCache();
+    LocalStorageUtil.removeItem(this.getCacheStorageKey(mode));
+  }
+
+  private getCacheStorageKey(mode: MissionMode = this.missionMode): string {
+    return `${this.cacheStorageKeyBase}:${mode}`;
+  }
+
+  private getConfigStorageKey(mode: MissionMode = this.missionMode): string {
+    return `${this.configStorageKeyBase}:${mode}`;
+  }
+
+  private getCacheKeyForSource(sourceId: string, mode: MissionMode = this.missionMode): string {
+    return `${mode}:${sourceId}`;
+  }
+
+  private getModeConfig(mode: MissionMode = this.missionMode): IntelligenceModeConfig {
+    return getDefaultIntelligenceConfig(mode);
+  }
+
+  private clearInMemoryCaches(): void {
+    this.cachedResults.clear();
+    this.lastFetchTime.clear();
+  }
+
   /**
    * Fetch intelligence data from all enabled sources
    */
   async fetchAllIntelligenceData(forceRefresh: boolean = false): Promise<FeedResults> {
     TDD_FEED_ERRORS.logSuccess('023', 'fetchAllIntelligenceData', 'Starting intelligence data fetch', { forceRefresh });
     log.info('ModernFeedService', 'Fetching intelligence data from modern APIs');
+    const mode = this.missionMode;
     
     // TDD_ERROR_024: Validate getEnabledSources function
     let enabledSources: IntelligenceSource[];
     try {
-      enabledSources = getEnabledSources();
+      enabledSources = getEnabledSourcesForMode(mode);
       TDD_FEED_ERRORS.logSuccess('024', 'fetchAllIntelligenceData', 'Enabled sources retrieved', { 
         count: enabledSources.length,
         sources: enabledSources.map(s => ({ id: s.id, name: s.name, enabled: s.enabled }))
@@ -92,7 +134,7 @@ class ModernFeedService {
     
     // TDD_ERROR_026: Check if we have any sources
     if (enabledSources.length === 0) {
-      TDD_FEED_ERRORS.logError('026', 'fetchAllIntelligenceData', 'No enabled sources found', { PRIMARY_INTELLIGENCE_SOURCES });
+      TDD_FEED_ERRORS.logError('026', 'fetchAllIntelligenceData', 'No enabled sources found', { mode });
       return { feeds: [], fetchedAt: new Date().toISOString() };
     }
     
@@ -225,42 +267,102 @@ class ModernFeedService {
    * Fetch data from a specific intelligence source
    */
   async fetchSourceData(source: IntelligenceSource, forceRefresh: boolean = false): Promise<NormalizedDataItem[]> {
+    const cacheKey = this.getCacheKeyForSource(source.id);
     const now = Date.now();
-    const lastFetch = this.lastFetchTime.get(source.id) || 0;
+    const lastFetch = this.lastFetchTime.get(cacheKey) || 0;
     const timeSinceLastFetch = now - lastFetch;
 
     // Check if refresh is needed
     if (!forceRefresh && timeSinceLastFetch < source.refreshInterval) {
-      const cached = this.cachedResults.get(source.id);
+      const cached = this.cachedResults.get(cacheKey);
       if (cached) {
         log.debug('ModernFeedService', `Using cached data for ${source.name}`);
         return cached;
       }
     }
 
+    const attemptedPaths: string[] = [];
+
     try {
       log.info('ModernFeedService', `Fetching fresh data from ${source.name}`);
       
-      // Build API path based on source configuration
-      const apiPath = this.buildAPIPath(source);
-      
-      // Fetch data using the modern API service
-      const normalizedData = await modernAPIService.fetchIntelligenceData(
-        source.endpoint,
-        apiPath,
-        source.normalizer,
-        {
-          cache: true,
-          maxAge: source.refreshInterval,
-          timeout: DEFAULT_INTELLIGENCE_CONFIG.timeout
+      // Determine API paths (including fallbacks when available)
+      const apiPaths = this.getApiPathsForSource(source);
+      if (apiPaths.length === 0) {
+        throw new Error(`No API paths configured for source ${source.id}`);
+      }
+
+      let normalizedData: NormalizedDataItem[] = [];
+
+      for (let i = 0; i < apiPaths.length; i++) {
+        const apiPath = apiPaths[i];
+        attemptedPaths.push(apiPath);
+
+        const modeConfig = this.getModeConfig();
+        const result = await modernAPIService.fetchIntelligenceData(
+          source.endpoint,
+          apiPath,
+          source.normalizer,
+          {
+            cache: true,
+            maxAge: source.refreshInterval,
+            timeout: modeConfig.timeout
+          }
+        );
+
+        const hasItems = result.length > 0;
+        const hasMeaningfulItems = hasItems ? this.hasMeaningfulIntelligence(result) : false;
+
+        if (hasItems && hasMeaningfulItems) {
+          normalizedData = result;
+          if (i > 0) {
+            TDD_FEED_ERRORS.logSuccess('075', 'fetchSourceData', 'Fallback proxy succeeded with data', {
+              sourceId: source.id,
+              fallbackIndex: i,
+              apiPath
+            });
+          }
+          break;
         }
-      );
+
+        const hasMorePaths = i < apiPaths.length - 1;
+
+        if (hasItems && !hasMeaningfulItems) {
+          TDD_FEED_ERRORS.logWarning('074A', 'fetchSourceData', 'Normalized data appears to be generic fallback, attempting next proxy', {
+            sourceId: source.id,
+            attemptedProxy: apiPath,
+            itemCount: result.length
+          });
+
+          if (hasMorePaths) {
+            continue;
+          }
+
+          normalizedData = [];
+          break;
+        }
+
+        if (hasMorePaths) {
+          TDD_FEED_ERRORS.logWarning('074', 'fetchSourceData', 'Primary proxy yielded no items, attempting fallback', {
+            sourceId: source.id,
+            attemptedProxy: apiPath
+          });
+          continue;
+        }
+
+        normalizedData = result;
+        break;
+      }
+
+      if (normalizedData.length === 0 && source.id === 'icij-investigations') {
+        throw new Error('ICIJ investigative feed returned no data from available proxies');
+      }
 
       // Update last fetch time
-      this.lastFetchTime.set(source.id, now);
+  this.lastFetchTime.set(cacheKey, now);
       
       // Cache the results
-      this.cachedResults.set(source.id, normalizedData);
+  this.cachedResults.set(cacheKey, normalizedData);
 
       // Ingest the freshly fetched normalized data into marquee projection (if enabled)
       if ((source as any).marqueeEnabled !== false) {
@@ -273,13 +375,18 @@ class ModernFeedService {
       return normalizedData;
 
     } catch (error) {
+      TDD_FEED_ERRORS.logError('076', 'fetchSourceData', 'Failed to fetch source data after fallbacks', {
+        sourceId: source.id,
+        attemptedPaths,
+        error: error instanceof Error ? error.message : error
+      });
       log.error('ModernFeedService', `Error fetching from ${source.name}: ${error}`);
       
       // Update source health
       this.updateSourceHealth(source.id, false);
       
       // Return cached data if available
-      return this.cachedResults.get(source.id) || [];
+      return this.cachedResults.get(cacheKey) || [];
     }
   }
 
@@ -287,12 +394,12 @@ class ModernFeedService {
    * Get specific category of intelligence data
    */
   async fetchByCategory(category: string, forceRefresh: boolean = false): Promise<NormalizedDataItem[]> {
-    const enabledSources = getEnabledSources().filter(source =>
+    const enabledSources = getEnabledSourcesForMode(this.missionMode).filter(source =>
       source.tags.includes(category.toLowerCase()) ||
       source.endpoint.category === category
     );
 
-    const fetchPromises = enabledSources.map(source => 
+    const fetchPromises = enabledSources.map(source =>
       this.fetchSourceData(source, forceRefresh)
     );
 
@@ -356,10 +463,9 @@ class ModernFeedService {
   async clearCacheAndRefresh(): Promise<FeedResults> {
     log.info('ModernFeedService', 'Clearing cache and forcing refresh');
     
-    this.cachedResults.clear();
-    this.lastFetchTime.clear();
+    this.clearInMemoryCaches();
     modernAPIService.clearCache();
-    LocalStorageUtil.removeItem(this.cacheStorageKey);
+    LocalStorageUtil.removeItem(this.getCacheStorageKey());
     
     return await this.fetchAllIntelligenceData(true);
   }
@@ -368,18 +474,23 @@ class ModernFeedService {
    * Get available intelligence sources
    */
   getAvailableSources(): IntelligenceSource[] {
-    return PRIMARY_INTELLIGENCE_SOURCES;
+    return getSourcesWithRuntimeStateForMode(this.missionMode);
   }
 
   /**
    * Enable/disable a specific source
    */
   toggleSource(sourceId: string, enabled: boolean): void {
-    const source = getSourceById(sourceId);
+    const source = getSourceByIdForMode(this.missionMode, sourceId);
     if (source) {
-      source.enabled = enabled;
+      SourceToggleStore.setOverride(sourceId, enabled, this.missionMode);
       this.saveConfiguration();
-      log.info('ModernFeedService', `${enabled ? 'Enabled' : 'Disabled'} source: ${source.name}`);
+      if (!enabled) {
+        const cacheKey = this.getCacheKeyForSource(sourceId);
+        this.cachedResults.delete(cacheKey);
+        this.lastFetchTime.delete(cacheKey);
+      }
+      log.info('ModernFeedService', `${enabled ? 'Enabled' : 'Disabled'} source: ${source.name} (${this.missionMode})`);
     }
   }
 
@@ -408,13 +519,189 @@ class ModernFeedService {
       
       case 'reddit-security':
         return '/r/cybersecurity/hot.json?limit=15';
-      
+
+      case 'spaceforce-launch-watch':
+        return '/planetary/apod';
+
+      case 'spaceforce-space-weather':
+        return '/alerts/active?status=actual&message_type=alert';
+
+      case 'spaceforce-orbital-debris':
+        return `/api?url=${encodeURIComponent('https://www.space.com/feeds/all')}`;
+
+      case 'spaceforce-sda-ops':
+        return `/api?url=${encodeURIComponent('https://www.spaceforce.mil/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=106&Category=all')}`;
+
+      case 'spaceforce-deep-space-network':
+        return '/planetary/apod';
+
+      case 'spaceforce-reddit-space':
+        return '/r/space/hot.json?limit=25';
+
+      case 'earth-alliance-news':
+        return `/api?url=${encodeURIComponent('https://earthalliance.news/feed/')}`;
+
+      case 'intercept-investigations':
+        return `/api?url=${encodeURIComponent('https://theintercept.com/feed/')}`;
+
+      case 'propublica-investigations':
+        return `/api?url=${encodeURIComponent('https://www.propublica.org/feeds/propublica-main')}`;
+
+      case 'icij-investigations':
+        return 'https://feed2json.org/convert?url=' + encodeURIComponent('https://www.icij.org/feed/');
+
+      case 'bellingcat-investigations':
+        return `/api?url=${encodeURIComponent('https://www.bellingcat.com/feed/')}`;
+
+      case 'ddosecrets-investigations':
+        return `/api?url=${encodeURIComponent('https://torrents.ddosecrets.com/releases.xml')}`;
+
+      case 'occrp-investigations':
+        return `/api?url=${encodeURIComponent('https://www.occrp.org/en/investigations/feed')}`;
+
+      case 'krebs-security':
+        return `/api?url=${encodeURIComponent('https://krebsonsecurity.com/feed/')}`;
+
+      case 'threatpost-security':
+        return `/api?url=${encodeURIComponent('https://threatpost.com/feed/')}`;
+
+      case 'wired-security':
+        return `/api?url=${encodeURIComponent('https://www.wired.com/feed/category/security/latest/rss')}`;
+
+      case 'grayzone-geopolitics':
+        return `/api?url=${encodeURIComponent('https://thegrayzone.com/feed/')}`;
+
+      case 'mintpress-geopolitics':
+        return `/api?url=${encodeURIComponent('https://www.mintpressnews.com/feed/')}`;
+
+      case 'geopolitical-economy-report':
+        return `/api?url=${encodeURIComponent('https://geopoliticaleconomy.com/feed/')}`;
+
+      case 'eff-updates':
+        return `/api?url=${encodeURIComponent('https://www.eff.org/rss/updates')}`;
+
+      case 'privacy-international':
+        return `/api?url=${encodeURIComponent('https://privacyinternational.org/rss.xml')}`;
+
+      case 'opensecrets-transparency':
+        return `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.opensecrets.org/news')}`;
+
+      case 'transparency-international':
+        return `/api?url=${encodeURIComponent('https://www.transparency.org/en/rss')}`;
+
+      case 'inside-climate-news':
+        return `/api?url=${encodeURIComponent('https://insideclimatenews.org/feed/')}`;
+
+      case 'guardian-environment':
+        return `/api?url=${encodeURIComponent('https://www.theguardian.com/environment/rss')}`;
+
+      case 'future-of-life-institute':
+        return `/api?url=${encodeURIComponent('https://futureoflife.org/feed/')}`;
+
       case 'nasa-space-data':
         return '/planetary/apod';
       
       default:
         return Object.values(source.endpoint.endpoints)[0] || '';
     }
+  }
+
+  private getApiPathsForSource(source: IntelligenceSource): string[] {
+    const buildRSSFallbacks = (feedUrl: string, includeFeed2Json: boolean = true): string[] => {
+      const paths: string[] = [
+        `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`,
+        this.buildAPIPath(source)
+      ];
+
+      if (includeFeed2Json) {
+        paths.push(`https://feed2json.org/convert?url=${encodeURIComponent(feedUrl)}`);
+      }
+
+      return Array.from(new Set(paths.filter(Boolean)));
+    };
+
+    if (source.id === 'icij-investigations') {
+      const feedUrl = 'https://www.icij.org/feed/';
+      const feed2JsonUrl = `https://feed2json.org/convert?url=${encodeURIComponent(feedUrl)}`;
+      const allOriginsProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed2JsonUrl)}`;
+      const rss2JsonPath = `/api?url=${encodeURIComponent(feedUrl)}`;
+
+      return [
+        allOriginsProxy,
+        this.buildAPIPath(source),
+        rss2JsonPath
+      ];
+    }
+
+    if (source.id === 'occrp-investigations') {
+      const feedUrl = 'https://www.occrp.org/en/investigations/feed';
+      const allOriginsJson = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
+      const rss2JsonPath = this.buildAPIPath(source);
+      return [allOriginsJson, rss2JsonPath];
+    }
+
+    if (source.id === 'krebs-security') {
+      return buildRSSFallbacks('https://krebsonsecurity.com/feed/');
+    }
+
+    if (source.id === 'threatpost-security') {
+      return buildRSSFallbacks('https://threatpost.com/feed/');
+    }
+
+    if (source.id === 'wired-security') {
+      return buildRSSFallbacks('https://www.wired.com/feed/category/security/latest/rss');
+    }
+
+    if (source.id === 'grayzone-geopolitics') {
+      return buildRSSFallbacks('https://thegrayzone.com/feed/');
+    }
+
+    if (source.id === 'mintpress-geopolitics') {
+      return buildRSSFallbacks('https://www.mintpressnews.com/feed/');
+    }
+
+    if (source.id === 'geopolitical-economy-report') {
+      return buildRSSFallbacks('https://geopoliticaleconomy.com/feed/');
+    }
+
+    if (source.id === 'eff-updates') {
+      return buildRSSFallbacks('https://www.eff.org/rss/updates');
+    }
+
+    if (source.id === 'privacy-international') {
+      return buildRSSFallbacks('https://privacyinternational.org/rss.xml');
+    }
+
+    if (source.id === 'transparency-international') {
+      return buildRSSFallbacks('https://www.transparency.org/en/rss');
+    }
+
+    if (source.id === 'inside-climate-news') {
+      return buildRSSFallbacks('https://insideclimatenews.org/feed/');
+    }
+
+    if (source.id === 'guardian-environment') {
+      const feedUrl = 'https://www.theguardian.com/environment/rss';
+      const paths = buildRSSFallbacks(feedUrl);
+      paths.push(`https://r.jina.ai/https://www.theguardian.com/environment/rss`);
+      return Array.from(new Set(paths));
+    }
+
+    if (source.id === 'future-of-life-institute') {
+      return buildRSSFallbacks('https://futureoflife.org/feed/');
+    }
+
+    if (source.id === 'opensecrets-transparency') {
+      const baseUrl = 'https://www.opensecrets.org/news';
+      const paths = [
+        this.buildAPIPath(source),
+        `https://api.allorigins.win/get?url=${encodeURIComponent(`${baseUrl}?view=all`)}`,
+        `https://r.jina.ai/https://www.opensecrets.org/news`
+      ];
+      return Array.from(new Set(paths.filter(Boolean)));
+    }
+
+    return [this.buildAPIPath(source)];
   }
 
   private sortIntelligenceData(items: NormalizedDataItem[]): NormalizedDataItem[] {
@@ -516,6 +803,25 @@ class ModernFeedService {
     return validItems;
   }
 
+  private hasMeaningfulIntelligence(items: NormalizedDataItem[]): boolean {
+    return items.some(item => !this.isGenericFallbackItem(item));
+  }
+
+  private isGenericFallbackItem(item: NormalizedDataItem): boolean {
+    const metadata = (item.metadata ?? {}) as Record<string, any>;
+    if (metadata && metadata.__genericFallback === true) {
+      return true;
+    }
+
+    const title = (item.title || '').trim().toLowerCase();
+    const summary = (item.summary || '').trim().toLowerCase();
+
+    const hasMeaningfulTitle = title.length > 0 && title !== 'untitled';
+    const hasMeaningfulSummary = summary.length > 0 && summary !== 'no description available';
+
+    return !hasMeaningfulTitle && !hasMeaningfulSummary;
+  }
+
   /**
    * Convert lowercase priority to uppercase for UI compatibility
    */
@@ -567,7 +873,13 @@ class ModernFeedService {
   }
 
   private updateSourceHealth(sourceId: string, success: boolean): void {
-    const source = getSourceById(sourceId);
+    const catalog = getSourceCatalog(this.missionMode);
+    const allSources = [
+      ...catalog.primary,
+      ...catalog.secondary,
+      ...catalog.social
+    ];
+    const source = allSources.find(entry => entry.id === sourceId);
     if (!source) return;
 
     // Simple health score update
@@ -581,7 +893,7 @@ class ModernFeedService {
   }
 
   private getSourceHealthSummary(): Record<string, number> {
-    const enabledSources = getEnabledSources();
+    const enabledSources = getEnabledSourcesForMode(this.missionMode);
     const healthSummary: Record<string, number> = {};
     
     enabledSources.forEach(source => {
@@ -603,7 +915,7 @@ class ModernFeedService {
 
   private cacheResults(results: FeedResults): void {
     try {
-      LocalStorageUtil.setItem(this.cacheStorageKey, {
+      LocalStorageUtil.setItem(this.getCacheStorageKey(), {
         results,
         timestamp: Date.now()
       });
@@ -617,14 +929,14 @@ class ModernFeedService {
       const cached = LocalStorageUtil.getItem<{
         results: FeedResults;
         timestamp: number;
-      }>(this.cacheStorageKey);
+      }>(this.getCacheStorageKey());
 
       if (!cached) return null;
 
       // Check if cache is still valid (30 minutes)
       const maxAge = 30 * 60 * 1000;
       if (Date.now() - cached.timestamp > maxAge) {
-        LocalStorageUtil.removeItem(this.cacheStorageKey);
+        LocalStorageUtil.removeItem(this.getCacheStorageKey());
         return null;
       }
 
@@ -645,8 +957,8 @@ class ModernFeedService {
 
   private saveConfiguration(): void {
     try {
-      LocalStorageUtil.setItem(this.configStorageKey, {
-        sources: getEnabledSources(),
+      LocalStorageUtil.setItem(this.getConfigStorageKey(), {
+        sources: getEnabledSourcesForMode(this.missionMode),
         lastUpdate: Date.now()
       });
     } catch (error) {

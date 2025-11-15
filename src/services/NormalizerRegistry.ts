@@ -58,6 +58,19 @@ const COINGECKO_SCHEMA = z.union([
   z.object({ coins: z.array(z.record(z.any())).optional(), data: z.record(z.any()).optional() })
 ]);
 
+const EARTH_ALLIANCE_SCHEMA = z.object({
+  items: z.array(z.object({
+    title: z.string().optional(),
+    link: z.string().optional(),
+    guid: z.string().optional(),
+    description: z.string().optional(),
+    pubDate: z.string().optional(),
+    categories: z.array(z.union([z.string(), z.number()])).optional()
+  })).optional()
+}).passthrough();
+
+const INVESTIGATIVE_RSS_SCHEMA = EARTH_ALLIANCE_SCHEMA;
+
 function defaultValidate(schema?: z.ZodTypeAny) {
   return (data: any) => {
     if (!schema) return { ok: true };
@@ -140,6 +153,28 @@ const plugins: Record<string, NormalizerPlugin> = {
     schema: COINGECKO_SCHEMA,
     validate: defaultValidate(COINGECKO_SCHEMA),
     normalize: (data: any) => DataNormalizer.normalizeCoinGeckoData(data),
+    classify: items => ClassifierService.apply(items)
+  },
+  normalizeEarthAllianceNews: {
+    id: 'normalizeEarthAllianceNews',
+    schema: EARTH_ALLIANCE_SCHEMA,
+    validate: defaultValidate(EARTH_ALLIANCE_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeEarthAllianceNews(data),
+    enrich: items => addTags(items, () => ['earth-alliance']),
+    classify: items => ClassifierService.apply(items)
+  },
+  normalizeInvestigativeRSS: {
+    id: 'normalizeInvestigativeRSS',
+    schema: INVESTIGATIVE_RSS_SCHEMA,
+    validate: defaultValidate(INVESTIGATIVE_RSS_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeInvestigativeRSS(data),
+    enrich: items => addTags(items, it => {
+      const slug = String(it.source || 'investigative')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      return [`source:${slug || 'investigative'}`];
+    }),
     classify: items => ClassifierService.apply(items)
   }
 };

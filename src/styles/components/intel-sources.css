@@ -33,3 +33,25 @@
   display: flex;
   flex-direction: column;
 }
+
+/* Ensure the sources section stretches and scrolls within the module */
+.module-intelligence .intel-sources-section {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.module-intelligence .intel-sources-section .intel-sources-list {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  max-height: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 170, 0.4) rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}

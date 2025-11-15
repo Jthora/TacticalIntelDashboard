@@ -11,6 +11,31 @@ import {
   RedditPostResponse
 } from '../types/ModernAPITypes';
 
+type RSSPriorityContext = {
+  title: string;
+  summary: string;
+  categories: string[];
+  item: any;
+};
+
+interface RSSNormalizationOptions {
+  sourceFallback: string;
+  category: string;
+  baseTags?: string[];
+  trustRating?: number;
+  verificationStatus?: 'VERIFIED' | 'UNVERIFIED' | 'OFFICIAL';
+  dataQuality?: number;
+  priorityMapper?: (context: RSSPriorityContext) => 'low' | 'medium' | 'high' | 'critical';
+  metadataEnricher?: (context: RSSPriorityContext) => Record<string, any>;
+  additionalTags?: (context: RSSPriorityContext) => string[];
+  transformTitle?: (title: string, rawItem: any) => string;
+  transformSummary?: (summary: string, rawItem: any) => string;
+  transformUrl?: (
+    url: string,
+    rawItem: any
+  ) => string | { url: string; extraTags?: string[]; metadata?: Record<string, any> };
+}
+
 export class DataNormalizer {
   /**
    * NOAA Weather Alert Normalization
@@ -225,6 +250,517 @@ export class DataNormalizer {
   }
 
   /**
+   * Earth Alliance News RSS Normalization
+   */
+  static normalizeEarthAllianceNews(response: any): NormalizedDataItem[] {
+    return this.normalizeRSSFeed(response, {
+      sourceFallback: 'Earth Alliance News',
+      category: 'security',
+      baseTags: ['earth-alliance', 'operations'],
+      trustRating: 87,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 85,
+      priorityMapper: this.determineEarthAlliancePriority
+    });
+  }
+
+  /**
+   * Investigative Outlet RSS Normalization
+   */
+  static normalizeInvestigativeRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+    const sourceFallback = feedTitle || 'Investigative Outlet';
+    const isDDoSecrets = /distributed denial of secrets/i.test(sourceFallback);
+
+    const normalizationOptions: RSSNormalizationOptions = {
+      sourceFallback,
+      category: 'investigative',
+      baseTags: ['investigative', 'whistleblower'],
+      trustRating: isDDoSecrets ? 80 : 85,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 82,
+      priorityMapper: context => {
+        if (isDDoSecrets) {
+          const text = `${context.title} ${context.summary}`.toLowerCase();
+          if (/(ministry|government|military|intel|secret|classified|state)/.test(text)) {
+            return 'high';
+          }
+          return 'medium';
+        }
+        return this.determineInvestigativePriority(context);
+      },
+      additionalTags: context => {
+        const tags: string[] = [];
+        if (isDDoSecrets) {
+          tags.push('ddosecrets', 'leak', 'torrent');
+          if (typeof context.item?.link === 'string' && context.item.link.startsWith('magnet:')) {
+            tags.push('magnet-link');
+          }
+        }
+        return tags;
+      },
+      metadataEnricher: context => {
+        if (!isDDoSecrets) {
+          return {};
+        }
+
+        const lastModified = context.item?.lastModified;
+        const releaseSlug = typeof context.item?.title === 'string' ? context.item.title : undefined;
+
+        return {
+          ...(lastModified ? { lastModified } : {}),
+          ...(releaseSlug ? { releaseSlug } : {})
+        };
+      }
+    };
+
+    if (isDDoSecrets) {
+      normalizationOptions.transformTitle = (title: string, _raw: any) =>
+        this.humanizeInvestigativeTitle(title);
+      normalizationOptions.transformSummary = (summary: string, rawItem: any) =>
+        this.buildDDoSecretsSummary(summary, rawItem);
+      normalizationOptions.transformUrl = (url: string, rawItem: any) =>
+        this.transformDDoSecretsUrl(url, rawItem);
+    }
+
+    return this.normalizeRSSFeed(workingResponse, normalizationOptions);
+  }
+
+  static normalizeCyberSecurityRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Cybersecurity Intelligence';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'cybersecurity',
+      baseTags: ['cybersecurity', 'security', 'threat-intel'],
+      trustRating: 88,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 88,
+      priorityMapper: context => {
+        const text = `${context.title} ${context.summary}`.toLowerCase();
+        if (/(zero[-\s]?day|worm|critical vulnerability|self-replicating|supply chain attack|nation-state)/.test(text)) {
+          return 'high';
+        }
+        if (/(ransomware|exploit|breach|backdoor|malware|botnet|credential)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      }
+    });
+  }
+
+  static normalizeGeopoliticalRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Geopolitical Intelligence';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'geopolitics',
+      baseTags: ['geopolitics', 'hybrid-warfare', 'analysis'],
+      trustRating: 82,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 80,
+      priorityMapper: context => {
+        const text = `${context.title} ${context.summary}`.toLowerCase();
+        if (/(invasion|war|airstrike|coup|sanction|nato|hybrid warfare|false flag|mobilization)/.test(text)) {
+          return 'high';
+        }
+        if (/(military|geopolitical|intelligence agency|diplomatic|proxy)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      }
+    });
+  }
+
+  static normalizePrivacyAdvocacyRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Privacy Advocacy Updates';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'privacy-rights',
+      baseTags: ['privacy', 'civil-liberties', 'surveillance'],
+      trustRating: 90,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 88,
+      priorityMapper: context => {
+        const text = `${context.title} ${context.summary}`.toLowerCase();
+        if (/(lawsuit|ban|injunction|surveillance program|court order|illegal spying)/.test(text)) {
+          return 'high';
+        }
+        if (/(privacy|data protection|biometric|encryption|policy)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      }
+    });
+  }
+
+  static normalizeFinancialTransparencyRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Financial Transparency';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'financial-transparency',
+      baseTags: ['transparency', 'finance', 'anti-corruption'],
+      trustRating: 86,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 84,
+      priorityMapper: context => {
+        const text = `${context.title} ${context.summary}`.toLowerCase();
+        if (/(corruption|money laundering|dark money|sanction|campaign finance|shell company)/.test(text)) {
+          return 'high';
+        }
+        if (/(disclosure|report|accountability|audit|lobbying|transparency)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      }
+    });
+  }
+
+  static normalizeClimateResilienceRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Climate Resilience';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'climate-resilience',
+      baseTags: ['climate', 'environment', 'resilience'],
+      trustRating: 87,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 85,
+      priorityMapper: context => {
+        const text = `${context.title} ${context.summary}`.toLowerCase();
+        if (/(hurricane|wildfire|heatwave|flood|disaster|emergency|evacuation)/.test(text)) {
+          return 'high';
+        }
+        if (/(climate|environment|emissions|mitigation|adaptation)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      }
+    });
+  }
+
+  static normalizeAIGovernanceRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'AI Governance';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'ai-governance',
+      baseTags: ['ai', 'ethics', 'governance'],
+      trustRating: 85,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 83,
+      priorityMapper: context => {
+        const text = `${context.title} ${context.summary}`.toLowerCase();
+        if (/(existential risk|autonomous weapon|ai weapon|moratorium|ban|regulation|policy)/.test(text)) {
+          return 'high';
+        }
+        if (/(ai|artificial intelligence|machine learning|ethics|governance|alignment)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      }
+    });
+  }
+
+  static normalizeOpenSecretsNews(response: any): NormalizedDataItem[] {
+    let htmlContent: string | undefined;
+
+    if (response && typeof response === 'object') {
+      if (typeof response.contents === 'string') {
+        htmlContent = response.contents;
+      } else if (typeof response.html === 'string') {
+        htmlContent = response.html;
+      }
+    } else if (typeof response === 'string') {
+      htmlContent = response;
+    }
+
+    if (!htmlContent) {
+      return [];
+    }
+
+    const doc = this.parseHTMLDocument(htmlContent);
+    if (!doc) {
+      return [];
+    }
+
+    const cards = Array.from(doc.querySelectorAll('div.news-item'));
+    if (cards.length === 0) {
+      return [];
+    }
+
+    const items: NormalizedDataItem[] = [];
+
+    cards.slice(0, 20).forEach((card, index) => {
+      const titleAnchor = card.querySelector('h3 a');
+      const title = this.stripHtmlSafe(titleAnchor?.textContent || '');
+      const href = titleAnchor?.getAttribute('href');
+      if (!title || !href) {
+        return;
+      }
+
+      const url = href.startsWith('http') ? href : `https://www.opensecrets.org${href}`;
+      const summaryRaw = this.stripHtmlSafe(card.querySelector('p.teaser')?.textContent || '');
+      const summary = this.truncateSummary(summaryRaw || title);
+      const dateTextRaw = this.stripHtmlSafe(card.querySelector('span.date')?.textContent || '');
+      const publishedAt = this.parseDateSafe(dateTextRaw);
+
+      const tagElements = Array.from(card.querySelectorAll('.label, .badge')); // capture category badges if present
+      const additionalTags = tagElements
+        .map(el => this.stripHtmlSafe(el.textContent || '').toLowerCase())
+        .filter(Boolean);
+
+      const tags = new Set<string>(['financial', 'transparency', 'opensecrets']);
+      additionalTags.forEach(tag => tags.add(tag));
+
+      const priorityText = `${title} ${summary}`.toLowerCase();
+      let priority: 'low' | 'medium' | 'high' = 'low';
+      if (/(dark money|money trail|corruption|sanction|shell company|launder|campaign finance)/.test(priorityText)) {
+        priority = 'high';
+      } else if (/(donor|lobby|finance|disclosure|tracking|political action|spending)/.test(priorityText)) {
+        priority = 'medium';
+      }
+
+      items.push({
+        id: `${this.slugify(title)}-${publishedAt.getTime()}-${index}`,
+        title,
+        summary,
+        url,
+        publishedAt,
+        source: 'OpenSecrets Investigations',
+        category: 'financial-transparency',
+        tags: Array.from(tags),
+        priority,
+        trustRating: 85,
+        verificationStatus: 'VERIFIED',
+        dataQuality: 82,
+        metadata: {
+          categories: additionalTags,
+          raw: {
+            dateText: dateTextRaw,
+            summary: summaryRaw
+          }
+        }
+      });
+    });
+
+    return items;
+  }
+
+  static normalizeTBIJInvestigations(response: any): NormalizedDataItem[] {
+    let htmlContent: string | undefined;
+
+    if (response && typeof response === 'object') {
+      if (typeof response.contents === 'string') {
+        htmlContent = response.contents;
+      } else if (typeof response.html === 'string') {
+        htmlContent = response.html;
+      }
+    } else if (typeof response === 'string') {
+      htmlContent = response;
+    }
+
+    if (!htmlContent) {
+      return [];
+    }
+
+    const doc = this.parseHTMLDocument(htmlContent);
+    const storyNodes = doc ? Array.from(doc.querySelectorAll('a.tb-c-story-preview')) : [];
+
+    if (storyNodes.length === 0) {
+      return this.normalizeTBIJFromMarkdown(htmlContent);
+    }
+
+    const items: NormalizedDataItem[] = [];
+
+    storyNodes.forEach((node, index) => {
+      const href = node.getAttribute('href')?.trim();
+      if (!href) {
+        return;
+      }
+
+      const url = href.startsWith('http')
+        ? href
+        : `https://www.thebureauinvestigates.com${href.startsWith('/') ? '' : '/'}${href}`;
+
+      const title = this.stripHtmlSafe(node.querySelector('.tb-c-story-preview__heading')?.textContent || '');
+      if (!title) {
+        return;
+      }
+
+      const summaryRaw = this.stripHtmlSafe(node.querySelector('.tb-c-story-preview__body')?.textContent || '');
+      const summary = this.truncateSummary(summaryRaw);
+
+      const metaItems = Array.from(node.querySelectorAll('.tb-c-story-preview__meta-item'))
+        .map(el => this.stripHtmlSafe(el.textContent || ''))
+        .filter(Boolean);
+
+      const dateText = metaItems[0] || '';
+      const categories = metaItems.slice(1).map(text => text.toLowerCase());
+      const publishedAt = this.parseTBIJDate(dateText);
+
+      const imgEl = node.querySelector('.tb-c-story-preview__image-img') as HTMLImageElement | null;
+      const thumbnail = imgEl?.getAttribute('data-src')?.trim() || imgEl?.getAttribute('src')?.trim();
+
+      const context: RSSPriorityContext = {
+        title,
+        summary,
+        categories,
+        item: {
+          url,
+          dateText,
+          categories: metaItems
+        }
+      };
+
+      const tags = new Set<string>();
+      tags.add('investigative');
+      tags.add('tbij');
+      categories.forEach(cat => tags.add(cat));
+
+      const priority = this.determineInvestigativePriority(context);
+
+      items.push({
+        id: `${this.slugify(title)}-${publishedAt.getTime()}`,
+        title,
+        summary,
+        url,
+        publishedAt,
+        source: 'The Bureau of Investigative Journalism',
+        category: 'investigative',
+        tags: Array.from(tags),
+        priority,
+        trustRating: 88,
+        verificationStatus: 'VERIFIED',
+        dataQuality: 80,
+        metadata: {
+          thumbnail,
+          categories: metaItems,
+          raw: {
+            dateText,
+            summary: summaryRaw,
+            index
+          }
+        }
+      });
+    });
+
+    return items;
+  }
+
+  /**
    * USGS Earthquake Data Normalization
    */
   static normalizeUSGSEarthquakes(geoJsonResponse: any): NormalizedDataItem[] {
@@ -339,6 +875,123 @@ export class DataNormalizer {
     return items;
   }
 
+  private static normalizeRSSFeed(response: any, options: RSSNormalizationOptions): NormalizedDataItem[] {
+    const items = this.extractRSSItems(response);
+    if (items.length === 0) return [];
+
+  const fallbackSource = options.sourceFallback;
+  const feedTitle = this.stripHtmlSafe(response?.feed?.title || response?.title || response?.name);
+    const sourceName = feedTitle || fallbackSource;
+    const baseTags = options.baseTags ?? [];
+    const trustRating = options.trustRating ?? 80;
+    const verificationStatus = options.verificationStatus ?? 'VERIFIED';
+    const dataQuality = options.dataQuality ?? 80;
+    const sourceSlug = this.slugify(sourceName || fallbackSource);
+
+    return items
+      .map((item: any, index: number) => {
+        let url = item.link || item.url || item.guid || '';
+        if (!url) {
+          return null;
+        }
+
+        const publishedAt = this.parseDateSafe(
+          item.pubDate || item.published || item.isoDate || item.updated || item.date
+        );
+
+        let title = (item.title || item.headline || sourceName || fallbackSource).toString().trim();
+        if (options.transformTitle) {
+          title = options.transformTitle(title, item);
+        }
+
+        const rawSummary = item.description || item.summary || item.contentSnippet || item.content || '';
+        let summary = this.truncateSummary(this.stripHtmlSafe(rawSummary));
+        if (options.transformSummary) {
+          summary = this.truncateSummary(options.transformSummary(summary, item));
+        }
+
+        const categories = Array.isArray(item.categories)
+          ? item.categories
+              .map((cat: any) => this.stripHtmlSafe(String(cat)).toLowerCase())
+              .filter((cat: string) => !!cat)
+          : [];
+
+        const context: RSSPriorityContext = { title, summary, categories, item };
+
+        const additionalTags = options.additionalTags ? options.additionalTags(context) : [];
+        const tagSet = new Set<string>();
+        [...baseTags, ...categories, ...additionalTags].forEach(tag => {
+          if (tag) {
+            tagSet.add(String(tag).toLowerCase());
+          }
+        });
+
+        let transformMetadata: Record<string, any> = {};
+        const extraTransformTags: string[] = [];
+        if (options.transformUrl) {
+          const transformed = options.transformUrl(url, item);
+          if (typeof transformed === 'string') {
+            url = transformed;
+          } else if (transformed && typeof transformed === 'object') {
+            if (typeof transformed.url === 'string' && transformed.url.length > 0) {
+              url = transformed.url;
+            }
+            if (Array.isArray(transformed.extraTags)) {
+              transformed.extraTags.forEach(tag => {
+                if (tag) extraTransformTags.push(String(tag));
+              });
+            }
+            if (transformed.metadata) {
+              transformMetadata = { ...transformMetadata, ...transformed.metadata };
+            }
+          }
+        }
+
+        extraTransformTags.forEach(tag => {
+          tagSet.add(tag.toLowerCase());
+        });
+
+        const priority = options.priorityMapper ? options.priorityMapper(context) : 'medium';
+        const metadataExtra = options.metadataEnricher ? options.metadataEnricher(context) : {};
+
+        return {
+          id: item.guid || item.id || `${sourceSlug}-${index}-${publishedAt.getTime()}`,
+          title,
+          summary,
+          url,
+          publishedAt,
+          source: sourceName,
+          category: options.category,
+          tags: Array.from(tagSet),
+          priority,
+          trustRating,
+          verificationStatus,
+          dataQuality,
+          metadata: {
+            author:
+              (typeof item.author === 'object' && item.author !== null
+                ? item.author.name || item.author.title
+                : item.author) || item.creator || item['dc:creator'],
+            thumbnail: item.thumbnail || item.enclosure?.link || item.image,
+            categories: item.categories,
+            ...transformMetadata,
+            ...metadataExtra,
+            raw: item
+          }
+        } as NormalizedDataItem;
+      })
+      .filter((item): item is NormalizedDataItem => item !== null);
+  }
+
+  private static slugify(value: string): string {
+    return value
+      ?.toString()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      || 'feed';
+  }
+
   /**
    * Priority Mapping Utilities
    */
@@ -374,6 +1027,400 @@ export class DataNormalizer {
     return 'low';
   }
 
+  private static stripHtmlSafe(input?: string): string {
+    if (!input) return '';
+    return String(input).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  private static truncateSummary(summary: string, maxLength: number = 500): string {
+    if (summary.length <= maxLength) return summary;
+    return `${summary.substring(0, maxLength).trim()}...`;
+  }
+
+  private static parseDateSafe(input?: string): Date {
+    if (!input) return new Date();
+    const parsed = new Date(input);
+    if (isNaN(parsed.getTime())) {
+      return new Date();
+    }
+    return parsed;
+  }
+
+  private static extractRSSItems(response: any): any[] {
+    if (!response) return [];
+    if (Array.isArray(response)) return response;
+    if (Array.isArray(response.items)) return response.items;
+    if (Array.isArray(response.entries)) return response.entries;
+    if (response.feed && Array.isArray(response.feed.items)) return response.feed.items;
+    if (response.data && Array.isArray(response.data.items)) return response.data.items;
+    return [];
+  }
+
+  private static determineEarthAlliancePriority(context: RSSPriorityContext): 'low' | 'medium' | 'high' | 'critical' {
+    const text = `${context.title} ${context.summary}`.toLowerCase();
+    if (/alert|breaking|critical|emergency|evac|priority/.test(text)) return 'high';
+    if (/intel|operation|brief|analysis|update/.test(text) || context.categories.includes('operations')) return 'medium';
+    return 'low';
+  }
+
+  private static determineInvestigativePriority(context: RSSPriorityContext): 'low' | 'medium' | 'high' | 'critical' {
+    const text = `${context.title} ${context.summary}`.toLowerCase();
+    if (/exclusive|breaking|reveals|exposed|leak|secret|classified|documents|urgent/.test(text)) return 'high';
+    if (/investigation|report|analysis|data|corruption|whistleblower|accountability|oversight/.test(text)) return 'medium';
+    if (context.categories.some(cat => ['breaking', 'exclusive'].includes(cat))) return 'high';
+    return 'low';
+  }
+
+  private static humanizeInvestigativeTitle(title: string): string {
+    if (!title) return title;
+    const cleaned = title.replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!cleaned) return title;
+    return cleaned
+      .split(' ')
+      .map(word => {
+        if (word.length <= 4 && word === word.toUpperCase()) {
+          return word; // Preserve short acronyms
+        }
+        if (/^[A-Z0-9_-]+$/.test(word) && word === word.toUpperCase()) {
+          return word;
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ');
+  }
+
+  private static buildDDoSecretsSummary(summary: string, rawItem: any): string {
+    const content = this.stripHtmlSafe(rawItem?.content || rawItem?.description || '');
+    const wikiUrl = this.extractFirstHttpUrl(content) || this.extractFirstHttpUrl(summary);
+    if (!wikiUrl) {
+      return summary || 'Leak release available via Distributed Denial of Secrets.';
+    }
+
+    const humanTitle = this.humanizeInvestigativeTitle(rawItem?.title || 'Leak Release');
+    return `${humanTitle} leak dossier published on DDoSecrets – review details at ${wikiUrl}`;
+  }
+
+  private static transformDDoSecretsUrl(
+    url: string,
+    rawItem: any
+  ): { url: string; extraTags?: string[]; metadata?: Record<string, any> } {
+    const result: { url: string; extraTags?: string[]; metadata?: Record<string, any> } = {
+      url
+    };
+
+    if (typeof url === 'string' && url.startsWith('magnet:')) {
+      const content = this.stripHtmlSafe(rawItem?.content || rawItem?.description || '');
+      const wikiUrl = this.extractFirstHttpUrl(content) || this.extractFirstHttpUrl(rawItem?.summary);
+      result.metadata = {
+        magnetUrl: url
+      };
+
+      if (wikiUrl) {
+        result.url = wikiUrl;
+        result.extraTags = ['dossier-link'];
+      }
+    }
+
+    return result;
+  }
+
+  private static extractFirstHttpUrl(input?: string | null): string | undefined {
+    if (!input) return undefined;
+    const match = String(input).match(/https?:\/\/[^\s)]+/i);
+    if (!match) return undefined;
+    return match[0].replace(/[.,)]+$/, '');
+  }
+
+  private static parseRSSFromString(xml: string): { channel?: { title?: string }; feed?: { title?: string }; items: any[] } | null {
+    if (!xml || typeof xml !== 'string') return null;
+
+    const DOMParserCtor = (typeof globalThis !== 'undefined' ? (globalThis as any).DOMParser : undefined);
+    if (!DOMParserCtor) {
+      return null;
+    }
+
+    try {
+      const parser = new DOMParserCtor();
+      const doc = parser.parseFromString(xml, 'application/xml');
+
+      if (doc.getElementsByTagName('parsererror').length > 0) {
+        return null;
+      }
+
+      const channelTitle = doc.querySelector('channel > title')?.textContent?.trim() || undefined;
+      const feedTitle = doc.querySelector('feed > title')?.textContent?.trim() || channelTitle;
+
+      const itemNodes: Element[] = Array.from(doc.querySelectorAll('channel > item'));
+      const entryNodes: Element[] =
+        itemNodes.length > 0 ? itemNodes : Array.from(doc.querySelectorAll('feed > entry'));
+
+      const items = entryNodes.map((node: Element) => {
+        const getText = (selector: string) => node.querySelector(selector)?.textContent?.trim() || '';
+
+        let link = getText('link');
+        if (!link) {
+          const linkEl = node.querySelector('link');
+          const href = linkEl?.getAttribute('href');
+          if (href) {
+            link = href.trim();
+          }
+        }
+
+        const description =
+          getText('description') ||
+          getText('content') ||
+          getText('content\\:encoded') ||
+          getText('summary');
+
+        const categories: string[] = [];
+        node.querySelectorAll('category').forEach((cat: Element) => {
+          const value = cat.textContent?.trim();
+          if (value) categories.push(value);
+          const term = cat.getAttribute('term');
+          if (term) categories.push(term.trim());
+        });
+
+        node.querySelectorAll('*[term]').forEach((cat: Element) => {
+          const term = cat.getAttribute('term');
+          if (term) categories.push(term.trim());
+        });
+
+        const enclosure = node.querySelector('enclosure');
+        const enclosureLink = enclosure?.getAttribute('url') || enclosure?.getAttribute('href');
+
+        return {
+          title: getText('title'),
+          link,
+          url: link,
+          description,
+          content: getText('content') || getText('content\\:encoded'),
+          summary: getText('summary'),
+          pubDate: getText('pubDate') || getText('updated') || getText('published'),
+          updated: getText('updated'),
+          guid: getText('guid') || getText('id'),
+          lastModified: getText('updated'),
+          author:
+            getText('author > name') ||
+            getText('author') ||
+            getText('dc\\:creator') ||
+            getText('creator'),
+          categories: categories.filter(Boolean),
+          enclosure: enclosureLink ? { link: enclosureLink } : undefined
+        };
+      });
+
+      const parsed: { channel?: { title?: string }; feed?: { title?: string }; items: any[] } = {
+        items
+      };
+
+      if (channelTitle) {
+        parsed.channel = { title: channelTitle };
+      }
+
+      if (feedTitle) {
+        parsed.feed = { title: feedTitle };
+      }
+
+      return parsed;
+    } catch (error) {
+      console.warn('Failed to parse RSS string', error);
+      return null;
+    }
+  }
+
+  private static parseHTMLDocument(html: string): Document | null {
+    if (!html) return null;
+    const DOMParserCtor = (typeof globalThis !== 'undefined' ? (globalThis as any).DOMParser : undefined);
+    if (!DOMParserCtor) {
+      return null;
+    }
+
+    try {
+      const parser = new DOMParserCtor();
+      const doc = parser.parseFromString(html, 'text/html');
+      return doc;
+    } catch (error) {
+      console.warn('Failed to parse HTML string', error);
+      return null;
+    }
+  }
+
+  private static parseTBIJDate(input?: string): Date {
+    if (!input) return new Date();
+    const trimmed = input.trim();
+    const match = trimmed.match(/(\d{1,2})\.(\d{1,2})\.(\d{2,4})/);
+    if (match) {
+      const day = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10) - 1;
+      let year = parseInt(match[3], 10);
+      if (match[3].length === 2) {
+        year += year >= 70 ? 1900 : 2000;
+      }
+      try {
+        const date = new Date(Date.UTC(year, month, day));
+        if (!isNaN(date.getTime())) {
+          return date;
+        }
+      } catch {}
+    }
+
+    const parsed = new Date(trimmed);
+    return isNaN(parsed.getTime()) ? new Date() : parsed;
+  }
+
+  private static normalizeTBIJFromMarkdown(markdown: string): NormalizedDataItem[] {
+    if (!markdown) {
+      return [];
+    }
+
+    const linkRegex = /\[!\[[^\]]*?\]\((?<image>https?:\/\/[^)]+)\)\s*(?<payload>[^\]]+)\]\((?<url>https?:\/\/www\.thebureauinvestigates\.com\/[^)]+)\)/g;
+    const items: NormalizedDataItem[] = [];
+    const seen = new Set<string>();
+
+    for (const match of markdown.matchAll(linkRegex)) {
+      const groups = match.groups ?? {};
+      const url = groups.url;
+      const payload = groups.payload;
+      if (!url || !payload) continue;
+      if (!/\/stories\//.test(url)) continue;
+      if (seen.has(url)) continue;
+
+      const normalized = this.buildTBIJMarkdownItem(payload, url, groups.image);
+      if (normalized) {
+        items.push(normalized);
+        seen.add(url);
+      }
+    }
+
+    return items;
+  }
+
+  private static buildTBIJMarkdownItem(payload: string, url: string, image?: string): NormalizedDataItem | null {
+    const condensed = payload.replace(/\s+/g, ' ').trim();
+    if (!condensed) {
+      return null;
+    }
+
+    const dateMatch = condensed.match(/^(\d{2}\.\d{2}\.\d{2})\s+(.*)$/);
+    if (!dateMatch) {
+      return null;
+    }
+
+    const dateText = dateMatch[1];
+    let remainder = dateMatch[2].trim();
+
+    const readTimeMatch = remainder.match(/(\d+\s+minute read)$/i);
+    let readTime: string | undefined;
+    if (readTimeMatch && readTimeMatch.index !== undefined) {
+      readTime = readTimeMatch[0];
+      remainder = remainder.slice(0, readTimeMatch.index).trim();
+    }
+
+    let titleSegment = remainder;
+    let summarySegment = '';
+
+    const splitParts = remainder.split(/-{3,}/);
+    if (splitParts.length > 1) {
+      titleSegment = splitParts[0].trim();
+      summarySegment = splitParts.slice(1).join(' ').trim();
+    }
+
+    if (!summarySegment && titleSegment.includes('  ')) {
+      const parts = titleSegment.split('  ');
+      if (parts.length > 1) {
+        titleSegment = parts[0].trim();
+        summarySegment = parts.slice(1).join(' ').trim();
+      }
+    }
+
+    summarySegment = summarySegment.replace(/\b\d+\s+minute read\b/gi, '').trim();
+
+    let categoryLabel: string | undefined;
+    const knownCategories = this.getTBIJKnownCategories();
+    for (const category of knownCategories) {
+      if (titleSegment.startsWith(category + ' ')) {
+        categoryLabel = category;
+        titleSegment = titleSegment.slice(category.length).trim();
+        break;
+      }
+      if (titleSegment === category) {
+        categoryLabel = category;
+        titleSegment = '';
+        break;
+      }
+    }
+
+    const title = titleSegment || summarySegment || url;
+    const summary = this.truncateSummary(summarySegment || title);
+    const publishedAt = this.parseTBIJDate(dateText);
+
+    const categories = categoryLabel ? [categoryLabel.toLowerCase()] : [];
+    const context: RSSPriorityContext = {
+      title,
+      summary,
+      categories,
+      item: {
+        url,
+        dateText,
+        categories: categoryLabel ? [categoryLabel] : []
+      }
+    };
+
+    const tags = new Set<string>();
+    tags.add('investigative');
+    tags.add('tbij');
+    if (categoryLabel) {
+      tags.add(categoryLabel.toLowerCase());
+    }
+
+    const priority = this.determineInvestigativePriority(context);
+
+    const metadataCategories = [dateText];
+    if (categoryLabel) {
+      metadataCategories.push(categoryLabel);
+    }
+
+    return {
+      id: `${this.slugify(title)}-${publishedAt.getTime()}`,
+      title,
+      summary,
+      url,
+      publishedAt,
+      source: 'The Bureau of Investigative Journalism',
+      category: 'investigative',
+      tags: Array.from(tags),
+      priority,
+      trustRating: 88,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 80,
+      metadata: {
+        thumbnail: image,
+        categories: metadataCategories,
+        raw: {
+          dateText,
+          payload,
+          readTime
+        }
+      }
+    };
+  }
+
+  private static getTBIJKnownCategories(): string[] {
+    return [
+      'Making Bad Bosses Pay',
+      'Global Health',
+      'Big Tech',
+      'Environment',
+      'The Enablers',
+      'Family Court Files',
+      'Global Superbugs',
+      'Bureau Local',
+      'Open Resources',
+      'News',
+      'Opinion'
+    ];
+  }
+
   /**
    * Generic normalization for unknown data formats
    */
@@ -391,7 +1438,10 @@ export class DataNormalizer {
       trustRating: 50,
       verificationStatus: 'UNVERIFIED',
       dataQuality: 60,
-      metadata: data
+      metadata: {
+        ...(typeof data === 'object' && data !== null ? data : { raw: data }),
+        __genericFallback: true
+      }
     };
   }
 

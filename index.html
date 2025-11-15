@@ -12,6 +12,20 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="module">
+      const SOURCE_FLAG_PREFIXES = ['VITE_SOURCE_', 'VITE_ENABLE_SOURCE_EXPANSION_2025'];
+      const ALLOWLIST_KEY = 'VITE_SOURCE_ROLLOUT_ALLOWLIST';
+
+      const selectedEntries = Object.entries(import.meta.env).filter(([key]) => {
+        if (key === ALLOWLIST_KEY) return true;
+        return SOURCE_FLAG_PREFIXES.some(prefix => key.startsWith(prefix));
+      });
+
+      window.__SOURCE_FLAG_OVERRIDES__ = selectedEntries.reduce((acc, [key, value]) => {
+        acc[key] = value;
+        return acc;
+      }, {});
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

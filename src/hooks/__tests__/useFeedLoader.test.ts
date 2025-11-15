@@ -26,8 +26,13 @@ jest.mock('../../utils/LoggerService', () => ({
   }
 }));
 
-jest.mock('../../constants/ModernIntelligenceSources', () => ({
-  getSourceById: jest.fn(() => undefined)
+jest.mock('../../contexts/MissionModeContext', () => ({
+  useMissionMode: () => ({
+    mode: 'miltech',
+    setMode: jest.fn(),
+    setModeOverride: jest.fn(),
+    isSwitchingModes: false
+  })
 }));
 
 import { act, renderHook } from '@testing-library/react';

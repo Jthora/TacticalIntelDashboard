@@ -4,11 +4,8 @@
  * for backward compatibility with existing UI components
  */
 
-import { 
-  PRIMARY_INTELLIGENCE_SOURCES,
-  SECONDARY_INTELLIGENCE_SOURCES,
-  SOCIAL_INTELLIGENCE_SOURCES
-} from '../constants/ModernIntelligenceSources';
+import { MissionMode } from '../constants/MissionMode';
+import { getSourcesWithRuntimeState } from '../constants/MissionSourceRegistry';
 import { IntelligenceSource } from '../types/ModernAPITypes';
 import { AuthType,ClassificationLevel, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
 
@@ -19,7 +16,7 @@ export function convertToLegacyFormat(modernSource: IntelligenceSource): Tactica
   return {
     id: modernSource.id,
     name: modernSource.name,
-    url: modernSource.endpoint.baseUrl,
+  url: modernSource.homepage ?? modernSource.endpoint.baseUrl,
     category: mapModernCategoryToLegacy(modernSource.endpoint.category),
     reliability: Math.round(modernSource.healthScore / 10), // Convert 0-100 to 0-10 scale
     classification: 'UNCLASSIFIED' as ClassificationLevel,
@@ -33,7 +30,7 @@ export function convertToLegacyFormat(modernSource: IntelligenceSource): Tactica
     verificationRequired: false,
     minimumClearance: 'UNCLASSIFIED' as ClassificationLevel,
     needToKnow: [],
-    endpoint: modernSource.endpoint.baseUrl,
+  endpoint: modernSource.endpoint.baseUrl,
     protocol: 'API' as const, // Modern APIs use HTTPS JSON
     format: 'json' // Modern APIs return JSON
   };
@@ -58,6 +55,8 @@ function mapModernCategoryToLegacy(category: string): IntelligenceCategory {
       return 'OSINT'; // Financial data is open source
     case 'social':
       return 'OSINT'; // Social media is open source
+    case 'investigative':
+      return 'OSINT';
     default:
       return 'OSINT';
   }
@@ -76,13 +75,8 @@ function convertHealthScore(healthScore: number): HealthStatus {
 /**
  * Get all modern intelligence sources in legacy format
  */
-export function getModernIntelligenceSourcesAsLegacy(): TacticalIntelSource[] {
-  const allModernSources = [
-    ...PRIMARY_INTELLIGENCE_SOURCES,
-    ...SECONDARY_INTELLIGENCE_SOURCES.filter(s => s.enabled), // Only enabled secondary sources
-    ...SOCIAL_INTELLIGENCE_SOURCES.filter(s => s.enabled) // Only enabled social sources
-  ];
-
+export function getModernIntelligenceSourcesAsLegacy(mode: MissionMode = MissionMode.MILTECH): TacticalIntelSource[] {
+  const allModernSources = getSourcesWithRuntimeState(mode);
   return allModernSources.map(convertToLegacyFormat);
 }
 
@@ -95,21 +89,21 @@ export const MODERN_INTELLIGENCE_CATEGORIES = {
     icon: '📡',
     name: 'Open Source Intelligence',
     description: 'Government APIs, social media, and public data sources',
-    sources: ['noaa-weather-alerts', 'usgs-earthquakes', 'reddit-worldnews', 'coingecko-crypto']
+    sources: ['noaa-weather-alerts', 'usgs-earthquakes', 'reddit-worldnews', 'coingecko-crypto', 'intercept-investigations', 'propublica-investigations', 'icij-investigations', 'bellingcat-investigations', 'ddosecrets-investigations', 'occrp-investigations', 'grayzone-geopolitics', 'mintpress-geopolitics', 'geopolitical-economy-report', 'eff-updates', 'privacy-international', 'inside-climate-news', 'guardian-environment', 'transparency-international', 'opensecrets-transparency', 'future-of-life-institute']
   },
   TECHINT: {
     color: '#ff6600',
     icon: '🔧',
     name: 'Technical Intelligence',
     description: 'Technology platforms, security advisories, and innovation tracking',
-    sources: ['github-security', 'hackernews-tech', 'nasa-space-data']
+    sources: ['github-security', 'hackernews-tech', 'nasa-space-data', 'wired-security']
   },
   CYBINT: {
     color: '#ffff00',
     icon: '🛡️',
     name: 'Cyber Intelligence',
     description: 'Security vulnerabilities, threat intelligence, and cyber monitoring',
-    sources: ['github-security', 'reddit-security']
+    sources: ['github-security', 'reddit-security', 'earth-alliance-news', 'krebs-security', 'threatpost-security']
   },
   HUMINT: {
     color: '#ff3333',
@@ -137,7 +131,14 @@ export const MODERN_INTELLIGENCE_CATEGORIES = {
     icon: '⚔️',
     name: 'Military Intelligence',
     description: 'Defense and military intelligence (future capability)',
-    sources: []
+    sources: ['earth-alliance-news']
+  },
+  INVESTIGATIVE: {
+    color: '#1de9b6',
+    icon: '🕵️',
+    name: 'Investigative Intelligence',
+    description: 'Leak-centric outlets and collaborative investigative journalism',
+    sources: ['intercept-investigations', 'propublica-investigations', 'icij-investigations', 'bellingcat-investigations', 'ddosecrets-investigations', 'occrp-investigations', 'grayzone-geopolitics', 'mintpress-geopolitics', 'geopolitical-economy-report']
   },
   MASINT: {
     color: '#ff9900',
@@ -145,6 +146,27 @@ export const MODERN_INTELLIGENCE_CATEGORIES = {
     name: 'Measurement & Signature Intelligence',
     description: 'Scientific measurement and signature analysis',
     sources: ['nasa-space-data', 'usgs-earthquakes']
+  },
+  PRIVINT: {
+    color: '#6c6cff',
+    icon: '🕶️',
+    name: 'Privacy & Civil Liberties',
+    description: 'Legal advocacy and surveillance countermeasures',
+    sources: ['eff-updates', 'privacy-international']
+  },
+  CLIMINT: {
+    color: '#2ecc71',
+    icon: '🌿',
+    name: 'Climate Intelligence',
+    description: 'Environmental resilience and climate justice monitoring',
+    sources: ['inside-climate-news', 'guardian-environment']
+  },
+  AIGOV: {
+    color: '#9b59b6',
+    icon: '🤖',
+    name: 'AI Governance',
+    description: 'AI safety, regulation, and existential risk reporting',
+    sources: ['future-of-life-institute', 'wired-security']
   }
 };
 

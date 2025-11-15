@@ -4,7 +4,7 @@
  * Handles tactical intelligence data flow and processing
  */
 
-import React, { createContext, useCallback, useContext, useEffect,useReducer } from 'react';
+import React, { createContext, useCallback, useContext, useEffect,useMemo,useReducer } from 'react';
 
 import {
   ClassificationLevel,
@@ -381,77 +381,104 @@ export const IntelligenceProvider: React.FC<{ children: React.ReactNode }> = ({ 
     }
   }, [state.items]);
 
-  // Action handlers
-  const actions = {
-    addIntelligence: useCallback((item: IntelligenceItem) => {
-      dispatch({ type: 'ADD_INTELLIGENCE', payload: item });
-      
-      // Generate alert if necessary
+  const addIntelligence = useCallback((item: IntelligenceItem) => {
+    dispatch({ type: 'ADD_INTELLIGENCE', payload: item });
+    
+    // Generate alert if necessary
+    const alert = generateAlert(item);
+    if (alert) {
+      dispatch({ type: 'ADD_ALERT', payload: alert });
+    }
+  }, []);
+
+  const addIntelligenceBatch = useCallback((items: IntelligenceItem[]) => {
+    dispatch({ type: 'ADD_INTELLIGENCE_BATCH', payload: items });
+    
+    // Generate alerts for high-priority items
+    items.forEach(item => {
       const alert = generateAlert(item);
       if (alert) {
         dispatch({ type: 'ADD_ALERT', payload: alert });
       }
-    }, []),
+    });
+  }, []);
 
-    addIntelligenceBatch: useCallback((items: IntelligenceItem[]) => {
-      dispatch({ type: 'ADD_INTELLIGENCE_BATCH', payload: items });
-      
-      // Generate alerts for high-priority items
-      items.forEach(item => {
-        const alert = generateAlert(item);
-        if (alert) {
-          dispatch({ type: 'ADD_ALERT', payload: alert });
-        }
-      });
-    }, []),
+  const updateIntelligence = useCallback((id: string, updates: Partial<IntelligenceItem>) => {
+    dispatch({ type: 'UPDATE_INTELLIGENCE', payload: { id, updates } });
+  }, []);
 
-    updateIntelligence: useCallback((id: string, updates: Partial<IntelligenceItem>) => {
-      dispatch({ type: 'UPDATE_INTELLIGENCE', payload: { id, updates } });
-    }, []),
+  const removeIntelligence = useCallback((id: string) => {
+    dispatch({ type: 'REMOVE_INTELLIGENCE', payload: id });
+  }, []);
 
-    removeIntelligence: useCallback((id: string) => {
-      dispatch({ type: 'REMOVE_INTELLIGENCE', payload: id });
-    }, []),
+  const addSource = useCallback((source: TacticalIntelSource) => {
+    dispatch({ type: 'ADD_SOURCE', payload: source });
+  }, []);
 
-    addSource: useCallback((source: TacticalIntelSource) => {
-      dispatch({ type: 'ADD_SOURCE', payload: source });
-    }, []),
+  const updateSource = useCallback((id: string, updates: Partial<TacticalIntelSource>) => {
+    dispatch({ type: 'UPDATE_SOURCE', payload: { id, updates } });
+  }, []);
 
-    updateSource: useCallback((id: string, updates: Partial<TacticalIntelSource>) => {
-      dispatch({ type: 'UPDATE_SOURCE', payload: { id, updates } });
-    }, []),
+  const removeSource = useCallback((id: string) => {
+    dispatch({ type: 'REMOVE_SOURCE', payload: id });
+  }, []);
 
-    removeSource: useCallback((id: string) => {
-      dispatch({ type: 'REMOVE_SOURCE', payload: id });
-    }, []),
+  const createAlert = useCallback((intelligence: IntelligenceItem) => {
+    const alert = generateAlert(intelligence);
+    if (alert) {
+      dispatch({ type: 'ADD_ALERT', payload: alert });
+    }
+  }, []);
 
-    createAlert: useCallback((intelligence: IntelligenceItem) => {
-      const alert = generateAlert(intelligence);
-      if (alert) {
-        dispatch({ type: 'ADD_ALERT', payload: alert });
-      }
-    }, []),
+  const acknowledgeAlert = useCallback((id: string, userId: string) => {
+    dispatch({ type: 'ACKNOWLEDGE_ALERT', payload: { id, userId } });
+  }, []);
 
-    acknowledgeAlert: useCallback((id: string, userId: string) => {
-      dispatch({ type: 'ACKNOWLEDGE_ALERT', payload: { id, userId } });
-    }, []),
+  const dismissAlert = useCallback((id: string) => {
+    dispatch({ type: 'DISMISS_ALERT', payload: id });
+  }, []);
 
-    dismissAlert: useCallback((id: string) => {
-      dispatch({ type: 'DISMISS_ALERT', payload: id });
-    }, []),
+  const updateFilters = useCallback((filters: Partial<IntelligenceFilters>) => {
+    dispatch({ type: 'UPDATE_FILTERS', payload: filters });
+  }, []);
 
-    updateFilters: useCallback((filters: Partial<IntelligenceFilters>) => {
-      dispatch({ type: 'UPDATE_FILTERS', payload: filters });
-    }, []),
+  const clearErrors = useCallback(() => {
+    dispatch({ type: 'CLEAR_ERRORS' });
+  }, []);
 
-    clearErrors: useCallback(() => {
-      dispatch({ type: 'CLEAR_ERRORS' });
-    }, []),
+  const resetState = useCallback(() => {
+    dispatch({ type: 'RESET_STATE' });
+  }, []);
 
-    resetState: useCallback(() => {
-      dispatch({ type: 'RESET_STATE' });
-    }, [])
-  };
+  const actions = useMemo(() => ({
+    addIntelligence,
+    addIntelligenceBatch,
+    updateIntelligence,
+    removeIntelligence,
+    addSource,
+    updateSource,
+    removeSource,
+    createAlert,
+    acknowledgeAlert,
+    dismissAlert,
+    updateFilters,
+    clearErrors,
+    resetState
+  }), [
+    addIntelligence,
+    addIntelligenceBatch,
+    updateIntelligence,
+    removeIntelligence,
+    addSource,
+    updateSource,
+    removeSource,
+    createAlert,
+    acknowledgeAlert,
+    dismissAlert,
+    updateFilters,
+    clearErrors,
+    resetState
+  ]);
 
   const value: IntelligenceContextType = {
     state,

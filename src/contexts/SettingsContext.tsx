@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect,useState } from 'react';
 
+import { DEFAULT_MISSION_MODE, MissionMode } from '../constants/MissionMode';
+
 export enum CORSStrategy {
   RSS2JSON = 'RSS2JSON',
   JSONP = 'JSONP',
@@ -53,6 +55,7 @@ export interface Settings {
     fontSize: number;
   };
   general?: {
+    mode: MissionMode;
     refreshInterval: number;
     cacheSettings: {
       enabled: boolean;
@@ -127,6 +130,7 @@ const defaultSettings: Settings = {
     fontSize: 14
   },
   general: {
+    mode: DEFAULT_MISSION_MODE,
     refreshInterval: 300000, // 5 minutes
     cacheSettings: {
       enabled: true,
@@ -189,6 +193,7 @@ export const SettingsProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
       const incomingGeneral = newSettings.general;
 
       const mergedGeneral = {
+        mode: incomingGeneral?.mode ?? prevGeneral.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: incomingGeneral?.refreshInterval ?? prevGeneral.refreshInterval,
         cacheSettings: {
           enabled: incomingGeneral?.cacheSettings?.enabled ?? prevGeneral.cacheSettings.enabled,

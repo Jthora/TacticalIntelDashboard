@@ -6,7 +6,7 @@ import { log } from '../utils/LoggerService';
 interface UseAutoRefreshParams {
   autoRefresh: boolean;
   selectedFeedList: string | null;
-  loadFeeds: (showLoading?: boolean) => void | Promise<void>;
+  loadFeeds: (showLoading?: boolean, reason?: string) => void | Promise<void>;
 }
 
 interface GeneralSettingsLike {
@@ -48,6 +48,10 @@ export const useAutoRefresh = (
 
   useEffect(() => {
     if (!autoRefresh || !selectedFeedList) {
+      logDebug?.('Component', 'Auto-refresh disabled or no feed list selected; skipping interval setup', {
+        autoRefresh,
+        selectedFeedList
+      });
       return;
     }
 
@@ -67,16 +71,24 @@ export const useAutoRefresh = (
     }
 
     const refreshIntervalMs = refreshIntervalSeconds * 1000;
+
+    logDebug?.('Component', 'Configuring auto-refresh interval', {
+      selectedFeedList,
+      refreshIntervalSeconds,
+      refreshIntervalMs
+    });
+
     const intervalId = setIntervalFn(() => {
       logDebug?.(
         'Component',
         `Auto-refreshing feeds every ${refreshIntervalSeconds} seconds...`
       );
-      loadFeeds(false);
+      loadFeeds(false, 'auto-refresh');
     }, refreshIntervalMs);
 
     return () => {
       clearIntervalFn(intervalId);
+      logDebug?.('Component', 'Auto-refresh interval cleared', { selectedFeedList });
     };
   }, [
     autoRefresh,

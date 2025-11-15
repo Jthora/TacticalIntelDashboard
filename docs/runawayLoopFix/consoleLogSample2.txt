@@ -1,0 +1,1725 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ TDD_LOG_001: PRIMARY_INTELLIGENCE_SOURCES loaded successfully Object
+ 🧹 Starting feed cleanup...
+ ✅ All stored feeds are valid
+ ✅ Feed cleanup completed
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ 🧹 Starting feed cleanup...
+ ✅ All stored feeds are valid
+ ✅ Feed cleanup completed
+ 🔍 FeedService: loadFeeds called
+ 🔍 FeedService: Stored version: 3.2-investigative-allowlist Current version: 3.2-investigative-allowlist
+ 🔍 FeedService: storedFeeds from localStorage: 402 items
+ � FeedService: Using stored feeds from localStorage
+ 📦 FeedService: Stored feeds sample: Array(2)
+ ✅ FeedService: Final feeds count: 402
+ 🚀 FeedService: updateFeedsFromServer called - using Modern API Service
+ TDD_SUCCESS_023 Object
+ TDD_SUCCESS_024 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_028 Object
+ ✅ Cleared intelligence cache - fake sources removed
+ 📋 Valid sources that should appear:
+ - NOAA Weather Alerts (weather.gov API)
+ - USGS Earthquake Data (earthquake.usgs.gov API)
+ - GitHub Security Advisories (api.github.com)
+ - Hacker News Technology (hacker-news.firebaseio.com)
+ - Cryptocurrency Intelligence (api.coingecko.com)
+ - Reddit discussions (reddit.com APIs)
+ ❌ Fake sources that should NOT appear:
+ - FBI IC3 Cyber Alerts (fake - no RSS feed)
+ - DHS Cybersecurity Advisories (fake - no working RSS)
+ - Any military/classified sources (fake)
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: null
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: null
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+ Route changed: Object
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 0
+ TDD_SUCCESS_044 Object
+ TDD_SUCCESS_045 Object
+ TDD_SUCCESS_046 Object
+ TDD_WARNING_047 Object
+logWarning @ FeedVisualizer.tsx?t=1763244903277:52
+ 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: null
+ 🔍 TDD_WARNING_067: No feed list selected, setting default to mission profile
+ 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: null
+ ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+warnOnce @ react-router-dom.js:4393
+ ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+warnOnce @ react-router-dom.js:4393
+ Route changed: Object
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 0
+ TDD_SUCCESS_044 Object
+ TDD_SUCCESS_045 Object
+ TDD_SUCCESS_046 Object
+ TDD_WARNING_047 Object
+logWarning @ FeedVisualizer.tsx?t=1763244903277:52
+ 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: null
+ 🔍 TDD_WARNING_067: No feed list selected, setting default to mission profile
+ 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: null
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_045 Object
+ TDD_SUCCESS_046 Object
+ TDD_SUCCESS_048 Object
+ TDD_SUCCESS_049 Object
+ TDD_SUCCESS_050 Object
+ TDD_SUCCESS_023 Object
+ TDD_SUCCESS_024 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_028 Object
+ 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_068: Feed list already selected: modern-api
+ 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: modern-api
+ Primary proxy succeeded
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 Object
+ TDD_SUCCESS_048 Object
+ TDD_SUCCESS_049 Object
+ TDD_SUCCESS_050 Object
+ TDD_SUCCESS_023 Object
+ TDD_SUCCESS_024 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_027 Object
+ TDD_SUCCESS_012 Object
+ TDD_SUCCESS_014 Object
+ TDD_SUCCESS_016 Object
+ TDD_SUCCESS_017 Object
+ TDD_SUCCESS_028 Object
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ TDD_SUCCESS_018 Object
+ TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:24
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+ TDD_SUCCESS_018 Object
+ TDD_SUCCESS_020 Object
+ TDD_SUCCESS_021 Object
+ TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:45
+ TDD_SUCCESS_018 Object
+ TDD_SUCCESS_020 Object
+ Primary proxy succeeded
+ TDD_SUCCESS_018 Object
+ TDD_SUCCESS_020 Object
+ TDD_SUCCESS_018 Object
+ TDD_SUCCESS_020 Object
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ TDD_SUCCESS_021 Object
+ TDD_SUCCESS_021 Object
+ TDD_SUCCESS_021 Object
+ TDD_SUCCESS_018 Object
+ TDD_SUCCESS_020 Object
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ TDD_SUCCESS_018 Object
+ TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:24
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+ Primary proxy succeeded
+ TDD_SUCCESS_021 Object
+ TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:45
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ TDD_SUCCESS_018 Object
+ TDD_SUCCESS_020 Object
+ TDD_SUCCESS_021 Object
+ TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:45
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ TDD_SUCCESS_018 Object
+ TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:24
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ TDD_SUCCESS_018 Object
+ TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:24
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ TDD_SUCCESS_018 Object
+ TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:24
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ TDD_SUCCESS_018 Object
+ TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:24
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+inpage.js:1 Uncaught (in promise) i: Failed to connect to MetaMask
+    at Object.connect (chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/inpage.js:1:58695)
+    at async s (chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/scripts/inpage.js:1:56490)Caused by: Error: MetaMask extension not found
+    at inpage.js:1:53800
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+localhost/:1 Access to fetch at 'https://www.reddit.com/r/space/hot.json?limit=25' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+www.reddit.com/r/space/hot.json?limit=25:1  Failed to load resource: net::ERR_FAILED
+ TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:24
+ TDD_SUCCESS_029 Object
+ TDD_SUCCESS_030 Object
+ TDD_SUCCESS_030 Object
+ TDD_SUCCESS_030 Object
+ TDD_SUCCESS_030 Object
+ TDD_SUCCESS_030 Object
+ TDD_SUCCESS_032 Object
+ TDD_SUCCESS_034 Object
+ TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 328 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 328 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+FeedService.ts:243 🚀 Modern API fetch result: 328 items
+FeedService.ts:249 🚀 Converted to legacy format: 328 feeds
+FeedService.ts:271 📡 FeedService: Falling back to legacy RSS fetching
+FeedService.ts:282 📡 Updating 27 legacy RSS feeds
+FeedService.ts:286 📡 Fetching RSS for: BBC World News (https://feeds.bbci.co.uk/news/world/rss.xml)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://feeds.bbci.co.uk/news/world/rss.xml
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fworld%2Frss.xml
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Fworld%2Frss.xml
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://feeds.bbci.co.uk/news/world/rss.xml <?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" x
+fetchFeed.ts:224 Parsed 26 feeds from XML
+fetchFeed.ts:267 Converted to 26 feed items
+FeedService.ts:293 📡 RSS success for BBC World News: 26 items
+FeedService.ts:286 📡 Fetching RSS for: NPR News (https://feeds.npr.org/1001/rss.xml)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://feeds.npr.org/1001/rss.xml
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Ffeeds.npr.org%2F1001%2Frss.xml
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Ffeeds.npr.org%2F1001%2Frss.xml
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:172 Feed data fetched for URL: https://feeds.npr.org/1001/rss.xml {
+ "message": "Forbidden"
+}
+jsonHelper.ts:20 Key 'items' not found or is not an array in JSON object. Returning empty array.
+getJsonArray @ jsonHelper.ts:20
+fetchFeed.ts:232 Parsed 0 feeds from JSON
+fetchFeed.ts:267 Converted to 0 feed items
+FeedService.ts:293 📡 RSS success for NPR News: 0 items
+FeedService.ts:286 📡 Fetching RSS for: The Guardian World (https://www.theguardian.com/world/rss)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.theguardian.com/world/rss
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.theguardian.com%2Fworld%2Frss
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.theguardian.com%2Fworld%2Frss
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.theguardian.com/world/rss <?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:media="http://search.yahoo.com/mrss/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>World news | The Guardian</
+fetchFeed.ts:224 Parsed 45 feeds from XML
+fetchFeed.ts:267 Converted to 45 feed items
+FeedService.ts:293 📡 RSS success for The Guardian World: 45 items
+FeedService.ts:286 📡 Fetching RSS for: Al Jazeera (https://www.aljazeera.com/xml/rss/all.xml)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.aljazeera.com/xml/rss/all.xml
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.aljazeera.com%2Fxml%2Frss%2Fall.xml
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.aljazeera.com%2Fxml%2Frss%2Fall.xml
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.aljazeera.com/xml/rss/all.xml <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
+	>
+	<channel>
+		<atom:link href="https:
+fetchFeed.ts:224 Parsed 25 feeds from XML
+fetchFeed.ts:267 Converted to 25 feed items
+FeedService.ts:293 📡 RSS success for Al Jazeera: 25 items
+FeedService.ts:286 📡 Fetching RSS for: Veterans Today (https://www.veteranstoday.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.veteranstoday.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.veteranstoday.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.veteranstoday.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.veteranstoday.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 10 feeds from XML
+fetchFeed.ts:267 Converted to 10 feed items
+FeedService.ts:293 📡 RSS success for Veterans Today: 10 items
+FeedService.ts:286 📡 Fetching RSS for: Unlimited Hangout (https://unlimitedhangout.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://unlimitedhangout.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Funlimitedhangout.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Funlimitedhangout.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:172 Feed data fetched for URL: https://unlimitedhangout.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 100 feeds from XML
+fetchFeed.ts:267 Converted to 100 feed items
+FeedService.ts:293 📡 RSS success for Unlimited Hangout: 100 items
+FeedService.ts:286 📡 Fetching RSS for: The Last American Vagabond (https://www.thelastamericanvagabond.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.thelastamericanvagabond.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.thelastamericanvagabond.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.thelastamericanvagabond.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ModernAPIService.ts:20 TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T22:16:19.412Z'}
+logError @ ModernAPIService.ts:20
+fetchFromAPI @ ModernAPIService.ts:158
+ModernFeedService.ts:36 TDD_SUCCESS_029 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Promise.allSettled completed', data: {…}, timestamp: '2025-11-15T22:16:19.413Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:19.413Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:19.447Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:19.448Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:19.448Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:19.448Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_032 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'All items collected', data: {…}, timestamp: '2025-11-15T22:16:19.448Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_034 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting data sorting', data: {…}, timestamp: '2025-11-15T22:16:19.449Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_035 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Data sorting completed', data: {…}, timestamp: '2025-11-15T22:16:19.449Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_036 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting legacy format conversion', data: {…}, timestamp: '2025-11-15T22:16:19.449Z'}
+ModernFeedService.ts:724 TDD_DEBUG: Converting 328 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 328 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Legacy format conversion completed', data: {…}, timestamp: '2025-11-15T22:16:19.451Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_038 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Caching results', data: {…}, timestamp: '2025-11-15T22:16:19.451Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_039 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Intelligence data fetch completed successfully', data: {…}, timestamp: '2025-11-15T22:16:19.458Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_051 {location: 'FeedVisualizer.loadFeeds', message: 'Modern Feed Service returned results', data: {…}, timestamp: '2025-11-15T22:16:19.458Z'}
+ModernAPIService.ts:20 TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T22:16:20.129Z'}
+logError @ ModernAPIService.ts:20
+fetchFromAPI @ ModernAPIService.ts:158
+ModernFeedService.ts:36 TDD_SUCCESS_029 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Promise.allSettled completed', data: {…}, timestamp: '2025-11-15T22:16:20.129Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:20.130Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:20.161Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:20.161Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:20.161Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T22:16:20.161Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_032 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'All items collected', data: {…}, timestamp: '2025-11-15T22:16:20.162Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_034 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting data sorting', data: {…}, timestamp: '2025-11-15T22:16:20.162Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_035 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Data sorting completed', data: {…}, timestamp: '2025-11-15T22:16:20.162Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_036 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting legacy format conversion', data: {…}, timestamp: '2025-11-15T22:16:20.162Z'}
+ModernFeedService.ts:724 TDD_DEBUG: Converting 328 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 328 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Legacy format conversion completed', data: {…}, timestamp: '2025-11-15T22:16:20.164Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_038 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Caching results', data: {…}, timestamp: '2025-11-15T22:16:20.165Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_039 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Intelligence data fetch completed successfully', data: {…}, timestamp: '2025-11-15T22:16:20.172Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_051 {location: 'FeedVisualizer.loadFeeds', message: 'Modern Feed Service returned results', data: {…}, timestamp: '2025-11-15T22:16:20.174Z'}
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:172 Feed data fetched for URL: https://www.thelastamericanvagabond.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 20 feeds from XML
+fetchFeed.ts:267 Converted to 20 feed items
+FeedService.ts:293 📡 RSS success for The Last American Vagabond: 20 items
+FeedService.ts:286 📡 Fetching RSS for: The Grayzone (https://thegrayzone.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://thegrayzone.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fthegrayzone.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fthegrayzone.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://thegrayzone.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 12 feeds from XML
+fetchFeed.ts:267 Converted to 12 feed items
+FeedService.ts:293 📡 RSS success for The Grayzone: 12 items
+FeedService.ts:286 📡 Fetching RSS for: MintPress News (https://www.mintpressnews.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.mintpressnews.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.mintpressnews.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.mintpressnews.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.mintpressnews.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 10 feeds from XML
+fetchFeed.ts:267 Converted to 10 feed items
+FeedService.ts:293 📡 RSS success for MintPress News: 10 items
+FeedService.ts:286 📡 Fetching RSS for: The Corbett Report (https://www.corbettreport.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.corbettreport.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.corbettreport.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.corbettreport.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.corbettreport.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 10 feeds from XML
+fetchFeed.ts:267 Converted to 10 feed items
+FeedService.ts:293 📡 RSS success for The Corbett Report: 10 items
+FeedService.ts:286 📡 Fetching RSS for: Covert Action Quarterly (https://covertactionquarterly.org/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://covertactionquarterly.org/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fcovertactionquarterly.org%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fcovertactionquarterly.org%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://covertactionquarterly.org/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 6 feeds from XML
+fetchFeed.ts:267 Converted to 6 feed items
+FeedService.ts:293 📡 RSS success for Covert Action Quarterly: 6 items
+FeedService.ts:286 📡 Fetching RSS for: Naked Capitalism (https://www.nakedcapitalism.com/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.nakedcapitalism.com/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.nakedcapitalism.com%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.nakedcapitalism.com%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.nakedcapitalism.com/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 10 feeds from XML
+fetchFeed.ts:267 Converted to 10 feed items
+FeedService.ts:293 📡 RSS success for Naked Capitalism: 10 items
+FeedService.ts:286 📡 Fetching RSS for: Zero Hedge (https://feeds.feedburner.com/zerohedge/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://feeds.feedburner.com/zerohedge/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Ffeeds.feedburner.com%2Fzerohedge%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Ffeeds.feedburner.com%2Fzerohedge%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://feeds.feedburner.com/zerohedge/feed <?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:og="http:
+fetchFeed.ts:224 Parsed 25 feeds from XML
+fetchFeed.ts:267 Converted to 25 feed items
+FeedService.ts:293 📡 RSS success for Zero Hedge: 25 items
+FeedService.ts:286 📡 Fetching RSS for: CounterPunch (https://www.counterpunch.org/feed)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://www.counterpunch.org/feed
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.counterpunch.org%2Ffeed
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fwww.counterpunch.org%2Ffeed
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://www.counterpunch.org/feed <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 30 feeds from XML
+fetchFeed.ts:267 Converted to 30 feed items
+FeedService.ts:293 📡 RSS success for CounterPunch: 30 items
+FeedService.ts:286 📡 Fetching RSS for: Consortium News (https://consortiumnews.com/feed/)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://consortiumnews.com/feed/
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fconsortiumnews.com%2Ffeed%2F
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fconsortiumnews.com%2Ffeed%2F
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+fetchFeed.ts:203 ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:203
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:212
+fetchFeed.ts:248 Parsed 0 feeds from HTML
+fetchFeed.ts:267 Converted to 0 feed items
+fetchFeed.ts:149 Starting to fetch feed from URL: http://www.weather.gov
+fetchFeed.ts:23 Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:79 Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+fetchFeed.ts:83 Primary proxy succeeded
+fetchFeed.ts:172 Feed data fetched for URL: https://consortiumnews.com/feed/ <?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/eleme
+fetchFeed.ts:224 Parsed 10 feeds from XML
+fetchFeed.ts:267 Converted to 10 feed items
+FeedService.ts:293 📡 RSS success for Consortium News: 10 items
+FeedService.ts:286 📡 Fetching RSS for: Krebs on Security (https://krebsonsecurity.com/feed/)
+fetchFeed.ts:149 Starting to fetch feed from URL: https://krebsonsecurity.com/feed/
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fkrebsonsecurity.com%2Ffeed%2F
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=https%3A%2F%2Fkrebsonsecurity.com%2Ffeed%2F
+ Primary proxy succeeded
+ Feed data fetched for URL: http://www.weather.gov <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="sche
+ ⚠️ Detected HTML content from URL: http://www.weather.gov - This appears to be a webpage, not a feed
+fetchFeed @ fetchFeed.ts:173
+await in fetchFeed
+updateFeedsFromServer @ FeedService.ts:201
+ Parsed 0 feeds from HTML
+ Converted to 0 feed items
+ Starting to fetch feed from URL: http://www.weather.gov
+ Using configured proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov
+ Attempting to fetch via primary proxy: https://api.codetabs.com/v1/proxy?quest=http%3A%2F%2Fwww.weather.gov

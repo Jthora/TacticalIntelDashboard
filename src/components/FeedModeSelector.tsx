@@ -1,49 +1,36 @@
 import React from 'react';
 
-import { FeedMode } from '../constants/EarthAllianceDefaultFeeds';
-import { useFeedMode } from '../contexts/FeedModeContext';
+import { MissionMode, missionModeProfiles } from '../constants/MissionMode';
+import { useMissionMode } from '../contexts/MissionModeContext';
 
 const FeedModeSelector: React.FC = () => {
-  const { feedMode, setFeedMode } = useFeedMode();
+  const { mode, setMode, profile } = useMissionMode();
 
   const handleModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFeedMode(e.target.value as FeedMode);
+    setMode(e.target.value as MissionMode);
   };
 
   return (
     <div className="feed-mode-selector">
-      <label htmlFor="feed-mode">Intelligence Source Mode:</label>
+      <label htmlFor="mission-mode">Mission Mode:</label>
       <select 
-        id="feed-mode" 
-        value={feedMode} 
+        id="mission-mode" 
+        value={mode} 
         onChange={handleModeChange}
         className="feed-mode-select"
       >
-        <option value={FeedMode.EARTH_ALLIANCE}>Earth Alliance</option>
-        <option value={FeedMode.MAINSTREAM}>Mainstream</option>
-        <option value={FeedMode.HYBRID}>Hybrid</option>
+        {Object.values(missionModeProfiles).map(profileOption => (
+          <option key={profileOption.id} value={profileOption.id}>
+            {profileOption.label}
+          </option>
+        ))}
       </select>
       
-      {feedMode === FeedMode.EARTH_ALLIANCE && (
-        <div className="mode-description">
-          <span className="mode-badge earth-alliance">Earth Alliance</span>
-          <p>Displaying vetted, trusted intelligence sources aligned with Earth Alliance priorities.</p>
-        </div>
-      )}
-      
-      {feedMode === FeedMode.MAINSTREAM && (
-        <div className="mode-description">
-          <span className="mode-badge mainstream">Mainstream</span>
-          <p>Displaying conventional news sources for comparison purposes.</p>
-        </div>
-      )}
-      
-      {feedMode === FeedMode.HYBRID && (
-        <div className="mode-description">
-          <span className="mode-badge hybrid">Hybrid</span>
-          <p>Displaying high-trust Earth Alliance sources alongside selected mainstream outlets.</p>
-        </div>
-      )}
+      <div className="mode-description">
+        <span className="mode-badge earth-alliance">{profile.badge} {profile.label}</span>
+        <p>{profile.description}</p>
+        <small>{profile.tagline}</small>
+      </div>
     </div>
   );
 };

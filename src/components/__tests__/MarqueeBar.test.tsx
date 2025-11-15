@@ -24,9 +24,9 @@ describe('MarqueeBar', () => {
     if (svc.store) svc.store.clear();
   });
 
-  test('renders fallback when no items', () => {
+  test('renders nothing when no items are available', () => {
     render(<MarqueeBar speed={30} />);
-    expect(screen.getByText(/No live intelligence items/i)).toBeInTheDocument();
+    expect(document.querySelector('.marquee-bar')).toBeNull();
   });
 
   test('renders marquee segments when items present', () => {

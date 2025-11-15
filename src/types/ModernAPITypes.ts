@@ -61,6 +61,7 @@ export interface IntelligenceSource {
   name: string;
   description: string;
   endpoint: APIEndpoint;
+  homepage?: string;
   normalizer: string; // Function name for data normalization
   refreshInterval: number; // Milliseconds
   enabled: boolean;

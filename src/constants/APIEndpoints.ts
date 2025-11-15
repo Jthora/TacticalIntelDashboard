@@ -43,6 +43,36 @@ export const NASA_API: APIEndpoint = {
   status: 'active'
 };
 
+export const EARTH_ALLIANCE_NEWS_API: APIEndpoint = {
+  id: 'earth-alliance-news',
+  name: 'Earth Alliance News Intelligence',
+  category: 'security',
+  baseUrl: 'https://rss2json.vercel.app',
+  endpoints: {
+    feed: '/api'
+  },
+  corsEnabled: true,
+  requiresAuth: false,
+  rateLimit: { requests: 60, period: 'minute' },
+  documentation: 'https://github.com/vercel/examples/tree/main/edge-functions/rss2json',
+  status: 'active'
+};
+
+export const INVESTIGATIVE_RSS_API: APIEndpoint = {
+  id: 'investigative-rss',
+  name: 'Investigative RSS Gateway',
+  category: 'security',
+  baseUrl: 'https://rss2json.vercel.app',
+  endpoints: {
+    feed: '/api'
+  },
+  corsEnabled: true,
+  requiresAuth: false,
+  rateLimit: { requests: 60, period: 'minute' },
+  documentation: 'https://github.com/vercel/examples/tree/main/edge-functions/rss2json',
+  status: 'active'
+};
+
 export const USGS_EARTHQUAKE_API: APIEndpoint = {
   id: 'usgs-earthquake',
   name: 'USGS Earthquake Hazards',
@@ -256,7 +286,9 @@ export const ALL_API_ENDPOINTS: APIEndpoint[] = [
   NVD_CVE_API,
   REDDIT_API,
   NEWSAPI_API,
-  SHODAN_API
+  SHODAN_API,
+  EARTH_ALLIANCE_NEWS_API,
+  INVESTIGATIVE_RSS_API
 ];
 
 // Filter by category

@@ -1,0 +1,2123 @@
+chunk-H343HIDT.js?v=38acaeb1:21609 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ModernIntelligenceSources.ts:339 TDD_LOG_001: PRIMARY_INTELLIGENCE_SOURCES loaded successfully Object
+feedCleanup.ts:15 🧹 Starting feed cleanup...
+feedCleanup.ts:31 🧹 Cleaned 7 invalid feeds. Keeping 409 valid feeds.
+feedCleanup.ts:41 ✅ Feed cleanup completed
+ModernFeedService.ts:36 TDD_SUCCESS_023 Object
+ModernFeedService.ts:36 TDD_SUCCESS_024 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_028 Object
+feedCleanup.ts:15 🧹 Starting feed cleanup...
+feedCleanup.ts:34 ✅ All stored feeds are valid
+feedCleanup.ts:41 ✅ Feed cleanup completed
+FeedService.ts:35 🔍 FeedService: loadFeeds called
+FeedService.ts:40 🔍 FeedService: Stored version: 3.2-investigative-allowlist Current version: 3.2-investigative-allowlist
+FeedService.ts:43 🔍 FeedService: storedFeeds from localStorage: 409 items
+FeedService.ts:53 � FeedService: Using stored feeds from localStorage
+FeedService.ts:54 📦 FeedService: Stored feeds sample: Array(2)
+FeedService.ts:57 ✅ FeedService: Final feeds count: 409
+FeedService.ts:238 🚀 FeedService: updateFeedsFromServer called - using Modern API Service
+ModernFeedService.ts:36 TDD_SUCCESS_023 Object
+ModernFeedService.ts:36 TDD_SUCCESS_024 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_028 Object
+CacheClearUtility.ts:20 ✅ Cleared intelligence cache - fake sources removed
+CacheClearUtility.ts:23 📋 Valid sources that should appear:
+CacheClearUtility.ts:24 - NOAA Weather Alerts (weather.gov API)
+CacheClearUtility.ts:25 - USGS Earthquake Data (earthquake.usgs.gov API)
+CacheClearUtility.ts:26 - GitHub Security Advisories (api.github.com)
+CacheClearUtility.ts:27 - Hacker News Technology (hacker-news.firebaseio.com)
+CacheClearUtility.ts:28 - Cryptocurrency Intelligence (api.coingecko.com)
+CacheClearUtility.ts:29 - Reddit discussions (reddit.com APIs)
+CacheClearUtility.ts:31 ❌ Fake sources that should NOT appear:
+CacheClearUtility.ts:32 - FBI IC3 Cyber Alerts (fake - no RSS feed)
+CacheClearUtility.ts:33 - DHS Cybersecurity Advisories (fake - no working RSS)
+CacheClearUtility.ts:34 - Any military/classified sources (fake)
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: null
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: null
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+Notifications permission has been blocked as the user has dismissed the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See <URL> for more information.
+RouteValidator.tsx:14 Route changed: Object
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 0
+FeedVisualizer.tsx:26 TDD_SUCCESS_044 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_045 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 Object
+FeedVisualizer.tsx:34 TDD_WARNING_047 Object
+logWarning @ FeedVisualizer.tsx:34
+HomePage.tsx:19 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: null
+HomePage.tsx:21 🔍 TDD_WARNING_067: No feed list selected, setting default to mission profile
+HomePage.tsx:38 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: null
+react-router-dom.js?v=38acaeb1:4393 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+warnOnce @ react-router-dom.js?v=38acaeb1:4393
+react-router-dom.js?v=38acaeb1:4393 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+warnOnce @ react-router-dom.js?v=38acaeb1:4393
+RouteValidator.tsx:14 Route changed: Object
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 0
+FeedVisualizer.tsx:26 TDD_SUCCESS_044 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_045 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 Object
+FeedVisualizer.tsx:34 TDD_WARNING_047 Object
+logWarning @ FeedVisualizer.tsx:34
+HomePage.tsx:19 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: null
+HomePage.tsx:21 🔍 TDD_WARNING_067: No feed list selected, setting default to mission profile
+HomePage.tsx:38 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: null
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+FeedVisualizer.tsx:26 TDD_SUCCESS_045 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_048 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_049 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_050 Object
+ModernFeedService.ts:36 TDD_SUCCESS_023 Object
+ModernFeedService.ts:36 TDD_SUCCESS_024 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_027 Object
+ModernAPIService.ts:28 TDD_SUCCESS_012 Object
+ModernAPIService.ts:28 TDD_SUCCESS_014 Object
+ModernAPIService.ts:28 TDD_SUCCESS_016 Object
+ModernAPIService.ts:28 TDD_SUCCESS_017 Object
+ModernFeedService.ts:36 TDD_SUCCESS_028 Object
+HomePage.tsx:19 🔍 TDD_ERROR_066: HomePage useEffect triggered, current selectedFeedList: modern-api
+HomePage.tsx:24 🔍 TDD_SUCCESS_068: Feed list already selected: modern-api
+HomePage.tsx:38 🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to: modern-api
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 Object
+FeedVisualizer.tsx:34 TDD_WARNING_047A Object
+logWarning @ FeedVisualizer.tsx:34
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+api.nasa.gov/planetary/apod?api_key=DEMO_KEY:1  Failed to load resource: the server responded with a status of 429 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:44 TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:44
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:44 TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:44
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:44 TDD_WARNING_074A Object
+logWarning @ ModernFeedService.ts:44
+rss2json.vercel.app/api?url=https%3A%2F%2Fwww.spaceforce.mil%2FDesktopModules%2FArticleCS%2FRSS.ashx%3FContentType%3D1%26Site%3D106%26Category%3Dall:1  Failed to load resource: the server responded with a status of 500 ()
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:20 TDD_ERROR_019 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:20 TDD_ERROR_022 Object
+logError @ ModernAPIService.ts:20
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_018 Object
+ModernAPIService.ts:28 TDD_SUCCESS_020 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:36 TDD_SUCCESS_029 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_032 Object
+ModernFeedService.ts:36 TDD_SUCCESS_034 Object
+ModernFeedService.ts:36 TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:36 TDD_SUCCESS_029 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_032 Object
+ModernFeedService.ts:36 TDD_SUCCESS_034 Object
+ModernFeedService.ts:36 TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+FeedService.ts:245 🚀 Modern API fetch result: 352 items
+FeedService.ts:251 🚀 Converted to legacy format: 352 feeds
+FeedService.ts:259 ✅ Modern API update succeeded, skipping legacy RSS fallback
+ModernAPIService.ts:28 TDD_SUCCESS_021 Object
+ModernFeedService.ts:36 TDD_SUCCESS_029 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_030 Object
+ModernFeedService.ts:36 TDD_SUCCESS_032 Object
+ModernFeedService.ts:36 TDD_SUCCESS_034 Object
+ModernFeedService.ts:36 TDD_SUCCESS_035 Object
+ModernFeedService.ts:36 TDD_SUCCESS_036 Object
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 Object
+ModernFeedService.ts:36 TDD_SUCCESS_038 Object
+ModernFeedService.ts:36 TDD_SUCCESS_039 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_051 Object
+FeedVisualizer.tsx:26 TDD_SUCCESS_052 Object
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:55.930Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_048 {location: 'FeedVisualizer.loadFeeds', message: 'Setting loading state', data: {…}, timestamp: '2025-11-15T23:15:55.930Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_049 {location: 'FeedVisualizer.loadFeeds', message: 'About to determine feed list type', data: {…}, timestamp: '2025-11-15T23:15:55.931Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_050 {location: 'FeedVisualizer.loadFeeds', message: 'Using Modern Feed Service path', data: {…}, timestamp: '2025-11-15T23:15:55.931Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_023 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting intelligence data fetch', data: {…}, timestamp: '2025-11-15T23:15:55.931Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_024 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Enabled sources retrieved', data: {…}, timestamp: '2025-11-15T23:15:55.931Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:55.932Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:55.932Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:55.932Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:55.932Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:55.932Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_028 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting Promise.allSettled', data: {…}, timestamp: '2025-11-15T23:15:55.932Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_029 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Promise.allSettled completed', data: {…}, timestamp: '2025-11-15T23:15:55.933Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T23:15:55.933Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T23:15:55.967Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T23:15:55.968Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T23:15:55.968Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_030 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Source fetch succeeded', data: {…}, timestamp: '2025-11-15T23:15:55.968Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_032 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'All items collected', data: {…}, timestamp: '2025-11-15T23:15:55.968Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_034 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting data sorting', data: {…}, timestamp: '2025-11-15T23:15:55.969Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_035 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Data sorting completed', data: {…}, timestamp: '2025-11-15T23:15:55.969Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_036 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting legacy format conversion', data: {…}, timestamp: '2025-11-15T23:15:55.969Z'}
+ModernFeedService.ts:724 TDD_DEBUG: Converting 352 items to legacy format
+ModernFeedService.ts:802 TDD_DEBUG: Conversion complete - 352 valid items, 0 skipped
+ModernFeedService.ts:36 TDD_SUCCESS_037 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Legacy format conversion completed', data: {…}, timestamp: '2025-11-15T23:15:55.971Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_038 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Caching results', data: {…}, timestamp: '2025-11-15T23:15:55.972Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_039 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Intelligence data fetch completed successfully', data: {…}, timestamp: '2025-11-15T23:15:55.986Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_051 {location: 'FeedVisualizer.loadFeeds', message: 'Modern Feed Service returned results', data: {…}, timestamp: '2025-11-15T23:15:56.178Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_052 {location: 'FeedVisualizer.loadFeeds', message: 'Load cycle completed', data: {…}, timestamp: '2025-11-15T23:15:56.180Z'}
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+CentralView.tsx:10 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+IntelSources.tsx:41 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+IntelSources.tsx:42 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+IntelSources.tsx:57 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+FeedVisualizer.tsx:26 TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:56.527Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_048 {location: 'FeedVisualizer.loadFeeds', message: 'Setting loading state', data: {…}, timestamp: '2025-11-15T23:15:56.528Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_049 {location: 'FeedVisualizer.loadFeeds', message: 'About to determine feed list type', data: {…}, timestamp: '2025-11-15T23:15:56.528Z'}
+FeedVisualizer.tsx:26 TDD_SUCCESS_050 {location: 'FeedVisualizer.loadFeeds', message: 'Using Modern Feed Service path', data: {…}, timestamp: '2025-11-15T23:15:56.528Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_023 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting intelligence data fetch', data: {…}, timestamp: '2025-11-15T23:15:56.528Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_024 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Enabled sources retrieved', data: {…}, timestamp: '2025-11-15T23:15:56.529Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.529Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.529Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.530Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.530Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.530Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.532Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.532Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.532Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.533Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.533Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.534Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.534Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.535Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.535Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.535Z'}
+ModernFeedService.ts:36 TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.537Z'}
+ModernAPIService.ts:28 TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.537Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.537Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.538Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.538Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.539Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.539Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.540Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.540Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.540Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.541Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.541Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.541Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.541Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.542Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.542Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.543Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.543Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.543Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.544Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.545Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.546Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.547Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.547Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.547Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.548Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.549Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.549Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.550Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.551Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.554Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.554Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.555Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.555Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.555Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.559Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.561Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.561Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.561Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.561Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.562Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.563Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.563Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.563Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.563Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.564Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.565Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.565Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.565Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.565Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.566Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.566Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.566Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.567Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.567Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.568Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.568Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.568Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.568Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.569Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.570Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.570Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.570Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.570Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.571Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.572Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.572Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.572Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.573Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.573Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.574Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.574Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.575Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.575Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.575Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.576Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.576Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.576Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.577Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.577Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.578Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.578Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.579Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.579Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.579Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.580Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.580Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.581Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.581Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.581Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.582Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.582Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.583Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.583Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.583Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.584Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.584Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.585Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.585Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.585Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.586Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.586Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.586Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.587Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.587Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.588Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.588Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.588Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.588Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.588Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.590Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.592Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.592Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.592Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.592Z'}
+ TDD_SUCCESS_027 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Creating fetch promise for source', data: {…}, timestamp: '2025-11-15T23:15:56.593Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:56.593Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:56.593Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:56.593Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:56.593Z'}
+ TDD_SUCCESS_028 {location: 'ModernFeedService.fetchAllIntelligenceData', message: 'Starting Promise.allSettled', data: {…}, timestamp: '2025-11-15T23:15:56.594Z'}
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.009Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.009Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.010Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.010Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.012Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.012Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.013Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.013Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.015Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.015Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.015Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.016Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.016Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.016Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.017Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.017Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:57.019Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:57.019Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+  GET https://rss2json.vercel.app/api?url=https%3A%2F%2Fwww.propublica.org%2Ffeeds%2Fpropublica-main 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.399Z'}
+ TDD_ERROR_019 {location: 'ModernAPIService.fetchFromAPI', issue: 'HTTP error response', data: {…}, timestamp: '2025-11-15T23:15:57.399Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:122
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:57.399Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.402Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.402Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.403Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.403Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:57.411Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:57.411Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.590Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.590Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.590Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.591Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.596Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:57.606Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:57.606Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.607Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.611Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.612Z'}
+ TDD_WARNING_074A {location: 'ModernFeedService.fetchSourceData', message: 'Normalized data appears to be generic fallback, attempting next proxy', data: {…}, timestamp: '2025-11-15T23:15:57.613Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:308
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.614Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.614Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.614Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.614Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.617Z'}
+ TDD_WARNING_074A {location: 'ModernFeedService.fetchSourceData', message: 'Normalized data appears to be generic fallback, attempting next proxy', data: {…}, timestamp: '2025-11-15T23:15:57.618Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:308
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.618Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.618Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.618Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.618Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.620Z'}
+ TDD_WARNING_074A {location: 'ModernFeedService.fetchSourceData', message: 'Normalized data appears to be generic fallback, attempting next proxy', data: {…}, timestamp: '2025-11-15T23:15:57.620Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:308
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.620Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.621Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.621Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.621Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.622Z'}
+ TDD_WARNING_074A {location: 'ModernFeedService.fetchSourceData', message: 'Normalized data appears to be generic fallback, attempting next proxy', data: {…}, timestamp: '2025-11-15T23:15:57.623Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:308
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.623Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.623Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.623Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.623Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.624Z'}
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.816Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.816Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.816Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.816Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.816Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.817Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.818Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.818Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.818Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.818Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.819Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.819Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.819Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.819Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.820Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.820Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.820Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.823Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.823Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.823Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.824Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.825Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.826Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.826Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.827Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.828Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.829Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.829Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.829Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.830Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.831Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.831Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.832Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.833Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.833Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.833Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.833Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.834Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.834Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.834Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.834Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.835Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.835Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.835Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.836Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.837Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.837Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.837Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.837Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.837Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.838Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.838Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.838Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.839Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.840Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.840Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.841Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.842Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.842Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.842Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.843Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.844Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.844Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.844Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.844Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.845Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.845Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.845Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.845Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.846Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.846Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.846Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.846Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.847Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.847Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.847Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.847Z'}
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:57.848Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:57.848Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:57.849Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:57.850Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:57.851Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:57.856Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:57.856Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:58.150Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:58.155Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:58.155Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.159Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.159Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:58.169Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:58.170Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.447Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.447Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.448Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.448Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.449Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.450Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.450Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.450Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.451Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.451Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.451Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.452Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.452Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.452Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.453Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.453Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.453Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.454Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.454Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.454Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.454Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.454Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.455Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.456Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.457Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.457Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.457Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.458Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.459Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.460Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.460Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.460Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.461Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.461Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.461Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.461Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.462Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.462Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.462Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.462Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:58.465Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:58.465Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:58.764Z'}
+ TDD_WARNING_074A {location: 'ModernFeedService.fetchSourceData', message: 'Normalized data appears to be generic fallback, attempting next proxy', data: {…}, timestamp: '2025-11-15T23:15:58.765Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:308
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:58.765Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:58.765Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:58.765Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:58.765Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.767Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.767Z'}
+  GET https://rss2json.vercel.app/api?url=https%3A%2F%2Fwww.transparency.org%2Fen%2Frss 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.768Z'}
+ TDD_ERROR_019 {location: 'ModernAPIService.fetchFromAPI', issue: 'HTTP error response', data: {…}, timestamp: '2025-11-15T23:15:58.768Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:122
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:58.768Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:15:58.769Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:58.769Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:58.769Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:58.769Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:58.769Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:58.771Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:58.771Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:58.773Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:58.773Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+  GET https://rss2json.vercel.app/api?url=https%3A%2F%2Fwww.eff.org%2Frss%2Fupdates 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:59.065Z'}
+ TDD_ERROR_019 {location: 'ModernAPIService.fetchFromAPI', issue: 'HTTP error response', data: {…}, timestamp: '2025-11-15T23:15:59.065Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:122
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:59.065Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:15:59.065Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:59.065Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:59.065Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:59.066Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:59.066Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.066Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.066Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.067Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.067Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.067Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:15:59.067Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:15:59.067Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.068Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.069Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.069Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.070Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.070Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.070Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.070Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:59.076Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:59.077Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.377Z'}
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.402Z'}
+ TDD_WARNING_074A {location: 'ModernFeedService.fetchSourceData', message: 'Normalized data appears to be generic fallback, attempting next proxy', data: {…}, timestamp: '2025-11-15T23:15:59.403Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:308
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:15:59.403Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:15:59.403Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:15:59.403Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:15:59.403Z'}
+localhost/:1 Access to fetch at 'https://feed2json.org/convert?url=https%3A%2F%2Fwww.wired.com%2Ffeed%2Fcategory%2Fsecurity%2Flatest%2Frss' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://feed2json.org/convert?url=https%3A%2F%2Fwww.wired.com%2Ffeed%2Fcategory%2Fsecurity%2Flatest%2Frss net::ERR_FAILED 200 (OK)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:59.405Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+localhost/:1 Access to fetch at 'https://feed2json.org/convert?url=https%3A%2F%2Fwww.transparency.org%2Fen%2Frss' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://feed2json.org/convert?url=https%3A%2F%2Fwww.transparency.org%2Fen%2Frss net::ERR_FAILED 200 (OK)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:59.406Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+localhost/:1 Access to fetch at 'https://feed2json.org/convert?url=https%3A%2F%2Fwww.eff.org%2Frss%2Fupdates' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://feed2json.org/convert?url=https%3A%2F%2Fwww.eff.org%2Frss%2Fupdates net::ERR_FAILED 200 (OK)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:59.406Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:59.409Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:59.409Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_021 {location: 'ModernAPIService.fetchFromAPI', message: 'JSON parsed successfully', data: {…}, timestamp: '2025-11-15T23:15:59.712Z'}
+localhost/:1 Access to fetch at 'https://feed2json.org/convert?url=https%3A%2F%2Fthreatpost.com%2Ffeed%2F' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://feed2json.org/convert?url=https%3A%2F%2Fthreatpost.com%2Ffeed%2F net::ERR_FAILED 200 (OK)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:15:59.775Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:15:59.777Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:15:59.777Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:00.077Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:00.077Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:00.376Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:00.376Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:00.726Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:00.726Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:01.014Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:01.014Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:01.321Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:01.322Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:01.615Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:01.615Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:01.921Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:01.922Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:02.209Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:02.209Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+localhost/:1 Access to fetch at 'https://api.allorigins.win/raw?url=https%3A%2F%2Ffeed2json.org%2Fconvert%3Furl%3Dhttps%253A%252F%252Fwww.icij.org%252Ffeed%252F' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://api.allorigins.win/raw?url=https%3A%2F%2Ffeed2json.org%2Fconvert%3Furl%3Dhttps%253A%252F%252Fwww.icij.org%252Ffeed%252F net::ERR_FAILED 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:02.504Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:02.504Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:02.504Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:02.505Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:02.505Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:02.505Z'}
+localhost/:1 Access to fetch at 'https://api.allorigins.win/get?url=https%3A%2F%2Fwww.opensecrets.org%2Fnews' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://api.allorigins.win/get?url=https%3A%2F%2Fwww.opensecrets.org%2Fnews net::ERR_FAILED 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:02.507Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:02.507Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:02.507Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:02.507Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:02.508Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:02.508Z'}
+localhost/:1 Access to fetch at 'https://api.allorigins.win/get?url=https%3A%2F%2Fwww.mintpressnews.com%2Ffeed%2F' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://api.allorigins.win/get?url=https%3A%2F%2Fwww.mintpressnews.com%2Ffeed%2F net::ERR_FAILED 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:02.509Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:02.510Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:02.510Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:02.510Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:02.510Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:02.510Z'}
+localhost/:1 Access to fetch at 'https://api.allorigins.win/get?url=https%3A%2F%2Fwww.occrp.org%2Fen%2Finvestigations%2Ffeed' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://api.allorigins.win/get?url=https%3A%2F%2Fwww.occrp.org%2Fen%2Finvestigations%2Ffeed net::ERR_FAILED 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:02.511Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:02.512Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:02.512Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:02.512Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:02.512Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:02.512Z'}
+localhost/:1 Access to fetch at 'https://api.allorigins.win/get?url=https%3A%2F%2Fprivacyinternational.org%2Frss.xml' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://api.allorigins.win/get?url=https%3A%2F%2Fprivacyinternational.org%2Frss.xml net::ERR_FAILED 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:02.514Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:02.514Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:02.514Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:02.515Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:02.515Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:02.515Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:02.522Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:02.522Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:16:02.824Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:16:02.824Z'}
+localhost/:1 Access to resource at 'https://api.allorigins.win/get?url=https%3A%2F%2Fwww.wired.com%2Ffeed%2Fcategory%2Fsecurity%2Flatest%2Frss' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+get:1  GET https://api.allorigins.win/get?url=https%3A%2F%2Fwww.wired.com%2Ffeed%2Fcategory%2Fsecurity%2Flatest%2Frss net::ERR_FAILED 500 (Internal Server Error)
+localhost/:1 Access to resource at 'https://api.allorigins.win/get?url=https%3A%2F%2Fwww.transparency.org%2Fen%2Frss' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+get:1  GET https://api.allorigins.win/get?url=https%3A%2F%2Fwww.transparency.org%2Fen%2Frss net::ERR_FAILED 500 (Internal Server Error)
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 6
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 6
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:02.828Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:02.828Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+localhost/:1 Access to fetch at 'https://feed2json.org/convert?url=https%3A%2F%2Fwww.icij.org%2Ffeed%2F' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+  GET https://feed2json.org/convert?url=https%3A%2F%2Fwww.icij.org%2Ffeed%2F net::ERR_FAILED 200 (OK)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:03.109Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:03.109Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:03.110Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:03.110Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:03.110Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:03.110Z'}
+  GET https://rss2json.vercel.app/api?url=https%3A%2F%2Fwww.mintpressnews.com%2Ffeed%2F 500 (Internal Server Error)
+makeRequest @ ModernAPIService.ts:297
+fetchFromAPI @ ModernAPIService.ts:113
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:16:03.116Z'}
+ TDD_ERROR_019 {location: 'ModernAPIService.fetchFromAPI', issue: 'HTTP error response', data: {…}, timestamp: '2025-11-15T23:16:03.116Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:122
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_ERROR_022 {location: 'ModernAPIService.fetchFromAPI', issue: 'Fetch failed', data: {…}, timestamp: '2025-11-15T23:16:03.116Z'}
+logError @ ModernAPIService.ts:24
+fetchFromAPI @ ModernAPIService.ts:159
+await in fetchFromAPI
+fetchIntelligenceData @ ModernAPIService.ts:181
+fetchSourceData @ ModernFeedService.ts:288
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_WARNING_074 {location: 'ModernFeedService.fetchSourceData', message: 'Primary proxy yielded no items, attempting fallback', data: {…}, timestamp: '2025-11-15T23:16:03.116Z'}
+logWarning @ ModernFeedService.ts:45
+fetchSourceData @ ModernFeedService.ts:320
+await in fetchSourceData
+(anonymous) @ ModernFeedService.ts:134
+fetchAllIntelligenceData @ ModernFeedService.ts:127
+(anonymous) @ useFeedLoader.ts?t=1763248439077:130
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ TDD_SUCCESS_012 {location: 'ModernAPIService.fetchFromAPI', message: 'Starting API fetch', data: {…}, timestamp: '2025-11-15T23:16:03.116Z'}
+ TDD_SUCCESS_014 {location: 'ModernAPIService.fetchFromAPI', message: 'Cache miss', data: {…}, timestamp: '2025-11-15T23:16:03.117Z'}
+ TDD_SUCCESS_016 {location: 'ModernAPIService.fetchFromAPI', message: 'URL built successfully', data: {…}, timestamp: '2025-11-15T23:16:03.117Z'}
+ TDD_SUCCESS_017 {location: 'ModernAPIService.fetchFromAPI', message: 'About to make HTTP request', data: {…}, timestamp: '2025-11-15T23:16:03.117Z'}
+ TDD_SUCCESS_018 {location: 'ModernAPIService.fetchFromAPI', message: 'HTTP request completed', data: {…}, timestamp: '2025-11-15T23:16:03.118Z'}
+ TDD_SUCCESS_020 {location: 'ModernAPIService.fetchFromAPI', message: 'About to parse JSON', data: {…}, timestamp: '2025-11-15T23:16:03.119Z'}
+ 🔍 TDD_ERROR_052: IntelSources component syncing tactical sources
+ 🔍 TDD_ERROR_053: Sources from intelligence context: 28
+ 🔍 TDD_SUCCESS_056: Set tactical sources state: 28
+ TDD_SUCCESS_046 {location: 'FeedVisualizer.loadFeeds', message: 'loadFeeds called', data: {…}, timestamp: '2025-11-15T23:16:03.120Z'}
+ TDD_WARNING_047A {location: 'FeedVisualizer.loadFeeds', message: 'Load skipped because another load is still in progress', data: {…}, timestamp: '2025-11-15T23:16:03.120Z'}
+logWarning @ FeedVisualizer.tsx?t=1763248439078:52
+(anonymous) @ useFeedLoader.ts?t=1763248439077:38
+(anonymous) @ FeedVisualizer.tsx?t=1763248439078:125
+commitHookEffectListMount @ chunk-H343HIDT.js?v=38acaeb1:16963
+commitPassiveMountOnFiber @ chunk-H343HIDT.js?v=38acaeb1:18206
+commitPassiveMountEffects_complete @ chunk-H343HIDT.js?v=38acaeb1:18179
+commitPassiveMountEffects_begin @ chunk-H343HIDT.js?v=38acaeb1:18169
+commitPassiveMountEffects @ chunk-H343HIDT.js?v=38acaeb1:18159
+flushPassiveEffectsImpl @ chunk-H343HIDT.js?v=38acaeb1:19543
+flushPassiveEffects @ chunk-H343HIDT.js?v=38acaeb1:19500
+(anonymous) @ chunk-H343HIDT.js?v=38acaeb1:19381
+workLoop @ chunk-H343HIDT.js?v=38acaeb1:197
+flushWork @ chunk-H343HIDT.js?v=38acaeb1:176
+performWorkUntilDeadline @ chunk-H343HIDT.js?v=38acaeb1:384
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api
+ 🔍 TDD_SUCCESS_070: CentralView rendered with selectedFeedList: modern-api

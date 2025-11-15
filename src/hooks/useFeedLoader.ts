@@ -1,12 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Feed } from '../models/Feed';
 import FeedService from '../services/FeedService';
 import { modernFeedService } from '../services/ModernFeedService';
 import { SearchService } from '../services/SearchService';
 import { log } from '../utils/LoggerService';
-import { getSourceById } from '../constants/ModernIntelligenceSources';
-import { NormalizedDataItem } from '../types/ModernAPITypes';
+import { getSourceById as getSourceByIdForMode } from '../constants/MissionSourceRegistry';
+import { MissionMode } from '../constants/MissionMode';
+import { NormalizedDataItem, IntelligenceSource } from '../types/ModernAPITypes';
+import { useMissionMode } from '../contexts/MissionModeContext';
 
 interface AlertFeedItem {
   title: string;
@@ -37,10 +39,14 @@ interface UseFeedLoaderDependencies {
   searchService?: typeof SearchService;
   logger?: typeof log;
   setTimeoutFn?: typeof setTimeout;
-  getSourceById?: typeof getSourceById;
+  getSourceById?: (mode: MissionMode, sourceId: string) => IntelligenceSource | undefined;
 }
 
 const noop = () => undefined;
+
+// Describes why loadFeeds was invoked. Canonical values:
+// 'initial-load' | 'selected-feed-change' | 'manual-refresh' | 'auto-refresh' | 'mission-mode-change' | 'unspecified'
+type LoadReason = string;
 
 export const useFeedLoader = (
   {
@@ -58,18 +64,26 @@ export const useFeedLoader = (
     searchService = SearchService,
     logger = log,
     setTimeoutFn = setTimeout,
-    getSourceById: getSourceByIdFn = getSourceById
+    getSourceById: getSourceByIdFn = getSourceByIdForMode
   }: UseFeedLoaderDependencies = {}
 ) => {
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
+  const { mode } = useMissionMode();
+  const loadInProgressRef = useRef(false);
+  const lastInvocationRef = useRef<{ reason: LoadReason; timestamp: number }>({
+    reason: 'unspecified',
+    timestamp: 0
+  });
+  const MIN_AUTO_REFRESH_GAP_MS = 1500;
 
   const loadFeeds = useCallback(
-    async (showLoading = true) => {
+    async (showLoading = true, reason: LoadReason = 'unspecified') => {
       logSuccess('046', 'loadFeeds', 'loadFeeds called', {
         selectedFeedList,
         showLoading,
+        reason,
         callStack: new Error().stack?.split('\n').slice(1, 4).join('\n')
       });
 
@@ -81,17 +95,44 @@ export const useFeedLoader = (
         return;
       }
 
+      const now = Date.now();
+      if (loadInProgressRef.current) {
+        logWarning('047A', 'loadFeeds', 'Load skipped because another load is still in progress', {
+          selectedFeedList,
+          reason,
+          inFlightSince: lastInvocationRef.current.timestamp
+        });
+        return;
+      }
+
+      if (
+        reason === 'auto-refresh' &&
+        now - lastInvocationRef.current.timestamp < MIN_AUTO_REFRESH_GAP_MS
+      ) {
+        logWarning('047B', 'loadFeeds', 'Auto-refresh throttled due to rapid consecutive requests', {
+          selectedFeedList,
+          reason,
+          msSinceLastLoad: now - lastInvocationRef.current.timestamp,
+          minGapMs: MIN_AUTO_REFRESH_GAP_MS
+        });
+        return;
+      }
+
+      loadInProgressRef.current = true;
+      lastInvocationRef.current = { reason, timestamp: now };
+      const loadStart = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+
       if (showLoading) {
         logSuccess('048', 'loadFeeds', 'Setting loading state', { selectedFeedList });
         setLoading(true, 'Loading intelligence feeds...');
         setError(null);
       }
 
-      try {
+  try {
         logger.debug('Component', `Loading feeds for list: ${selectedFeedList}`);
         logSuccess('049', 'loadFeeds', 'About to determine feed list type', { selectedFeedList });
 
-        const modernSource = getSourceByIdFn(selectedFeedList);
+  const modernSource = getSourceByIdFn(mode, selectedFeedList);
         if (modernSource) {
           logSuccess('049A', 'loadFeeds', 'Detected modern source selection', {
             sourceId: selectedFeedList,
@@ -146,7 +187,6 @@ export const useFeedLoader = (
           setFeeds(feedsForSource);
           searchService.initializeFeeds(feedsForSource);
           setLastUpdated(new Date());
-          setLoading(false);
           return;
         }
 
@@ -252,7 +292,15 @@ export const useFeedLoader = (
         console.error('Failed to load feeds:', error);
         setError(`Failed to load feeds: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
+        const loadDuration =
+          (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now()) - loadStart;
         setLoading(false);
+        loadInProgressRef.current = false;
+        logSuccess('052', 'loadFeeds', 'Load cycle completed', {
+          selectedFeedList,
+          reason,
+          loadDurationMs: Number(loadDuration.toFixed(2))
+        });
       }
     },
     [
@@ -268,7 +316,8 @@ export const useFeedLoader = (
       modernService,
       feedService,
       setTimeoutFn,
-      getSourceByIdFn
+      getSourceByIdFn,
+      mode
     ]
   );
 

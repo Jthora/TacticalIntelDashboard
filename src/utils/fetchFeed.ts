@@ -9,6 +9,7 @@ import { FeedResults } from '../types/FeedTypes';
 import { handleFetchError, handleHTMLParsingError,handleJSONParsingError, handleTXTParsingError, handleXMLParsingError } from './errorHandler';
 import { convertFeedsToFeedItems } from './feedConversion';
 import { LocalStorageUtil } from './LocalStorageUtil';
+import { isValidFeedURL } from './feedUrlValidator';
 
 // Get proxy URL using user's CORS settings
 const getProxyUrl = (targetUrl: string): string => {
@@ -144,43 +145,11 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
   }
 };
 
-// URL validation function to ensure we only process legitimate feed URLs
-const isValidFeedURL = (url: string): boolean => {
-  // Check for common feed indicators
-  const feedIndicators = [
-    '/rss', '/feed', '.xml', '/atom', 
-    'rss.xml', 'feeds/', '/rss.php'
-  ];
-  
-  // Check for article-specific patterns that should NOT be processed as feeds
-  const articlePatterns = [
-    '/2025/', '/2024/', '/2023/', '/article/',
-    '/story/', '/news/2025', '/news/2024',
-    '/post/', '/item/', 'article_'
-  ];
-  
-  const hasArticlePattern = articlePatterns.some(pattern => url.includes(pattern));
-  const hasFeedIndicator = feedIndicators.some(indicator => url.includes(indicator));
-  
-  // URL is valid if it has feed indicators OR does not have article patterns
-  // But prioritize feed indicators
-  if (hasFeedIndicator) {
-    return true;
-  }
-  
-  if (hasArticlePattern) {
-    console.warn(`🚫 Skipping article URL (not a feed): ${url}`);
-    return false;
-  }
-  
-  return true;
-};
-
 export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
   console.log(`Starting to fetch feed from URL: ${url}`);
   
   // Validate URL before processing
-  if (!isValidFeedURL(url)) {
+  if (!isValidFeedURL(url, { allowArticlePatternsForInvestigativeHosts: false })) {
     console.error(`Invalid feed URL detected: ${url}`);
     return null;
   }
@@ -234,7 +203,7 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       console.warn(`⚠️ Detected HTML content from URL: ${url} - This appears to be a webpage, not a feed`);
       
       // For individual article pages, return null instead of trying to parse
-      if (!isValidFeedURL(url)) {
+      if (!isValidFeedURL(url, { allowArticlePatternsForInvestigativeHosts: false })) {
         console.error(`🚫 Refusing to parse HTML content from article URL: ${url}`);
         return null;
       }

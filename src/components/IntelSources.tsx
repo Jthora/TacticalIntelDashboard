@@ -1,12 +1,10 @@
 import '../styles/components/intel-sources.css';
 
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useRef,useState } from 'react';
 
-import { 
-  getModernIntelligenceSourcesAsLegacy, 
-  MODERN_INTELLIGENCE_CATEGORIES
-} from '../adapters/ModernIntelSourcesAdapter';
+import { MODERN_INTELLIGENCE_CATEGORIES } from '../adapters/ModernIntelSourcesAdapter';
 import { useIntelligence } from '../contexts/IntelligenceContext';
+import { useMissionMode } from '../contexts/MissionModeContext';
 import { LoadingSpinner } from '../shared/components/LoadingStates';
 import { 
   IntelligenceCategory,
@@ -25,6 +23,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   enableRealTimeAlerts = true
 }) => {
   const { state: intelState, actions: intelActions } = useIntelligence();
+  const { profile } = useMissionMode();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'compact'>('grid');
@@ -35,58 +34,28 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const [showSourceManager, setShowSourceManager] = useState<boolean>(false);
   const [tacticalSources, setTacticalSources] = useState<TacticalIntelSource[]>([]);
+  const hasHydratedSourcesRef = useRef(false);
 
-  // Load tactical intelligence sources
+  // Sync tactical sources with intelligence context without re-triggering source injections
   useEffect(() => {
-    const loadTacticalSources = async () => {
-      console.log('🔍 TDD_ERROR_052: IntelSources component loading tactical sources');
+    console.log('🔍 TDD_ERROR_052: IntelSources component syncing tactical sources');
+    console.log('🔍 TDD_ERROR_053: Sources from intelligence context:', intelState.sources.length);
+
+    if (intelState.sources.length === 0) {
       setLoading(true);
-      setError(null);
-      try {
-        // Load from intelligence context first
-        let sources = intelState.sources;
-        console.log('🔍 TDD_ERROR_053: Sources from intelligence context:', sources.length);
-        
-        // If no sources in context, load from modern intelligence sources
-        if (sources.length === 0) {
-          console.log('🔍 TDD_ERROR_054: No sources in context, loading modern intelligence sources');
-          // Use modern API sources (CORS-friendly, real-time JSON APIs)
-          sources = getModernIntelligenceSourcesAsLegacy();
-          console.log('🔍 TDD_SUCCESS_055: Loaded modern intelligence sources:', sources.length);
-          // Add to intelligence context
-          sources.forEach(source => intelActions.addSource(source));
-        } else {
-          // Check if the modern-api default source exists, add it if not
-          const hasDefaultSource = sources.some(source => source.id === 'modern-api');
-          if (!hasDefaultSource) {
-            console.log('🔍 TDD_WARNING: Default modern-api source not found, adding it to the list');
-            const defaultSources = getModernIntelligenceSourcesAsLegacy();
-            defaultSources.forEach(source => {
-              if (source.id === 'modern-api') {
-                intelActions.addSource(source);
-                sources.push(source);
-              }
-            });
-          }
-        }
-        
-        setTacticalSources(sources);
-        console.log('🔍 TDD_SUCCESS_056: Set tactical sources state:', sources.length);
-        
-        // ALWAYS select the modern-api feed list to ensure the default feeds are available
-        // This ensures the Intelligence Feed is never blank
-        setSelectedFeedList('modern-api');
-        console.log('🔍 TDD_SUCCESS_060: Source selection complete - modern-api');
-      } catch (err) {
-        console.error('🔍 TDD_ERROR_062: Failed to load tactical sources:', err);
-        setError('Failed to load intelligence sources');
-      } finally {
-        setLoading(false);
-        console.log('🔍 TDD_SUCCESS_063: Tactical sources loading complete');
+      if (hasHydratedSourcesRef.current) {
+        console.warn('🔍 TDD_WARNING: Intelligence context returned zero sources after hydration');
       }
-    };
-    loadTacticalSources();
-  }, [intelState.sources, intelActions, setSelectedFeedList]);
+      setTacticalSources([]);
+      return;
+    }
+
+    hasHydratedSourcesRef.current = true;
+    setError(null);
+    setTacticalSources(intelState.sources);
+    setLoading(false);
+    console.log('🔍 TDD_SUCCESS_056: Set tactical sources state:', intelState.sources.length);
+  }, [intelState.sources]);
 
   // Set up auto-refresh if enabled
   useEffect(() => {
@@ -215,13 +184,13 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   };
 
   const handleRestoreDefaults = () => {
-    setSelectedFeedList('modern-api');
-    console.log('🔄 Restored default selection to modern-api');
+    setSelectedFeedList(profile.defaultFeedListId);
+    console.log('🔄 Restored default selection to', profile.defaultFeedListId);
   };
 
   // Add a function to check if a source is the default modern-api source
   const isDefaultSource = (sourceId: string) => {
-    return sourceId === 'modern-api';
+  return sourceId === profile.defaultFeedListId;
   };
 
   const handleViewModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

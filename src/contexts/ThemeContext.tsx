@@ -2,11 +2,12 @@ import React, { createContext, ReactNode,useContext, useEffect, useReducer } fro
 
 import { useSettings } from './SettingsContext';
 
-export type Theme = 'dark' | 'night' | 'combat' | 'alliance' | 'light' | 'system';
+export type Theme = 'dark' | 'night' | 'combat' | 'alliance' | 'light' | 'system' | 'spaceforce';
 
 interface ThemeState {
   theme: Theme;
   compactMode: boolean;
+  userOverride: boolean;
 }
 
 interface ThemeContextType {
@@ -15,23 +16,27 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
   setCompactMode: (enabled: boolean) => void;
   toggleCompactMode: () => void;
+  applyModeTheme: (theme: Theme) => void;
 }
 
 type ThemeAction = 
-  | { type: 'SET_THEME'; payload: Theme }
+  | { type: 'SET_THEME'; payload: { theme: Theme; userOverride: boolean } }
   | { type: 'SET_COMPACT_MODE'; payload: boolean }
   | { type: 'TOGGLE_COMPACT_MODE' }
-  | { type: 'SYNC_WITH_SETTINGS'; payload: { theme: Theme, compactMode: boolean } };
+  | { type: 'SYNC_WITH_SETTINGS'; payload: { theme: Theme; compactMode: boolean } }
+  | { type: 'APPLY_MODE_THEME'; payload: Theme }
+  | { type: 'CLEAR_THEME_OVERRIDE' };
 
 const initialState: ThemeState = {
   theme: 'dark',
   compactMode: false,
+  userOverride: false
 };
 
 const themeReducer = (state: ThemeState, action: ThemeAction): ThemeState => {
   switch (action.type) {
     case 'SET_THEME':
-      return { ...state, theme: action.payload };
+      return { ...state, theme: action.payload.theme, userOverride: action.payload.userOverride };
     case 'SET_COMPACT_MODE':
       return { ...state, compactMode: action.payload };
     case 'TOGGLE_COMPACT_MODE':
@@ -39,8 +44,16 @@ const themeReducer = (state: ThemeState, action: ThemeAction): ThemeState => {
     case 'SYNC_WITH_SETTINGS':
       return { 
         theme: action.payload.theme as Theme,
-        compactMode: action.payload.compactMode
+        compactMode: action.payload.compactMode,
+        userOverride: true
       };
+    case 'APPLY_MODE_THEME':
+      if (state.userOverride) {
+        return state;
+      }
+      return { ...state, theme: action.payload };
+    case 'CLEAR_THEME_OVERRIDE':
+      return { ...state, userOverride: false };
     default:
       return state;
   }
@@ -70,7 +83,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const savedCompactMode = localStorage.getItem('tactical-compact-mode') === 'true';
     
     if (savedTheme) {
-      dispatch({ type: 'SET_THEME', payload: savedTheme });
+      dispatch({ type: 'SET_THEME', payload: { theme: savedTheme, userOverride: true } });
     }
     if (savedCompactMode !== null) {
       dispatch({ type: 'SET_COMPACT_MODE', payload: savedCompactMode });
@@ -137,7 +150,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   }, [state.compactMode, settings, updateSettings]);
 
   const setTheme = (theme: Theme) => {
-    dispatch({ type: 'SET_THEME', payload: theme });
+    dispatch({ type: 'SET_THEME', payload: { theme, userOverride: true } });
   };
 
   const setCompactMode = (enabled: boolean) => {
@@ -148,12 +161,17 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     dispatch({ type: 'TOGGLE_COMPACT_MODE' });
   };
 
+  const applyModeTheme = (theme: Theme) => {
+    dispatch({ type: 'APPLY_MODE_THEME', payload: theme });
+  };
+
   const value: ThemeContextType = {
     theme: state.theme,
     compactMode: state.compactMode,
     setTheme,
     setCompactMode,
     toggleCompactMode,
+    applyModeTheme
   };
 
   return (

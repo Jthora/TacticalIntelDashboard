@@ -26,6 +26,20 @@ import IntelSources from '../../src/components/IntelSources';
 import { FilterProvider } from '../../src/contexts/FilterContext';
 import { IntelligenceProvider } from '../../src/contexts/IntelligenceContext';
 
+jest.mock('../../src/contexts/MissionModeContext', () => ({
+  useMissionMode: () => ({
+    mode: 'MILTECH',
+    profile: {
+      badge: '🛰️',
+      label: 'STANDARD OPERATIONS',
+      tagline: 'Trusted situational awareness',
+      defaultFeedListId: 'modern-api',
+      defaultTheme: 'dark',
+      description: 'Baseline mission profile for comprehensive monitoring.'
+    }
+  })
+}));
+
 // Mock services
 jest.mock('../../src/services/FeedService', () => ({
   __esModule: true,

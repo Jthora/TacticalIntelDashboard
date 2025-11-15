@@ -1,20 +1,65 @@
+type StorageAdapter = {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+  clear(): void;
+};
+
+const createMemoryAdapter = (): StorageAdapter => {
+  const store = new Map<string, string>();
+  return {
+    getItem: key => store.get(key) ?? null,
+    setItem: (key, value) => store.set(key, value),
+    removeItem: key => { store.delete(key); },
+    clear: () => store.clear()
+  };
+};
+
+const resolveDefaultAdapter = (): StorageAdapter => {
+  try {
+    if (typeof globalThis !== 'undefined' && (globalThis as any).localStorage) {
+      const nativeStorage = (globalThis as any).localStorage as Storage;
+      return {
+        getItem: key => nativeStorage.getItem(key),
+        setItem: (key, value) => nativeStorage.setItem(key, value),
+        removeItem: key => nativeStorage.removeItem(key),
+        clear: () => nativeStorage.clear()
+      };
+    }
+  } catch {
+    // fall through to memory adapter
+  }
+
+  return createMemoryAdapter();
+};
+
+let storageAdapter: StorageAdapter = resolveDefaultAdapter();
+
+export const setStorageAdapter = (adapter: StorageAdapter | null | undefined): void => {
+  storageAdapter = adapter ?? createMemoryAdapter();
+};
+
+export const resetStorageAdapter = (): void => {
+  storageAdapter = resolveDefaultAdapter();
+};
+
 export class LocalStorageUtil {
   static getItem<T>(key: string): T | null {
     try {
-      const storedItem = localStorage.getItem(key);
+      const storedItem = storageAdapter.getItem(key);
       if (!storedItem) {
         return null;
       }
 
       const parsedItem = JSON.parse(storedItem);
       if (parsedItem.expiry && new Date(parsedItem.expiry) < new Date()) {
-        localStorage.removeItem(key);
+        storageAdapter.removeItem(key);
         return null;
       }
 
       return parsedItem.value !== undefined ? parsedItem.value : parsedItem;
     } catch (error) {
-      console.error(`Error getting item from localStorage: ${error}`);
+      console.error(`Error getting item from storage: ${error}`);
       return null;
     }
   }
@@ -27,25 +72,25 @@ export class LocalStorageUtil {
         expiry.setMinutes(expiry.getMinutes() + expiryInMinutes);
         item.expiry = expiry.toISOString();
       }
-      localStorage.setItem(key, JSON.stringify(item));
+      storageAdapter.setItem(key, JSON.stringify(item));
     } catch (error) {
-      console.error(`Error setting item in localStorage: ${error}`);
+      console.error(`Error setting item in storage: ${error}`);
     }
   }
 
   static removeItem(key: string): void {
     try {
-      localStorage.removeItem(key);
+      storageAdapter.removeItem(key);
     } catch (error) {
-      console.error(`Error removing item from localStorage: ${error}`);
+      console.error(`Error removing item from storage: ${error}`);
     }
   }
 
   static clear(): void {
     try {
-      localStorage.clear();
+      storageAdapter.clear();
     } catch (error) {
-      console.error(`Error clearing localStorage: ${error}`);
+      console.error(`Error clearing storage: ${error}`);
     }
   }
 

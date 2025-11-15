@@ -221,6 +221,19 @@ export const EARTH_ALLIANCE_SOURCES: EarthAllianceFeedSource[] = [
     protocol: SourceProtocol.RSS,
     endpoint: 'https://covertactionquarterly.org/feed',
     format: 'journal'
+  },
+  {
+    id: 'earth-alliance-news-15',
+    name: 'Earth Alliance News',
+    url: 'https://earthalliance.news',
+    category: EarthAllianceCategory.POSITIVE_MILITARY_OPERATIONS_TRACKING,
+    trustRating: 87,
+    allianceAlignment: 96,
+    accessMethod: 'direct',
+    verificationMethod: 'multi-source-corroboration',
+    protocol: SourceProtocol.RSS,
+    endpoint: 'https://earthalliance.news/feed/',
+    format: 'news'
   }
 ];
 
