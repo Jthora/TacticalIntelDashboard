@@ -27,6 +27,7 @@ const Header: React.FC = () => {
   const [showModeSwitcher, setShowModeSwitcher] = useState(false);
   const modeSwitcherButtonRef = useRef<HTMLButtonElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
+  const logoRef = useRef<HTMLImageElement | null>(null);
   const [popoverPosition, setPopoverPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
 
   // Update time every second
@@ -37,6 +38,23 @@ const Header: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!logoRef.current || typeof window === 'undefined' || !import.meta.env.DEV) {
+      return;
+    }
+
+    const styles = window.getComputedStyle(logoRef.current);
+    console.table({
+      mode: activeMode,
+      backgroundColor: styles.backgroundColor,
+      mixBlendMode: styles.mixBlendMode,
+      filter: styles.filter,
+      boxShadow: styles.boxShadow,
+      isolation: styles.isolation,
+      opacity: styles.opacity
+    });
+  }, [activeMode]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -120,12 +138,30 @@ const Header: React.FC = () => {
     <header className="tactical-header-enhanced tactical-header-compact">
       <div className="header-primary-bar">
         {/* Brand section */}
-        <div className="brand-micro" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-          <img 
-            src={WingCommanderLogo} 
-            alt="TC" 
-            className="brand-icon-micro"
-          />
+        <div
+          className="brand-micro"
+          onClick={() => navigate('/')}
+          style={{ cursor: 'pointer' }}
+        >
+          <span
+            style={{
+              display: 'inline-block',
+              mixBlendMode: 'screen',
+              lineHeight: 0
+            }}
+          >
+            <img
+              src={WingCommanderLogo}
+              alt="TC"
+              ref={logoRef}
+              style={{
+                height: 36,
+                width: 'auto',
+                display: 'block',
+                objectFit: 'contain'
+              }}
+            />
+          </span>
           <div className="brand-text-micro">
             <span className="brand-code">TACTICAL INTEL DASHBOARD</span>
           </div>

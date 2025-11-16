@@ -9,6 +9,7 @@
   --secondary-bg: #0a0a0a;
   --tertiary-bg: #151515;
   --accent-cyan: #00ffaa;
+  --accent-cyan-rgb: 0, 255, 170;
   --accent-blue: #0099ff;
   --accent-orange: #ff6600;
   --accent-red: #ff3333;
@@ -71,6 +72,56 @@
   --transition-fast: 0.1s ease;
   --transition-normal: 0.2s ease;
   --transition-slow: 0.3s ease;
+
+  /* Mission surfaces */
+  --module-surface: rgba(0, 15, 15, 0.95);
+  --module-border: rgba(0, 255, 170, 0.2);
+  --module-glow: linear-gradient(90deg, transparent, rgba(0, 255, 170, 0.6), transparent);
+  --module-header-gradient: linear-gradient(135deg, rgba(0, 255, 170, 0.15) 0%, rgba(0, 255, 170, 0.05) 100%);
+  --module-header-border: rgba(0, 255, 170, 0.3);
+  --glass-panel-bg: rgba(0, 0, 0, 0.5);
+  --glass-panel-border: rgba(0, 255, 170, 0.5);
+  --input-bg: rgba(0, 0, 0, 0.5);
+  --input-border: #333333;
+  --input-focus-bg: rgba(0, 255, 170, 0.1);
+  --input-focus-shadow: 0 0 4px rgba(0, 255, 170, 0.3);
+  --button-bg: rgba(0, 255, 170, 0.1);
+  --button-border: var(--accent-cyan);
+  --button-hover-bg: rgba(0, 255, 170, 0.2);
+  --button-hover-shadow: 0 0 6px rgba(0, 255, 170, 0.4);
+  --control-bg: rgba(0, 0, 0, 0.7);
+  --control-border: rgba(0, 255, 170, 0.5);
+  --control-text: var(--accent-cyan);
+  --mode-switcher-bg: rgba(2, 10, 18, 0.95);
+  --mode-switcher-border: rgba(0, 255, 170, 0.25);
+  --mode-option-bg: rgba(2, 12, 22, 0.9);
+  --mode-option-border: rgba(255, 255, 255, 0.12);
+  --mode-option-hover-border: rgba(0, 255, 170, 0.4);
+  --mission-summary-bg: rgba(2, 12, 24, 0.9);
+  --enhanced-header-gradient: linear-gradient(135deg, rgba(0, 255, 170, 0.12) 0%, rgba(0, 255, 170, 0.04) 100%);
+  --enhanced-header-border: rgba(0, 255, 170, 0.3);
+  --compact-header-gradient: linear-gradient(90deg, rgba(0, 255, 170, 0.08) 0%, rgba(0, 153, 255, 0.08) 100%);
+  --compact-header-border: rgba(0, 255, 170, 0.3);
+  --compact-header-shadow: 0 2px 8px rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.2);
+  --module-icon-color: var(--accent-cyan);
+  --brand-icon-filter: none;
+  --brand-icon-shadow: none;
+  --intel-toggle-border: rgba(176, 176, 176, 0.3);
+  --intel-toggle-bg: transparent;
+  --intel-toggle-text: var(--text-muted);
+  --intel-toggle-hover-bg: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.05);
+  --intel-toggle-active-bg: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.1);
+  --intel-toggle-shadow: var(--glow-cyan);
+  --intel-metrics-bg: var(--module-surface);
+  --intel-metrics-border: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.2);
+  --metric-card-bg: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.05);
+  --metric-card-border: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.2);
+  --metric-card-hover-bg: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.08);
+  --metric-card-hover-border: rgba(var(--accent-cyan-rgb, 0, 255, 170), 0.3);
+  --metric-icon-color: var(--accent-cyan);
+  --mission-summary-border: rgba(255, 255, 255, 0.08);
+  --mission-pill-bg: rgba(0, 255, 170, 0.08);
+  --mission-pill-border: rgba(0, 255, 170, 0.25);
   
   /* Control States - Tactical UI System */
   --control-inactive: rgba(176, 176, 176, 0.3);

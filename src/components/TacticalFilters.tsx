@@ -160,10 +160,10 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
             </div>
             <div className="filter-grid">
               {[
-                { key: 'CRITICAL', label: 'CRITICAL', color: '#ff0040' },
-                { key: 'HIGH', label: 'HIGH', color: '#ff9500' },
-                { key: 'MEDIUM', label: 'MEDIUM', color: '#ffd700' },
-                { key: 'LOW', label: 'LOW', color: '#00ff41' }
+                { key: 'CRITICAL', label: 'CRITICAL', color: 'var(--accent-red)' },
+                { key: 'HIGH', label: 'HIGH', color: 'var(--accent-orange)' },
+                { key: 'MEDIUM', label: 'MEDIUM', color: 'var(--accent-yellow)' },
+                { key: 'LOW', label: 'LOW', color: 'var(--accent-green)' }
               ].map(filter => (
                 <button
                   key={filter.key}
@@ -185,10 +185,10 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
             </div>
             <div className="filter-grid">
               {[
-                { key: 'INTEL', label: 'INTELLIGENCE', color: '#00ffaa' },
-                { key: 'NEWS', label: 'NEWS', color: '#0099ff' },
-                { key: 'ALERT', label: 'ALERT', color: '#ff6600' },
-                { key: 'THREAT', label: 'THREAT', color: '#ff0040' }
+                { key: 'INTEL', label: 'INTELLIGENCE', color: 'var(--accent-cyan)' },
+                { key: 'NEWS', label: 'NEWS', color: 'var(--accent-blue)' },
+                { key: 'ALERT', label: 'ALERT', color: 'var(--accent-orange)' },
+                { key: 'THREAT', label: 'THREAT', color: 'var(--accent-red)' }
               ].map(filter => (
                 <button
                   key={filter.key}
@@ -211,9 +211,9 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
             <div className="filter-grid">
               {[
                 { key: 'GLOBAL', label: 'GLOBAL', color: '#ffffff' },
-                { key: 'AMERICAS', label: 'AMERICAS', color: '#00ffaa' },
-                { key: 'EUROPE', label: 'EUROPE', color: '#0099ff' },
-                { key: 'ASIA_PACIFIC', label: 'ASIA-PAC', color: '#ff9500' }
+                { key: 'AMERICAS', label: 'AMERICAS', color: 'var(--accent-cyan)' },
+                { key: 'EUROPE', label: 'EUROPE', color: 'var(--accent-blue)' },
+                { key: 'ASIA_PACIFIC', label: 'ASIA-PAC', color: 'var(--accent-orange)' }
               ].map(filter => (
                 <button
                   key={filter.key}

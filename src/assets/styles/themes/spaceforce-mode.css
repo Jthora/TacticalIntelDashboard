@@ -1,0 +1,165 @@
+/* ===========================================
+   SPACEFORCE MISSION MODE THEME
+   =========================================== */
+
+body[data-mode="spaceforce"] {
+  --primary-bg: #01030c;
+  --secondary-bg: rgba(2, 12, 33, 0.95);
+  --tertiary-bg: #0d1e3b;
+  --accent-cyan: #19d7ff;
+  --accent-cyan-rgb: 25, 215, 255;
+  --accent-blue: #5cc8ff;
+  --accent-purple: #a38bff;
+  --accent-orange: #ffb982;
+  --accent-red: #ff6b81;
+  --accent-yellow: #ffe066;
+  --accent-green: #6df2c4;
+  --text-primary: #f4f8ff;
+  --text-secondary: #a5bde3;
+  --text-muted: #6c7ba8;
+  --text-accent: #9de8ff;
+  --text-warning: #ffd166;
+  --text-error: #ff84a2;
+  --cyber-glow: #7ae7ff;
+  --cyber-warning: #ffbf69;
+  --cyber-critical: #ff6b91;
+  --cyber-data: #7dd3ff;
+  --shadow-light: 0 2px 6px rgba(25, 215, 255, 0.2);
+  --shadow-medium: 0 6px 18px rgba(6, 16, 38, 0.45);
+  --shadow-heavy: 0 12px 36px rgba(2, 8, 20, 0.85);
+  --glow-cyan: 0 0 16px rgba(92, 200, 255, 0.75);
+  --glow-green: 0 0 12px rgba(109, 242, 196, 0.5);
+  --glow-orange: 0 0 14px rgba(255, 185, 130, 0.45);
+  --control-inactive: rgba(112, 138, 185, 0.4);
+  --control-active: #5cc8ff;
+  --control-hover: rgba(154, 210, 255, 0.8);
+  --control-disabled: rgba(73, 90, 130, 0.6);
+  --status-operational: #7df9ff;
+  --status-warning: #ffd166;
+  --status-critical: #ff6b9a;
+  --status-offline: #6a7398;
+  --badge-classification: rgba(255, 255, 255, 0.55);
+  --badge-category: rgba(123, 188, 255, 0.55);
+  --badge-reliability: rgba(92, 200, 255, 0.6);
+  --badge-status: rgba(93, 253, 196, 0.5);
+  --module-surface: rgba(5, 12, 35, 0.92);
+  --module-border: rgba(92, 200, 255, 0.35);
+  --module-glow: linear-gradient(90deg, transparent, rgba(123, 91, 255, 0.55), transparent);
+  --module-header-gradient: linear-gradient(135deg, rgba(92, 200, 255, 0.35) 0%, rgba(123, 91, 255, 0.25) 100%);
+  --module-header-border: rgba(92, 200, 255, 0.5);
+  --glass-panel-bg: rgba(5, 14, 38, 0.85);
+  --glass-panel-border: rgba(123, 171, 255, 0.4);
+  --input-bg: rgba(6, 16, 38, 0.9);
+  --input-border: rgba(88, 130, 255, 0.45);
+  --input-focus-bg: rgba(92, 200, 255, 0.15);
+  --input-focus-shadow: 0 0 8px rgba(92, 200, 255, 0.45);
+  --button-bg: rgba(5, 20, 52, 0.95);
+  --button-border: rgba(123, 171, 255, 0.6);
+  --button-hover-bg: rgba(61, 102, 184, 0.95);
+  --button-hover-shadow: 0 0 12px rgba(92, 200, 255, 0.5);
+  --control-bg: rgba(5, 18, 45, 0.9);
+  --control-border: rgba(84, 120, 255, 0.45);
+  --control-text: #d5e5ff;
+  --mode-switcher-bg: rgba(6, 18, 42, 0.95);
+  --mode-switcher-border: rgba(92, 200, 255, 0.45);
+  --mode-option-bg: rgba(4, 20, 56, 0.9);
+  --mode-option-border: rgba(123, 143, 255, 0.35);
+  --mode-option-hover-border: rgba(92, 200, 255, 0.6);
+  --mission-summary-bg: rgba(5, 16, 42, 0.92);
+  --mission-summary-border: rgba(92, 200, 255, 0.35);
+  --mission-pill-bg: rgba(92, 200, 255, 0.18);
+  --mission-pill-border: rgba(92, 200, 255, 0.55);
+  --enhanced-header-gradient: linear-gradient(135deg, rgba(92, 200, 255, 0.28) 0%, rgba(123, 91, 255, 0.18) 100%);
+  --enhanced-header-border: rgba(92, 200, 255, 0.45);
+  --compact-header-gradient: linear-gradient(
+    120deg,
+    rgba(6, 16, 34, 0.96) 0%,
+    rgba(12, 32, 64, 0.94) 52%,
+    rgba(7, 18, 40, 0.96) 100%
+  );
+  --compact-header-border: rgba(86, 164, 228, 0.6);
+  --module-icon-color: #c7e8ff;
+  /* Wing Commander icon follows base styles, no extra SpaceForce effects */
+  --brand-icon-filter: none;
+  --brand-icon-shadow: none;
+  --intel-toggle-border: rgba(142, 170, 220, 0.45);
+  --intel-toggle-text: #c7d6ff;
+  --intel-toggle-hover-bg: rgba(92, 200, 255, 0.12);
+  --intel-toggle-active-bg: rgba(92, 200, 255, 0.2);
+  --intel-toggle-shadow: 0 0 12px rgba(92, 200, 255, 0.35);
+  --intel-metrics-bg: rgba(5, 16, 42, 0.92);
+  --intel-metrics-border: rgba(92, 200, 255, 0.35);
+  --metric-card-bg: rgba(92, 200, 255, 0.12);
+  --metric-card-border: rgba(92, 200, 255, 0.35);
+  --metric-card-hover-bg: rgba(123, 91, 255, 0.22);
+  --metric-card-hover-border: rgba(92, 200, 255, 0.55);
+  --metric-icon-color: #d8ebff;
+  background-color: #01030c;
+  background-image: radial-gradient(circle at 20% 20%, rgba(25, 215, 255, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(123, 91, 255, 0.12), transparent 50%),
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.05) 0, transparent 50%),
+    radial-gradient(circle at 70% 10%, rgba(255, 255, 255, 0.04) 0, transparent 40%);
+}
+
+
+body[data-mode="spaceforce"] .tactical-dashboard {
+  background-image: radial-gradient(circle at 15% 15%, rgba(92, 200, 255, 0.08), transparent 35%),
+    radial-gradient(circle at 70% 5%, rgba(123, 91, 255, 0.08), transparent 45%);
+}
+
+body[data-mode="spaceforce"] .status-online {
+  background: rgba(92, 200, 255, 0.18);
+  color: #c7e8ff;
+  border-color: rgba(92, 200, 255, 0.55);
+}
+
+body[data-mode="spaceforce"] .status-warning {
+  background: rgba(255, 209, 102, 0.18);
+  border-color: rgba(255, 209, 102, 0.5);
+  color: #ffe6a6;
+}
+
+body[data-mode="spaceforce"] .status-error {
+  background: rgba(255, 107, 154, 0.18);
+  border-color: rgba(255, 107, 154, 0.55);
+  color: #ff9fbf;
+}
+
+body[data-mode="spaceforce"] .status-indicator {
+  color: #b7ccff;
+}
+
+body[data-mode="spaceforce"] .mission-mode-pill {
+  box-shadow: 0 0 12px rgba(92, 200, 255, 0.35);
+}
+
+body[data-mode="spaceforce"] .mode-option-btn.active {
+  box-shadow: 0 0 20px rgba(92, 200, 255, 0.45);
+}
+
+/* Brighten the sticky header surface so blend-mode logos stay true-to-color */
+body[data-mode="spaceforce"] .tactical-header-main {
+  background-image: linear-gradient(
+      128deg,
+      rgba(4, 8, 20, 0.97) 0%,
+      rgba(7, 17, 34, 0.98) 60%,
+      rgba(3, 9, 22, 0.96) 100%
+    ),
+    radial-gradient(circle at 18% 52%, rgba(92, 200, 255, 0.28), transparent 60%),
+    radial-gradient(circle at 74% 20%, rgba(122, 95, 255, 0.12), transparent 68%);
+  border-bottom-color: rgba(108, 176, 244, 0.5) !important;
+  box-shadow: 0 6px 22px rgba(2, 6, 18, 0.75), inset 0 0 25px rgba(12, 40, 86, 0.28);
+}
+
+body[data-mode="spaceforce"] .tactical-header-enhanced.tactical-header-compact {
+  background: linear-gradient(
+      118deg,
+      rgba(8, 22, 46, 0.96) 0%,
+      rgba(15, 40, 76, 0.93) 58%,
+      rgba(6, 18, 42, 0.95) 100%
+    ),
+    radial-gradient(circle at 24% 52%, rgba(92, 200, 255, 0.35), transparent 58%),
+    linear-gradient(75deg, rgba(138, 113, 255, 0.18), transparent 65%) !important;
+  border: 1px solid rgba(120, 188, 255, 0.6) !important;
+  box-shadow: 0 8px 24px rgba(5, 12, 30, 0.6), 0 0 14px rgba(76, 148, 220, 0.3) !important;
+}

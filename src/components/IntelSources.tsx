@@ -221,7 +221,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
         </div>
         <div className="tactical-content">
           <div className="intel-loading-state">
-            <LoadingSpinner size="medium" color="#00ffaa" />
+            <LoadingSpinner size="medium" color="var(--accent-cyan)" />
             <span className="loading-message">ESTABLISHING CONNECTIONS...</span>
           </div>
         </div>

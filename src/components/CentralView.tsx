@@ -1,5 +1,6 @@
 import React from 'react';
 
+import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 import FeedVisualizer from './FeedVisualizer';
 
 interface CentralViewProps {
@@ -14,7 +15,20 @@ const CentralView: React.FC<CentralViewProps> = ({ selectedFeedList }) => {
       <div className="tactical-header-enhanced">
         <div className="header-primary">
           <span className="module-icon">📡</span>
-          <h3>INTELLIGENCE FEED</h3>
+          <h3 className="intelligence-feed-title">
+            INTELLIGENCE FEED
+            <img
+              src={WingCommanderLogo}
+              alt="Wing Commander"
+              style={{
+                height: 20,
+                width: 'auto',
+                display: 'inline-block',
+                marginLeft: 8,
+                mixBlendMode: 'screen'
+              }}
+            />
+          </h3>
         </div>
         <div className="header-status">
           <span className={`status-dot ${selectedFeedList ? 'active' : 'idle'}`}></span>

@@ -5,7 +5,7 @@
 /* Filter Controls Section */
 .filter-controls-section {
   background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 255, 170, 0.2);
+  border: 1px solid rgba(var(--accent-cyan-rgb), 0.2);
 }
 
 .filter-quick-actions {
@@ -16,7 +16,7 @@
 
 .filter-action-btn {
   background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 255, 170, 0.3);
+  border: 1px solid rgba(var(--accent-cyan-rgb), 0.3);
   color: var(--text-secondary);
   font-family: var(--font-tactical);
   font-size: var(--font-size-xs);
@@ -68,13 +68,13 @@
 }
 
 .filter-action-btn.refresh {
-  border-color: rgba(0, 255, 170, 0.3);
-  color: #00ffaa;
+  border-color: rgba(var(--accent-cyan-rgb), 0.3);
+  color: var(--accent-cyan);
 }
 
 .filter-action-btn.refresh:hover {
-  border-color: #00ffaa;
-  background: rgba(0, 255, 170, 0.1);
+  border-color: var(--accent-cyan);
+  background: rgba(var(--accent-cyan-rgb), 0.1);
 }
 
 .filter-action-btn.active {
@@ -108,13 +108,13 @@
 
 .filter-category-card {
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 255, 170, 0.2);
+  border: 1px solid rgba(var(--accent-cyan-rgb), 0.2);
   transition: all var(--transition-fast);
 }
 
 .filter-category-card:hover {
-  border-color: rgba(0, 255, 170, 0.3);
-  background: rgba(0, 255, 170, 0.05);
+  border-color: rgba(var(--accent-cyan-rgb), 0.3);
+  background: rgba(var(--accent-cyan-rgb), 0.05);
 }
 
 .category-header {
@@ -146,7 +146,7 @@
 
 .filter-tag {
   background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 255, 170, 0.3);
+  border: 1px solid rgba(var(--accent-cyan-rgb), 0.3);
   color: var(--text-secondary);
   font-family: var(--font-tactical);
   font-size: var(--font-size-xs);
@@ -176,7 +176,7 @@
 .filter-tag:hover {
   border-color: var(--filter-color, var(--accent-cyan));
   color: var(--filter-color, var(--accent-cyan));
-  background: rgba(0, 255, 170, 0.1);
+  background: rgba(var(--accent-cyan-rgb), 0.1);
 }
 
 .filter-tag:hover::before {
@@ -184,10 +184,10 @@
 }
 
 .filter-tag.active {
-  background: rgba(0, 255, 170, 0.2);
+  background: rgba(var(--accent-cyan-rgb), 0.2);
   border-color: var(--filter-color, var(--accent-cyan));
   color: var(--filter-color, var(--accent-cyan));
-  box-shadow: 0 0 6px rgba(0, 255, 170, 0.3);
+  box-shadow: 0 0 6px rgba(var(--accent-cyan-rgb), 0.3);
 }
 
 .filter-tag.active::before {
@@ -579,10 +579,6 @@
 }
 
 @media (max-width: 480px) {
-  .filter-category-card {
-    
-  }
-  
   .filter-grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xs);
