@@ -43,7 +43,7 @@ const WTTPStatus: React.FC<WTTPStatusProps> = ({ className = '' }) => {
   const handleCopyAddress = async () => {
     try {
       await navigator.clipboard.writeText(wttpConfig.siteAddress);
-      // You could add a toast notification here
+  // You could push a status-bar notification here
     } catch (err) {
       console.error('Failed to copy address:', err);
     }
@@ -52,7 +52,7 @@ const WTTPStatus: React.FC<WTTPStatusProps> = ({ className = '' }) => {
   const handleCopyUrl = async () => {
     try {
       await navigator.clipboard.writeText(wttpUrl);
-      // You could add a toast notification here
+  // You could push a status-bar notification here
     } catch (err) {
       console.error('Failed to copy URL:', err);
     }

@@ -4,9 +4,17 @@ import useAlerts from '../../../hooks/alerts/useAlerts';
 import { useOptimizedTimer } from '../../../hooks/usePerformanceOptimization';
 import { Feed } from '../../../models/Feed';
 import { log } from '../../../utils/LoggerService';
+import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
+import {
+  FEED_AUTO_REFRESH_CHANGE_EVENT,
+  FEED_MANUAL_REFRESH_EVENT,
+  type FeedAutoRefreshChangeDetail,
+  type FeedRefreshEventDetail
+} from '../../../utils/feedControlEvents';
 import FeedService from '../services/FeedService';
 import FeedItem from './FeedItem';
 import SearchAndFilter from './SearchAndFilter';
+import IntelFeedInfoBar from '../../../components/IntelFeedInfoBar';
 
 interface FeedVisualizerProps {
   selectedFeedList: string | null;
@@ -18,7 +26,14 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+  const [autoRefresh, setAutoRefresh] = useState<boolean>(() => {
+    try {
+      return SettingsIntegrationService.getGeneralSettings().autoRefresh;
+    } catch (error) {
+      log.debug('Component', 'Falling back to default auto-refresh state', error);
+      return true;
+    }
+  });
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
 
   // Alert system integration
@@ -27,6 +42,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     isMonitoring, 
     alertStats 
   } = useAlerts();
+
 
   const loadFeeds = useCallback(async (showLoading = true) => {
     if (!selectedFeedList) {
@@ -104,9 +120,44 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     loadFeeds(true);
   };
 
-  const toggleAutoRefresh = () => {
-    setAutoRefresh(!autoRefresh);
-  };
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handleExternalRefresh = (event: Event) => {
+      const detail = (event as CustomEvent<FeedRefreshEventDetail>).detail || {};
+      const showLoading = detail.showLoading ?? true;
+      loadFeeds(showLoading);
+    };
+
+    const handleAutoRefreshChange = (event: Event) => {
+      const detail = (event as CustomEvent<FeedAutoRefreshChangeDetail>).detail;
+      if (detail && typeof detail.autoRefresh === 'boolean') {
+        setAutoRefresh(detail.autoRefresh);
+      }
+    };
+
+    window.addEventListener(
+      FEED_MANUAL_REFRESH_EVENT,
+      handleExternalRefresh as EventListener
+    );
+    window.addEventListener(
+      FEED_AUTO_REFRESH_CHANGE_EVENT,
+      handleAutoRefreshChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        FEED_MANUAL_REFRESH_EVENT,
+        handleExternalRefresh as EventListener
+      );
+      window.removeEventListener(
+        FEED_AUTO_REFRESH_CHANGE_EVENT,
+        handleAutoRefreshChange as EventListener
+      );
+    };
+  }, [loadFeeds, setAutoRefresh]);
 
   if (loading) {
     return (
@@ -133,49 +184,19 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = ({ selectedFeedList }) => 
     );
   }
 
+  const displayedFeedCount = filteredFeeds.length > 0 ? filteredFeeds.length : feeds.length;
+
   return (
     <div className="feed-visualizer">
       <div className="feed-controls">
-        <div className="status-bar">
-          <span className="feed-count">
-            📡 {filteredFeeds.length > 0 ? filteredFeeds.length : feeds.length} feeds loaded
-          </span>
-          {lastUpdated && (
-            <span className="last-updated">
-              🕐 Updated: {lastUpdated.toLocaleTimeString()}
-            </span>
-          )}
-          {/* Alert system status indicator */}
-          <span className={`alert-status ${isMonitoring ? 'monitoring' : 'inactive'}`}>
-            {isMonitoring ? '🚨 Alert Monitor: ON' : '⚪ Alert Monitor: OFF'}
-          </span>
-          {recentAlertTriggers > 0 && (
-            <span className="recent-alerts pulse">
-              🔥 {recentAlertTriggers} Alert{recentAlertTriggers > 1 ? 's' : ''} Triggered!
-            </span>
-          )}
-          {alertStats.activeAlerts > 0 && (
-            <span className="active-alerts-count">
-              📋 {alertStats.activeAlerts} Active Alert{alertStats.activeAlerts > 1 ? 's' : ''}
-            </span>
-          )}
-        </div>
-        <div className="control-buttons">
-          <button 
-            onClick={handleRefresh} 
-            className="refresh-button"
-            title="Refresh feeds"
-          >
-            🔄 Refresh
-          </button>
-          <button 
-            onClick={toggleAutoRefresh}
-            className={`auto-refresh-button ${autoRefresh ? 'active' : 'inactive'}`}
-            title={`Auto-refresh: ${autoRefresh ? 'ON' : 'OFF'}`}
-          >
-            {autoRefresh ? '🔴' : '⚪'} Auto-refresh
-          </button>
-        </div>
+        <IntelFeedInfoBar
+          feedCount={displayedFeedCount}
+          totalFeeds={feeds.length}
+          lastUpdated={lastUpdated}
+          isMonitoring={isMonitoring}
+          recentAlertTriggers={recentAlertTriggers}
+          activeAlerts={alertStats.activeAlerts}
+        />
       </div>
 
       <div className="feed-list">

@@ -160,7 +160,7 @@ const Web3LoginPanel: React.FC = () => {
               className="action-button secondary"
               onClick={() => {
                 navigator.clipboard.writeText(walletAddress);
-                // Could add a toast notification here
+                // Could trigger a status-bar notification here
               }}
             >
               📋 Copy Address

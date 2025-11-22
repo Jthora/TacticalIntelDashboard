@@ -5,14 +5,23 @@ import type { FeedFetchDiagnostic } from '../types/FeedTypes';
 interface FeedDiagnosticsPanelProps {
   diagnostics: FeedFetchDiagnostic[];
   lastUpdated: Date | null;
+  initiallyExpanded?: boolean;
+  autoExpandOnFailure?: boolean;
+  expandSignal?: number;
 }
 
 type StatusKey = FeedFetchDiagnostic['status'];
 
 const statusOrder: StatusKey[] = ['failed', 'empty', 'success'];
 
-const FeedDiagnosticsPanel: React.FC<FeedDiagnosticsPanelProps> = ({ diagnostics, lastUpdated }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const FeedDiagnosticsPanel: React.FC<FeedDiagnosticsPanelProps> = ({
+  diagnostics,
+  lastUpdated,
+  initiallyExpanded = false,
+  autoExpandOnFailure = false,
+  expandSignal = 0
+}) => {
+  const [isExpanded, setIsExpanded] = useState(() => initiallyExpanded);
 
   const summary = useMemo(() => {
     if (!diagnostics || diagnostics.length === 0) {
@@ -42,6 +51,18 @@ const FeedDiagnosticsPanel: React.FC<FeedDiagnosticsPanelProps> = ({ diagnostics
     });
   }, [diagnostics]);
 
+  React.useEffect(() => {
+    if (autoExpandOnFailure && summary.failed > 0) {
+      setIsExpanded(true);
+    }
+  }, [autoExpandOnFailure, summary.failed]);
+
+  React.useEffect(() => {
+    if (expandSignal > 0) {
+      setIsExpanded(true);
+    }
+  }, [expandSignal]);
+
   if (!diagnostics || diagnostics.length === 0) {
     return null;
   }
@@ -56,7 +77,7 @@ const FeedDiagnosticsPanel: React.FC<FeedDiagnosticsPanelProps> = ({ diagnostics
       >
         <div className="diagnostics-summary">
           <span className="diagnostics-title">Source diagnostics</span>
-          <span className="diagnostics-metrics">
+          <span className={`diagnostics-metrics ${summary.failed > 0 ? 'has-failures' : ''}`}>
             ✅ {summary.success} ok · ⚠️ {summary.empty} empty · 🔥 {summary.failed} failing
           </span>
         </div>
@@ -80,7 +101,7 @@ const FeedDiagnosticsPanel: React.FC<FeedDiagnosticsPanelProps> = ({ diagnostics
                   <th scope="col">Status</th>
                   <th scope="col">Items</th>
                   <th scope="col">Latency</th>
-                  <th scope="col">Notes</th>
+                  <th scope="col">Last Error / Notes</th>
                 </tr>
               </thead>
               <tbody>
@@ -96,6 +117,9 @@ const FeedDiagnosticsPanel: React.FC<FeedDiagnosticsPanelProps> = ({ diagnostics
                     <td>{Math.round(diagnostic.durationMs)} ms</td>
                     <td className="diagnostics-notes">
                       {diagnostic.error || diagnostic.notes || '—'}
+                      {diagnostic.status === 'failed' && diagnostic.error && (
+                        <span className="diagnostic-hint">Check source credentials or proxy routing</span>
+                      )}
                     </td>
                   </tr>
                 ))}

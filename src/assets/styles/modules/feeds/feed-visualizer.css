@@ -12,94 +12,18 @@
 }
 
 .feed-controls {
-  background: rgba(0, 255, 127, 0.1);
+  background: rgba(0, 255, 127, 0.08);
   border-bottom: 1px solid rgba(0, 255, 127, 0.3);
-  padding: 12px 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
   backdrop-filter: blur(10px);
 }
 
-.status-bar {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.feed-count {
-  color: #00ff7f;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.last-updated {
-  color: #a0a8cc;
-  font-size: 12px;
-}
-
-.control-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.refresh-button, .auto-refresh-button {
-  background: rgba(0, 255, 127, 0.2);
-  border: 1px solid rgba(0, 255, 127, 0.4);
-  color: #00ff7f;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: all 0.3s ease;
-}
-
-.refresh-button:hover {
-  background: rgba(0, 255, 127, 0.3);
-  transform: translateY(-1px);
-}
-
-.auto-refresh-button.active {
-  background: rgba(255, 0, 0, 0.2);
-  border-color: rgba(255, 0, 0, 0.4);
-  color: #ff4444;
-}
-
-.auto-refresh-button.inactive {
-  background: rgba(128, 128, 128, 0.2);
-  border-color: rgba(128, 128, 128, 0.4);
-  color: #888;
-}
-
 /* Alert System Integration Styles */
-.alert-status {
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.alert-status.monitoring {
-  background: rgba(255, 165, 0, 0.2);
-  border: 1px solid rgba(255, 165, 0, 0.4);
-  color: #ffa500;
-  animation: alertPulse 2s infinite;
-}
-
-.alert-status.inactive {
-  background: rgba(128, 128, 128, 0.2);
-  border: 1px solid rgba(128, 128, 128, 0.4);
-  color: #888;
-}
-
-.recent-alerts {
-  background: rgba(255, 0, 0, 0.2);
-  border: 1px solid rgba(255, 0, 0, 0.4);
-  color: #ff4444;
-  padding: 4px 8px;
-}
-
 @keyframes alertPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
@@ -146,6 +70,10 @@
 .diagnostics-metrics {
   font-size: 0.85rem;
   color: #b2c4ff;
+}
+
+.diagnostics-metrics.has-failures {
+  color: #ff9b9b;
 }
 
 .diagnostics-toggle-icon {
@@ -200,6 +128,13 @@
   color: #f39b9b;
 }
 
+.diagnostic-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.7rem;
+  color: #ffd966;
+}
+
 .status-pill {
   padding: 2px 8px;
   border-radius: 999px;
@@ -221,4 +156,66 @@
 .status-pill.status-failed {
   background: rgba(255, 69, 0, 0.18);
   color: #ff7a7a;
+}
+
+.diagnostics-alert-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 71, 87, 0.15);
+  border-left: 3px solid rgba(255, 71, 87, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #ffe1e1;
+}
+
+.diagnostics-alert-content {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.diagnostics-alert-icon {
+  font-size: 1.25rem;
+}
+
+.diagnostics-alert-title {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+.diagnostics-alert-description {
+  font-size: 0.8rem;
+  color: #ffdede;
+}
+
+.diagnostics-alert-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.diagnostics-alert-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.feed-error-block {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.failure-hint {
+  font-size: 0.85rem;
+  color: #ffd966;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 import WingCommanderLogo from '../assets/images/WingCommanderLogo-288x162.gif';
 import FeedVisualizer from './FeedVisualizer';
+import BottomStatusBar from './BottomStatusBar';
 
 interface CentralViewProps {
   selectedFeedList: string | null;
@@ -35,8 +36,11 @@ const CentralView: React.FC<CentralViewProps> = ({ selectedFeedList }) => {
           <span className="status-text">{selectedFeedList ? 'ACTIVE' : 'STANDBY'}</span>
         </div>
       </div>
-      <div className="tactical-content" style={{ padding: 0 }}>
-        <FeedVisualizer selectedFeedList={selectedFeedList} />
+      <div className="tactical-content central-view-shell">
+        <div className="central-view-main">
+          <FeedVisualizer selectedFeedList={selectedFeedList} />
+        </div>
+        <BottomStatusBar />
       </div>
     </div>
   );

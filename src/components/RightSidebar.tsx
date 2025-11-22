@@ -5,7 +5,6 @@ import { Feed } from '../models/Feed';
 import { log } from '../utils/LoggerService';
 import Export, { ExportFormat, ExportOptions } from './Export';
 import Health from './Health';
-import SystemControl from './SystemControl';
 import TacticalFilters from './TacticalFilters';
 import { exportFeedsAsIntelZip, exportIntelReport } from '../utils/intelExport';
 
@@ -83,9 +82,6 @@ const RightSidebar: React.FC = () => {
 
   return (
     <div className="tactical-sidebar-container animate-slide-in-right">
-      {/* System Control Module */}
-      <SystemControl />
-
       {/* Tactical Filters Module */}
       <TacticalFilters 
         onFiltersChange={handleFiltersChange}

@@ -151,10 +151,6 @@ export const FeedVisualizerSkeleton: React.FC = () => (
         <Skeleton width="140px" height="16px" />
         <Skeleton width="160px" height="16px" />
       </div>
-      <div className="control-buttons-skeleton">
-        <Skeleton width="80px" height="32px" borderRadius="6px" />
-        <Skeleton width="100px" height="32px" borderRadius="6px" />
-      </div>
     </div>
     
     {/* Search and filter skeleton */}

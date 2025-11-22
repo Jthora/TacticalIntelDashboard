@@ -14,6 +14,7 @@ type NormalizedGeneralSettings = {
   showNotificationCount: boolean;
   cacheDuration: number;
   storageLimit: number;
+  showSourceDiagnostics?: boolean;
   export: {
     format: 'json' | 'csv' | 'xml' | 'pdf';
     autoExport: boolean;
@@ -37,6 +38,7 @@ const GENERAL_SETTINGS_DEFAULTS: NormalizedGeneralSettings = {
   showNotificationCount: true,
   cacheDuration: 1800,
   storageLimit: 50,
+  showSourceDiagnostics: false,
   export: {
     format: 'json',
     autoExport: false,
@@ -485,6 +487,10 @@ export class SettingsIntegrationService {
       }
     }
 
+    if (typeof general.sourceDiagnosticsEnabled === 'boolean') {
+      normalized.showSourceDiagnostics = general.sourceDiagnosticsEnabled;
+    }
+
     if (general.export && typeof general.export === 'object') {
       normalized.export = {
         ...defaults.export,
@@ -552,6 +558,10 @@ export class SettingsIntegrationService {
 
     if (typeof patch.storageLimit === 'number') {
       target.storageLimit = patch.storageLimit;
+    }
+
+    if (typeof patch.showSourceDiagnostics === 'boolean') {
+      target.showSourceDiagnostics = patch.showSourceDiagnostics;
     }
 
     if (patch.export) {
@@ -638,6 +648,7 @@ export class SettingsIntegrationService {
       autoRefresh: mergedGeneralSettings.autoRefresh,
       notifications: mergedGeneralSettings.notifications,
       cacheDurationSeconds: mergedGeneralSettings.cacheDuration,
+      showSourceDiagnostics: mergedGeneralSettings.showSourceDiagnostics,
       export: mergedGeneralSettings.export,
       share: mergedGeneralSettings.share
     });

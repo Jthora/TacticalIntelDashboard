@@ -1,0 +1,248 @@
+.bottom-status-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30px;
+  padding: 0 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 12, 28, 0.96);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  font-size: 0.72rem;
+  z-index: 30;
+  overflow: hidden;
+}
+
+.bottom-status-bar .status-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+.bottom-status-bar .status-core {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 100%;
+}
+
+.bottom-status-bar .status-empty {
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+
+.status-ticker {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ticker-pulse {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.bottom-status-bar .status-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3fffb8;
+  box-shadow: 0 0 12px rgba(63, 255, 184, 0.8);
+  animation: statusPulse 2s infinite;
+}
+
+.status-priority-pill {
+  display: none;
+}
+
+.ticker-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.ticker-window {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.ticker-message {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticker-meta {
+  font-size: 0.58rem;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-ticker--idle .ticker-message {
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.08em;
+}
+
+
+.status-nav {
+  display: flex;
+  gap: 4px;
+  height: 100%;
+  align-items: center;
+}
+
+.status-nav button {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.status-nav button.nav-disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.status-nav button:not(.nav-disabled):hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+/* legacy body classes removed */
+
+.status-queue-count {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.status-queue-panel,
+.status-queue-item,
+.queue-dot,
+.status-queue-empty {
+  display: none;
+}
+
+.status-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+}
+
+.status-queue-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 0 8px;
+}
+
+.status-queue-chip.has-queue {
+  background: rgba(255, 184, 77, 0.18);
+  border-color: rgba(255, 184, 77, 0.55);
+  color: #ffd7a3;
+  box-shadow: 0 0 6px rgba(255, 184, 77, 0.35);
+}
+
+.bottom-status-bar .status-dismiss {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: inherit;
+  padding: 0 8px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.bottom-status-bar .status-dismiss:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bottom-status-bar .status-dismiss:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.bottom-status-bar.level-warning .status-pulse {
+  background: #ffc857;
+  box-shadow: 0 0 12px rgba(255, 200, 87, 0.8);
+}
+
+.bottom-status-bar.level-error .status-pulse {
+  background: #ff4d6d;
+  box-shadow: 0 0 12px rgba(255, 77, 109, 0.8);
+}
+
+.bottom-status-bar.level-success .status-pulse {
+  background: #4fd1c5;
+  box-shadow: 0 0 12px rgba(79, 209, 197, 0.8);
+}
+
+.bottom-status-bar .status-telemetry,
+.telemetry-pill {
+  display: none;
+}
+
+.bottom-status-bar.level-warning .status-accent {
+  background: linear-gradient(90deg, rgba(255, 184, 77, 0.9), rgba(255, 184, 77, 0.3));
+}
+
+.bottom-status-bar.level-error .status-accent {
+  background: linear-gradient(90deg, rgba(255, 77, 109, 0.95), rgba(255, 77, 109, 0.35));
+}
+
+.bottom-status-bar.level-success .status-accent {
+  background: linear-gradient(90deg, rgba(63, 255, 184, 0.9), rgba(63, 255, 184, 0.35));
+}
+
+@keyframes statusPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}

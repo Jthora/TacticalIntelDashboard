@@ -69,6 +69,7 @@ export interface Settings {
       enabled: boolean;
       sound: boolean;
     };
+    sourceDiagnosticsEnabled?: boolean;
     export?: {
       format: 'json' | 'csv' | 'xml' | 'pdf';
       autoExport: boolean;
@@ -144,6 +145,7 @@ const defaultSettings: Settings = {
       enabled: true,
       sound: false
     },
+    sourceDiagnosticsEnabled: false,
     export: {
       format: 'json',
       autoExport: false,
@@ -210,7 +212,9 @@ export const SettingsProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
         notifications: {
           enabled: incomingGeneral?.notifications?.enabled ?? prevGeneral.notifications.enabled,
           sound: incomingGeneral?.notifications?.sound ?? prevGeneral.notifications.sound
-        }
+        },
+        sourceDiagnosticsEnabled:
+          incomingGeneral?.sourceDiagnosticsEnabled ?? prevGeneral.sourceDiagnosticsEnabled ?? false
       } as NonNullable<Settings['general']>;
 
       if (prevGeneral.export || incomingGeneral?.export) {

@@ -1,12 +1,13 @@
-import React, { memo,useCallback } from 'react';
+import React, { memo,useCallback,useMemo } from 'react';
 
 import { DEFAULT_MISSION_MODE } from '../constants/MissionMode';
+import { useMissionMode } from '../contexts/MissionModeContext';
 import { useSettings } from '../contexts/SettingsContext';
-import { useTheme } from '../contexts/ThemeContext';
+import { Theme, useTheme } from '../contexts/ThemeContext';
 
 interface SystemControlProps {
   // Optional props for parent components to control or observe system settings
-  onThemeChange?: (theme: 'dark' | 'night' | 'combat') => void;
+  onThemeChange?: (theme: Theme) => void;
   onCompactModeChange?: (enabled: boolean) => void;
   onRealTimeUpdatesChange?: (enabled: boolean) => void;
   onHealthAlertsChange?: (enabled: boolean) => void;
@@ -20,10 +21,26 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
   onHealthAlertsChange,
   onAutoExportChange,
 }) => {
-  const { theme, compactMode, setTheme, setCompactMode } = useTheme();
+  const {
+    theme,
+    compactMode,
+    isUserOverride,
+    setTheme,
+    setCompactMode,
+    applyModeTheme,
+    clearThemeOverride
+  } = useTheme();
   const { settings, updateSettings } = useSettings();
+  const { profile } = useMissionMode();
 
-  const handleThemeChange = useCallback((newTheme: 'dark' | 'night' | 'combat') => {
+  const themeOptions = useMemo<Theme[]>(() => {
+    const baseOptions: Theme[] = ['spaceforce', 'dark', 'night', 'combat', 'alliance', 'light', 'system'];
+    return baseOptions.includes(profile.defaultTheme)
+      ? baseOptions
+      : [profile.defaultTheme, ...baseOptions];
+  }, [profile.defaultTheme]);
+
+  const handleThemeChange = useCallback((newTheme: Theme) => {
     setTheme(newTheme);
     updateSettings({
       display: {
@@ -116,6 +133,11 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
     onAutoExportChange?.(!currentAutoExport);
   }, [settings.general, updateSettings, onAutoExportChange]);
 
+  const handleResetTheme = useCallback(() => {
+    clearThemeOverride();
+    applyModeTheme(profile.defaultTheme);
+  }, [applyModeTheme, clearThemeOverride, profile.defaultTheme]);
+
   if (!settings) {
     return <div className="tactical-module module-system-control">Loading...</div>;
   }
@@ -135,18 +157,21 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
         <div className="header-controls-micro">
           <select 
             value={theme} 
-            onChange={(e) => handleThemeChange(e.target.value as any)}
+            onChange={(e) => handleThemeChange(e.target.value as Theme)}
             className="micro-select"
             title="Theme"
+            aria-label="Select interface theme"
           >
-            <option value="dark">DARK</option>
-            <option value="night">NIGHT</option>
-            <option value="combat">COMBAT</option>
+            {themeOptions.map(option => (
+              <option key={option} value={option}>{option.toUpperCase()}</option>
+            ))}
           </select>
           <button 
             className={`micro-btn ${compactMode ? 'active' : ''}`}
             onClick={handleCompactModeToggle}
             title="Compact Mode"
+            aria-label="Toggle compact mode"
+            aria-pressed={compactMode}
           >
             ▣
           </button>
@@ -154,12 +179,29 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
             className={`micro-btn ${realTimeUpdates ? 'active' : ''}`}
             onClick={handleRealTimeUpdatesToggle}
             title="Real-time Updates"
+            aria-label="Toggle real-time updates"
+            aria-pressed={realTimeUpdates}
           >
             ⟲
           </button>
         </div>
       </div>
       <div className="tactical-content">
+        <div className="mission-theme-status" role="status" aria-live="polite">
+          <span className="status-label">
+            {isUserOverride ? 'Custom theme active' : `${profile.label} theme active`}
+          </span>
+          {isUserOverride && (
+            <button
+              className="micro-btn reset-theme-btn"
+              onClick={handleResetTheme}
+              title="Reset to mission theme"
+              aria-label="Reset theme to mission default"
+            >
+              RESET TO MISSION
+            </button>
+          )}
+        </div>
         <div className="system-controls-grid">
           <div className="control-group">
             <label className="control-label">ALERTS</label>

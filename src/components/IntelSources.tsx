@@ -1,16 +1,20 @@
 import '../styles/components/intel-sources.css';
 
-import React, { useEffect,useRef,useState } from 'react';
+import React, { useCallback, useEffect,useRef,useState } from 'react';
 
 import { MODERN_INTELLIGENCE_CATEGORIES } from '../adapters/ModernIntelSourcesAdapter';
 import { useIntelligence } from '../contexts/IntelligenceContext';
 import { useMissionMode } from '../contexts/MissionModeContext';
+import { useStatusMessages, StatusMessageLevel } from '../contexts/StatusMessageContext';
 import { modernFeedService } from '../services/ModernFeedService';
+import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 import { LoadingSpinner } from '../shared/components/LoadingStates';
 import { 
   IntelligenceCategory,
   TacticalIntelSource} from '../types/TacticalIntelligence';
 import SourceManager from './SourceManager';
+import { emitSourceSelectionReset, SOURCE_SELECTION_RESET_EVENT, SourceSelectionResetDetail } from '../utils/sourceSelectionEvents';
+import { emitFeedAutoRefreshChange, emitFeedManualRefresh } from '../utils/feedControlEvents';
 
 interface IntelSourcesProps {
   selectedFeedList: string | null;
@@ -27,6 +31,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
 }) => {
   const { state: intelState, actions: intelActions } = useIntelligence();
   const { profile } = useMissionMode();
+  const { pushMessage } = useStatusMessages();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'grid' | 'compact'>('grid');
@@ -34,11 +39,32 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   const [filterActive, setFilterActive] = useState<boolean>(false);
   const [categoryFilter, setCategoryFilter] = useState<IntelligenceCategory[]>([]);
   const [showMetrics, setShowMetrics] = useState<boolean>(true);
-  const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+  const [autoRefresh, setAutoRefresh] = useState<boolean>(() => {
+    try {
+      return SettingsIntegrationService.getGeneralSettings().autoRefresh;
+    } catch (error) {
+      console.warn('⚠️ Failed to load general settings for auto refresh, defaulting to true.', error);
+      return true;
+    }
+  });
   const [showSourceManager, setShowSourceManager] = useState<boolean>(false);
   const [tacticalSources, setTacticalSources] = useState<TacticalIntelSource[]>([]);
   const hasHydratedSourcesRef = useRef(false);
   const activeFeedId = selectedFeedList ?? profile.defaultFeedListId;
+  const notifySourceStatus = useCallback(
+    (
+      message: string,
+      level: StatusMessageLevel = 'info',
+      priority: 'low' | 'medium' | 'high' = 'low'
+    ) => {
+      pushMessage(message, level, { source: 'IntelSources', priority });
+    },
+    [pushMessage]
+  );
+
+  useEffect(() => {
+    emitFeedAutoRefreshChange(autoRefresh, 'IntelSources');
+  }, [autoRefresh]);
 
   // Sync tactical sources with intelligence context without re-triggering source injections
   useEffect(() => {
@@ -84,6 +110,55 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
       return () => clearInterval(interval);
     }
   }, [autoRefresh, tacticalSources, intelActions, enableRealTimeAlerts]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handleSelectionReset = (event: Event) => {
+      const detail = (event as CustomEvent<SourceSelectionResetDetail>).detail;
+      if (!detail) {
+        return;
+      }
+
+      if (detail.reason === 'invalid') {
+        notifySourceStatus(
+          `Selected feed is unavailable for ${profile.label}. Default mission feed restored.`,
+          'warning',
+          'high'
+        );
+        return;
+      }
+
+      if (detail.reason === 'disabled') {
+        notifySourceStatus(
+          `${detail.sourceName ?? 'Selected source'} disabled. Monitoring mission aggregate feed.`,
+          'warning',
+          'medium'
+        );
+        return;
+      }
+
+      if (detail.reason === 'restored') {
+        notifySourceStatus(`Monitoring ${profile.label} aggregate feed.`, 'info', 'low');
+      }
+    };
+
+    window.addEventListener(SOURCE_SELECTION_RESET_EVENT, handleSelectionReset as EventListener);
+    return () => {
+      window.removeEventListener(SOURCE_SELECTION_RESET_EVENT, handleSelectionReset as EventListener);
+    };
+  }, [profile.label, notifySourceStatus]);
+
+  const handleManualFeedRefresh = () => {
+    emitFeedManualRefresh({ reason: 'intel-sources-control', showLoading: true });
+    notifySourceStatus('Refreshing intelligence feeds...', 'info', 'low');
+  };
+
+  const handleAutoRefreshToggle = () => {
+    setAutoRefresh(prev => !prev);
+  };
 
   const getSortedTacticalSources = () => {
     const filteredByCategory = categoryFilter.length > 0 
@@ -194,26 +269,38 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
     console.log('🔍 TDD_SUCCESS: New tactical source added via SourceManager');
   };
 
-  const handleSourceSelect = (sourceId: string) => {
+  const handleSourceSelect = (sourceId: string, sourceName?: string) => {
     if (selectedFeedList === sourceId) {
+      if (sourceName) {
+        notifySourceStatus(`Already monitoring ${sourceName}`, 'info', 'low');
+      }
       return;
     }
     setSelectedFeedList(sourceId);
+    if (sourceName) {
+      notifySourceStatus(`Monitoring ${sourceName}`, 'info', 'medium');
+    }
     console.log(`🔍 TDD_SUCCESS: Selected source: ${sourceId}`);
   };
 
   const handleSourceKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    sourceId: string
+    sourceId: string,
+    sourceName?: string
   ) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      handleSourceSelect(sourceId);
+      handleSourceSelect(sourceId, sourceName);
     }
   };
 
   const handleRestoreDefaults = () => {
     setSelectedFeedList(profile.defaultFeedListId);
+    emitSourceSelectionReset({
+      reason: 'restored',
+      sourceId: profile.defaultFeedListId,
+      sourceName: `${profile.label} Aggregate`
+    });
     console.log('🔄 Restored default selection to', profile.defaultFeedListId);
   };
 
@@ -235,6 +322,11 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
 
     if (!nextEnabled && selectedFeedList === source.id) {
       setSelectedFeedList(profile.defaultFeedListId);
+      emitSourceSelectionReset({
+        reason: 'disabled',
+        sourceId: source.id,
+        sourceName: source.name
+      });
     }
   };
 
@@ -362,6 +454,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
               className="intel-toggle"
               onClick={handleRestoreDefaults}
               title="Restore Default Feeds"
+              aria-label="Restore default mission source"
             >
               <span className="toggle-icon">↺</span>
               <span className="toggle-label">RESTORE</span>
@@ -385,25 +478,41 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
           </div>
           <div className="toggle-controls">
             <button 
+              className="intel-toggle"
+              onClick={handleManualFeedRefresh}
+              title="Refresh intelligence feeds"
+              aria-label="Refresh intelligence feeds"
+              type="button"
+            >
+              <span className="toggle-icon">🔄</span>
+              <span className="toggle-label">REFRESH</span>
+            </button>
+            <button 
               className={`intel-toggle ${filterActive ? 'active' : ''}`}
               onClick={() => setFilterActive(!filterActive)}
               title="Filter Active Only"
+              aria-pressed={filterActive}
+              aria-label="Toggle active sources filter"
             >
               <span className="toggle-icon">⚡</span>
               <span className="toggle-label">ACTIVE</span>
             </button>
             <button 
               className={`intel-toggle ${autoRefresh ? 'active' : ''}`}
-              onClick={() => setAutoRefresh(!autoRefresh)}
-              title="Auto Refresh"
+              onClick={handleAutoRefreshToggle}
+              title="Toggle auto-refresh"
+              aria-pressed={autoRefresh}
+              aria-label="Toggle auto refresh"
             >
               <span className="toggle-icon">⟲</span>
-              <span className="toggle-label">REFRESH</span>
+              <span className="toggle-label">AUTO</span>
             </button>
             <button 
               className={`intel-toggle ${showMetrics ? 'active' : ''}`}
               onClick={() => setShowMetrics(!showMetrics)}
               title="Show Metrics"
+              aria-pressed={showMetrics}
+              aria-label="Toggle metrics panel"
             >
               <span className="toggle-icon">📊</span>
               <span className="toggle-label">METRICS</span>
@@ -498,8 +607,8 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                     key={source.id}
                     className={`intel-source-item tactical-source status-${healthStatus} ${isAggregateSource ? 'default-source aggregate-source' : ''} ${isActiveSelection ? 'active-source' : ''}`}
                     style={{ animationDelay: `${index * 0.05}s` }}
-                    onClick={() => handleSourceSelect(source.id)}
-                    onKeyDown={(event) => handleSourceKeyDown(event, source.id)}
+                    onClick={() => handleSourceSelect(source.id, source.name)}
+                    onKeyDown={(event) => handleSourceKeyDown(event, source.id, source.name)}
                     role="option"
                     aria-selected={isActiveSelection}
                     tabIndex={0}

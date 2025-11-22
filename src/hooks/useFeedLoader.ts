@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { isAggregateFeedId, MissionMode } from '../constants/MissionMode';
 import { getSourceById as getSourceByIdForMode } from '../constants/MissionSourceRegistry';
 import { useMissionMode } from '../contexts/MissionModeContext';
+import { useStatusMessages } from '../contexts/StatusMessageContext';
 import { Feed } from '../models/Feed';
 import FeedService from '../services/FeedService';
 import { modernFeedService } from '../services/ModernFeedService';
@@ -69,6 +70,7 @@ export const useFeedLoader = (
     getSourceById: getSourceByIdFn = getSourceByIdForMode
   }: UseFeedLoaderDependencies = {}
 ) => {
+  const { pushMessage } = useStatusMessages();
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
@@ -81,6 +83,8 @@ export const useFeedLoader = (
   });
   const prevSelectedFeedRef = useRef<string | null>(null);
   const prevModeRef = useRef(mode);
+  const lastFallbackNoticeRef = useRef(0);
+  const lastErrorNoticeRef = useRef(0);
   const MIN_AUTO_REFRESH_GAP_MS = 1500;
 
   const loadFeeds = useCallback(
@@ -158,7 +162,39 @@ export const useFeedLoader = (
             fetchedAt: modernResults.fetchedAt
           });
 
-          const modernFeeds = modernResults.feeds;
+          const modernFeeds = modernResults.feeds ?? [];
+          if (modernFeeds.length === 0) {
+            logWarning('051A', 'loadFeeds', 'Modern feed response was empty, using cached fallback', {
+              selectedFeedList,
+              mode,
+              shouldForceRefresh
+            });
+
+            const cachedMissionFeeds = feedService.getFeedsByList(selectedFeedList) || [];
+            const cachedModernFeeds = cachedMissionFeeds.length > 0
+              ? cachedMissionFeeds
+              : feedService.getFeedsByList('modern-api');
+            const fallbackFeeds = cachedModernFeeds && cachedModernFeeds.length > 0
+              ? cachedModernFeeds
+              : feedService.getFeeds();
+
+            if (fallbackFeeds.length > 0) {
+              setFeeds(fallbackFeeds);
+              searchService.initializeFeeds(fallbackFeeds);
+              setLastUpdated(new Date());
+              setDiagnostics(modernResults.diagnostics ?? []);
+
+              const nowNotice = Date.now();
+              if (nowNotice - lastFallbackNoticeRef.current > 60000) {
+                pushMessage('Live intel stream degraded. Showing cached mission data.', 'warning', {
+                  priority: 'high'
+                });
+                lastFallbackNoticeRef.current = nowNotice;
+              }
+              return;
+            }
+          }
+
           const modernFeedsAsFeeds: Feed[] = modernFeeds.map(feedItem => ({
             id: feedItem.id,
             name: feedItem.author || 'Modern API',
@@ -315,6 +351,13 @@ export const useFeedLoader = (
       } catch (error) {
         console.error('Failed to load feeds:', error);
         setError(`Failed to load feeds: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        const nowNotice = Date.now();
+        if (nowNotice - lastErrorNoticeRef.current > 60000) {
+          pushMessage('Feed retrieval failed. Check diagnostics and try again.', 'error', {
+            priority: 'high'
+          });
+          lastErrorNoticeRef.current = nowNotice;
+        }
       } finally {
         const loadDuration =
           (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now()) - loadStart;

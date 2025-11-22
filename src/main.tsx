@@ -26,6 +26,9 @@ import './assets/styles/components/cors-settings.css';
 import './assets/styles/components/protocol-settings.css';
 import './assets/styles/components/verification-settings.css';
 import './assets/styles/components/general-settings.css';
+import './assets/styles/components/central-view.css';
+import './assets/styles/components/bottom-status-bar.css';
+import './assets/styles/components/intel-feed-info-bar.css';
 // Import new components styles
 import './components/settings/SettingsChangeIndicator.css';
 import './components/settings/ConfirmationDialog.css';

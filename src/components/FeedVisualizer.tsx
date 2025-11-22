@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
 import { useFilters } from '../contexts/FilterContext';
+import { useSettings } from '../contexts/SettingsContext';
 import useAlerts from '../hooks/alerts/useAlerts';
 import { useLoading } from '../hooks/useLoading';
 import type { Feed } from '../models/Feed';
@@ -12,6 +13,13 @@ import FeedDiagnosticsPanel from './FeedDiagnosticsPanel';
 import FeedItem from './FeedItem';
 import { useFeedLoader } from '../hooks/useFeedLoader';
 import { useAutoRefresh } from '../hooks/useAutoRefresh';
+import IntelFeedInfoBar from './IntelFeedInfoBar';
+import {
+  FEED_AUTO_REFRESH_CHANGE_EVENT,
+  FEED_MANUAL_REFRESH_EVENT,
+  type FeedAutoRefreshChangeDetail,
+  type FeedRefreshEventDetail
+} from '../utils/feedControlEvents';
 
 // TDD Error Tracking for FeedVisualizer
 const TDD_UI_ERRORS = {
@@ -46,6 +54,7 @@ interface FeedVisualizerProps {
 }
 
 const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }) => {
+  const { settings } = useSettings();
   // TDD_ERROR_044: Track component mount and props
   React.useEffect(() => {
     TDD_UI_ERRORS.logSuccess('044', 'FeedVisualizer_Mount', 'FeedVisualizer component mounted', { selectedFeedList });
@@ -65,6 +74,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     const generalSettings = SettingsIntegrationService.getGeneralSettings();
     return generalSettings.autoRefresh;
   });
+  const [diagnosticsExpandSignal, setDiagnosticsExpandSignal] = useState(0);
 
   // Filter context integration
   const { getFilteredFeeds } = useFilters();
@@ -126,6 +136,45 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
 
   useAutoRefresh({ autoRefresh, selectedFeedList, loadFeeds });
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handleExternalRefresh = (event: Event) => {
+      const detail = (event as CustomEvent<FeedRefreshEventDetail>).detail || {};
+      const { showLoading = true, reason = 'external-control' } = detail;
+      loadFeeds(showLoading, reason);
+    };
+
+    const handleAutoRefreshChange = (event: Event) => {
+      const detail = (event as CustomEvent<FeedAutoRefreshChangeDetail>).detail;
+      if (detail && typeof detail.autoRefresh === 'boolean') {
+        setAutoRefresh(detail.autoRefresh);
+      }
+    };
+
+    window.addEventListener(
+      FEED_MANUAL_REFRESH_EVENT,
+      handleExternalRefresh as EventListener
+    );
+    window.addEventListener(
+      FEED_AUTO_REFRESH_CHANGE_EVENT,
+      handleAutoRefreshChange as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        FEED_MANUAL_REFRESH_EVENT,
+        handleExternalRefresh as EventListener
+      );
+      window.removeEventListener(
+        FEED_AUTO_REFRESH_CHANGE_EVENT,
+        handleAutoRefreshChange as EventListener
+      );
+    };
+  }, [loadFeeds, setAutoRefresh]);
+
   const sourceStatus = useMemo(() => {
     if (!diagnostics || diagnostics.length === 0) {
       return null;
@@ -141,101 +190,103 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     );
   }, [diagnostics]);
 
+  const hasDiagnosticsFailures = useMemo(
+    () => Boolean(diagnostics && diagnostics.some(diagnostic => diagnostic.status === 'failed')),
+    [diagnostics]
+  );
+
+  const diagnosticsEnabled = settings.general?.sourceDiagnosticsEnabled ?? false;
+
   // Initial load and when selectedFeedList changes
   useEffect(() => {
     loadFeeds(true, 'selected-feed-change');
   }, [loadFeeds]);
 
-  const handleRefresh = () => {
-    loadFeeds(true, 'manual-refresh');
-  };
-
-  const toggleAutoRefresh = () => {
-    setAutoRefresh(prev => !prev);
-  };
-
   if (isLoading) {
     return <FeedVisualizerSkeleton />;
   }
 
-  if (error) {
-    return (
-      <div className="feed-visualizer">
-        <ErrorOverlay
-          title="⚠️ Feed Load Error"
-          message={error}
-          onRetry={() => loadFeeds(true, 'manual-refresh')}
-          suggestions={[
-            "Check your internet connection",
-            "Verify the feed source is available",
-            "Try selecting a different feed list"
-          ]}
-        />
-      </div>
-    );
-  }
+  const displayedFeedCount = filteredFeeds.length > 0 ? filteredFeeds.length : feeds.length;
 
   return (
     <div className="feed-visualizer-container">
       <div className="feed-controls tactical-header" style={{ borderBottom: '1px solid rgba(0, 255, 170, 0.2)' }}>
-        <div className="status-bar">
-          <span className="feed-count text-accent font-semibold">
-            📡 {filteredFeeds.length > 0 ? filteredFeeds.length : feeds.length} FEEDS LOADED
-          </span>
-          {lastUpdated && (
-            <span className="last-updated text-secondary text-sm">
-              🕐 UPDATED: {lastUpdated.toLocaleTimeString()}
-            </span>
-          )}
-          {/* Alert system status indicator */}
-          <span className={`alert-status text-sm ${isMonitoring ? 'text-accent' : 'text-muted'}`}>
-            {isMonitoring ? '🚨 ALERT MONITOR: ON' : '⚪ ALERT MONITOR: OFF'}
-          </span>
-          {recentAlertTriggers > 0 && (
-            <span className="recent-alerts animate-pulse text-accent font-bold">
-              🔥 {recentAlertTriggers} ALERT{recentAlertTriggers > 1 ? 'S' : ''} TRIGGERED!
-            </span>
-          )}
-          {alertStats.activeAlerts > 0 && (
-            <span className="active-alerts-count text-secondary text-sm">
-              📋 {alertStats.activeAlerts} ACTIVE ALERT{alertStats.activeAlerts > 1 ? 'S' : ''}
-            </span>
-          )}
-          {sourceStatus && (
-            <span className="source-status text-secondary text-sm">
-              🛰️ SOURCES — OK: {sourceStatus.success} | EMPTY: {sourceStatus.empty} | FAIL: {sourceStatus.failed}
-            </span>
-          )}
-        </div>
-        <div className="control-buttons">
-          <button 
-            onClick={handleRefresh} 
-            className="filter-action-btn refresh"
-            title="Refresh feeds"
-          >
-            <span className="btn-icon">🔄</span>
-            <span className="btn-text">REFRESH</span>
-          </button>
-          <button 
-            onClick={toggleAutoRefresh}
-            className={`filter-action-btn ${autoRefresh ? 'active' : ''}`}
-            title={`Auto-refresh: ${autoRefresh ? 'ON' : 'OFF'}`}
-          >
-            <span className="btn-icon">{autoRefresh ? '🔴' : '⚪'}</span>
-            <span className="btn-text">AUTO-REFRESH</span>
-          </button>
-        </div>
+        <IntelFeedInfoBar
+          feedCount={displayedFeedCount}
+          totalFeeds={feeds.length}
+          lastUpdated={lastUpdated}
+          isMonitoring={isMonitoring}
+          recentAlertTriggers={recentAlertTriggers}
+          activeAlerts={alertStats.activeAlerts}
+          sourceStatus={sourceStatus ? {
+            success: sourceStatus.success,
+            empty: sourceStatus.empty,
+            failed: sourceStatus.failed
+          } : null}
+        />
       </div>
 
+      {diagnosticsEnabled && hasDiagnosticsFailures && (
+        <div className="diagnostics-alert-banner" role="status">
+          <div className="diagnostics-alert-content">
+            <span className="diagnostics-alert-icon" aria-hidden="true">🛑</span>
+            <div>
+              <div className="diagnostics-alert-title">Source failures detected</div>
+              <div className="diagnostics-alert-description">
+                {sourceStatus?.failed ?? 0} feed{(sourceStatus?.failed ?? 0) === 1 ? '' : 's'} are failing validation. Review diagnostics for actionable errors.
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="diagnostics-alert-button"
+            onClick={() => setDiagnosticsExpandSignal(prev => prev + 1)}
+          >
+            View diagnostics
+          </button>
+        </div>
+      )}
+
       <div className="feed-content">
-        <FeedDiagnosticsPanel diagnostics={diagnostics} lastUpdated={lastUpdated} />
-        {feeds.length === 0 ? (
+        {diagnosticsEnabled && (
+          <FeedDiagnosticsPanel
+            diagnostics={diagnostics}
+            lastUpdated={lastUpdated}
+            initiallyExpanded={hasDiagnosticsFailures}
+            autoExpandOnFailure
+            expandSignal={diagnosticsExpandSignal}
+          />
+        )}
+        {error ? (
+          <div className="feed-error-block">
+            <ErrorOverlay
+              title="⚠️ Feed Load Error"
+              message={error}
+              onRetry={() => loadFeeds(true, 'manual-refresh')}
+              suggestions={[
+                'Check your internet connection',
+                'Verify the feed source is available',
+                'Try selecting a different feed list'
+              ]}
+            />
+            {diagnosticsEnabled && hasDiagnosticsFailures && (
+              <div className="failure-hint text-secondary">
+                Diagnostics captured failing sources. Use the panel above to inspect error payloads.
+              </div>
+            )}
+          </div>
+        ) : feeds.length === 0 ? (
           <div className="no-feeds empty-state">
             <div className="empty-icon">📋</div>
             <div className="empty-title text-lg font-semibold text-muted">NO INTELLIGENCE AVAILABLE</div>
             <div className="empty-description text-secondary">
               Select a feed list from the sidebar to begin monitoring intelligence sources.
             </div>
+            {diagnosticsEnabled && hasDiagnosticsFailures && (
+              <div className="failure-hint text-secondary">
+                ⚠️ Some sources are currently failing. Expand diagnostics above for details.
+              </div>
+            )}
           </div>
         ) : (
           <div className="feed-scroll-container">

@@ -274,19 +274,15 @@
   border-bottom: 1px solid rgba(0, 255, 127, 0.3);
   padding: 12px 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
 }
 
 .status-bar-skeleton {
   display: flex;
   gap: 20px;
   align-items: center;
-}
-
-.control-buttons-skeleton {
-  display: flex;
-  gap: 8px;
 }
 
 .search-filter-skeleton {

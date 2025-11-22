@@ -22,6 +22,7 @@ const GeneralSettings: React.FC = memo(() => {
   const [cacheDuration, setCacheDuration] = useState((settings.general?.cacheSettings.duration || 300000) / 1000);
   const [notificationsEnabled, setNotificationsEnabled] = useState(settings.general?.notifications.enabled ?? true);
   const [notificationSound, setNotificationSound] = useState(settings.general?.notifications.sound ? 'ping' : 'silent');
+  const [sourceDiagnosticsEnabled, setSourceDiagnosticsEnabled] = useState(settings.general?.sourceDiagnosticsEnabled ?? false);
   const [shareEnabled, setShareEnabled] = useState(settings.general?.share?.enabled ?? DEFAULT_SHARE_CONFIG.enabled);
   const [shareHashtags, setShareHashtags] = useState((settings.general?.share?.defaultHashtags || DEFAULT_SHARE_CONFIG.defaultHashtags).join(', '));
   const [shareAttribution, setShareAttribution] = useState(settings.general?.share?.attribution ?? DEFAULT_SHARE_CONFIG.attribution);
@@ -35,6 +36,7 @@ const GeneralSettings: React.FC = memo(() => {
     setCacheDuration((settings.general?.cacheSettings.duration || 300000) / 1000);
     setNotificationsEnabled(settings.general?.notifications.enabled ?? true);
     setNotificationSound(settings.general?.notifications.sound ? 'ping' : 'silent');
+  setSourceDiagnosticsEnabled(settings.general?.sourceDiagnosticsEnabled ?? false);
     setShareEnabled(settings.general?.share?.enabled ?? DEFAULT_SHARE_CONFIG.enabled);
     setShareHashtags((settings.general?.share?.defaultHashtags || DEFAULT_SHARE_CONFIG.defaultHashtags).join(', '));
     setShareAttribution(settings.general?.share?.attribution ?? DEFAULT_SHARE_CONFIG.attribution);
@@ -59,12 +61,13 @@ const GeneralSettings: React.FC = memo(() => {
         refreshInterval: refreshInterval * 1000,
         cacheSettings: { enabled: cacheEnabled, duration: cacheDuration * 1000 },
         notifications: { enabled: notificationsEnabled, sound: notificationSound !== 'silent' },
-        share: shareConfig
+        share: shareConfig,
+        sourceDiagnosticsEnabled
       }
     });
     SettingsIntegrationService.resetCache();
     setHasChanges(false);
-  }, [settings.general, refreshInterval, cacheEnabled, cacheDuration, notificationsEnabled, notificationSound, shareEnabled, shareHashtags, shareAttribution, updateSettings]);
+  }, [settings.general, refreshInterval, cacheEnabled, cacheDuration, notificationsEnabled, notificationSound, shareEnabled, shareHashtags, shareAttribution, sourceDiagnosticsEnabled, updateSettings]);
 
   return (
     <div className="settings-form">
@@ -107,6 +110,25 @@ const GeneralSettings: React.FC = memo(() => {
               <option value="silent">Silent</option>
               <option value="ping">Ping</option>
             </select>
+          </div>
+        </div>
+        <div className="settings-section">
+          <h3>Diagnostics</h3>
+          <p className="settings-helper-text">
+            Toggle Source Diagnostics to expose per-source fetch telemetry inside the Intelligence Feed. Disable to simplify the central view.
+          </p>
+          <div className="form-group">
+            <label>
+              <input
+                type="checkbox"
+                checked={sourceDiagnosticsEnabled}
+                onChange={e => {
+                  setSourceDiagnosticsEnabled(e.target.checked);
+                  setHasChanges(true);
+                }}
+              />
+              Enable Source Diagnostics panel
+            </label>
           </div>
         </div>
       </div>

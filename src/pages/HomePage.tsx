@@ -7,6 +7,7 @@ import RightSidebar from '../components/RightSidebar';
 import { isAggregateFeedId } from '../constants/MissionMode';
 import { getSourceById } from '../constants/MissionSourceRegistry';
 import { useMissionMode } from '../contexts/MissionModeContext';
+import { emitSourceSelectionReset } from '../utils/sourceSelectionEvents';
 
 /**
  * HomePage displays the main dashboard with a 3-column layout.
@@ -31,6 +32,11 @@ const HomePage: React.FC = () => {
     if (previousDefaultFeedRef.current !== profile.defaultFeedListId) {
       console.log('🔄 Mission mode default changed, resetting feed selection');
       previousDefaultFeedRef.current = profile.defaultFeedListId;
+      emitSourceSelectionReset({
+        reason: 'restored',
+        sourceId: profile.defaultFeedListId,
+        sourceName: `${profile.label} Aggregate`
+      });
       setSelectedFeedList(profile.defaultFeedListId);
     }
   }, [profile.defaultFeedListId]);
@@ -48,6 +54,13 @@ const HomePage: React.FC = () => {
         selectedFeedList,
         mode
       });
+      const resetDetail: Parameters<typeof emitSourceSelectionReset>[0] = {
+        reason: 'invalid'
+      };
+      if (selectedFeedList) {
+        resetDetail.sourceId = selectedFeedList;
+      }
+      emitSourceSelectionReset(resetDetail);
       setSelectedFeedList(profile.defaultFeedListId);
     }
   }, [mode, profile.defaultFeedListId, selectedFeedList]);

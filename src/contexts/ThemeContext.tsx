@@ -13,10 +13,12 @@ interface ThemeState {
 interface ThemeContextType {
   theme: Theme;
   compactMode: boolean;
+  isUserOverride: boolean;
   setTheme: (theme: Theme) => void;
   setCompactMode: (enabled: boolean) => void;
   toggleCompactMode: () => void;
   applyModeTheme: (theme: Theme) => void;
+  clearThemeOverride: () => void;
 }
 
 type ThemeAction = 
@@ -165,13 +167,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     dispatch({ type: 'APPLY_MODE_THEME', payload: theme });
   };
 
+  const clearThemeOverride = () => {
+    dispatch({ type: 'CLEAR_THEME_OVERRIDE' });
+  };
+
   const value: ThemeContextType = {
     theme: state.theme,
     compactMode: state.compactMode,
+    isUserOverride: state.userOverride,
     setTheme,
     setCompactMode,
     toggleCompactMode,
-    applyModeTheme
+    applyModeTheme,
+    clearThemeOverride
   };
 
   return (
