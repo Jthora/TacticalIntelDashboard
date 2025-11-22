@@ -4,7 +4,7 @@
   "models": {
     "path": "models/Intel",
     "files": [
-      "Classification.ts","index.ts","IntelEnums.ts","IntelLocation.ts","IntelReportMetaData.ts","IntelReport.ts","Intel.ts","IntelVisualization3D.ts","Requirements.ts","Sources.ts","Transformers.ts","TypeHierarchy.ts","Validators.ts"
+  "Classification.ts","index.ts","IntelEnums.ts","IntelLocation.ts","IntelReportMetaData.ts","IntelReport.ts","Intel.ts","IntelVisualization3D.ts","Requirements.ts","Sources.ts","TypeHierarchy.ts","Validators.ts"
     ]
   },
   "types": {

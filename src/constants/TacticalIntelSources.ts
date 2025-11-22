@@ -4,7 +4,7 @@
  * for backward compatibility while maintaining verified working sources
  */
 
-import { AuthType,ClassificationLevel, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
+import { AuthType, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
 import { REALISTIC_INTELLIGENCE_SOURCES, RealisticFeedCategory } from './RealisticIntelligenceSources';
 
 // Map realistic sources to tactical intel format
@@ -14,7 +14,7 @@ export const TACTICAL_INTEL_SOURCES: TacticalIntelSource[] = REALISTIC_INTELLIGE
   url: source.url,
   category: mapCategoryToLegacy(source.category),
   reliability: Math.round(source.trustRating / 10), // Convert 0-100 to 0-10 scale
-  classification: 'UNCLASSIFIED' as ClassificationLevel,
+  classification: 'UNCLASSIFIED',
   updateFrequency: 60,
   requiresAuth: false,
   authType: 'NONE' as AuthType,
@@ -23,7 +23,7 @@ export const TACTICAL_INTEL_SOURCES: TacticalIntelSource[] = REALISTIC_INTELLIGE
   tags: [source.category.toLowerCase().replace(/_/g, '-')],
   healthStatus: (source.verificationStatus === 'VERIFIED' ? 'operational' : 'degraded') as HealthStatus,
   verificationRequired: false,
-  minimumClearance: 'UNCLASSIFIED' as ClassificationLevel,
+  minimumClearance: 'UNCLASSIFIED',
   needToKnow: [],
   endpoint: source.url,
   protocol: 'RSS' as const,
@@ -105,4 +105,4 @@ export const INTELLIGENCE_CATEGORIES = {
 } as const;
 
 // Re-export types for compatibility
-export type { ClassificationLevel,IntelligenceCategory, TacticalIntelSource } from '../types/TacticalIntelligence';
+export type { IntelligenceCategory, TacticalIntelSource } from '../types/TacticalIntelligence';

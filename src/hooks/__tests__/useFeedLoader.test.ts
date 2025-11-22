@@ -51,13 +51,25 @@ const createBaseParams = () => ({
   logWarning: jest.fn()
 });
 
+const createMockDiagnostic = (overrides: Partial<{ status: 'success' | 'empty' | 'failed'; itemsFetched: number }> = {}) => ({
+  sourceId: 'mock-source',
+  sourceName: 'Mock Source',
+  status: overrides.status ?? 'empty',
+  itemsFetched: overrides.itemsFetched ?? 0,
+  durationMs: 0
+});
+
 const createDeps = () => ({
   feedService: {
     getFeedsByList: jest.fn(async () => [] as Feed[])
   } as any,
   modernFeedService: {
-    fetchSourceData: jest.fn(),
-    fetchAllIntelligenceData: jest.fn()
+    fetchSourceData: jest.fn(() =>
+      Promise.resolve({ items: [], diagnostic: createMockDiagnostic() })
+    ),
+    fetchAllIntelligenceData: jest.fn(() =>
+      Promise.resolve({ feeds: [], diagnostics: [] })
+    )
   } as any,
   searchService: {
     initializeFeeds: jest.fn(),
@@ -99,7 +111,8 @@ describe('useFeedLoader', () => {
           title: 'Critical Update',
           pubDate: '2025-10-02T00:00:00.000Z'
         }
-      ]
+      ],
+      diagnostics: [createMockDiagnostic({ status: 'success', itemsFetched: 1 })]
     });
 
     const { result } = renderHook(() => useFeedLoader(params, deps));

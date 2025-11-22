@@ -11,6 +11,7 @@ import {
   GITHUB_API,
   HACKERNEWS_API,
   INVESTIGATIVE_RSS_API,
+  LAUNCH_LIBRARY_API,
   NASA_API,
   NOAA_WEATHER_API,
   REDDIT_API,
@@ -171,6 +172,102 @@ export const PRIMARY_INTELLIGENCE_SOURCES: IntelligenceSource[] = [
     enabled: isSourceEnabled('earth-alliance-news', true),
     tags: ['earth-alliance', 'intel', 'operations', 'security'],
     healthScore: 87
+  },
+  {
+    id: 'nasa-news-releases',
+    name: 'NASA News Releases',
+    description: 'Official NASA program, science, and mission statements.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://www.nasa.gov/news/',
+    normalizer: 'normalizeSpaceAgencyRSS',
+    refreshInterval: 900000,
+    enabled: isSourceEnabled('nasa-news-releases', true),
+    tags: ['space', 'nasa', 'missions', 'official'],
+    healthScore: 93
+  },
+  {
+    id: 'spacenews-policy',
+    name: 'SpaceNews Operations Desk',
+    description: 'Commercial space policy, launch cadence, and acquisition coverage.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://spacenews.com/',
+    normalizer: 'normalizeSpaceAgencyRSS',
+    refreshInterval: 900000,
+    enabled: isSourceEnabled('spacenews-policy', true),
+    tags: ['space', 'industry', 'policy', 'business'],
+    healthScore: 88
+  },
+  {
+    id: 'esa-space-news',
+    name: 'ESA Space News',
+    description: 'European Space Agency operations and cooperative mission briefs.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://www.esa.int/',
+    normalizer: 'normalizeSpaceAgencyRSS',
+    refreshInterval: 900000,
+    enabled: isSourceEnabled('esa-space-news', true),
+    tags: ['space', 'esa', 'missions', 'europe'],
+    healthScore: 90
+  },
+  {
+    id: 'spacecom-latest',
+    name: 'Space.com Latest',
+    description: 'Consumer-facing astronomy and launch situational awareness.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://www.space.com/',
+    normalizer: 'normalizeSpaceAgencyRSS',
+    refreshInterval: 900000,
+    enabled: isSourceEnabled('spacecom-latest', true),
+    tags: ['space', 'astronomy', 'science', 'public-awareness'],
+    healthScore: 86
+  },
+  {
+    id: 'dod-war-news',
+    name: 'DoD / War.gov Releases',
+    description: 'Department of Defense field reports and press releases.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://www.defense.gov/News/',
+    normalizer: 'normalizeDefenseNewsRSS',
+    refreshInterval: 600000,
+    enabled: isSourceEnabled('dod-war-news', true),
+    tags: ['defense', 'dod', 'official', 'operations'],
+    healthScore: 92
+  },
+  {
+    id: 'breaking-defense',
+    name: 'Breaking Defense',
+    description: 'Acquisition, doctrine, and modernization coverage.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://breakingdefense.com/',
+    normalizer: 'normalizeDefenseNewsRSS',
+    refreshInterval: 900000,
+    enabled: isSourceEnabled('breaking-defense', true),
+    tags: ['defense', 'industry', 'acquisition', 'analysis'],
+    healthScore: 87
+  },
+  {
+    id: 'c4isrnet-ops',
+    name: 'C4ISRNET Operations',
+    description: 'Signals, cyber, and space mil-tech briefings.',
+    endpoint: INVESTIGATIVE_RSS_API,
+    homepage: 'https://www.c4isrnet.com/',
+    normalizer: 'normalizeDefenseNewsRSS',
+    refreshInterval: 900000,
+    enabled: isSourceEnabled('c4isrnet-ops', true),
+    tags: ['defense', 'c4isr', 'cyber', 'space'],
+    healthScore: 88
+  },
+  {
+    id: 'launch-library-upcoming',
+    name: 'Launch Library Upcoming',
+    description: 'Structured manifest data from Launch Library 2.',
+    endpoint: LAUNCH_LIBRARY_API,
+    homepage: 'https://thespacedevs.com/llapi',
+    normalizer: 'normalizeLaunchLibraryData',
+    refreshInterval: 300000,
+    enabled: isSourceEnabled('launch-library-upcoming', true),
+    tags: ['space', 'launch', 'operations', 'schedule'],
+    healthScore: 95
   },
   {
     id: 'krebs-security',
@@ -459,21 +556,21 @@ export const SOURCE_CATEGORIES = {
   GOVERNMENT: {
     name: 'Government & Official',
     description: 'Official government sources and agencies',
-    sources: ['noaa-weather-alerts', 'usgs-earthquakes', 'nasa-space-data'],
+    sources: ['noaa-weather-alerts', 'usgs-earthquakes', 'nasa-space-data', 'nasa-news-releases', 'esa-space-news', 'launch-library-upcoming', 'dod-war-news'],
     trustLevel: 'high',
     icon: '🏛️'
   },
   SECURITY: {
     name: 'Security & Threats',
     description: 'Cybersecurity, vulnerabilities, and threat intelligence',
-    sources: ['github-security', 'reddit-security', 'earth-alliance-news', 'krebs-security', 'threatpost-security', 'wired-security'],
+    sources: ['github-security', 'reddit-security', 'earth-alliance-news', 'krebs-security', 'threatpost-security', 'wired-security', 'breaking-defense', 'c4isrnet-ops'],
     trustLevel: 'high',
     icon: '🛡️'
   },
   TECHNOLOGY: {
     name: 'Technology & Innovation',
     description: 'Tech news, innovations, and industry updates',
-    sources: ['hackernews-tech'],
+    sources: ['hackernews-tech', 'spacenews-policy', 'spacecom-latest'],
     trustLevel: 'medium',
     icon: '💻'
   },

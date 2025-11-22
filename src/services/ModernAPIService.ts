@@ -498,6 +498,9 @@ export class ModernAPIService {
         'normalizeUSGSEarthquakes': DataNormalizer.normalizeUSGSEarthquakes,
         'normalizeHackerNewsItem': (data: any) => [DataNormalizer.normalizeHackerNewsItem(data)],
         'normalizeCoinGeckoData': DataNormalizer.normalizeCoinGeckoData,
+  'normalizeSpaceAgencyRSS': DataNormalizer.normalizeSpaceAgencyRSS,
+  'normalizeDefenseNewsRSS': DataNormalizer.normalizeDefenseNewsRSS,
+  'normalizeLaunchLibraryData': DataNormalizer.normalizeLaunchLibraryData,
         'normalizeEarthAllianceNews': DataNormalizer.normalizeEarthAllianceNews,
         'normalizeInvestigativeRSS': DataNormalizer.normalizeInvestigativeRSS,
         'normalizeCyberSecurityRSS': DataNormalizer.normalizeCyberSecurityRSS,
@@ -507,7 +510,9 @@ export class ModernAPIService {
         'normalizeClimateResilienceRSS': DataNormalizer.normalizeClimateResilienceRSS,
         'normalizeAIGovernanceRSS': DataNormalizer.normalizeAIGovernanceRSS,
         'normalizeOpenSecretsNews': DataNormalizer.normalizeOpenSecretsNews,
-        'normalizeTBIJInvestigations': DataNormalizer.normalizeTBIJInvestigations
+        'normalizeTBIJInvestigations': DataNormalizer.normalizeTBIJInvestigations,
+        'normalizeSpaceLaunchRSS': DataNormalizer.normalizeSpaceLaunchRSS,
+        'normalizeNASADSNStatus': DataNormalizer.normalizeNASADSNStatus
       };
 
       const normalizer = normalizers[normalizerFunction];

@@ -2,6 +2,10 @@ import React, { createContext, useContext, useEffect,useState } from 'react';
 
 import { DEFAULT_MISSION_MODE, MissionMode } from '../constants/MissionMode';
 
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+
 export enum CORSStrategy {
   RSS2JSON = 'RSS2JSON',
   JSONP = 'JSONP',
@@ -155,9 +159,13 @@ const defaultSettings: Settings = {
   }
 };
 
+type SettingsUpdate = Partial<Omit<Settings, 'general'>> & {
+  general?: DeepPartial<NonNullable<Settings['general']>>;
+};
+
 interface SettingsContextType {
   settings: Settings;
-  updateSettings: (newSettings: Partial<Settings>) => void;
+  updateSettings: (newSettings: SettingsUpdate) => void;
   resetSettings: (tab?: SettingsTab) => void;
 }
 
@@ -187,7 +195,7 @@ export const SettingsProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
     }
   }, [settings]);
   
-  const updateSettings = (newSettings: Partial<Settings>) => {
+  const updateSettings = (newSettings: SettingsUpdate) => {
     setSettings(prevSettings => {
       const prevGeneral = prevSettings.general ?? defaultSettings.general!;
       const incomingGeneral = newSettings.general;

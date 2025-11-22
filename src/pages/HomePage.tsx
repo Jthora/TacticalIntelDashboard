@@ -4,14 +4,16 @@ import AlertNotificationPanel from '../components/alerts/AlertNotificationPanel'
 import CentralView from '../components/CentralView';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
+import { isAggregateFeedId } from '../constants/MissionMode';
+import { getSourceById } from '../constants/MissionSourceRegistry';
 import { useMissionMode } from '../contexts/MissionModeContext';
 
 /**
  * HomePage displays the main dashboard with a 3-column layout.
  */
 const HomePage: React.FC = () => {
-  const [selectedFeedList, setSelectedFeedList] = useState<string | null>(null);
-  const { profile } = useMissionMode();
+  const { profile, mode } = useMissionMode();
+  const [selectedFeedList, setSelectedFeedList] = useState<string | null>(() => profile?.defaultFeedListId ?? null);
   const previousDefaultFeedRef = useRef(profile.defaultFeedListId);
 
   // Auto-select the default feed list on component mount
@@ -33,6 +35,23 @@ const HomePage: React.FC = () => {
     }
   }, [profile.defaultFeedListId]);
 
+  useEffect(() => {
+    if (!selectedFeedList) {
+      return;
+    }
+
+    const aggregateMatch = isAggregateFeedId(selectedFeedList, mode);
+    const missionSourceExists = Boolean(getSourceById(mode, selectedFeedList));
+
+    if (!aggregateMatch && !missionSourceExists) {
+      console.warn('⚠️ Selected feed is invalid for active mission, restoring default', {
+        selectedFeedList,
+        mode
+      });
+      setSelectedFeedList(profile.defaultFeedListId);
+    }
+  }, [mode, profile.defaultFeedListId, selectedFeedList]);
+
   // Add effect to track selectedFeedList changes
   useEffect(() => {
     console.log('🔍 TDD_SUCCESS_069: HomePage selectedFeedList state changed to:', selectedFeedList);
@@ -41,7 +60,10 @@ const HomePage: React.FC = () => {
   return (
     <div className="home-page-container">
       <div className="tactical-sidebar-left">
-        <LeftSidebar setSelectedFeedList={setSelectedFeedList} />
+        <LeftSidebar
+          selectedFeedList={selectedFeedList}
+          setSelectedFeedList={setSelectedFeedList}
+        />
       </div>
       
       <div className="tactical-main">

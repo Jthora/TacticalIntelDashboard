@@ -1,8 +1,13 @@
 /* Intel Sources Default Source Styling */
 .intel-source-item.default-source {
   border: 2px solid #00ffaa !important;
-  background-color: rgba(0, 255, 170, 0.1) !important;
+  background-color: rgba(0, 255, 170, 0.08) !important;
   position: relative;
+}
+
+.intel-source-item.default-source:not(.active-source) {
+  border-style: dashed !important;
+  background-image: linear-gradient(120deg, rgba(0, 255, 170, 0.08), rgba(0, 255, 170, 0.04));
 }
 
 .intel-source-item.default-source::before {
@@ -54,4 +59,47 @@
   scrollbar-color: rgba(0, 255, 170, 0.4) rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
+}
+
+.intel-source-item.active-source {
+  border: 2px solid rgba(0, 255, 170, 0.9) !important;
+  background: linear-gradient(135deg, rgba(0, 255, 170, 0.16), rgba(0, 255, 170, 0.05));
+  box-shadow: 0 0 18px rgba(0, 255, 170, 0.25);
+  transform: translateX(2px);
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.intel-source-item.active-source .source-name {
+  color: #e9fff4;
+}
+
+.intel-source-item:focus-visible {
+  outline: 2px solid rgba(0, 255, 170, 0.7) !important;
+  outline-offset: 2px !important;
+}
+
+.selection-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  letter-spacing: 0.3px;
+  font-weight: 600;
+  color: rgba(0, 255, 170, 0.8);
+  text-transform: uppercase;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.intel-source-item.active-source .selection-indicator {
+  opacity: 1;
+}
+
+.selection-indicator .indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0, 255, 170, 0.9);
+  box-shadow: 0 0 6px rgba(0, 255, 170, 0.6);
 }

@@ -7,7 +7,7 @@
 // Base types for raw, unprocessed intelligence data points
 
 import { PrimaryIntelSource } from './Sources';
-import { SourceQuality, InformationVisibility, ContentSensitivity, QualityAssessment } from './Classification';
+import { QualityAssessment } from './Classification';
 
 // Re-export quality types for convenience
 export type { SourceQuality, InformationVisibility, ContentSensitivity, QualityAssessment } from './Classification';
@@ -28,6 +28,7 @@ export type ReliabilityRating =
 export interface Intel {
   id: string;
   source: PrimaryIntelSource;
+  classification?: string;
   qualityAssessment: QualityAssessment;
   reliability: ReliabilityRating;
   timestamp: number;
@@ -60,31 +61,4 @@ export interface Intel {
   };
 }
 
-/**
- * Basic Intel Collection Requirements
- * Defines what kind of intelligence is needed
- */
-export interface IntelRequirement {
-  id: string;
-  priority: 'IMMEDIATE' | 'PRIORITY' | 'ROUTINE';
-  description: string;
-  targetLocation?: {
-    latitude: number;
-    longitude: number;
-    radius: number; // meters
-  };
-  deadline?: number; // timestamp
-  requiredSources: PrimaryIntelSource[];
-  minQualityLevel: SourceQuality; // Minimum acceptable source quality
-  desiredVisibility: InformationVisibility; // How openly this can be shared
-  requestedBy: string;
-  
-  // Bridge integration
-  fulfillmentTracking?: {
-    assignedCollectors?: string[]; // Collectors assigned to this requirement
-    estimatedCompletion?: number; // Estimated completion timestamp
-    actualCompletion?: number; // Actual completion timestamp
-    qualityThreshold?: number; // Minimum quality required
-    bridgeToVisualization?: boolean; // Auto-bridge to visualization system
-  };
-}
+export type { IntelRequirement } from './Requirements';

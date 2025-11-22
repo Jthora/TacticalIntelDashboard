@@ -43,10 +43,11 @@ describe('ModernFeedService fallback handling', () => {
       .mockResolvedValueOnce([])
       .mockResolvedValueOnce([mockItem]);
 
-    const results = await modernFeedService.fetchSourceData(source!, true);
+    const result = await modernFeedService.fetchSourceData(source!, true);
 
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(results).toHaveLength(1);
-    expect(results[0]).toMatchObject({ id: mockItem.id, source: mockItem.source });
+    expect(result.items).toHaveLength(1);
+    expect(result.items[0]).toMatchObject({ id: mockItem.id, source: mockItem.source });
+    expect(result.diagnostic.status).toBe('success');
   });
 });

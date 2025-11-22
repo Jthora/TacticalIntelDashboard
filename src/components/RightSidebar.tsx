@@ -7,7 +7,7 @@ import Export, { ExportFormat, ExportOptions } from './Export';
 import Health from './Health';
 import SystemControl from './SystemControl';
 import TacticalFilters from './TacticalFilters';
-import { exportFeedsAsIntelZip, exportIntelReport } from '../intel/export/IntelBatchExport';
+import { exportFeedsAsIntelZip, exportIntelReport } from '../utils/intelExport';
 
 const RightSidebar: React.FC = () => {
   const [feeds, setFeeds] = useState<Feed[]>([]);

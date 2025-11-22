@@ -1,6 +1,7 @@
 import '../../../assets/styles/components/general-settings.css';
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { AccessLevel, useWeb3 } from '../../../contexts/Web3Context';
+import { DEFAULT_MISSION_MODE } from '../../../constants/MissionMode';
 import { SettingsTab, useSettings } from '../../../contexts/SettingsContext';
 import { SettingsIntegrationService } from '../../../services/SettingsIntegrationService';
 import DebugInfo from '../../debug/DebugInfo';
@@ -54,6 +55,7 @@ const GeneralSettings: React.FC = memo(() => {
     updateSettings({
       general: {
         ...(settings.general || {}),
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: refreshInterval * 1000,
         cacheSettings: { enabled: cacheEnabled, duration: cacheDuration * 1000 },
         notifications: { enabled: notificationsEnabled, sound: notificationSound !== 'silent' },

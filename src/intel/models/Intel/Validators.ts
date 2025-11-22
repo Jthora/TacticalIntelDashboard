@@ -3,7 +3,7 @@
 
 import { Intel, IntelRequirement } from './Intel';
 import { Intelligence } from './Intelligence';
-import { IntelReportData } from '../IntelReportData';
+import { IntelReportData } from './IntelReportData';
 import { ThreatAssessment, RiskAssessment } from './Assessments';
 import { ClassificationUtils } from './Classification';
 

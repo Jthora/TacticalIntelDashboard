@@ -4,9 +4,6 @@
  * Generated on: 2025-07-11
  */
 
-// Classification levels for intelligence data
-export type ClassificationLevel = 'UNCLASSIFIED' | 'CONFIDENTIAL' | 'SECRET' | 'TOP_SECRET';
-
 // Intelligence categories based on collection discipline
 export type IntelligenceCategory = 
   | 'OSINT'      // Open Source Intelligence
@@ -52,9 +49,9 @@ export interface GeographicLocation {
   };
 }
 
-// Classification metadata
+// Classification metadata (optional for civilian distributions)
 export interface ClassificationMetadata {
-  level: ClassificationLevel;
+  level?: string;
   caveats?: string[]; // e.g., ['NOFORN', 'EYES ONLY']
   declassifyOn?: Date;
   originator: string;
@@ -115,7 +112,7 @@ export interface TacticalIntelSource {
   url: string;
   category: IntelligenceCategory;
   reliability: number; // 1-10 scale
-  classification: ClassificationLevel;
+  classification?: string;
   updateFrequency: number; // minutes
   requiresAuth: boolean;
   authType?: AuthType;
@@ -130,7 +127,7 @@ export interface TacticalIntelSource {
   feedEnabled?: boolean; // when true include in Intelligence Feed aggregation
   
   // Access control
-  minimumClearance: ClassificationLevel;
+  minimumClearance?: string;
   needToKnow?: string[];
   
   // Technical details
@@ -167,7 +164,7 @@ export interface IntelligenceAlert {
   
   metadata: {
     sourceId?: string;
-    classification?: ClassificationLevel;
+    classification?: string;
     location?: GeographicLocation;
     relatedAlerts?: string[];
   };
@@ -196,7 +193,7 @@ export interface ThreatAssessment {
 export interface IntelligenceStatistics {
   totalItems: number;
   byCategory: Record<IntelligenceCategory, number>;
-  byClassification: Record<ClassificationLevel, number>;
+  byClassification: Record<string, number>;
   byPriority: Record<PriorityLevel, number>;
   processingRate: number; // items per minute
   errorRate: number; // percentage

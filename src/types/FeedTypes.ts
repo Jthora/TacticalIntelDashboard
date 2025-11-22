@@ -40,7 +40,18 @@ export interface FeedSource {
   url: string;
 }
 
+export interface FeedFetchDiagnostic {
+  sourceId: string;
+  sourceName: string;
+  status: 'success' | 'empty' | 'failed';
+  itemsFetched: number;
+  durationMs: number;
+  error?: string;
+  notes?: string;
+}
+
 export interface FeedResults {
   feeds: FeedItem[];
   fetchedAt: string; // Timestamp of when the feeds were fetched
+  diagnostics?: FeedFetchDiagnostic[];
 }

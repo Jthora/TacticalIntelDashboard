@@ -27,6 +27,9 @@ export interface NormalizedDataItem {
   url: string;
   publishedAt: Date;
   source: string;
+  sourceId?: string;
+  sourceDisplayName?: string;
+  originalSourceName?: string;
   category: string;
   tags: string[];
   priority: 'low' | 'medium' | 'high' | 'critical';
@@ -36,6 +39,7 @@ export interface NormalizedDataItem {
   verificationStatus: 'VERIFIED' | 'UNVERIFIED' | 'OFFICIAL';
   responseTime?: number;
   dataQuality: number; // 1-100
+  missionMode?: string;
 }
 
 export interface APIResponse<T = any> {
@@ -116,6 +120,36 @@ export interface NASAAPODResponse {
   hdurl?: string;
   media_type: 'image' | 'video';
   copyright?: string;
+}
+
+export interface NASADSNSignal {
+  uid?: string;
+  tgt?: string;
+  dir?: 'up' | 'down' | string;
+  band?: string;
+  rate?: number | string;
+  data_rate?: number;
+  active?: boolean;
+  pwr?: number;
+}
+
+export interface NASADSNDish {
+  name?: string;
+  user?: string;
+  act?: string;
+  desc?: string;
+  az?: number;
+  el?: number;
+  ws?: number;
+  tgts?: string[];
+  site?: string;
+  complex?: string;
+  sigs?: NASADSNSignal[];
+}
+
+export interface NASADSNStatusResponse {
+  time?: number;
+  dishes: Record<string, NASADSNDish>;
 }
 
 export interface GitHubSecurityAdvisoryResponse {

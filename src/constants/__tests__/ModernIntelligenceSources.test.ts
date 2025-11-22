@@ -170,3 +170,50 @@ describe('ModernIntelligenceSources Investigative integration', () => {
     expect(MODERN_INTELLIGENCE_CATEGORIES.AIGOV.sources).toContain('future-of-life-institute');
   });
 });
+
+describe('Space and defense source onboarding', () => {
+  const spaceDefenseSources = [
+    { id: 'nasa-news-releases', normalizer: 'normalizeSpaceAgencyRSS', endpointId: 'investigative-rss' },
+    { id: 'spacenews-policy', normalizer: 'normalizeSpaceAgencyRSS', endpointId: 'investigative-rss' },
+    { id: 'esa-space-news', normalizer: 'normalizeSpaceAgencyRSS', endpointId: 'investigative-rss' },
+    { id: 'spacecom-latest', normalizer: 'normalizeSpaceAgencyRSS', endpointId: 'investigative-rss' },
+    { id: 'dod-war-news', normalizer: 'normalizeDefenseNewsRSS', endpointId: 'investigative-rss' },
+    { id: 'breaking-defense', normalizer: 'normalizeDefenseNewsRSS', endpointId: 'investigative-rss' },
+    { id: 'c4isrnet-ops', normalizer: 'normalizeDefenseNewsRSS', endpointId: 'investigative-rss' },
+    { id: 'launch-library-upcoming', normalizer: 'normalizeLaunchLibraryData', endpointId: 'launch-library' }
+  ];
+
+  spaceDefenseSources.forEach(config => {
+    test(`${config.id} source is registered and enabled`, () => {
+      const source = PRIMARY_INTELLIGENCE_SOURCES.find(entry => entry.id === config.id);
+      expect(source).toBeDefined();
+      expect(source?.enabled).toBe(true);
+      expect(source?.normalizer).toBe(config.normalizer);
+      expect(source?.endpoint.id).toBe(config.endpointId);
+    });
+  });
+
+  test('Source categories capture the new space and defense feeds', () => {
+    expect(SOURCE_CATEGORIES.GOVERNMENT.sources).toEqual(
+      expect.arrayContaining(['nasa-news-releases', 'esa-space-news', 'launch-library-upcoming', 'dod-war-news'])
+    );
+    expect(SOURCE_CATEGORIES.SECURITY.sources).toEqual(
+      expect.arrayContaining(['breaking-defense', 'c4isrnet-ops'])
+    );
+    expect(SOURCE_CATEGORIES.TECHNOLOGY.sources).toEqual(
+      expect.arrayContaining(['spacenews-policy', 'spacecom-latest'])
+    );
+  });
+
+  test('Modern intelligence categories map the new feeds', () => {
+    expect(MODERN_INTELLIGENCE_CATEGORIES.TECHINT.sources).toEqual(
+      expect.arrayContaining(['nasa-news-releases', 'spacenews-policy', 'esa-space-news', 'spacecom-latest', 'launch-library-upcoming'])
+    );
+    expect(MODERN_INTELLIGENCE_CATEGORIES.MILINT.sources).toEqual(
+      expect.arrayContaining(['earth-alliance-news', 'dod-war-news', 'breaking-defense', 'c4isrnet-ops'])
+    );
+    expect(MODERN_INTELLIGENCE_CATEGORIES.OSINT.sources).toEqual(
+      expect.arrayContaining(['nasa-news-releases', 'dod-war-news'])
+    );
+  });
+});

@@ -17,9 +17,6 @@ export * from './IntelLocation';
 // DATA ABSTRACTION LAYER - Depends on Foundation
 // =============================================================================
 
-// Core Data Bridge Interface
-export * from './IntelData';
-
 // Metadata Management
 export * from './IntelReportMetaData';
 
@@ -44,13 +41,6 @@ export * from './IntelVisualization3D';
 // OPERATIONAL CAPABILITIES - Cross-Cutting Concerns
 // =============================================================================
 
-// Enhanced Operational Capabilities
-export * from './Tasking';
-export * from './Lifecycle';
-export * from './RealTimeProcessing';
-export * from './Performance';
-export * from './Operations';
-
 // Sources and Collection
 export * from './Sources';
 export * from './Requirements';
@@ -58,9 +48,7 @@ export * from './Requirements';
 // Assessments
 export * from './Assessments';
 
-// Utilities and Transformers
-export * from './Transformers';
-export * from './IntelFusion';
+// Utilities
 export * from './Validators';
 
 // =============================================================================
@@ -69,9 +57,6 @@ export * from './Validators';
 
 // Type Hierarchy Definition and Validation
 export * from './TypeHierarchy';
-
-// Core Type Enhancements (Phase 3)
-export * from './CoreTypeEnhancements';
 
 // Re-export key interfaces for convenience
 export type {
@@ -110,16 +95,10 @@ export type {
 } from './Requirements';
 
 export type {
-  ClassificationLevel,
   ClassificationMarking
 } from './Classification';
 
 // Utility exports
-export {
-  IntelligenceTransformers,
-  FormTransformers
-} from './Transformers';
-
 export {
   IntelValidator,
   IntelligenceValidator,
@@ -159,16 +138,6 @@ export {
 } from './IntelReport';
 
 // Core Intel Data types (NEW - Phase 2)
-export type {
-  IntelData,
-  IntelDataCollection
-} from './IntelData';
-
-export {
-  IntelDataTransformer,
-  IntelDataManager
-} from './IntelData';
-
 // Intel Report Metadata types (NEW - Phase 2)
 export type {
   IntelReportMetaData,

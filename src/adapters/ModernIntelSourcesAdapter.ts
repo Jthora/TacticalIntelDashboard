@@ -4,10 +4,10 @@
  * for backward compatibility with existing UI components
  */
 
-import { MissionMode } from '../constants/MissionMode';
+import { MissionMode, getMissionModeProfile } from '../constants/MissionMode';
 import { getSourcesWithRuntimeState } from '../constants/MissionSourceRegistry';
 import { IntelligenceSource } from '../types/ModernAPITypes';
-import { AuthType,ClassificationLevel, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
+import { AuthType, HealthStatus, IntelligenceCategory, SourceCost, TacticalIntelSource } from '../types/TacticalIntelligence';
 
 /**
  * Convert modern API intelligence sources to legacy format
@@ -19,7 +19,7 @@ export function convertToLegacyFormat(modernSource: IntelligenceSource): Tactica
   url: modernSource.homepage ?? modernSource.endpoint.baseUrl,
     category: mapModernCategoryToLegacy(modernSource.endpoint.category),
     reliability: Math.round(modernSource.healthScore / 10), // Convert 0-100 to 0-10 scale
-    classification: 'UNCLASSIFIED' as ClassificationLevel,
+  classification: 'UNCLASSIFIED',
     updateFrequency: Math.round(modernSource.refreshInterval / 60000), // Convert ms to minutes
     requiresAuth: modernSource.endpoint.requiresAuth,
     authType: modernSource.endpoint.requiresAuth ? 'API_KEY' as AuthType : 'NONE' as AuthType,
@@ -28,11 +28,13 @@ export function convertToLegacyFormat(modernSource: IntelligenceSource): Tactica
     tags: modernSource.tags,
     healthStatus: convertHealthScore(modernSource.healthScore),
     verificationRequired: false,
-    minimumClearance: 'UNCLASSIFIED' as ClassificationLevel,
+  minimumClearance: 'UNCLASSIFIED',
     needToKnow: [],
   endpoint: modernSource.endpoint.baseUrl,
     protocol: 'API' as const, // Modern APIs use HTTPS JSON
-    format: 'json' // Modern APIs return JSON
+    format: 'json', // Modern APIs return JSON
+    marqueeEnabled: modernSource.enabled,
+    feedEnabled: modernSource.enabled
   };
 }
 
@@ -75,9 +77,37 @@ function convertHealthScore(healthScore: number): HealthStatus {
 /**
  * Get all modern intelligence sources in legacy format
  */
+const buildMissionAggregateSource = (mode: MissionMode): TacticalIntelSource => {
+  const profile = getMissionModeProfile(mode);
+  return {
+    id: profile.defaultFeedListId,
+    name: `${profile.label} Intelligence Aggregate`,
+    url: '#',
+    category: 'OSINT',
+    reliability: 10,
+  classification: 'UNCLASSIFIED',
+    updateFrequency: 5,
+    requiresAuth: false,
+    authType: 'NONE',
+    cost: 'free',
+    region: ['GLOBAL'],
+    tags: ['aggregate', mode.toLowerCase()],
+    healthStatus: 'operational',
+    verificationRequired: false,
+  minimumClearance: 'UNCLASSIFIED',
+    needToKnow: [],
+    endpoint: 'internal://modern-feed-service',
+    protocol: 'API',
+    format: 'json',
+    marqueeEnabled: false,
+    feedEnabled: true
+  };
+};
+
 export function getModernIntelligenceSourcesAsLegacy(mode: MissionMode = MissionMode.MILTECH): TacticalIntelSource[] {
-  const allModernSources = getSourcesWithRuntimeState(mode);
-  return allModernSources.map(convertToLegacyFormat);
+  const allModernSources = getSourcesWithRuntimeState(mode).map(convertToLegacyFormat);
+  const aggregateSource = buildMissionAggregateSource(mode);
+  return [aggregateSource, ...allModernSources];
 }
 
 /**
@@ -89,14 +119,14 @@ export const MODERN_INTELLIGENCE_CATEGORIES = {
     icon: '📡',
     name: 'Open Source Intelligence',
     description: 'Government APIs, social media, and public data sources',
-    sources: ['noaa-weather-alerts', 'usgs-earthquakes', 'reddit-worldnews', 'coingecko-crypto', 'intercept-investigations', 'propublica-investigations', 'icij-investigations', 'bellingcat-investigations', 'ddosecrets-investigations', 'occrp-investigations', 'grayzone-geopolitics', 'mintpress-geopolitics', 'geopolitical-economy-report', 'eff-updates', 'privacy-international', 'inside-climate-news', 'guardian-environment', 'transparency-international', 'opensecrets-transparency', 'future-of-life-institute']
+    sources: ['noaa-weather-alerts', 'usgs-earthquakes', 'reddit-worldnews', 'coingecko-crypto', 'intercept-investigations', 'propublica-investigations', 'icij-investigations', 'bellingcat-investigations', 'ddosecrets-investigations', 'occrp-investigations', 'grayzone-geopolitics', 'mintpress-geopolitics', 'geopolitical-economy-report', 'eff-updates', 'privacy-international', 'inside-climate-news', 'guardian-environment', 'transparency-international', 'opensecrets-transparency', 'future-of-life-institute', 'nasa-news-releases', 'spacenews-policy', 'esa-space-news', 'spacecom-latest', 'launch-library-upcoming', 'dod-war-news', 'breaking-defense', 'c4isrnet-ops']
   },
   TECHINT: {
     color: '#ff6600',
     icon: '🔧',
     name: 'Technical Intelligence',
     description: 'Technology platforms, security advisories, and innovation tracking',
-    sources: ['github-security', 'hackernews-tech', 'nasa-space-data', 'wired-security']
+    sources: ['github-security', 'hackernews-tech', 'nasa-space-data', 'wired-security', 'nasa-news-releases', 'spacenews-policy', 'esa-space-news', 'spacecom-latest', 'launch-library-upcoming']
   },
   CYBINT: {
     color: '#ffff00',
@@ -131,7 +161,7 @@ export const MODERN_INTELLIGENCE_CATEGORIES = {
     icon: '⚔️',
     name: 'Military Intelligence',
     description: 'Defense and military intelligence (future capability)',
-    sources: ['earth-alliance-news']
+    sources: ['earth-alliance-news', 'dod-war-news', 'breaking-defense', 'c4isrnet-ops']
   },
   INVESTIGATIVE: {
     color: '#1de9b6',

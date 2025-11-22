@@ -6,6 +6,7 @@
 import { FEED_SYSTEM_VERSION } from '../constants/FeedVersions';
 import { Feed } from '../models/Feed';
 import { LocalStorageUtil } from './LocalStorageUtil';
+import { FeedStoragePayload, FeedStorageSerializer } from './FeedStorageSerializer';
 import { isValidFeedURL } from './feedUrlValidator';
 
 /**
@@ -16,8 +17,10 @@ export const cleanupStoredFeeds = (): void => {
   
   try {
     // Clean up main feeds
-    const storedFeeds = LocalStorageUtil.getItem<Feed[]>('feeds');
-    if (storedFeeds && Array.isArray(storedFeeds)) {
+    const storedFeedsPayload = LocalStorageUtil.getItem<Feed[] | FeedStoragePayload>('feeds');
+    const storedFeeds = FeedStorageSerializer.deserialize(storedFeedsPayload);
+
+    if (storedFeeds.length > 0) {
       const originalCount = storedFeeds.length;
       const cleanFeeds = storedFeeds.filter(feed => {
         if (!feed.url) {
@@ -29,7 +32,7 @@ export const cleanupStoredFeeds = (): void => {
       
       if (cleanFeeds.length !== originalCount) {
         console.log(`🧹 Cleaned ${originalCount - cleanFeeds.length} invalid feeds. Keeping ${cleanFeeds.length} valid feeds.`);
-        LocalStorageUtil.setItem('feeds', cleanFeeds);
+        LocalStorageUtil.setItem('feeds', FeedStorageSerializer.serialize(cleanFeeds));
       } else {
         console.log('✅ All stored feeds are valid');
       }

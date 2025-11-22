@@ -4,6 +4,14 @@ import { render, waitFor } from '@testing-library/react';
 import { SettingsIntegrationService } from '../../services/SettingsIntegrationService';
 import FeedVisualizer from '../FeedVisualizer';
 
+const createMockDiagnostic = () => ({
+  sourceId: 'mock-source',
+  sourceName: 'Mock Source',
+  status: 'empty' as const,
+  itemsFetched: 0,
+  durationMs: 0
+});
+
 // Mock dependencies
 jest.mock('../../services/FeedService', () => ({
   __esModule: true,
@@ -38,8 +46,8 @@ jest.mock('../../contexts/FilterContext', () => ({
 }));
 jest.mock('../../services/ModernFeedService', () => ({
   modernFeedService: {
-    fetchSourceData: jest.fn(() => Promise.resolve([])),
-    fetchAllIntelligenceData: jest.fn(() => Promise.resolve({ aggregatedFeeds: [], modernSources: [] })),
+    fetchSourceData: jest.fn(() => Promise.resolve({ items: [], diagnostic: createMockDiagnostic() })),
+    fetchAllIntelligenceData: jest.fn(() => Promise.resolve({ feeds: [], diagnostics: [] })),
     mapModularDataSourceToModernSource: jest.fn(() => null)
   }
 }));

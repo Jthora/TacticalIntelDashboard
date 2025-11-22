@@ -49,6 +49,14 @@ export interface QualityAssessment {
   lastVerified?: number;
 }
 
+export interface ClassificationMarking {
+  level?: string;
+  caveats?: string[];
+  disseminationControls?: string[];
+  releasability?: string[];
+  portionMarking?: string;
+}
+
 /**
  * Quality Utilities
  */
@@ -100,6 +108,48 @@ export class QualityUtils {
     return {
       isValid: warnings.length === 0,
       warnings
+    };
+  }
+}
+
+export class ClassificationUtils {
+  static normalizeLevel(level?: string): string {
+    return level?.trim().toUpperCase() ?? 'UNMARKED';
+  }
+
+  static compareLevels(a?: string, b?: string): number {
+    return this.normalizeLevel(a).localeCompare(this.normalizeLevel(b));
+  }
+
+  static validate(marking?: ClassificationMarking | string): {
+    isValid: boolean;
+    errors: string[];
+  } {
+    const errors: string[] = [];
+
+    if (!marking) {
+      return { isValid: true, errors };
+    }
+
+    const normalized = typeof marking === 'string'
+      ? this.normalizeLevel(marking)
+      : this.normalizeLevel(marking.level);
+
+    if (!normalized.trim()) {
+      errors.push('Classification labels must be non-empty when provided');
+    }
+
+    if (typeof marking !== 'string') {
+      marking.caveats?.forEach(caveat => {
+        if (!caveat?.trim()) {
+          errors.push('Caveats cannot be empty');
+        }
+      });
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors
     };
   }
 }

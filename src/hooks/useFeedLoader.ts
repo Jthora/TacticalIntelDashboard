@@ -1,14 +1,16 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { isAggregateFeedId, MissionMode } from '../constants/MissionMode';
+import { getSourceById as getSourceByIdForMode } from '../constants/MissionSourceRegistry';
+import { useMissionMode } from '../contexts/MissionModeContext';
 import { Feed } from '../models/Feed';
 import FeedService from '../services/FeedService';
 import { modernFeedService } from '../services/ModernFeedService';
 import { SearchService } from '../services/SearchService';
+import { AlertTrigger } from '../types/AlertTypes';
+import { FeedFetchDiagnostic } from '../types/FeedTypes';
+import { IntelligenceSource } from '../types/ModernAPITypes';
 import { log } from '../utils/LoggerService';
-import { getSourceById as getSourceByIdForMode } from '../constants/MissionSourceRegistry';
-import { MissionMode } from '../constants/MissionMode';
-import { NormalizedDataItem, IntelligenceSource } from '../types/ModernAPITypes';
-import { useMissionMode } from '../contexts/MissionModeContext';
 
 interface AlertFeedItem {
   title: string;
@@ -26,7 +28,7 @@ interface AlertFeedItem {
 interface UseFeedLoaderParams {
   selectedFeedList: string | null;
   isMonitoring: boolean;
-  checkFeedItems: (feeds: AlertFeedItem[]) => any[];
+  checkFeedItems: (feeds: AlertFeedItem[]) => AlertTrigger[];
   setLoading: (loading: boolean, message?: string) => void;
   setError: (message: string | null) => void;
   logSuccess?: (id: string, location: string, message: string, data?: unknown) => void;
@@ -70,12 +72,15 @@ export const useFeedLoader = (
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [recentAlertTriggers, setRecentAlertTriggers] = useState<number>(0);
-  const { mode } = useMissionMode();
+  const [diagnostics, setDiagnostics] = useState<FeedFetchDiagnostic[]>([]);
+  const { mode, profile } = useMissionMode();
   const loadInProgressRef = useRef(false);
   const lastInvocationRef = useRef<{ reason: LoadReason; timestamp: number }>({
     reason: 'unspecified',
     timestamp: 0
   });
+  const prevSelectedFeedRef = useRef<string | null>(null);
+  const prevModeRef = useRef(mode);
   const MIN_AUTO_REFRESH_GAP_MS = 1500;
 
   const loadFeeds = useCallback(
@@ -92,10 +97,13 @@ export const useFeedLoader = (
         setFeeds([]);
         setLoading(false);
         searchService.clearData();
+        setDiagnostics([]);
         return;
       }
 
       const now = Date.now();
+      const isAggregateSelection = isAggregateFeedId(selectedFeedList, mode);
+      const shouldForceRefresh = reason === 'mission-mode-change' || reason === 'manual-refresh';
       if (loadInProgressRef.current) {
         logWarning('047A', 'loadFeeds', 'Load skipped because another load is still in progress', {
           selectedFeedList,
@@ -128,81 +136,20 @@ export const useFeedLoader = (
         setError(null);
       }
 
-  try {
+      try {
         logger.debug('Component', `Loading feeds for list: ${selectedFeedList}`);
         logSuccess('049', 'loadFeeds', 'About to determine feed list type', { selectedFeedList });
 
-  const modernSource = getSourceByIdFn(mode, selectedFeedList);
-        if (modernSource) {
-          logSuccess('049A', 'loadFeeds', 'Detected modern source selection', {
-            sourceId: selectedFeedList,
-            sourceName: modernSource.name
-          });
-
-          const normalizedItems: NormalizedDataItem[] = await modernService.fetchSourceData(modernSource);
-          const feedsForSource: Feed[] = normalizedItems.map((item, index) => ({
-            id: item.id || `${modernSource.id}-${index}-${Date.now()}`,
-            name: modernSource.name,
-            url: item.url,
-            title: item.title,
-            link: item.url,
-            pubDate:
-              item.publishedAt instanceof Date
-                ? item.publishedAt.toISOString()
-                : new Date(item.publishedAt).toISOString(),
-            feedListId: 'modern-api',
-            description: item.summary || '',
-            content: item.summary || '',
-            author: item.source || modernSource.name,
-            categories: item.tags || [],
-            tags: item.tags || [],
-            priority: ((item.priority ? item.priority.toUpperCase() : 'MEDIUM') as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'),
-            contentType: 'INTEL',
-            source: item.source || modernSource.name,
-            ...(item.metadata ? { metadata: item.metadata } : {})
-          }));
-
-          if (isMonitoring && feedsForSource.length > 0) {
-            const feedItemsForAlerts: AlertFeedItem[] = feedsForSource.map(feed => ({
-              title: feed.title,
-              description: feed.description || '',
-              content: feed.content || '',
-              link: feed.link,
-              url: feed.link,
-              source: feed.author || 'Unknown',
-              feedTitle: feed.author || 'Unknown',
-              pubDate: feed.pubDate,
-              author: feed.author,
-              categories: feed.categories
-            }));
-
-            const triggers = checkFeedItems(feedItemsForAlerts);
-            if (triggers.length > 0) {
-              logger.debug('Component', `🚨 ${triggers.length} alert(s) triggered!`);
-              setRecentAlertTriggers(triggers.length);
-              setTimeoutFn(() => setRecentAlertTriggers(0), 30000);
-            }
-          }
-
-          setFeeds(feedsForSource);
-          searchService.initializeFeeds(feedsForSource);
-          setLastUpdated(new Date());
-          return;
-        }
-
-        if (
-          selectedFeedList === 'modern-api' ||
-          selectedFeedList === '1' ||
-          selectedFeedList === 'primary-intel' ||
-          selectedFeedList === 'security-feeds'
-        ) {
+        if (isAggregateSelection) {
           logSuccess('050', 'loadFeeds', 'Using Modern Feed Service path', {
             selectedFeedList,
+            aggregateSourceId: profile.defaultFeedListId,
             modernFeedServiceExists: !!modernService,
-            modernFeedServiceType: typeof modernService
+            modernFeedServiceType: typeof modernService,
+            shouldForceRefresh
           });
 
-          const modernResults = await modernService.fetchAllIntelligenceData();
+          const modernResults = await modernService.fetchAllIntelligenceData(shouldForceRefresh);
           logSuccess('051', 'loadFeeds', 'Modern Feed Service returned results', {
             selectedFeedList,
             resultType: typeof modernResults,
@@ -257,18 +204,64 @@ export const useFeedLoader = (
           setFeeds(modernFeedsAsFeeds);
           searchService.initializeFeeds(modernFeedsAsFeeds);
           setLastUpdated(new Date());
-        } else {
-          const feedsByList = await feedService.getFeedsByList(selectedFeedList);
+          setDiagnostics(modernResults.diagnostics ?? []);
+          return;
+        }
 
-          if (isMonitoring && feedsByList.length > 0) {
-            const feedItemsForAlerts: AlertFeedItem[] = feedsByList.map(feed => ({
+        const modernSource = getSourceByIdFn(mode, selectedFeedList);
+        if (modernSource) {
+          logSuccess('049A', 'loadFeeds', 'Detected modern source selection', {
+            sourceId: selectedFeedList,
+            sourceName: modernSource.name
+          });
+
+          if (!modernSource.enabled) {
+            logWarning('049B', 'loadFeeds', 'Selected source is disabled for this mission mode', {
+              sourceId: modernSource.id,
+              mode
+            });
+            setFeeds([]);
+            searchService.clearData();
+            setLoading(false);
+            setError('This source is disabled for the current mission mode. Restore defaults to re-enable.');
+            return;
+          }
+
+          const { items: normalizedItems, diagnostic } = await modernService.fetchSourceData(
+            modernSource,
+            shouldForceRefresh
+          );
+          const feedsForSource: Feed[] = normalizedItems.map((item, index) => ({
+            id: item.id || `${modernSource.id}-${index}-${Date.now()}`,
+            name: modernSource.name,
+            url: item.url,
+            title: item.title,
+            link: item.url,
+            pubDate:
+              item.publishedAt instanceof Date
+                ? item.publishedAt.toISOString()
+                : new Date(item.publishedAt).toISOString(),
+            feedListId: 'modern-api',
+            description: item.summary || '',
+            content: item.summary || '',
+            author: item.source || modernSource.name,
+            categories: item.tags || [],
+            tags: item.tags || [],
+            priority: ((item.priority ? item.priority.toUpperCase() : 'MEDIUM') as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'),
+            contentType: 'INTEL',
+            source: item.source || modernSource.name,
+            ...(item.metadata ? { metadata: item.metadata } : {})
+          }));
+
+          if (isMonitoring && feedsForSource.length > 0) {
+            const feedItemsForAlerts: AlertFeedItem[] = feedsForSource.map(feed => ({
               title: feed.title,
               description: feed.description || '',
               content: feed.content || '',
               link: feed.link,
-              url: feed.url,
-              source: feed.name,
-              feedTitle: feed.name,
+              url: feed.link,
+              source: feed.author || 'Unknown',
+              feedTitle: feed.author || 'Unknown',
               pubDate: feed.pubDate,
               author: feed.author,
               categories: feed.categories
@@ -282,10 +275,41 @@ export const useFeedLoader = (
             }
           }
 
-          setFeeds(feedsByList);
-          searchService.initializeFeeds(feedsByList);
+          setFeeds(feedsForSource);
+          searchService.initializeFeeds(feedsForSource);
           setLastUpdated(new Date());
+          setDiagnostics([diagnostic]);
+          return;
         }
+
+        const feedsByList = await feedService.getFeedsByList(selectedFeedList);
+
+        if (isMonitoring && feedsByList.length > 0) {
+          const feedItemsForAlerts: AlertFeedItem[] = feedsByList.map(feed => ({
+            title: feed.title,
+            description: feed.description || '',
+            content: feed.content || '',
+            link: feed.link,
+            url: feed.url,
+            source: feed.name,
+            feedTitle: feed.name,
+            pubDate: feed.pubDate,
+            author: feed.author,
+            categories: feed.categories
+          }));
+
+          const triggers = checkFeedItems(feedItemsForAlerts);
+          if (triggers.length > 0) {
+            logger.debug('Component', `🚨 ${triggers.length} alert(s) triggered!`);
+            setRecentAlertTriggers(triggers.length);
+            setTimeoutFn(() => setRecentAlertTriggers(0), 30000);
+          }
+        }
+
+        setFeeds(feedsByList);
+        searchService.initializeFeeds(feedsByList);
+        setLastUpdated(new Date());
+  setDiagnostics([]);
 
         logger.debug('Component', 'Successfully loaded feeds');
       } catch (error) {
@@ -317,14 +341,41 @@ export const useFeedLoader = (
       feedService,
       setTimeoutFn,
       getSourceByIdFn,
-      mode
+      mode,
+      profile.defaultFeedListId
     ]
   );
+
+  useEffect(() => {
+    const reason = prevSelectedFeedRef.current === null ? 'initial-load' : 'selected-feed-change';
+    prevSelectedFeedRef.current = selectedFeedList;
+    loadFeeds(true, reason);
+  }, [selectedFeedList, loadFeeds]);
+
+  useEffect(() => {
+    if (prevModeRef.current !== mode) {
+      prevModeRef.current = mode;
+      loadFeeds(true, 'mission-mode-change');
+    }
+  }, [mode, loadFeeds]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const handleSourceToggle = () => loadFeeds(true, 'manual-refresh');
+    window.addEventListener('intel-source-toggle', handleSourceToggle);
+    return () => {
+      window.removeEventListener('intel-source-toggle', handleSourceToggle);
+    };
+  }, [loadFeeds]);
 
   return {
     feeds,
     lastUpdated,
     recentAlertTriggers,
+    diagnostics,
     loadFeeds
   };
 };

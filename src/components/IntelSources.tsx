@@ -5,6 +5,7 @@ import React, { useEffect,useRef,useState } from 'react';
 import { MODERN_INTELLIGENCE_CATEGORIES } from '../adapters/ModernIntelSourcesAdapter';
 import { useIntelligence } from '../contexts/IntelligenceContext';
 import { useMissionMode } from '../contexts/MissionModeContext';
+import { modernFeedService } from '../services/ModernFeedService';
 import { LoadingSpinner } from '../shared/components/LoadingStates';
 import { 
   IntelligenceCategory,
@@ -12,12 +13,14 @@ import {
 import SourceManager from './SourceManager';
 
 interface IntelSourcesProps {
+  selectedFeedList: string | null;
   setSelectedFeedList: (feedListId: string | null) => void;
   showClassificationLevels?: boolean;
   enableRealTimeAlerts?: boolean;
 }
 
 const IntelSources: React.FC<IntelSourcesProps> = ({ 
+  selectedFeedList,
   setSelectedFeedList,
   showClassificationLevels = true,
   enableRealTimeAlerts = true
@@ -35,11 +38,12 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   const [showSourceManager, setShowSourceManager] = useState<boolean>(false);
   const [tacticalSources, setTacticalSources] = useState<TacticalIntelSource[]>([]);
   const hasHydratedSourcesRef = useRef(false);
+  const activeFeedId = selectedFeedList ?? profile.defaultFeedListId;
 
   // Sync tactical sources with intelligence context without re-triggering source injections
   useEffect(() => {
-    console.log('🔍 TDD_ERROR_052: IntelSources component syncing tactical sources');
-    console.log('🔍 TDD_ERROR_053: Sources from intelligence context:', intelState.sources.length);
+  console.log('🔍 TDD_INFO_052: IntelSources component syncing tactical sources');
+  console.log('🔍 TDD_INFO_053: Sources from intelligence context:', intelState.sources.length);
 
     if (intelState.sources.length === 0) {
       setLoading(true);
@@ -82,11 +86,18 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   }, [autoRefresh, tacticalSources, intelActions, enableRealTimeAlerts]);
 
   const getSortedTacticalSources = () => {
-    const filtered = categoryFilter.length > 0 
+    const filteredByCategory = categoryFilter.length > 0 
       ? tacticalSources.filter(source => categoryFilter.includes(source.category))
       : tacticalSources;
+
+    const filtered = filterActive
+      ? filteredByCategory.filter(source => source.feedEnabled !== false)
+      : filteredByCategory;
+
+    const aggregateSource = filtered.find(source => source.id === profile.defaultFeedListId);
+    const others = filtered.filter(source => source.id !== profile.defaultFeedListId);
       
-    return [...filtered].sort((a, b) => {
+    const sortedOthers = [...others].sort((a, b) => {
       switch (sortBy) {
         case 'reliability':
           return b.reliability - a.reliability; // Use reliability from TacticalIntelSource
@@ -106,6 +117,8 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
           return a.name.localeCompare(b.name);
       }
     });
+
+    return aggregateSource ? [aggregateSource, ...sortedOthers] : sortedOthers;
   };
 
   const getHealthStatus = (source: TacticalIntelSource) => {
@@ -129,8 +142,11 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
     return '#ff0040';
   };
 
-  const getClassificationColor = (classification: string) => {
-    switch (classification) {
+  const normalizeClassification = (classification?: string) =>
+    classification?.trim().toUpperCase() || 'UNMARKED';
+
+  const getClassificationColor = (classification?: string) => {
+    switch (normalizeClassification(classification)) {
       case 'UNCLASSIFIED': return '#28a745';
       case 'CONFIDENTIAL': return '#ffc107';
       case 'SECRET': return '#fd7e14';
@@ -139,8 +155,8 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
     }
   };
 
-  const getClassificationTooltip = (classification: string) => {
-    switch (classification) {
+  const getClassificationTooltip = (classification?: string) => {
+    switch (normalizeClassification(classification)) {
       case 'UNCLASSIFIED': return 'UNCLASSIFIED - Information that can be released to the public';
       case 'CONFIDENTIAL': return 'CONFIDENTIAL - Information that could damage national security if disclosed';
       case 'SECRET': return 'SECRET - Information that could cause serious damage to national security';
@@ -179,13 +195,47 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   };
 
   const handleSourceSelect = (sourceId: string) => {
+    if (selectedFeedList === sourceId) {
+      return;
+    }
     setSelectedFeedList(sourceId);
     console.log(`🔍 TDD_SUCCESS: Selected source: ${sourceId}`);
+  };
+
+  const handleSourceKeyDown = (
+    event: React.KeyboardEvent<HTMLDivElement>,
+    sourceId: string
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleSourceSelect(sourceId);
+    }
   };
 
   const handleRestoreDefaults = () => {
     setSelectedFeedList(profile.defaultFeedListId);
     console.log('🔄 Restored default selection to', profile.defaultFeedListId);
+  };
+
+  const handleFeedToggle = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    source: TacticalIntelSource
+  ) => {
+    event.stopPropagation();
+    const currentlyEnabled = source.feedEnabled !== false;
+    const nextEnabled = !currentlyEnabled;
+
+    if (isDefaultSource(source.id)) {
+      console.warn('⚠️ Mission aggregate feed cannot be toggled');
+      return;
+    }
+
+    modernFeedService.toggleSource(source.id, nextEnabled);
+    intelActions.updateSource(source.id, { feedEnabled: nextEnabled });
+
+    if (!nextEnabled && selectedFeedList === source.id) {
+      setSelectedFeedList(profile.defaultFeedListId);
+    }
   };
 
   // Add a function to check if a source is the default modern-api source
@@ -205,6 +255,11 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
     const value = e.target.value;
     setCategoryFilter(value ? [value as IntelligenceCategory] : []);
   };
+
+  const sortedTacticalSources = getSortedTacticalSources();
+  const activeDescendantId = sortedTacticalSources.some(source => source.id === activeFeedId)
+    ? `intel-source-${activeFeedId}`
+    : undefined;
 
   if (loading) {
     return (
@@ -421,20 +476,35 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
               </div>
             </div>
           ) : (
-            <div className={`intel-sources-list view-mode-${viewMode}`}>
+            <div
+              className={`intel-sources-list view-mode-${viewMode}`}
+              role="listbox"
+              aria-label="Available intelligence sources"
+              aria-activedescendant={activeDescendantId}
+            >
               {/* Tactical Intelligence Sources */}
-              {getSortedTacticalSources().map((source, index) => {
+              {sortedTacticalSources.map((source, index) => {
                 const healthStatus = getHealthStatus(source);
                 const healthColor = getHealthColor(healthStatus);
                 const reliabilityColor = getReliabilityColor(source.reliability);
                 const classificationColor = getClassificationColor(source.classification);
+                const isAggregateSource = isDefaultSource(source.id);
+                const isActiveSelection = activeFeedId === source.id;
+                const optionId = `intel-source-${source.id}`;
                 
                 return (
                   <div
+                    id={optionId}
                     key={source.id}
-                    className={`intel-source-item tactical-source status-${healthStatus} ${isDefaultSource(source.id) ? 'default-source' : ''}`}
+                    className={`intel-source-item tactical-source status-${healthStatus} ${isAggregateSource ? 'default-source aggregate-source' : ''} ${isActiveSelection ? 'active-source' : ''}`}
                     style={{ animationDelay: `${index * 0.05}s` }}
                     onClick={() => handleSourceSelect(source.id)}
+                    onKeyDown={(event) => handleSourceKeyDown(event, source.id)}
+                    role="option"
+                    aria-selected={isActiveSelection}
+                    tabIndex={0}
+                    data-active={isActiveSelection}
+                    data-source-id={source.id}
                   >
                     <div className="source-item-header">
                       <div className="source-info">
@@ -442,6 +512,12 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                           {isDefaultSource(source.id) && <span className="default-badge">DEFAULT</span>}
                           {source.name}
                         </div>
+                        {isActiveSelection && (
+                          <span className="selection-indicator" aria-label="Currently selected source">
+                            <span className="indicator-dot" aria-hidden="true"></span>
+                            ACTIVE FEED
+                          </span>
+                        )}
                         <div className="source-meta">
                           <span 
                             className="category-badge" 
@@ -481,23 +557,27 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
                         </div>
                       </div>
                       <div className="source-controls">
-                        <span className="source-type">TACTICAL</span>
-                        <button
-                          type="button"
-                          className={`source-toggle-btn toggle-marquee ${source.marqueeEnabled ? 'active' : ''}`}
-                          title={source.marqueeEnabled ? 'Remove from Marquee' : 'Add to Marquee'}
-                          onClick={(e) => { e.stopPropagation(); intelActions.updateSource(source.id, { marqueeEnabled: !source.marqueeEnabled }); }}
-                        >
-                          📰
-                        </button>
-                        <button
-                          type="button"
-                          className={`source-toggle-btn toggle-feed ${source.feedEnabled !== false ? 'active' : ''}`}
-                          title={source.feedEnabled !== false ? 'Disable in Feed' : 'Enable in Feed'}
-                          onClick={(e) => { e.stopPropagation(); intelActions.updateSource(source.id, { feedEnabled: !(source.feedEnabled !== false) }); }}
-                        >
-                          📥
-                        </button>
+                        <span className="source-type">{isAggregateSource ? 'MISSION' : 'TACTICAL'}</span>
+                        {!isAggregateSource && (
+                          <>
+                            <button
+                              type="button"
+                              className={`source-toggle-btn toggle-marquee ${source.marqueeEnabled ? 'active' : ''}`}
+                              title={source.marqueeEnabled ? 'Remove from Marquee' : 'Add to Marquee'}
+                              onClick={(e) => { e.stopPropagation(); intelActions.updateSource(source.id, { marqueeEnabled: !source.marqueeEnabled }); }}
+                            >
+                              📰
+                            </button>
+                            <button
+                              type="button"
+                              className={`source-toggle-btn toggle-feed ${source.feedEnabled !== false ? 'active' : ''}`}
+                              title={source.feedEnabled !== false ? 'Disable in Feed' : 'Enable in Feed'}
+                              onClick={(event) => handleFeedToggle(event, source)}
+                            >
+                              📥
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                     

@@ -14,6 +14,7 @@ interface UseLoadingOptions {
   onStart?: () => void;
   onComplete?: () => void;
   onError?: (error: string) => void;
+  initiallyLoading?: boolean;
 }
 
 export const useLoading = (options: UseLoadingOptions = {}) => {
@@ -23,11 +24,12 @@ export const useLoading = (options: UseLoadingOptions = {}) => {
     minLoadingTime = 500, // 500ms minimum
     onStart,
     onComplete,
-    onError
+    onError,
+    initiallyLoading = false
   } = options;
 
   const [state, setState] = useState<LoadingState>({
-    isLoading: false,
+    isLoading: initiallyLoading,
     ...(trackProgress ? { progress: 0 } : {}),
     message: initialMessage,
     error: null

@@ -2,7 +2,6 @@
 // Implementation of Improvement #2: Better Service Organization
 
 import { PrimaryIntelSource, CollectionMethod } from './Sources';
-import { ClassificationLevel } from './Classification';
 
 /**
  * Collection Priority Levels
@@ -95,7 +94,7 @@ export interface IntelRequirement {
   prohibitedSources?: PrimaryIntelSource[]; // Sources not to use
   
   // Security and handling
-  classification: ClassificationLevel;
+  classification?: string;
   compartments?: string[];
   releasabilityTo?: string[];
   

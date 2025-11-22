@@ -8,6 +8,7 @@ import FeedService from '../services/FeedService';
 import PerformanceManager from '../services/PerformanceManager';
 import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 import { ErrorOverlay, FeedVisualizerSkeleton } from '../shared/components/LoadingStates';
+import FeedDiagnosticsPanel from './FeedDiagnosticsPanel';
 import FeedItem from './FeedItem';
 import { useFeedLoader } from '../hooks/useFeedLoader';
 import { useAutoRefresh } from '../hooks/useAutoRefresh';
@@ -76,7 +77,8 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     setError
   } = useLoading({
     minLoadingTime: 800,
-    initialMessage: 'Loading intelligence feeds...'
+    initialMessage: 'Loading intelligence feeds...',
+    initiallyLoading: Boolean(selectedFeedList)
   });
 
   // Alert system integration
@@ -90,6 +92,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     feeds,
     lastUpdated,
     recentAlertTriggers,
+    diagnostics,
     loadFeeds
   } = useFeedLoader(
     {
@@ -122,6 +125,21 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
   }, [feeds, getFilteredFeeds, selectedFeedList]);
 
   useAutoRefresh({ autoRefresh, selectedFeedList, loadFeeds });
+
+  const sourceStatus = useMemo(() => {
+    if (!diagnostics || diagnostics.length === 0) {
+      return null;
+    }
+
+    return diagnostics.reduce(
+      (acc, diagnostic) => {
+        acc.total += 1;
+        acc[diagnostic.status] += 1;
+        return acc;
+      },
+      { total: 0, success: 0, empty: 0, failed: 0 }
+    );
+  }, [diagnostics]);
 
   // Initial load and when selectedFeedList changes
   useEffect(() => {
@@ -183,6 +201,11 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
               📋 {alertStats.activeAlerts} ACTIVE ALERT{alertStats.activeAlerts > 1 ? 'S' : ''}
             </span>
           )}
+          {sourceStatus && (
+            <span className="source-status text-secondary text-sm">
+              🛰️ SOURCES — OK: {sourceStatus.success} | EMPTY: {sourceStatus.empty} | FAIL: {sourceStatus.failed}
+            </span>
+          )}
         </div>
         <div className="control-buttons">
           <button 
@@ -205,6 +228,7 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
       </div>
 
       <div className="feed-content">
+        <FeedDiagnosticsPanel diagnostics={diagnostics} lastUpdated={lastUpdated} />
         {feeds.length === 0 ? (
           <div className="no-feeds empty-state">
             <div className="empty-icon">📋</div>

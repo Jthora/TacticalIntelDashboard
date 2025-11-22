@@ -16,7 +16,6 @@ export * from '../models/Intel/Classification';
 export * from '../models/Intel/Sources';
 // Requirements intentionally omitted (IntelRequirement already exported via Intel.ts)
 export * from '../models/Intel/TypeHierarchy';
-export * from '../models/Intel/Transformers';
 export * from '../models/Intel/Validators';
 
 // Services intentionally NOT wildcard re-exported to prevent Validation* and Intel* type collisions.

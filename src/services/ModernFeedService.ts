@@ -13,7 +13,7 @@ import {
   getSourceCatalog,
   getSourcesWithRuntimeState as getSourcesWithRuntimeStateForMode
 } from '../constants/MissionSourceRegistry';
-import { FeedItem, FeedResults } from '../types/FeedTypes';
+import { FeedFetchDiagnostic, FeedItem, FeedResults } from '../types/FeedTypes';
 import { IntelligenceSource,NormalizedDataItem } from '../types/ModernAPITypes';
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
 import { log } from '../utils/LoggerService';
@@ -50,12 +50,50 @@ const TDD_FEED_ERRORS = {
   }
 };
 
+type SourceFetchResult = {
+  items: NormalizedDataItem[];
+  diagnostic: FeedFetchDiagnostic;
+};
+
+const resolveSelfHostedProxyBase = (): string | null => {
+  const globalValue = typeof globalThis !== 'undefined' && (globalThis as any).__INTEL_PROXY_BASE__
+    ? String((globalThis as any).__INTEL_PROXY_BASE__)
+    : null;
+
+  const nodeEnv = typeof process !== 'undefined' && process.env?.VITE_INTEL_PROXY_BASE
+    ? String(process.env.VITE_INTEL_PROXY_BASE)
+    : null;
+
+  const candidate = globalValue || nodeEnv;
+  return candidate && candidate.trim().length > 0 ? candidate.trim() : null;
+};
+
+const SELF_HOSTED_PROXY_BASE = resolveSelfHostedProxyBase();
+
+const buildSelfHostedProxyUrl = (feedUrl: string): string | null => {
+  if (!SELF_HOSTED_PROXY_BASE) {
+    return null;
+  }
+
+  if (SELF_HOSTED_PROXY_BASE.includes('{url}')) {
+    return SELF_HOSTED_PROXY_BASE.replace('{url}', encodeURIComponent(feedUrl));
+  }
+
+  const hasQuery = SELF_HOSTED_PROXY_BASE.includes('?');
+  const needsSeparator = hasQuery
+    ? SELF_HOSTED_PROXY_BASE.endsWith('?') || SELF_HOSTED_PROXY_BASE.endsWith('&') ? '' : '&'
+    : '?';
+
+  return `${SELF_HOSTED_PROXY_BASE}${needsSeparator}url=${encodeURIComponent(feedUrl)}`;
+};
+
 class ModernFeedService {
   private lastFetchTime: Map<string, number> = new Map();
   private cachedResults: Map<string, NormalizedDataItem[]> = new Map();
   private readonly cacheStorageKeyBase = 'modernFeedCache';
   private readonly configStorageKeyBase = 'modernFeedConfig';
   private readonly currentVersion = FEED_SYSTEM_VERSION;
+  private readonly emptyCacheRetryMs = 60000; // Retry empty cache entries after 60s
   private missionMode: MissionMode = DEFAULT_MISSION_MODE;
 
   constructor() {
@@ -102,6 +140,13 @@ class ModernFeedService {
     return `${mode}:${sourceId}`;
   }
 
+  private getEmptyCacheRetryInterval(source: IntelligenceSource): number {
+    const tenPercentWindow = Math.floor((source.refreshInterval || this.emptyCacheRetryMs) * 0.1);
+    const candidate = tenPercentWindow > 0 ? tenPercentWindow : this.emptyCacheRetryMs;
+    const minRetryWindow = 10000; // 10 seconds floor to avoid thrashing
+    return Math.max(minRetryWindow, Math.min(this.emptyCacheRetryMs, candidate));
+  }
+
   private getModeConfig(mode: MissionMode = this.missionMode): IntelligenceModeConfig {
     return getDefaultIntelligenceConfig(mode);
   }
@@ -139,8 +184,8 @@ class ModernFeedService {
     }
     
     const fetchPromises = enabledSources.map(source => {
-      TDD_FEED_ERRORS.logSuccess('027', 'fetchAllIntelligenceData', 'Creating fetch promise for source', { 
-        sourceId: source.id, 
+      TDD_FEED_ERRORS.logSuccess('027', 'fetchAllIntelligenceData', 'Creating fetch promise for source', {
+        sourceId: source.id,
         sourceName: source.name,
         enabled: source.enabled,
         hasEndpoint: !!source.endpoint
@@ -149,40 +194,54 @@ class ModernFeedService {
     });
 
     try {
-      TDD_FEED_ERRORS.logSuccess('028', 'fetchAllIntelligenceData', 'Starting Promise.allSettled', { promiseCount: fetchPromises.length });
-      const results = await Promise.allSettled(fetchPromises);
-      TDD_FEED_ERRORS.logSuccess('029', 'fetchAllIntelligenceData', 'Promise.allSettled completed', { 
-        totalResults: results.length,
-        fulfilled: results.filter(r => r.status === 'fulfilled').length,
-        rejected: results.filter(r => r.status === 'rejected').length
+      TDD_FEED_ERRORS.logSuccess('028', 'fetchAllIntelligenceData', 'Starting Promise.all for sources', {
+        promiseCount: fetchPromises.length
       });
-      
-      const allItems: NormalizedDataItem[] = [];
+      const results = await Promise.all(fetchPromises);
+      TDD_FEED_ERRORS.logSuccess('029', 'fetchAllIntelligenceData', 'All source promises resolved', {
+        totalResults: results.length
+      });
 
-      results.forEach((result, index) => {
+      const allItems: NormalizedDataItem[] = [];
+      const diagnostics: FeedFetchDiagnostic[] = [];
+
+  results.forEach(({ items, diagnostic }: SourceFetchResult, index) => {
+        diagnostics.push(diagnostic);
         const source = enabledSources[index];
-        if (result.status === 'fulfilled') {
-          const itemCount = result.value.length;
-          allItems.push(...result.value);
-          if ((source as any).marqueeEnabled !== false) {
-            try { marqueeProjectionService.ingest(source.id, result.value); } catch (e) { /* swallow */ }
+        if ((source as any).marqueeEnabled !== false && items.length > 0) {
+          try {
+            marqueeProjectionService.ingest(source.id, items);
+          } catch (e) {
+            /* swallow */
           }
-          TDD_FEED_ERRORS.logSuccess('030', 'fetchAllIntelligenceData', 'Source fetch succeeded', { 
-            sourceId: source.id,
-            sourceName: source.name,
-            itemCount,
-            sampleItems: result.value.slice(0, 2).map(item => ({ id: item.id, title: item.title.substring(0, 50) }))
-          });
-          log.debug('ModernFeedService', `Fetched ${result.value.length} items from ${enabledSources[index].name}`);
-        } else {
-          TDD_FEED_ERRORS.logError('031', 'fetchAllIntelligenceData', 'Source fetch failed', {
-            sourceId: source.id,
-            sourceName: source.name,
-            error: result.reason,
-            endpoint: source.endpoint?.baseUrl
-          });
-          log.warn('ModernFeedService', `Failed to fetch from ${enabledSources[index].name}: ${result.reason}`);
         }
+
+        if (diagnostic.status === 'failed') {
+          TDD_FEED_ERRORS.logError('031', 'fetchAllIntelligenceData', 'Source fetch failed', {
+            sourceId: diagnostic.sourceId,
+            sourceName: diagnostic.sourceName,
+            error: diagnostic.error,
+            itemsServed: diagnostic.itemsFetched
+          });
+          log.warn(
+            'ModernFeedService',
+            `Failed to fetch from ${diagnostic.sourceName}: ${diagnostic.error ?? 'Unknown error'}`
+          );
+        } else {
+          TDD_FEED_ERRORS.logSuccess('030', 'fetchAllIntelligenceData', 'Source fetch completed', {
+            sourceId: diagnostic.sourceId,
+            sourceName: diagnostic.sourceName,
+            status: diagnostic.status,
+            itemCount: diagnostic.itemsFetched,
+            sampleItems: items.slice(0, 2).map(item => ({ id: item.id, title: item.title.substring(0, 50) }))
+          });
+          log.debug(
+            'ModernFeedService',
+            `Fetched ${items.length} items from ${diagnostic.sourceName} (status: ${diagnostic.status})`
+          );
+        }
+
+        allItems.push(...items);
       });
 
       // TDD_ERROR_032: Check total items collected
@@ -225,7 +284,8 @@ class ModernFeedService {
 
       const feedResults: FeedResults = {
         feeds: feedItems,
-        fetchedAt: new Date().toISOString()
+        fetchedAt: new Date().toISOString(),
+        diagnostics
       };
 
       // Cache the results
@@ -266,18 +326,74 @@ class ModernFeedService {
   /**
    * Fetch data from a specific intelligence source
    */
-  async fetchSourceData(source: IntelligenceSource, forceRefresh: boolean = false): Promise<NormalizedDataItem[]> {
+  async fetchSourceData(source: IntelligenceSource, forceRefresh: boolean = false): Promise<SourceFetchResult> {
     const cacheKey = this.getCacheKeyForSource(source.id);
     const now = Date.now();
     const lastFetch = this.lastFetchTime.get(cacheKey) || 0;
     const timeSinceLastFetch = now - lastFetch;
+    const cachedResult = this.cachedResults.get(cacheKey);
+    const getTimestamp = () => (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now());
+    const startTime = getTimestamp();
+    const buildDiagnostic = (
+      status: FeedFetchDiagnostic['status'],
+      items: NormalizedDataItem[],
+      error?: string,
+      notes?: string
+    ): FeedFetchDiagnostic => {
+      const diagnostic: FeedFetchDiagnostic = {
+        sourceId: source.id,
+        sourceName: source.name,
+        status,
+        itemsFetched: items.length,
+        durationMs: Number((getTimestamp() - startTime).toFixed(2))
+      };
 
-    // Check if refresh is needed
-    if (!forceRefresh && timeSinceLastFetch < source.refreshInterval) {
-      const cached = this.cachedResults.get(cacheKey);
-      if (cached) {
-        log.debug('ModernFeedService', `Using cached data for ${source.name}`);
-        return cached;
+      if (typeof error === 'string') {
+        diagnostic.error = error;
+      }
+
+      if (typeof notes === 'string') {
+        diagnostic.notes = notes;
+      }
+
+      return diagnostic;
+    };
+    // Check if refresh is needed, allowing shorter retry windows for empty caches
+    if (!forceRefresh && cachedResult) {
+      const isEmptyCache = cachedResult.length === 0;
+      const cacheWindow = isEmptyCache
+        ? this.getEmptyCacheRetryInterval(source)
+        : source.refreshInterval;
+
+      if (timeSinceLastFetch < cacheWindow) {
+        const remainingMs = Math.max(0, cacheWindow - timeSinceLastFetch);
+        const diagnosticStatus: FeedFetchDiagnostic['status'] = cachedResult.length > 0 ? 'success' : 'empty';
+        const notes = isEmptyCache
+          ? `Empty cache placeholder – retrying in ${Math.ceil(remainingMs / 1000)}s`
+          : 'Served from cache';
+
+        if (isEmptyCache) {
+          TDD_FEED_ERRORS.logWarning('073', 'fetchSourceData', 'Empty cache reuse window active', {
+            sourceId: source.id,
+            retryInMs: remainingMs
+          });
+          log.debug('ModernFeedService', `Empty cache placeholder for ${source.name} (retrying soon)`);
+        } else {
+          log.debug('ModernFeedService', `Using cached data for ${source.name}`);
+        }
+
+        return {
+          items: cachedResult,
+          diagnostic: buildDiagnostic(diagnosticStatus, cachedResult, undefined, notes)
+        };
+      }
+
+      if (isEmptyCache) {
+        TDD_FEED_ERRORS.logWarning('073A', 'fetchSourceData', 'Bypassing empty cache after retry window', {
+          sourceId: source.id,
+          timeSinceLastFetch,
+          retryInterval: cacheWindow
+        });
       }
     }
 
@@ -358,6 +474,8 @@ class ModernFeedService {
         throw new Error('ICIJ investigative feed returned no data from available proxies');
       }
 
+      normalizedData = this.annotateItemsWithSourceInfo(source, normalizedData);
+
       // Update last fetch time
   this.lastFetchTime.set(cacheKey, now);
       
@@ -372,7 +490,11 @@ class ModernFeedService {
       // Update source health
       this.updateSourceHealth(source.id, true);
 
-      return normalizedData;
+      const status: FeedFetchDiagnostic['status'] = normalizedData.length > 0 ? 'success' : 'empty';
+      return {
+        items: normalizedData,
+        diagnostic: buildDiagnostic(status, normalizedData)
+      };
 
     } catch (error) {
       TDD_FEED_ERRORS.logError('076', 'fetchSourceData', 'Failed to fetch source data after fallbacks', {
@@ -386,7 +508,13 @@ class ModernFeedService {
       this.updateSourceHealth(source.id, false);
       
       // Return cached data if available
-      return this.cachedResults.get(cacheKey) || [];
+      const cached = this.cachedResults.get(cacheKey) || [];
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const notes = cached.length > 0 ? 'Served cached data due to fetch failure' : undefined;
+      return {
+        items: cached,
+        diagnostic: buildDiagnostic('failed', cached, errorMessage, notes)
+      };
     }
   }
 
@@ -399,22 +527,12 @@ class ModernFeedService {
       source.endpoint.category === category
     );
 
-    const fetchPromises = enabledSources.map(source =>
-      this.fetchSourceData(source, forceRefresh)
-    );
+    const fetchPromises = enabledSources.map(source => this.fetchSourceData(source, forceRefresh));
 
     try {
-      const results = await Promise.allSettled(fetchPromises);
-      const categoryItems: NormalizedDataItem[] = [];
-
-      results.forEach(result => {
-        if (result.status === 'fulfilled') {
-          categoryItems.push(...result.value);
-        }
-      });
-
+      const results = await Promise.all(fetchPromises);
+      const categoryItems = results.flatMap(result => result.items);
       return this.sortIntelligenceData(categoryItems);
-
     } catch (error) {
       log.error('ModernFeedService', `Error fetching category ${category}: ${error}`);
       return [];
@@ -485,12 +603,18 @@ class ModernFeedService {
     if (source) {
       SourceToggleStore.setOverride(sourceId, enabled, this.missionMode);
       this.saveConfiguration();
+      LocalStorageUtil.removeItem(this.getCacheStorageKey());
       if (!enabled) {
         const cacheKey = this.getCacheKeyForSource(sourceId);
         this.cachedResults.delete(cacheKey);
         this.lastFetchTime.delete(cacheKey);
       }
       log.info('ModernFeedService', `${enabled ? 'Enabled' : 'Disabled'} source: ${source.name} (${this.missionMode})`);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('intel-source-toggle', {
+          detail: { sourceId, enabled, mode: this.missionMode }
+        }));
+      }
     }
   }
 
@@ -521,25 +645,43 @@ class ModernFeedService {
         return '/r/cybersecurity/hot.json?limit=15';
 
       case 'spaceforce-launch-watch':
-        return '/planetary/apod';
+        return `/api?url=${encodeURIComponent('https://spaceflightnow.com/feed/')}`;
 
       case 'spaceforce-space-weather':
         return '/alerts/active?status=actual&message_type=alert';
 
-      case 'spaceforce-orbital-debris':
-        return `/api?url=${encodeURIComponent('https://www.space.com/feeds/all')}`;
-
-      case 'spaceforce-sda-ops':
-        return `/api?url=${encodeURIComponent('https://www.spaceforce.mil/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=106&Category=all')}`;
-
       case 'spaceforce-deep-space-network':
-        return '/planetary/apod';
+        return 'https://eyes.nasa.gov/dsn/data/dsn.json';
 
       case 'spaceforce-reddit-space':
         return '/r/space/hot.json?limit=25';
 
       case 'earth-alliance-news':
         return `/api?url=${encodeURIComponent('https://earthalliance.news/feed/')}`;
+
+      case 'nasa-news-releases':
+        return `/api?url=${encodeURIComponent('https://www.nasa.gov/news-release/feed/')}`;
+
+      case 'spacenews-policy':
+        return `/api?url=${encodeURIComponent('https://spacenews.com/feed/')}`;
+
+      case 'esa-space-news':
+        return `/api?url=${encodeURIComponent('https://www.esa.int/rssfeed/Our_Activities/Space_News')}`;
+
+      case 'spacecom-latest':
+        return `/api?url=${encodeURIComponent('https://www.space.com/feeds/all')}`;
+
+      case 'dod-war-news':
+        return `/api?url=${encodeURIComponent('https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=694&Category=0&Max=25')}`;
+
+      case 'breaking-defense':
+        return `/api?url=${encodeURIComponent('https://breakingdefense.com/feed/')}`;
+
+      case 'c4isrnet-ops':
+        return `/api?url=${encodeURIComponent('https://www.c4isrnet.com/arc/outboundfeeds/rss/?outputType=xml')}`;
+
+      case 'launch-library-upcoming':
+        return '/launch/upcoming/?limit=50&ordering=net&hide_recent_previous=true';
 
       case 'intercept-investigations':
         return `/api?url=${encodeURIComponent('https://theintercept.com/feed/')}`;
@@ -608,14 +750,23 @@ class ModernFeedService {
 
   private getApiPathsForSource(source: IntelligenceSource): string[] {
     const buildRSSFallbacks = (feedUrl: string, includeFeed2Json: boolean = true): string[] => {
-      const paths: string[] = [
-        `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`,
-        this.buildAPIPath(source)
-      ];
+      const paths: string[] = [];
+      const primaryPath = this.buildAPIPath(source);
+      const selfHostedProxy = buildSelfHostedProxyUrl(feedUrl);
+
+      if (primaryPath) {
+        paths.push(primaryPath);
+      }
+
+      if (selfHostedProxy) {
+        paths.push(selfHostedProxy);
+      }
 
       if (includeFeed2Json) {
         paths.push(`https://feed2json.org/convert?url=${encodeURIComponent(feedUrl)}`);
       }
+
+      paths.push(`https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`);
 
       return Array.from(new Set(paths.filter(Boolean)));
     };
@@ -626,22 +777,58 @@ class ModernFeedService {
       const allOriginsProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed2JsonUrl)}`;
       const rss2JsonPath = `/api?url=${encodeURIComponent(feedUrl)}`;
 
-      return [
-        allOriginsProxy,
-        this.buildAPIPath(source),
-        rss2JsonPath
-      ];
+      return Array.from(new Set([
+        ...buildRSSFallbacks(feedUrl, true),
+        rss2JsonPath,
+        allOriginsProxy
+      ]));
     }
 
     if (source.id === 'occrp-investigations') {
       const feedUrl = 'https://www.occrp.org/en/investigations/feed';
       const allOriginsJson = `https://api.allorigins.win/get?url=${encodeURIComponent(feedUrl)}`;
       const rss2JsonPath = this.buildAPIPath(source);
-      return [allOriginsJson, rss2JsonPath];
+      return Array.from(new Set([
+        ...buildRSSFallbacks(feedUrl, false),
+        rss2JsonPath,
+        allOriginsJson
+      ]));
     }
 
     if (source.id === 'krebs-security') {
       return buildRSSFallbacks('https://krebsonsecurity.com/feed/');
+    }
+
+    if (source.id === 'spaceforce-launch-watch') {
+      return buildRSSFallbacks('https://spaceflightnow.com/feed/');
+    }
+
+    if (source.id === 'nasa-news-releases') {
+      return buildRSSFallbacks('https://www.nasa.gov/news-release/feed/');
+    }
+
+    if (source.id === 'spacenews-policy') {
+      return buildRSSFallbacks('https://spacenews.com/feed/');
+    }
+
+    if (source.id === 'esa-space-news') {
+      return buildRSSFallbacks('https://www.esa.int/rssfeed/Our_Activities/Space_News');
+    }
+
+    if (source.id === 'spacecom-latest') {
+      return buildRSSFallbacks('https://www.space.com/feeds/all');
+    }
+
+    if (source.id === 'dod-war-news') {
+      return buildRSSFallbacks('https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=694&Category=0&Max=25');
+    }
+
+    if (source.id === 'breaking-defense') {
+      return buildRSSFallbacks('https://breakingdefense.com/feed/');
+    }
+
+    if (source.id === 'c4isrnet-ops') {
+      return buildRSSFallbacks('https://www.c4isrnet.com/arc/outboundfeeds/rss/?outputType=xml');
     }
 
     if (source.id === 'threatpost-security') {
@@ -769,6 +956,17 @@ class ModernFeedService {
           pubDateStr = new Date().toISOString(); // Fallback to current time
         }
 
+        const sourceId = typeof item.sourceId === 'string' && item.sourceId.length > 0
+          ? item.sourceId
+          : (item.metadata?.sourceId ?? 'modern-api');
+        const sourceName = item.sourceDisplayName || item.source || 'Unknown';
+        const legacyMetadata = {
+          ...(item.metadata ?? {}),
+          sourceId,
+          sourceName,
+          ...(item.originalSourceName ? { originalSource: item.originalSourceName } : {})
+        };
+
         const legacyItem: FeedItem = {
           id: item.id || `item-${index}-${Date.now()}`,
           title: item.title || 'Untitled',
@@ -776,19 +974,19 @@ class ModernFeedService {
           pubDate: pubDateStr,
           description: item.summary || '',
           content: item.summary || '',
-          feedListId: 'modern-api',
-          author: item.source || 'Unknown',
+          feedListId: typeof sourceId === 'string' && sourceId.length > 0 ? sourceId : 'modern-api',
+          author: sourceName,
           categories: item.tags || [],
           tags: item.tags || [], // Add tags field for new UI
           priority: this.mapPriorityToUppercase(item.priority || 'medium'), // Convert to uppercase
           contentType: this.mapCategoryToContentType(item.category || 'general'),
-          source: item.source || 'Unknown',
+          source: sourceName,
           trustRating: item.trustRating || 50,
           verificationStatus: item.verificationStatus || 'UNVERIFIED',
           lastValidated: new Date().toISOString(),
           responseTime: item.responseTime || 0,
           // Include metadata for additional features like comment counts
-          ...(item.metadata ? { metadata: item.metadata } : {})
+          metadata: legacyMetadata
         };
 
         validItems.push(legacyItem);
@@ -863,13 +1061,48 @@ class ModernFeedService {
       url: item.link,
       publishedAt: new Date(item.pubDate),
       source: item.author || 'Unknown',
+      sourceId: item.metadata?.sourceId,
+      sourceDisplayName: item.metadata?.sourceName,
+      originalSourceName: item.metadata?.originalSource,
       category: item.categories?.[0] || 'general',
       tags: item.categories || [],
       priority: 'medium' as const,
       trustRating: item.trustRating || 50,
       verificationStatus: item.verificationStatus || 'UNVERIFIED',
-      dataQuality: 70
+      dataQuality: 70,
+      missionMode: item.metadata?.missionMode
     }));
+  }
+
+  private annotateItemsWithSourceInfo(source: IntelligenceSource, items: NormalizedDataItem[]): NormalizedDataItem[] {
+    return items.map(item => {
+      const originalSource = item.source?.trim() ? item.source : undefined;
+      const metadata: Record<string, any> = {
+        ...(item.metadata || {}),
+        sourceId: source.id,
+        sourceName: source.name,
+        missionMode: this.missionMode
+      };
+
+      if (originalSource && originalSource !== source.name) {
+        metadata.originalSource = originalSource;
+      }
+
+      const enrichedItem: NormalizedDataItem = {
+        ...item,
+        source: source.name,
+        sourceId: source.id,
+        sourceDisplayName: source.name,
+        metadata,
+        missionMode: this.missionMode
+      };
+
+      if (originalSource) {
+        enrichedItem.originalSourceName = originalSource;
+      }
+
+      return enrichedItem;
+    });
   }
 
   private updateSourceHealth(sourceId: string, success: boolean): void {

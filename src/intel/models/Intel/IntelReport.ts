@@ -3,7 +3,6 @@
 // Consolidates fragmented implementations from various components and services
 
 import { IntelCategory, IntelPriority, IntelThreatLevel, IntelClassification } from './IntelEnums';
-import { ClassificationLevel } from './Classification';
 import { PrimaryIntelSource } from './Sources';
 import { IntelVisualization3D } from './IntelVisualization3D';
 import { IntelLocation } from './IntelLocation';
@@ -80,8 +79,8 @@ export interface IntelReport {
   // CLASSIFICATION & SECURITY
   // =============================================================================
   
-  /** Security classification level */
-  classification: ClassificationLevel | IntelClassification;
+  /** Security classification label (optional for civilian releases) */
+  classification?: string | IntelClassification;
   
   /** Report priority level */
   priority?: IntelPriority | 'ROUTINE' | 'PRIORITY' | 'IMMEDIATE';
@@ -270,7 +269,7 @@ export class IntelReportBuilder {
       latitude: 0,
       longitude: 0,
       content: '',
-      classification: 'UNCLASSIFIED' as ClassificationLevel
+  classification: 'UNCLASSIFIED'
     };
   }
 
@@ -306,7 +305,7 @@ export class IntelReportBuilder {
     return this;
   }
 
-  setClassification(level: ClassificationLevel | IntelClassification): this {
+  setClassification(level: string | IntelClassification): this {
     this.report.classification = level;
     return this;
   }
@@ -346,7 +345,7 @@ export class IntelReportBuilder {
     return this;
   }
 
-  setType(type: IntelReport['type']): this {
+  setType(type: NonNullable<IntelReport['type']>): this {
     this.report.type = type;
     return this;
   }
@@ -357,7 +356,7 @@ export class IntelReportBuilder {
     return this;
   }
 
-  addSource(source: PrimaryIntelSource | string): this {
+  addSource(source: PrimaryIntelSource): this {
     if (!this.report.sources) this.report.sources = [];
     if (!this.report.sources.includes(source)) {
       this.report.sources.push(source);
@@ -373,7 +372,7 @@ export class IntelReportBuilder {
     return this;
   }
 
-  setStatus(status: IntelReport['status']): this {
+  setStatus(status: NonNullable<IntelReport['status']>): this {
     this.report.status = status;
     return this;
   }
@@ -541,9 +540,6 @@ export class IntelReportAdapter {
 // =============================================================================
 // EXPORT TYPES FOR COMPATIBILITY
 // =============================================================================
-
-// Re-export for backward compatibility
-export { IntelEntity, IntelRelationship, Evidence };
 
 // Type alias for the most common usage pattern
 export type { IntelReport as UnifiedIntelReport };

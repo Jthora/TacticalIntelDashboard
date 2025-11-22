@@ -5,7 +5,7 @@
  * Generated on: 2025-07-11
  */
 
-import { TacticalIntelSource, ClassificationLevel, IntelligenceCategory } from '../types/TacticalIntelligence';
+import { TacticalIntelSource, IntelligenceCategory } from '../types/TacticalIntelligence';
 
 // Professional intelligence sources for tactical operations
 export const TACTICAL_INTEL_SOURCES: TacticalIntelSource[] = [
@@ -433,7 +433,7 @@ export const getSourcesByCategory = (category: IntelligenceCategory): TacticalIn
 };
 
 // Get sources by clearance level
-export const getSourcesByClearance = (clearanceLevel: ClassificationLevel): TacticalIntelSource[] => {
+export const getSourcesByClearance = (clearanceLevel: string): TacticalIntelSource[] => {
   const clearanceLevels = {
     'UNCLASSIFIED': 0,
     'CONFIDENTIAL': 1,

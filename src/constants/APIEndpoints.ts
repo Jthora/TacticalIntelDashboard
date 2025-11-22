@@ -43,6 +43,22 @@ export const NASA_API: APIEndpoint = {
   status: 'active'
 };
 
+export const LAUNCH_LIBRARY_API: APIEndpoint = {
+  id: 'launch-library',
+  name: 'Launch Library 2',
+  category: 'space',
+  baseUrl: 'https://ll.thespacedevs.com/2.2.0',
+  endpoints: {
+    upcoming: '/launch/upcoming/',
+    events: '/event/upcoming/'
+  },
+  corsEnabled: false,
+  requiresAuth: false,
+  rateLimit: { requests: 60, period: 'minute' },
+  documentation: 'https://thespacedevs.com/llapi',
+  status: 'active'
+};
+
 export const EARTH_ALLIANCE_NEWS_API: APIEndpoint = {
   id: 'earth-alliance-news',
   name: 'Earth Alliance News Intelligence',
@@ -276,6 +292,7 @@ export const SHODAN_API: APIEndpoint = {
 export const ALL_API_ENDPOINTS: APIEndpoint[] = [
   NOAA_WEATHER_API,
   NASA_API,
+  LAUNCH_LIBRARY_API,
   USGS_EARTHQUAKE_API,
   FDA_ENFORCEMENT_API,
   ALPHA_VANTAGE_API,

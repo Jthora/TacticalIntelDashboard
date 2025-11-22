@@ -6,6 +6,9 @@
 import { 
   AlphaVantageNewsResponse,
   NASAAPODResponse, 
+  NASADSNStatusResponse,
+  NASADSNDish,
+  NASADSNSignal,
   NOAAAlertResponse, 
   NormalizedDataItem, 
   RedditPostResponse
@@ -114,6 +117,97 @@ export class DataNormalizer {
         fullExplanation: response.explanation
       }
     };
+  }
+
+  static normalizeNASADSNStatus(response: NASADSNStatusResponse): NormalizedDataItem[] {
+    if (!response || typeof response !== 'object' || typeof response.dishes !== 'object') {
+      return [];
+    }
+
+    const timestampMs = typeof response.time === 'number' ? response.time * 1000 : Date.now();
+    const items: NormalizedDataItem[] = [];
+
+    (Object.entries(response.dishes) as Array<[string, NASADSNDish]>).forEach(([dishId, dish]) => {
+      if (!dish) return;
+      const signals = Array.isArray(dish.sigs) ? dish.sigs : [];
+      if (signals.length === 0) return;
+
+      const { site, location } = this.getDSNSiteInfo(dishId, dish.site);
+      const dishName = dish.name || `DSS-${dishId}`;
+
+      signals.forEach((signal: NASADSNSignal, index: number) => {
+        if (!signal) return;
+        const targetLabel = signal.tgt || dish.user || 'Unknown Target';
+        const direction = signal.dir === 'up' ? 'Uplink' : 'Downlink';
+        const band = signal.band || 'Unknown';
+        const dataRateRaw = typeof signal.rate === 'number' ? signal.rate : Number(signal.rate || signal.data_rate);
+        const dataRate = Number.isFinite(dataRateRaw) ? Number(dataRateRaw) : undefined;
+        const isActive = Boolean(signal.active);
+        const priority = this.determineDSNPriority(isActive, dataRate, band);
+
+        const summaryParts = [
+          `${dishName} at ${site} ${isActive ? 'is actively' : 'recently'} handling a ${band}-band ${direction.toLowerCase()} link for ${targetLabel}`
+        ];
+
+        if (dish.act) {
+          summaryParts.push(`Activity: ${dish.act}`);
+        } else if (dish.desc) {
+          summaryParts.push(dish.desc);
+        }
+
+        if (dataRate) {
+          summaryParts.push(`Data rate ${dataRate.toLocaleString()} bps`);
+        }
+
+        const summary = summaryParts.join(' · ');
+        const tagSet = new Set<string>();
+        ['dsn', site, direction, band, targetLabel].forEach(value => {
+          if (value) {
+            tagSet.add(String(value).toLowerCase());
+          }
+        });
+
+        items.push({
+          id: `dsn-${dishId}-${signal.uid || index}-${response.time || Date.now()}`,
+          title: `${dishName} ${direction} link with ${targetLabel}`,
+          summary,
+          url: 'https://eyes.nasa.gov/dsn/dsn.html',
+          publishedAt: new Date(timestampMs),
+          source: 'NASA Deep Space Network',
+          sourceId: 'spaceforce-deep-space-network',
+          sourceDisplayName: 'Deep Space Network Telemetry',
+          category: 'space-operations',
+          tags: Array.from(tagSet),
+          priority,
+          trustRating: 98,
+          verificationStatus: 'OFFICIAL',
+          dataQuality: 95,
+          metadata: {
+            dishId,
+            dishName,
+            site,
+            location,
+            azimuth: dish.az,
+            elevation: dish.el,
+            windSpeed: dish.ws,
+            activity: dish.act,
+            description: dish.desc,
+            user: dish.user,
+            direction,
+            band,
+            target: targetLabel,
+            dataRate,
+            signalPower: signal.pwr,
+            signalId: signal.uid,
+            targets: dish.tgts,
+            timestamp: response.time,
+            isActive
+          }
+        });
+      });
+    });
+
+    return items;
   }
 
   /**
@@ -414,6 +508,195 @@ export class DataNormalizer {
           return 'medium';
         }
         return 'low';
+      }
+    });
+  }
+
+  static normalizeSpaceLaunchRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Space Launch Intelligence';
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'space-operations',
+      baseTags: ['launch', 'space', 'countdown'],
+      trustRating: 85,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 87,
+      priorityMapper: context => {
+        const text = `${context.title || ''} ${context.summary || ''}`.toLowerCase();
+        if (/(scrub|abort|delay|hold)/.test(text)) {
+          return 'critical';
+        }
+        if (/(launch|liftoff|ignition|t-\d|go-for-launch|mission update)/.test(text)) {
+          return 'high';
+        }
+        if (/(payload|mission|rocket|pad|vehicle|countdown)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      },
+      additionalTags: context => {
+        const tags: string[] = [];
+        const text = `${context.title || ''} ${context.summary || ''}`.toLowerCase();
+        if (/scrub|delay|hold|abort/.test(text)) {
+          tags.push('anomaly');
+        }
+        if (/starlink|classified|national security|uspacific|nrol|us space force/.test(text)) {
+          tags.push('mission-critical');
+        }
+        return tags;
+      },
+      metadataEnricher: context => {
+        const titleText = context.title || '';
+        const summaryText = context.summary || '';
+        const vehicleMatch = titleText.match(/(falcon\s?9|falcon\s?heavy|starship|electron|ariane|atlas|vulcan|soyuz|long march|delta iv|new glenn|rocket lab|relativity|taurus|vega)/i);
+        const siteMatch = summaryText.match(/(cape canaveral|kennedy|vandenberg|wallops|baikonur|kourou|tanegashima|jiuquan|xichang|satish dhawan)/i);
+        const metadata: Record<string, any> = {};
+        if (vehicleMatch) metadata.vehicle = vehicleMatch[0];
+        if (siteMatch) metadata.launchSite = siteMatch[0];
+        return metadata;
+      }
+    });
+  }
+
+  static normalizeSpaceAgencyRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Space Agency News';
+
+    const detectPrograms = (text: string) => {
+      const programs: string[] = [];
+      if (/artemis/i.test(text)) programs.push('artemis');
+      if (/gateway/i.test(text)) programs.push('lunar-gateway');
+      if (/iss|space station/i.test(text)) programs.push('iss');
+      if (/mars/i.test(text)) programs.push('mars');
+      if (/crew|astronaut/i.test(text)) programs.push('crew');
+      return programs;
+    };
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'space-operations',
+      baseTags: ['space', 'mission', 'agency'],
+      trustRating: 92,
+      verificationStatus: 'VERIFIED',
+      dataQuality: 90,
+      priorityMapper: context => {
+        const text = `${context.title || ''} ${context.summary || ''}`.toLowerCase();
+        if (/(launch|liftoff|crew|eva|docking|mission update|payload)/.test(text)) {
+          return 'high';
+        }
+        if (/(contract|partnership|science|instrument|payload|development)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      },
+      additionalTags: context => {
+        const text = `${context.title || ''} ${context.summary || ''}`;
+        const tags = detectPrograms(text);
+        if (/space\s?force/i.test(text)) tags.push('space-force');
+        if (/commercial|contract/i.test(text)) tags.push('industry');
+        return tags;
+      },
+      metadataEnricher: context => {
+        const detectedPrograms = detectPrograms(`${context.title || ''} ${context.summary || ''}`);
+        return {
+          agency: sourceFallback,
+          detectedPrograms
+        };
+      }
+    });
+  }
+
+  static normalizeDefenseNewsRSS(response: any): NormalizedDataItem[] {
+    let workingResponse = response;
+
+    if (workingResponse && typeof workingResponse === 'object' && typeof workingResponse.contents === 'string') {
+      const parsed = this.parseRSSFromString(workingResponse.contents);
+      if (parsed) {
+        workingResponse = parsed;
+      }
+    }
+
+    const feedTitle = this.stripHtmlSafe(
+      workingResponse?.channel?.title ||
+        workingResponse?.feed?.title ||
+        workingResponse?.title ||
+        workingResponse?.name
+    );
+
+    const sourceFallback = feedTitle || 'Defense Intelligence';
+
+    const branchMatchers: Record<string, RegExp> = {
+      'army': /army|soldier/i,
+      'navy': /navy|fleet|sailor|carrier/i,
+      'air-force': /air force|airmen|airman|fighter/i,
+      'space-force': /space force|ussf/i,
+      'marines': /marine corps|marines/i,
+      'dod': /department of defense|dod|war\.gov/i
+    };
+
+    const detectBranch = (text: string) => {
+      const matches = Object.entries(branchMatchers).find(([, pattern]) => pattern.test(text));
+      return matches ? matches[0] : undefined;
+    };
+
+    return this.normalizeRSSFeed(workingResponse, {
+      sourceFallback,
+      category: 'defense',
+      baseTags: ['defense', 'military', 'osint'],
+      trustRating: 90,
+      verificationStatus: 'OFFICIAL',
+      dataQuality: 88,
+      priorityMapper: context => {
+        const text = `${context.title || ''} ${context.summary || ''}`.toLowerCase();
+        if (/(airstrike|deployment|operation|casualty|readiness alert|combat)/.test(text)) {
+          return 'high';
+        }
+        if (/(contract|exercise|training|budget|procurement|assessment|cyber)/.test(text)) {
+          return 'medium';
+        }
+        return 'low';
+      },
+      additionalTags: context => {
+        const branch = detectBranch(`${context.title || ''} ${context.summary || ''}`);
+        return branch ? [branch] : [];
+      },
+      metadataEnricher: context => {
+        const text = `${context.title || ''} ${context.summary || ''}`;
+        return {
+          branch: detectBranch(text)
+        };
       }
     });
   }
@@ -875,6 +1158,110 @@ export class DataNormalizer {
     return items;
   }
 
+  static normalizeLaunchLibraryData(response: any): NormalizedDataItem[] {
+    let payload: any = response;
+
+    if (payload && typeof payload === 'object' && typeof payload.contents === 'string') {
+      try {
+        payload = JSON.parse(payload.contents);
+      } catch {
+        payload = null;
+      }
+    }
+
+    if (typeof payload === 'string') {
+      try {
+        payload = JSON.parse(payload);
+      } catch {
+        payload = null;
+      }
+    }
+
+    if (!payload || typeof payload !== 'object') {
+      return [];
+    }
+
+    const launches = Array.isArray(payload.results) ? payload.results : [];
+    if (launches.length === 0) {
+      return [];
+    }
+
+    const mapStatusToPriority = (statusText: string): 'low' | 'medium' | 'high' | 'critical' => {
+      const normalized = statusText.toLowerCase();
+      if (/(failure|hold|scrub|abort)/.test(normalized)) {
+        return 'critical';
+      }
+      if (/(go|success|in flight)/.test(normalized)) {
+        return 'high';
+      }
+      if (/(tbd|unknown|tentative)/.test(normalized)) {
+        return 'medium';
+      }
+      return 'low';
+    };
+
+    return launches.map((launch: any, index: number) => {
+      const statusName = launch?.status?.name || launch?.status?.abbrev || 'TBD';
+      const net = launch?.net || launch?.window_start || new Date().toISOString();
+      const publishedAt = this.parseDateSafe(net);
+      const vehicle = launch?.rocket?.configuration?.name || launch?.rocket?.name;
+      const missionName = launch?.mission?.name || launch?.name || 'Upcoming Launch';
+      const locationName = launch?.pad?.location?.name || launch?.pad?.name;
+      const provider = launch?.launch_service_provider?.name;
+      const summaryParts: string[] = [];
+
+      summaryParts.push(`${missionName} targeting ${publishedAt.toUTCString()}`);
+      if (vehicle) {
+        summaryParts.push(`Vehicle: ${vehicle}`);
+      }
+      if (locationName) {
+        summaryParts.push(`Site: ${locationName}`);
+      }
+      if (launch?.mission?.description) {
+        summaryParts.push(this.stripHtmlSafe(launch.mission.description).substring(0, 240));
+      }
+
+      const tags = new Set<string>(['space', 'launch']);
+      if (vehicle) tags.add(this.slugify(vehicle));
+      if (locationName) tags.add(this.slugify(locationName));
+      if (provider) tags.add(this.slugify(provider));
+      if (launch?.mission?.type) tags.add(this.slugify(launch.mission.type));
+      tags.add(`status:${this.slugify(statusName)}`);
+
+      const url = launch?.url || (launch?.slug ? `https://thespacedevs.com/launch/${launch.slug}` : 'https://thespacedevs.com/launches');
+
+      return {
+        id: launch?.id || `${this.slugify(missionName)}-${index}-${publishedAt.getTime()}`,
+        title: `${missionName} (${statusName})`,
+        summary: this.truncateSummary(summaryParts.join(' · ')),
+        url,
+        publishedAt,
+        source: 'Launch Library 2',
+        category: 'space-operations',
+        tags: Array.from(tags),
+        priority: mapStatusToPriority(statusName),
+        trustRating: 94,
+        verificationStatus: 'VERIFIED',
+        dataQuality: 92,
+        metadata: {
+          status: launch?.status,
+          net,
+          windowStart: launch?.window_start,
+          windowEnd: launch?.window_end,
+          mission: launch?.mission,
+          vehicle,
+          provider,
+          pad: launch?.pad,
+          location: launch?.pad?.location,
+          agencies: launch?.mission?.agencies,
+          probability: launch?.probability,
+          webcast: launch?.vidURLs,
+          slug: launch?.slug
+        }
+      } as NormalizedDataItem;
+    });
+  }
+
   private static normalizeRSSFeed(response: any, options: RSSNormalizationOptions): NormalizedDataItem[] {
     const items = this.extractRSSItems(response);
     if (items.length === 0) return [];
@@ -1017,6 +1404,44 @@ export class DataNormalizer {
     if (score > 500) return 'high';
     if (score > 100) return 'medium';
     return 'low';
+  }
+
+  private static determineDSNPriority(isActive: boolean, dataRate?: number, band?: string): 'low' | 'medium' | 'high' {
+    if (!isActive) return 'low';
+    if ((dataRate || 0) >= 500000 || (band || '').toLowerCase() === 'ka') {
+      return 'high';
+    }
+    return 'medium';
+  }
+
+  private static getDSNSiteInfo(dishId: string, reportedSite?: string): { site: string; location: string } {
+    if (reportedSite) {
+      switch (reportedSite.toLowerCase()) {
+        case 'canberra':
+          return { site: 'Canberra', location: 'Australian Capital Territory' };
+        case 'madrid':
+          return { site: 'Madrid', location: 'Spain' };
+        case 'goldstone':
+          return { site: 'Goldstone', location: 'California, USA' };
+        default:
+          break;
+      }
+    }
+
+    const idNum = parseInt(dishId, 10);
+    if (Number.isNaN(idNum)) {
+      return { site: 'Deep Space Network', location: 'Global' };
+    }
+
+    if (idNum >= 10 && idNum < 30) {
+      return { site: 'Goldstone', location: 'California, USA' };
+    }
+
+    if (idNum >= 30 && idNum < 50) {
+      return { site: 'Canberra', location: 'Australian Capital Territory' };
+    }
+
+    return { site: 'Madrid', location: 'Spain' };
   }
 
   private static mapMagnitudeToPriority(magnitude?: number | null): 'low' | 'medium' | 'high' | 'critical' {

@@ -71,6 +71,19 @@ const EARTH_ALLIANCE_SCHEMA = z.object({
 
 const INVESTIGATIVE_RSS_SCHEMA = EARTH_ALLIANCE_SCHEMA;
 
+const NASA_DSN_SCHEMA = z.object({
+  time: z.number().optional(),
+  dishes: z.record(z.object({
+    name: z.string().optional(),
+    site: z.string().optional(),
+    sigs: z.array(z.record(z.any())).optional()
+  })).optional()
+});
+
+const LAUNCH_LIBRARY_SCHEMA = z.object({
+  results: z.array(z.record(z.any())).optional()
+}).passthrough();
+
 function defaultValidate(schema?: z.ZodTypeAny) {
   return (data: any) => {
     if (!schema) return { ok: true };
@@ -176,8 +189,82 @@ const plugins: Record<string, NormalizerPlugin> = {
       return [`source:${slug || 'investigative'}`];
     }),
     classify: items => ClassifierService.apply(items)
+  },
+  normalizeSpaceLaunchRSS: {
+    id: 'normalizeSpaceLaunchRSS',
+    schema: INVESTIGATIVE_RSS_SCHEMA,
+    validate: defaultValidate(INVESTIGATIVE_RSS_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeSpaceLaunchRSS(data),
+    enrich: items => addTags(items, it => {
+      const metadata = it.metadata || {};
+      const tags: string[] = [];
+      if (metadata.vehicle) tags.push(`vehicle:${String(metadata.vehicle).toLowerCase()}`);
+      if (metadata.launchSite) tags.push(`site:${String(metadata.launchSite).toLowerCase()}`);
+      return tags;
+    }),
+    classify: items => ClassifierService.apply(items)
+  },
+  normalizeSpaceAgencyRSS: {
+    id: 'normalizeSpaceAgencyRSS',
+    schema: INVESTIGATIVE_RSS_SCHEMA,
+    validate: defaultValidate(INVESTIGATIVE_RSS_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeSpaceAgencyRSS(data),
+    enrich: items => addTags(items, it => {
+      const programTags = (it.metadata as any)?.detectedPrograms || [];
+      const agency = (it.metadata as any)?.agency;
+      const tags: string[] = [...programTags];
+      if (agency) {
+        tags.push(`agency:${String(agency).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
+      }
+      return tags;
+    }),
+    classify: items => ClassifierService.apply(items)
+  },
+  normalizeDefenseNewsRSS: {
+    id: 'normalizeDefenseNewsRSS',
+    schema: INVESTIGATIVE_RSS_SCHEMA,
+    validate: defaultValidate(INVESTIGATIVE_RSS_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeDefenseNewsRSS(data),
+    enrich: items => addTags(items, it => {
+      const branch = (it.metadata as any)?.branch;
+      return branch ? [`branch:${branch}`] : [];
+    }),
+    classify: items => ClassifierService.apply(items)
+  },
+  normalizeNASADSNStatus: {
+    id: 'normalizeNASADSNStatus',
+    schema: NASA_DSN_SCHEMA,
+    validate: defaultValidate(NASA_DSN_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeNASADSNStatus(data),
+    enrich: items => addTags(items, it => {
+      const dish = (it.metadata as any)?.dishName;
+      const site = (it.metadata as any)?.site;
+      const tags: string[] = [];
+      if (dish) tags.push(`dish:${String(dish).toLowerCase()}`);
+      if (site) tags.push(`site:${String(site).toLowerCase()}`);
+      return tags;
+    }),
+    classify: items => ClassifierService.apply(items)
+  },
+  normalizeLaunchLibraryData: {
+    id: 'normalizeLaunchLibraryData',
+    schema: LAUNCH_LIBRARY_SCHEMA,
+    validate: defaultValidate(LAUNCH_LIBRARY_SCHEMA),
+    normalize: (data: any) => DataNormalizer.normalizeLaunchLibraryData(data),
+    enrich: items => addTags(items, it => {
+      const metadata = it.metadata || {};
+      const tags: string[] = [];
+      if ((metadata as any)?.provider) tags.push(`provider:${thisSlug(String((metadata as any).provider))}`);
+      if ((metadata as any)?.mission?.type) tags.push(`mission:${thisSlug(String((metadata as any).mission.type))}`);
+      return tags;
+    }),
+    classify: items => ClassifierService.apply(items)
   }
 };
+
+function thisSlug(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+}
 
 export const normalizerRegistry = {
   get(id: string): NormalizerPlugin | undefined {

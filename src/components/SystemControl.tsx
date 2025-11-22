@@ -1,5 +1,6 @@
 import React, { memo,useCallback } from 'react';
 
+import { DEFAULT_MISSION_MODE } from '../constants/MissionMode';
 import { useSettings } from '../contexts/SettingsContext';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -51,6 +52,7 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
     
     updateSettings({
       general: {
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: newInterval,
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
@@ -72,6 +74,7 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
     
     updateSettings({
       general: {
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: settings.general?.refreshInterval ?? 300000,
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: {
@@ -96,6 +99,7 @@ const SystemControl: React.FC<SystemControlProps> = memo(({
     
     updateSettings({
       general: {
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: settings.general?.refreshInterval ?? 300000,
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },

@@ -1,4 +1,5 @@
 import { DefaultFeeds } from '../constants/DefaultFeeds';
+import { getAllMissionAggregateFeedIds } from '../constants/MissionMode';
 import FeedController from '../controllers/FeedController';
 import { Feed } from '../models/Feed';
 import { FeedItem, FeedList, FeedResults } from '../types/FeedTypes';
@@ -6,6 +7,7 @@ import { cleanupStoredFeeds } from '../utils/feedCleanup';
 import { convertFeedItemsToFeeds } from '../utils/feedConversion';
 import { fetchFeed } from '../utils/fetchFeed'; // Import fetchFeed
 import { LocalStorageUtil } from '../utils/LocalStorageUtil';
+import { FeedStoragePayload, FeedStorageSerializer } from '../utils/FeedStorageSerializer';
 import { log } from '../utils/LoggerService';
 import { modernFeedService } from './ModernFeedService';
 
@@ -16,6 +18,21 @@ class FeedService {
   private readonly feedListsStorageKey = 'feedLists';
   private legacyRefreshAttempted = false;
   private static readonly MAX_LEGACY_RSS_FETCHES = 12;
+
+  private replaceFeedGroups(feedGroups: { feedListId: string; feeds: Feed[] }[]): void {
+    if (feedGroups.length === 0) {
+      return;
+    }
+
+    const targetIds = new Set(feedGroups.map(group => group.feedListId));
+    const preservedFeeds = this.feeds.filter(feed => !targetIds.has(feed.feedListId));
+    const incomingFeeds = feedGroups.flatMap(group => group.feeds);
+    this.feeds = [...preservedFeeds, ...incomingFeeds];
+  }
+
+  private cloneFeedsForList(feeds: Feed[], feedListId: string): Feed[] {
+    return feeds.map(feed => ({ ...feed, feedListId }));
+  }
 
   constructor() {
     // Clean up any invalid cached feeds before loading
@@ -29,12 +46,16 @@ class FeedService {
   private loadFeeds() {
     try {
       log.debug("FeedService", 'Loading feeds from local storage');
-      const storedFeeds = LocalStorageUtil.getItem<Feed[]>(this.feedsStorageKey);
-      if (storedFeeds && storedFeeds.length > 0) {
-        this.feeds = storedFeeds;
-      } else {
-        this.feeds = this.getDefaultFeeds();
+      const storedFeeds = LocalStorageUtil.getItem<Feed[] | FeedStoragePayload>(this.feedsStorageKey);
+      if (storedFeeds) {
+        const hydratedFeeds = FeedStorageSerializer.deserialize(storedFeeds);
+        if (hydratedFeeds.length > 0) {
+          this.feeds = hydratedFeeds;
+          return;
+        }
       }
+
+      this.feeds = this.getDefaultFeeds();
     } catch (error) {
       log.error("FeedService", 'Failed to load feeds:', error);
       this.feeds = this.getDefaultFeeds();
@@ -63,8 +84,9 @@ class FeedService {
   private saveFeeds() {
     try {
       log.debug("FeedService", 'Saving feeds to local storage');
-      LocalStorageUtil.setItem(this.feedsStorageKey, this.feeds);
-      log.debug("FeedService", 'Feeds saved to local storage');
+      const payload = FeedStorageSerializer.serialize(this.feeds);
+      LocalStorageUtil.setItem(this.feedsStorageKey, payload);
+      log.debug("FeedService", `Feeds saved to local storage (compressed ${payload.itemCount} items)`);
     } catch (error) {
       log.error("FeedService", 'Failed to save feeds:', error);
     }
@@ -209,7 +231,17 @@ class FeedService {
       const intelligenceResults = await modernFeedService.fetchAllIntelligenceData(true);
       if (intelligenceResults.feeds && intelligenceResults.feeds.length > 0) {
         const modernFeeds = this.convertIntelligenceToFeeds(intelligenceResults.feeds);
-        this.feeds = modernFeeds;
+        const missionAggregateIds = getAllMissionAggregateFeedIds();
+
+        const feedGroups = [
+          { feedListId: 'modern-api', feeds: this.cloneFeedsForList(modernFeeds, 'modern-api') },
+          ...missionAggregateIds.map(feedListId => ({
+            feedListId,
+            feeds: this.cloneFeedsForList(modernFeeds, feedListId)
+          }))
+        ];
+
+        this.replaceFeedGroups(feedGroups);
         this.saveFeeds();
         this.legacyRefreshAttempted = false;
         log.debug("FeedService", `Modern API provided ${modernFeeds.length} feeds; legacy fallback skipped`);

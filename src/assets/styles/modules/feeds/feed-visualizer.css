@@ -104,3 +104,121 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.6; }
 }
+
+/* Diagnostics Panel */
+.feed-diagnostics-panel {
+  background: rgba(6, 10, 25, 0.85);
+  border-bottom: 1px solid rgba(0, 255, 127, 0.12);
+  border-top: 1px solid rgba(0, 255, 127, 0.12);
+}
+
+.diagnostics-toggle {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.diagnostics-toggle:hover {
+  background: rgba(0, 255, 127, 0.08);
+}
+
+.diagnostics-summary {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.diagnostics-title {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: #8dd5ff;
+}
+
+.diagnostics-metrics {
+  font-size: 0.85rem;
+  color: #b2c4ff;
+}
+
+.diagnostics-toggle-icon {
+  font-size: 1rem;
+  color: #8dd5ff;
+}
+
+.diagnostics-body {
+  padding: 0 18px 16px;
+}
+
+.diagnostics-timestamp {
+  font-size: 0.75rem;
+  color: #94b8ff;
+  margin-bottom: 8px;
+}
+
+.diagnostics-table-wrapper {
+  max-height: 220px;
+  overflow: auto;
+  border: 1px solid rgba(0, 255, 127, 0.08);
+  border-radius: 6px;
+  background: rgba(4, 7, 20, 0.9);
+}
+
+.diagnostics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.diagnostics-table th,
+.diagnostics-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.diagnostics-table th {
+  text-align: left;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #7fb5ff;
+}
+
+.diagnostics-table tr:last-child td {
+  border-bottom: none;
+}
+
+.diagnostics-notes {
+  max-width: 280px;
+  color: #f39b9b;
+}
+
+.status-pill {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+.status-pill.status-success {
+  background: rgba(0, 255, 127, 0.12);
+  color: #3fffb8;
+}
+
+.status-pill.status-empty {
+  background: rgba(255, 196, 0, 0.15);
+  color: #ffd966;
+}
+
+.status-pill.status-failed {
+  background: rgba(255, 69, 0, 0.18);
+  color: #ff7a7a;
+}

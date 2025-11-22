@@ -6,8 +6,9 @@
 
 import React, { createContext, useCallback, useContext, useEffect,useMemo,useReducer } from 'react';
 
+import { ClassificationUtils } from '../lib/classification';
+
 import {
-  ClassificationLevel,
   IntelligenceAlert,
   IntelligenceCategory,
   IntelligenceItem,
@@ -32,7 +33,7 @@ export interface IntelligenceState {
 // Filter configuration
 export interface IntelligenceFilters {
   categories: IntelligenceCategory[];
-  classifications: ClassificationLevel[];
+  classifications: string[];
   priorities: PriorityLevel[];
   timeRange: 'last-hour' | 'last-24h' | 'last-week' | 'last-month' | 'all';
   sources: string[];
@@ -92,7 +93,11 @@ const initialState: IntelligenceState = {
       'TECHINT': 0, 'CYBINT': 0, 'MILINT': 0, 'MASINT': 0
     },
     byClassification: {
-      'UNCLASSIFIED': 0, 'CONFIDENTIAL': 0, 'SECRET': 0, 'TOP_SECRET': 0
+      'UNMARKED': 0,
+      'UNCLASSIFIED': 0,
+      'CONFIDENTIAL': 0,
+      'SECRET': 0,
+      'TOP_SECRET': 0
     },
     byPriority: {
       'LOW': 0, 'MEDIUM': 0, 'HIGH': 0, 'CRITICAL': 0
@@ -272,12 +277,17 @@ function intelligenceReducer(state: IntelligenceState, action: IntelligenceActio
 }
 
 // Helper function to update statistics
+const resolveClassificationLabel = (classification?: IntelligenceItem['classification']): string => {
+  return ClassificationUtils.normalizeLevel(classification?.level);
+};
+
 function updateStatistics(
   stats: IntelligenceStatistics,
   item: IntelligenceItem,
   operation: 'add' | 'remove'
 ): IntelligenceStatistics {
   const modifier = operation === 'add' ? 1 : -1;
+  const classificationLabel = resolveClassificationLabel(item.classification);
   
   return {
     ...stats,
@@ -288,7 +298,7 @@ function updateStatistics(
     },
     byClassification: {
       ...stats.byClassification,
-      [item.classification.level]: stats.byClassification[item.classification.level] + modifier
+      [classificationLabel]: (stats.byClassification[classificationLabel] ?? 0) + modifier
     },
     byPriority: {
       ...stats.byPriority,
@@ -313,7 +323,7 @@ function generateAlert(item: IntelligenceItem): IntelligenceAlert | null {
       escalationLevel: item.priority === 'CRITICAL' ? 2 : 1,
       metadata: {
         sourceId: item.sourceId,
-        classification: item.classification.level,
+        classification: resolveClassificationLabel(item.classification),
         ...(item.location ? { location: item.location } : {})
       }
     };
@@ -516,7 +526,7 @@ export const useFilteredIntelligence = () => {
     // Apply classification filter
     if (state.filters.classifications.length > 0) {
       items = items.filter(item => 
-        state.filters.classifications.includes(item.classification.level)
+  state.filters.classifications.includes(resolveClassificationLabel(item.classification))
       );
     }
     

@@ -2,7 +2,6 @@
 // Centralized metadata structure for intelligence reports
 // Implements missing core type from Intel Architecture Cleanup Plan Phase 2
 
-import { ClassificationLevel } from './Classification';
 import { PrimaryIntelSource } from './Sources';
 import { IntelCategory, IntelPriority, IntelThreatLevel } from './IntelEnums';
 
@@ -60,8 +59,8 @@ export interface IntelReportMetaData {
   // CLASSIFICATION & SECURITY
   // =============================================================================
   
-  /** Security classification */
-  classification: ClassificationLevel;
+  /** Security classification (optional for open-source releases) */
+  classification?: string;
   
   /** Classification authority */
   classificationAuthority?: string;
@@ -331,7 +330,7 @@ export interface IntelMetadata {
   timestamp: number;
   category: string;
   tags: string[];
-  classification?: ClassificationLevel;
+  classification?: string;
   confidence?: number;
   quality?: {
     accuracy: number;
@@ -363,7 +362,7 @@ export class IntelReportMetaDataBuilder {
         collectedBy: 'system',
         collectedAt: new Date()
       },
-      classification: 'UNCLASS' as ClassificationLevel,
+  classification: 'UNCLASS',
       category: 'GENERAL' as IntelCategory,
       priority: 'ROUTINE' as IntelPriority,
       confidence: 50,
@@ -412,7 +411,7 @@ export class IntelReportMetaDataBuilder {
     return this;
   }
 
-  setClassification(classification: ClassificationLevel, authority?: string, reason?: string): this {
+  setClassification(classification: string, authority?: string, reason?: string): this {
     this.metadata.classification = classification;
     if (authority) this.metadata.classificationAuthority = authority;
     if (reason) this.metadata.classificationReason = reason;
@@ -479,7 +478,7 @@ export class IntelMetadataUtils {
   static expandMetadata(simple: IntelMetadata, reportId: string): IntelReportMetaData {
     return new IntelReportMetaDataBuilder(reportId)
       .addSource(simple.source, simple.reliability, simple.confidence || 50)
-      .setClassification(simple.classification || 'UNCLASS' as ClassificationLevel)
+  .setClassification(simple.classification || 'UNCLASS')
       .setCategory(simple.category as IntelCategory, 'ROUTINE' as IntelPriority)
       .setConfidence(simple.confidence || 50)
       .setQuality(simple.quality || {})

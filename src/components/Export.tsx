@@ -2,6 +2,7 @@ import './Export.css';
 
 import React, { useEffect,useState } from 'react';
 
+import { DEFAULT_MISSION_MODE } from '../constants/MissionMode';
 import { useSettings } from '../contexts/SettingsContext';
 
 export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf' | 'intel' | 'intelreport';
@@ -70,6 +71,7 @@ const Export: React.FC<ExportProps> = ({
     // Update settings
     updateSettings({
       general: {
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: settings.general?.refreshInterval ?? 300000,
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
@@ -96,6 +98,7 @@ const Export: React.FC<ExportProps> = ({
     // Update settings
     updateSettings({
       general: {
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: settings.general?.refreshInterval ?? 300000,
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
@@ -122,6 +125,7 @@ const Export: React.FC<ExportProps> = ({
     // Update settings
     updateSettings({
       general: {
+        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
         refreshInterval: settings.general?.refreshInterval ?? 300000,
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },

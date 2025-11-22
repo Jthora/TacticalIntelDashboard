@@ -11,6 +11,7 @@ import {
 } from '../ModernIntelligenceSources';
 import {
   SPACEFORCE_PRIMARY_INTELLIGENCE_SOURCES,
+  SPACEFORCE_SECONDARY_INTELLIGENCE_SOURCES,
   SPACEFORCE_INTELLIGENCE_CONFIG
 } from '../SpaceForceIntelligenceSources';
 import { SourceToggleStore } from '../../utils/SourceToggleStore';
@@ -75,5 +76,29 @@ describe('MissionSourceRegistry', () => {
   test('default config helper mirrors catalog defaults', () => {
     expect(getDefaultIntelligenceConfig(MissionMode.MILTECH)).toBe(DEFAULT_INTELLIGENCE_CONFIG);
     expect(getDefaultIntelligenceConfig(MissionMode.SPACEFORCE)).toBe(SPACEFORCE_INTELLIGENCE_CONFIG);
+  });
+
+  test('SpaceForce mission exposes space and defense feed roster', () => {
+    const spacePrimaryIds = SPACEFORCE_PRIMARY_INTELLIGENCE_SOURCES.map(source => source.id);
+    expect(spacePrimaryIds).toEqual(
+      expect.arrayContaining([
+        'spaceforce-launch-watch',
+        'nasa-news-releases',
+        'spacenews-policy',
+        'esa-space-news',
+        'spacecom-latest',
+        'launch-library-upcoming'
+      ])
+    );
+
+    const spaceSecondaryIds = SPACEFORCE_SECONDARY_INTELLIGENCE_SOURCES.map(source => source.id);
+    expect(spaceSecondaryIds).toEqual(
+      expect.arrayContaining([
+        'spaceforce-deep-space-network',
+        'dod-war-news',
+        'breaking-defense',
+        'c4isrnet-ops'
+      ])
+    );
   });
 });
