@@ -4,6 +4,7 @@ import React, { useEffect,useState } from 'react';
 
 import { DEFAULT_MISSION_MODE } from '../constants/MissionMode';
 import { useSettings } from '../contexts/SettingsContext';
+import Modal from '../shared/components/Modal';
 
 export type ExportFormat = 'json' | 'csv' | 'xml' | 'pdf' | 'intel' | 'intelreport';
 
@@ -11,34 +12,28 @@ export interface ExportOptions {
   includeMetadata: boolean;
   compress: boolean;
   encrypt: boolean;
+  metadataTitle?: string | undefined;
+  metadataDescription?: string | undefined;
+  encryptionPassword?: string | undefined;
 }
 
 interface ExportProps {
-  // Optional props for parent components to control or observe export state
-  onAutoExportChange?: (enabled: boolean) => void;
-  onExportSettingsOpen?: () => void;
   onFormatSelect?: (format: ExportFormat) => void;
   onOptionsChange?: (options: ExportOptions) => void;
   onExecuteExport?: (format: ExportFormat | null, options: ExportOptions) => void;
-  initialAutoExport?: boolean;
   initialOptions?: Partial<ExportOptions>;
+  isExporting?: boolean;
 }
 
 const Export: React.FC<ExportProps> = ({
-  onAutoExportChange,
-  onExportSettingsOpen,
   onFormatSelect,
   onOptionsChange,
   onExecuteExport,
-  initialAutoExport = false,
   initialOptions = {},
+  isExporting = false,
 }) => {
   const { settings, updateSettings } = useSettings();
   
-  // Initialize from settings instead of props
-  const [autoExport, setAutoExport] = useState<boolean>(() => 
-    settings?.general?.export?.autoExport ?? initialAutoExport
-  );
   const [selectedFormat, setSelectedFormat] = useState<ExportFormat | null>(() =>
     settings?.general?.export?.format as ExportFormat ?? null
   );
@@ -46,14 +41,20 @@ const Export: React.FC<ExportProps> = ({
     includeMetadata: settings?.general?.export?.includeMetadata ?? true,
     compress: settings?.general?.export?.compress ?? false,
     encrypt: settings?.general?.export?.encrypt ?? true,
+    metadataTitle: initialOptions.metadataTitle ?? 'Tactical Intel Dashboard Export',
+    metadataDescription: initialOptions.metadataDescription ?? '',
+    encryptionPassword: initialOptions.encryptionPassword ?? '',
     ...initialOptions,
   });
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
+  const [pendingOptions, setPendingOptions] = useState<ExportOptions | null>(null);
+  const [pendingFormat, setPendingFormat] = useState<ExportFormat | null>(null);
 
   // Sync with settings when they change
   useEffect(() => {
     if (settings?.general?.export) {
       const exportSettings = settings.general.export;
-      setAutoExport(exportSettings.autoExport ?? false);
       setSelectedFormat(exportSettings.format as ExportFormat ?? null);
       setExportOptions(prev => ({
         ...prev,
@@ -63,34 +64,6 @@ const Export: React.FC<ExportProps> = ({
       }));
     }
   }, [settings?.general?.export]);
-
-  const handleAutoExportToggle = () => {
-    const newAutoExport = !autoExport;
-    setAutoExport(newAutoExport);
-    
-    // Update settings
-    updateSettings({
-      general: {
-        mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
-        refreshInterval: settings.general?.refreshInterval ?? 300000,
-        cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
-        notifications: settings.general?.notifications ?? { enabled: true, sound: false },
-        export: {
-          format: settings.general?.export?.format as any ?? 'json',
-          autoExport: newAutoExport,
-          includeMetadata: settings.general?.export?.includeMetadata ?? true,
-          compress: settings.general?.export?.compress ?? false,
-          encrypt: settings.general?.export?.encrypt ?? true,
-        }
-      }
-    });
-    
-    onAutoExportChange?.(newAutoExport);
-  };
-
-  const handleExportSettingsClick = () => {
-    onExportSettingsOpen?.();
-  };
 
   const handleFormatClick = (format: ExportFormat) => {
     setSelectedFormat(format);
@@ -115,14 +88,73 @@ const Export: React.FC<ExportProps> = ({
     onFormatSelect?.(format);
   };
 
-  const handleOptionToggle = (option: keyof ExportOptions) => {
-    const newOptions = {
+  const openOptionsModal = () => {
+    setPendingOptions({
       ...exportOptions,
-      [option]: !exportOptions[option],
+      metadataTitle: exportOptions.metadataTitle ?? 'Tactical Intel Dashboard Export',
+      metadataDescription: exportOptions.metadataDescription ?? '',
+      encryptionPassword: exportOptions.encryptionPassword ?? '',
+    });
+    setPendingFormat(selectedFormat);
+    setIsOptionsModalOpen(true);
+  };
+
+  const closeOptionsModal = () => {
+    setIsOptionsModalOpen(false);
+    setPendingOptions(null);
+    setPendingFormat(null);
+  };
+
+  const handlePendingOptionToggle = (option: keyof ExportOptions) => {
+    if (!pendingOptions) return;
+    const toggledValue = !pendingOptions[option];
+    setPendingOptions(prev => {
+      if (!prev) return prev;
+      const nextOptions: ExportOptions = {
+        ...prev,
+        [option]: toggledValue,
+      };
+      if (option === 'encrypt' && !toggledValue) {
+        setValidationError(null);
+        nextOptions.encryptionPassword = '';
+      }
+      return nextOptions;
+    });
+  };
+
+  const handlePendingMetadataChange = (
+    field: 'metadataTitle' | 'metadataDescription',
+    value: string
+  ) => {
+    setPendingOptions(prev => prev ? { ...prev, [field]: value } : prev);
+  };
+
+  const handlePendingEncryptionPasswordChange = (value: string) => {
+    setPendingOptions(prev => prev ? { ...prev, encryptionPassword: value } : prev);
+    setValidationError(null);
+  };
+
+  const confirmOptionsAndExecute = () => {
+    if (!pendingOptions) {
+      closeOptionsModal();
+      return;
+    }
+
+    if (pendingOptions.encrypt && !pendingOptions.encryptionPassword?.trim()) {
+      setValidationError('Encryption password is required when ENCRYPT is enabled.');
+      return;
+    }
+
+    const sanitizedOptions: ExportOptions = {
+      ...pendingOptions,
+      metadataTitle: pendingOptions.metadataTitle?.trim(),
+      metadataDescription: pendingOptions.metadataDescription?.trim(),
+      encryptionPassword: pendingOptions.encryptionPassword?.trim(),
     };
-    setExportOptions(newOptions);
-    
-    // Update settings
+
+    setExportOptions(sanitizedOptions);
+    onOptionsChange?.(sanitizedOptions);
+
     updateSettings({
       general: {
         mode: settings.general?.mode ?? DEFAULT_MISSION_MODE,
@@ -130,20 +162,26 @@ const Export: React.FC<ExportProps> = ({
         cacheSettings: settings.general?.cacheSettings ?? { enabled: true, duration: 300000 },
         notifications: settings.general?.notifications ?? { enabled: true, sound: false },
         export: {
-          format: settings.general?.export?.format as any ?? 'json',
+          format: (pendingFormat ?? selectedFormat ?? settings.general?.export?.format ?? 'json') as any,
           autoExport: settings.general?.export?.autoExport ?? false,
-          includeMetadata: option === 'includeMetadata' ? newOptions.includeMetadata : settings.general?.export?.includeMetadata ?? true,
-          compress: option === 'compress' ? newOptions.compress : settings.general?.export?.compress ?? false,
-          encrypt: option === 'encrypt' ? newOptions.encrypt : settings.general?.export?.encrypt ?? true,
+          includeMetadata: sanitizedOptions.includeMetadata,
+          compress: sanitizedOptions.compress,
+          encrypt: sanitizedOptions.encrypt,
         }
       }
     });
-    
-    onOptionsChange?.(newOptions);
+
+    setIsOptionsModalOpen(false);
+    setValidationError(null);
+    onExecuteExport?.(pendingFormat ?? selectedFormat, sanitizedOptions);
   };
 
   const handleExecuteExport = () => {
-    onExecuteExport?.(selectedFormat, exportOptions);
+    if (!selectedFormat) {
+      setValidationError('Select a format before exporting.');
+      return;
+    }
+    openOptionsModal();
   };
 
   return (
@@ -152,22 +190,6 @@ const Export: React.FC<ExportProps> = ({
         <div className="header-primary">
           <span className="module-icon">📦</span>
           <h3>EXPORT</h3>
-        </div>
-        <div className="header-controls-micro">
-          <button 
-            className={`micro-btn ${autoExport ? 'active' : ''}`}
-            onClick={handleAutoExportToggle}
-            title="Auto Export"
-          >
-            ⏰
-          </button>
-          <button 
-            className="micro-btn" 
-            onClick={handleExportSettingsClick}
-            title="Export Settings"
-          >
-            ⚙
-          </button>
         </div>
       </div>
       <div className="tactical-content">
@@ -209,44 +231,114 @@ const Export: React.FC<ExportProps> = ({
             INTELREPORT
           </button>
         </div>
-        
-        <div className="export-options-micro">
-          <div className="option-row">
-            <span className="option-label">INCLUDE METADATA</span>
-            <button 
-              className={`option-toggle ${exportOptions.includeMetadata ? 'active' : ''}`}
-              onClick={() => handleOptionToggle('includeMetadata')}
-            >
-              {exportOptions.includeMetadata ? '◉' : '○'}
-            </button>
-          </div>
-          <div className="option-row">
-            <span className="option-label">COMPRESS</span>
-            <button 
-              className={`option-toggle ${exportOptions.compress ? 'active' : ''}`}
-              onClick={() => handleOptionToggle('compress')}
-            >
-              {exportOptions.compress ? '◉' : '○'}
-            </button>
-          </div>
-          <div className="option-row">
-            <span className="option-label">ENCRYPT</span>
-            <button 
-              className={`option-toggle ${exportOptions.encrypt ? 'active' : ''}`}
-              onClick={() => handleOptionToggle('encrypt')}
-            >
-              {exportOptions.encrypt ? '◉' : '○'}
-            </button>
-          </div>
-        </div>
-        
         <button 
           className="export-execute-btn"
           onClick={handleExecuteExport}
-          disabled={!selectedFormat}
+          disabled={!selectedFormat || isExporting}
         >
-          ↓ EXECUTE EXPORT
+          {isExporting ? '⏳ EXPORTING…' : '↓ EXECUTE EXPORT'}
         </button>
+
+        <Modal
+          isOpen={isOptionsModalOpen}
+          onClose={closeOptionsModal}
+          title="Finalize Export Package"
+          size="medium"
+        >
+          {pendingOptions && (
+            <div className="export-modal-content">
+              <div className="export-options-micro">
+                <div className="option-row">
+                  <span className="option-label">INCLUDE METADATA</span>
+                  <button
+                    className={`option-toggle ${pendingOptions.includeMetadata ? 'active' : ''}`}
+                    onClick={() => handlePendingOptionToggle('includeMetadata')}
+                  >
+                    {pendingOptions.includeMetadata ? '◉' : '○'}
+                  </button>
+                </div>
+                <div className="option-row">
+                  <span className="option-label">COMPRESS</span>
+                  <button
+                    className={`option-toggle ${pendingOptions.compress ? 'active' : ''}`}
+                    onClick={() => handlePendingOptionToggle('compress')}
+                  >
+                    {pendingOptions.compress ? '◉' : '○'}
+                  </button>
+                </div>
+                <div className="option-row">
+                  <span className="option-label">ENCRYPT</span>
+                  <button
+                    className={`option-toggle ${pendingOptions.encrypt ? 'active' : ''}`}
+                    onClick={() => handlePendingOptionToggle('encrypt')}
+                  >
+                    {pendingOptions.encrypt ? '◉' : '○'}
+                  </button>
+                </div>
+              </div>
+
+              {pendingOptions.includeMetadata && (
+                <div className="export-detail-group">
+                  <label className="detail-label" htmlFor="modal-export-metadata-title">METADATA TITLE</label>
+                  <input
+                    id="modal-export-metadata-title"
+                    className="export-input"
+                    type="text"
+                    maxLength={120}
+                    value={pendingOptions.metadataTitle ?? ''}
+                    onChange={event => handlePendingMetadataChange('metadataTitle', event.target.value)}
+                    placeholder="Tactical Intel Dashboard Export"
+                  />
+                  <label className="detail-label" htmlFor="modal-export-metadata-notes">METADATA NOTES</label>
+                  <textarea
+                    id="modal-export-metadata-notes"
+                    className="export-textarea"
+                    rows={3}
+                    maxLength={280}
+                    value={pendingOptions.metadataDescription ?? ''}
+                    onChange={event => handlePendingMetadataChange('metadataDescription', event.target.value)}
+                    placeholder="Optional context for the exported intelligence package"
+                  />
+                </div>
+              )}
+
+              {pendingOptions.encrypt && (
+                <div className="export-detail-group">
+                  <div className="detail-label-row">
+                    <label className="detail-label" htmlFor="modal-export-encryption-password">ENCRYPTION PASSWORD</label>
+                    <span className="export-hint">Required to decrypt the exported file.</span>
+                  </div>
+                  <input
+                    id="modal-export-encryption-password"
+                    className="export-input"
+                    type="password"
+                    value={pendingOptions.encryptionPassword ?? ''}
+                    onChange={event => handlePendingEncryptionPasswordChange(event.target.value)}
+                    placeholder="Enter strong passphrase"
+                  />
+                </div>
+              )}
+
+              {validationError && (
+                <div className="export-error" role="alert">{validationError}</div>
+              )}
+
+              <div className="export-modal-actions">
+                <button type="button" onClick={closeOptionsModal}>
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="confirm-btn"
+                  onClick={confirmOptionsAndExecute}
+                  disabled={isExporting}
+                >
+                  {isExporting ? '⏳ EXECUTING…' : 'Confirm & Export'}
+                </button>
+              </div>
+            </div>
+          )}
+        </Modal>
       </div>
     </div>
   );

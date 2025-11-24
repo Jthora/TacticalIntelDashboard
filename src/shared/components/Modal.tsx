@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -17,6 +18,12 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  const portalTarget = document.getElementById('modal-root') ?? document.body;
+
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -29,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({
     }
   };
 
-  return (
+  return createPortal(
     <div 
       className="modal-backdrop" 
       onClick={handleBackdropClick}
@@ -52,7 +59,8 @@ const Modal: React.FC<ModalProps> = ({
           {children}
         </div>
       </div>
-    </div>
+    </div>,
+    portalTarget
   );
 };
 

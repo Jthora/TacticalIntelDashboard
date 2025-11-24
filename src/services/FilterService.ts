@@ -1,5 +1,25 @@
 import { Feed } from '../models/Feed';
 
+const PRIORITY_FILTERS = new Set(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']);
+const CONTENT_TYPE_FILTERS = new Set(['INTEL', 'NEWS', 'ALERT', 'THREAT']);
+const REGION_FILTERS = new Set(['GLOBAL', 'AMERICAS', 'EUROPE', 'ASIA_PACIFIC']);
+const BANNED_FILTER_KEYS = new Set([
+  'OFFICIAL',
+  'VERIFIED',
+  'UNVERIFIED',
+  'TOP_SECRET',
+  'SECRET',
+  'UNCLASSIFIED',
+  'QUALITY_GOLD',
+  'QUALITY_SILVER',
+  'QUALITY_BRONZE',
+  'TRUST_HIGH',
+  'TRUST_MEDIUM',
+  'TRUST_LOW',
+  'MODE_MILTECH',
+  'MODE_SPACEFORCE'
+]);
+
 export interface FilterState {
   activeFilters: Set<string>;
   timeRange: TimeRange | null;
@@ -69,27 +89,22 @@ export class FilterService {
    */
   private static feedMatchesFilter(feed: Feed, filter: string): boolean {
     // Priority filters
-    if (['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].includes(filter)) {
+    if (PRIORITY_FILTERS.has(filter)) {
       return feed.priority === filter;
     }
 
     // Content type filters
-    if (['INTEL', 'NEWS', 'ALERT', 'THREAT'].includes(filter)) {
+    if (CONTENT_TYPE_FILTERS.has(filter)) {
       return feed.contentType === filter;
     }
 
     // Region filters
-    if (['GLOBAL', 'AMERICAS', 'EUROPE', 'ASIA_PACIFIC'].includes(filter)) {
+    if (REGION_FILTERS.has(filter)) {
       return feed.region === filter;
     }
 
     // Tag filters
     if (feed.tags && feed.tags.includes(filter)) {
-      return true;
-    }
-
-    // Custom classification
-    if (feed.classification === filter) {
       return true;
     }
 
@@ -203,6 +218,23 @@ export class FilterService {
     return counts;
   }
 
+  static getTagCounts(feeds: Feed[]): Record<string, number> {
+    const counts = this.getFilterCounts(feeds);
+    const tagCounts: Record<string, number> = {};
+
+    Object.entries(counts).forEach(([key, value]) => {
+      if (
+        !PRIORITY_FILTERS.has(key) &&
+        !CONTENT_TYPE_FILTERS.has(key) &&
+        !REGION_FILTERS.has(key)
+      ) {
+        tagCounts[key] = value;
+      }
+    });
+
+    return tagCounts;
+  }
+
   /**
    * Create a time range from preset
    */
@@ -233,8 +265,12 @@ export class FilterService {
    * Validate filter state
    */
   static validateFilterState(filterState: any): FilterState {
+    const sanitizedFilters = Array.isArray(filterState.activeFilters)
+      ? filterState.activeFilters.filter((filter: string) => !BANNED_FILTER_KEYS.has(filter))
+      : [];
+
     return {
-      activeFilters: new Set(Array.isArray(filterState.activeFilters) ? filterState.activeFilters : []),
+      activeFilters: new Set(sanitizedFilters),
       timeRange: filterState.timeRange || null,
       sortBy: {
         field: ['timestamp', 'title', 'priority', 'source'].includes(filterState.sortBy?.field) 

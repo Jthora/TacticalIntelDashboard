@@ -12,6 +12,7 @@ import { AlertTrigger } from '../types/AlertTypes';
 import { FeedFetchDiagnostic } from '../types/FeedTypes';
 import { IntelligenceSource } from '../types/ModernAPITypes';
 import { log } from '../utils/LoggerService';
+import { deriveClassification, deriveContentType, deriveRegion, normalizeTimestamp } from '../utils/feedMetadataMapper';
 
 interface AlertFeedItem {
   title: string;
@@ -195,25 +196,89 @@ export const useFeedLoader = (
             }
           }
 
-          const modernFeedsAsFeeds: Feed[] = modernFeeds.map(feedItem => ({
-            id: feedItem.id,
-            name: feedItem.author || 'Modern API',
-            url: feedItem.link,
-            title: feedItem.title,
-            link: feedItem.link,
-            pubDate: feedItem.pubDate,
-            feedListId: 'modern-api',
-            ...(feedItem.description ? { description: feedItem.description } : {}),
-            ...(feedItem.content ? { content: feedItem.content } : {}),
-            ...(feedItem.author ? { author: feedItem.author } : {}),
-            ...(feedItem.categories ? { categories: feedItem.categories } : {}),
-            ...(feedItem.media ? { media: feedItem.media } : {}),
-            ...(feedItem.priority ? { priority: feedItem.priority } : {}),
-            ...(feedItem.contentType ? { contentType: feedItem.contentType } : {}),
-            ...(feedItem.tags ? { tags: feedItem.tags } : {}),
-            ...(feedItem.source ? { source: feedItem.source } : {}),
-            ...(feedItem.metadata ? { metadata: feedItem.metadata } : {})
-          }));
+          const modernFeedsAsFeeds: Feed[] = modernFeeds.map(feedItem => {
+            const sourceId = (feedItem.metadata?.sourceId as string) ?? feedItem.feedListId ?? 'modern-api';
+            const sourceDefinition = getSourceByIdFn(mode, sourceId);
+            const region = (deriveRegion(sourceDefinition, feedItem.tags ?? []) ?? 'GLOBAL') as NonNullable<Feed['region']>;
+            const classification = deriveClassification(feedItem.verificationStatus) ?? 'UNCLASSIFIED';
+            const resolvedContentType = feedItem.contentType ?? deriveContentType(feedItem.category, feedItem.tags ?? [], 'NEWS');
+            const timestamp = normalizeTimestamp(feedItem.pubDate);
+
+            const normalizedFeed: Feed = {
+              id: feedItem.id,
+              name: feedItem.author || 'Modern API',
+              url: feedItem.link,
+              title: feedItem.title,
+              link: feedItem.link,
+              pubDate: feedItem.pubDate,
+              feedListId: 'modern-api',
+              region,
+              classification,
+              timestamp
+            };
+
+            if (feedItem.description) {
+              normalizedFeed.description = feedItem.description;
+            }
+
+            if (feedItem.content) {
+              normalizedFeed.content = feedItem.content;
+            }
+
+            if (feedItem.author) {
+              normalizedFeed.author = feedItem.author;
+            }
+
+            if (feedItem.categories?.length) {
+              normalizedFeed.categories = feedItem.categories;
+            }
+
+            if (feedItem.media?.length) {
+              normalizedFeed.media = feedItem.media;
+            }
+
+            if (feedItem.priority) {
+              normalizedFeed.priority = feedItem.priority;
+            }
+
+            if (resolvedContentType) {
+              normalizedFeed.contentType = resolvedContentType;
+            }
+
+            if (feedItem.tags?.length) {
+              normalizedFeed.tags = feedItem.tags;
+            }
+
+            if (feedItem.source) {
+              normalizedFeed.source = feedItem.source;
+            }
+
+            if (feedItem.metadata) {
+              normalizedFeed.metadata = feedItem.metadata;
+            }
+
+            if (feedItem.category) {
+              normalizedFeed.category = feedItem.category;
+            }
+
+            if (typeof feedItem.trustRating === 'number') {
+              normalizedFeed.trustRating = feedItem.trustRating;
+            }
+
+            if (feedItem.verificationStatus) {
+              normalizedFeed.verificationStatus = feedItem.verificationStatus;
+            }
+
+            if (typeof feedItem.dataQuality === 'number') {
+              normalizedFeed.dataQuality = feedItem.dataQuality;
+            }
+
+            if (feedItem.missionMode) {
+              normalizedFeed.missionMode = feedItem.missionMode;
+            }
+
+            return normalizedFeed;
+          });
 
           if (isMonitoring && modernFeedsAsFeeds.length > 0) {
             const feedItemsForAlerts: AlertFeedItem[] = modernFeedsAsFeeds.map(feed => ({
@@ -267,27 +332,63 @@ export const useFeedLoader = (
             modernSource,
             shouldForceRefresh
           );
-          const feedsForSource: Feed[] = normalizedItems.map((item, index) => ({
-            id: item.id || `${modernSource.id}-${index}-${Date.now()}`,
-            name: modernSource.name,
-            url: item.url,
-            title: item.title,
-            link: item.url,
-            pubDate:
+          const feedsForSource: Feed[] = normalizedItems.map((item, index) => {
+            const pubDateIso =
               item.publishedAt instanceof Date
                 ? item.publishedAt.toISOString()
-                : new Date(item.publishedAt).toISOString(),
-            feedListId: 'modern-api',
-            description: item.summary || '',
-            content: item.summary || '',
-            author: item.source || modernSource.name,
-            categories: item.tags || [],
-            tags: item.tags || [],
-            priority: ((item.priority ? item.priority.toUpperCase() : 'MEDIUM') as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'),
-            contentType: 'INTEL',
-            source: item.source || modernSource.name,
-            ...(item.metadata ? { metadata: item.metadata } : {})
-          }));
+                : new Date(item.publishedAt).toISOString();
+            const region = (deriveRegion(modernSource, item.tags ?? []) ?? 'GLOBAL') as NonNullable<Feed['region']>;
+            const classification = deriveClassification(item.verificationStatus) ?? 'UNCLASSIFIED';
+            const resolvedContentType = deriveContentType(item.category, item.tags ?? [], 'INTEL');
+            const timestamp = normalizeTimestamp(pubDateIso);
+
+            const feedForSource: Feed = {
+              id: item.id || `${modernSource.id}-${index}-${Date.now()}`,
+              name: modernSource.name,
+              url: item.url,
+              title: item.title,
+              link: item.url,
+              pubDate: pubDateIso,
+              feedListId: 'modern-api',
+              description: item.summary || '',
+              content: item.summary || '',
+              author: item.source || modernSource.name,
+              categories: item.tags || [],
+              tags: item.tags || [],
+              priority: ((item.priority ? item.priority.toUpperCase() : 'MEDIUM') as 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'),
+              source: item.source || modernSource.name,
+              missionMode: mode,
+              region,
+              classification,
+              timestamp
+            };
+
+            if (resolvedContentType) {
+              feedForSource.contentType = resolvedContentType;
+            }
+
+            if (item.metadata) {
+              feedForSource.metadata = item.metadata;
+            }
+
+            if (item.category) {
+              feedForSource.category = item.category;
+            }
+
+            if (typeof item.trustRating === 'number') {
+              feedForSource.trustRating = item.trustRating;
+            }
+
+            if (item.verificationStatus) {
+              feedForSource.verificationStatus = item.verificationStatus;
+            }
+
+            if (typeof item.dataQuality === 'number') {
+              feedForSource.dataQuality = item.dataQuality;
+            }
+
+            return feedForSource;
+          });
 
           if (isMonitoring && feedsForSource.length > 0) {
             const feedItemsForAlerts: AlertFeedItem[] = feedsForSource.map(feed => ({

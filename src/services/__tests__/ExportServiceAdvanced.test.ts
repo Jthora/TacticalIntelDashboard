@@ -119,6 +119,24 @@ describe('ExportService advanced & edge case coverage', () => {
     expect(res.filename.endsWith('.gz')).toBe(true);
   });
 
+  test.each([
+    'csv',
+    'xml',
+    'pdf'
+  ] as ExportOptions['format'][])(
+    'Encryption works for %s exports',
+    async (format) => {
+      const res = await ExportService.exportFeeds(feeds.slice(0,1), {
+        format,
+        encryption: { enabled: true, password: 'secret' }
+      });
+
+      expect(res.encrypted).toBe(true);
+      expect(res.filename.endsWith('.encrypted')).toBe(true);
+      expect(typeof res.content).toBe('string');
+    }
+  );
+
   test('validateExportOptions catches errors', () => {
     const invalid = ExportService.validateExportOptions({ format: 'json', encryption: { enabled: true } } as any);
     expect(invalid.valid).toBe(false);

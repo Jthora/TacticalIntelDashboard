@@ -23,6 +23,7 @@
   backdrop-filter: blur(10px);
 }
 
+
 /* Alert System Integration Styles */
 @keyframes alertPulse {
   0%, 100% { opacity: 1; }

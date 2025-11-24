@@ -1,6 +1,6 @@
 import '../styles/components/intel-sources.css';
 
-import React, { useCallback, useEffect,useRef,useState } from 'react';
+import React, { useCallback, useEffect,useMemo,useRef,useState } from 'react';
 
 import { MODERN_INTELLIGENCE_CATEGORIES } from '../adapters/ModernIntelSourcesAdapter';
 import { useIntelligence } from '../contexts/IntelligenceContext';
@@ -13,6 +13,7 @@ import {
   IntelligenceCategory,
   TacticalIntelSource} from '../types/TacticalIntelligence';
 import SourceManager from './SourceManager';
+import IntelSourceControls from './IntelSourceControls';
 import { emitSourceSelectionReset, SOURCE_SELECTION_RESET_EVENT, SourceSelectionResetDetail } from '../utils/sourceSelectionEvents';
 import { emitFeedAutoRefreshChange, emitFeedManualRefresh } from '../utils/feedControlEvents';
 
@@ -50,6 +51,12 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   const [showSourceManager, setShowSourceManager] = useState<boolean>(false);
   const [tacticalSources, setTacticalSources] = useState<TacticalIntelSource[]>([]);
   const hasHydratedSourcesRef = useRef(false);
+  const controlCategoryOptions = useMemo(() => 
+    Object.entries(MODERN_INTELLIGENCE_CATEGORIES).map(([key, cat]) => ({
+      value: key,
+      label: cat.name
+    })),
+  []);
   const activeFeedId = selectedFeedList ?? profile.defaultFeedListId;
   const notifySourceStatus = useCallback(
     (
@@ -158,6 +165,14 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
 
   const handleAutoRefreshToggle = () => {
     setAutoRefresh(prev => !prev);
+  };
+
+  const handleFilterToggle = () => {
+    setFilterActive(prev => !prev);
+  };
+
+  const handleMetricsToggle = () => {
+    setShowMetrics(prev => !prev);
   };
 
   const getSortedTacticalSources = () => {
@@ -349,6 +364,7 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
   };
 
   const sortedTacticalSources = getSortedTacticalSources();
+  const categoryFilterValue = categoryFilter.length === 1 ? categoryFilter[0] : '';
   const activeDescendantId = sortedTacticalSources.some(source => source.id === activeFeedId)
     ? `intel-source-${activeFeedId}`
     : undefined;
@@ -421,104 +437,24 @@ const IntelSources: React.FC<IntelSourcesProps> = ({
       
       <div className="tactical-content">
         {/* Control Panel Section */}
-        <div className="intel-controls-section">
-          <div className="controls-row">
-            <div className="view-controls">
-              <span className="control-label">VIEW:</span>
-              <select 
-                value={viewMode} 
-                onChange={handleViewModeChange}
-                className="intel-select"
-                title="View Mode"
-              >
-                <option value="list">LIST</option>
-                <option value="grid">GRID</option>
-                <option value="compact">COMPACT</option>
-              </select>
-            </div>
-            <div className="sort-controls">
-              <span className="control-label">SORT:</span>
-              <select 
-                value={sortBy} 
-                onChange={handleSortByChange}
-                className="intel-select"
-                title="Sort By"
-              >
-                <option value="name">NAME</option>
-                <option value="category">CATEGORY</option>
-                <option value="reliability">RELIABILITY</option>
-                <option value="priority">PRIORITY</option>
-              </select>
-            </div>
-            <button 
-              className="intel-toggle"
-              onClick={handleRestoreDefaults}
-              title="Restore Default Feeds"
-              aria-label="Restore default mission source"
-            >
-              <span className="toggle-icon">↺</span>
-              <span className="toggle-label">RESTORE</span>
-            </button>
-            {showClassificationLevels && (
-              <div className="category-controls">
-                <span className="control-label">FILTER:</span>
-                <select 
-                  value={categoryFilter.length === 1 ? categoryFilter[0] : ''}
-                  onChange={handleCategoryFilterChange}
-                  className="intel-select"
-                  title="Filter by Category"
-                >
-                  <option value="">ALL CATEGORIES</option>
-                  {Object.entries(MODERN_INTELLIGENCE_CATEGORIES).map(([key, cat]) => (
-                    <option key={key} value={key}>{cat.name}</option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
-          <div className="toggle-controls">
-            <button 
-              className="intel-toggle"
-              onClick={handleManualFeedRefresh}
-              title="Refresh intelligence feeds"
-              aria-label="Refresh intelligence feeds"
-              type="button"
-            >
-              <span className="toggle-icon">🔄</span>
-              <span className="toggle-label">REFRESH</span>
-            </button>
-            <button 
-              className={`intel-toggle ${filterActive ? 'active' : ''}`}
-              onClick={() => setFilterActive(!filterActive)}
-              title="Filter Active Only"
-              aria-pressed={filterActive}
-              aria-label="Toggle active sources filter"
-            >
-              <span className="toggle-icon">⚡</span>
-              <span className="toggle-label">ACTIVE</span>
-            </button>
-            <button 
-              className={`intel-toggle ${autoRefresh ? 'active' : ''}`}
-              onClick={handleAutoRefreshToggle}
-              title="Toggle auto-refresh"
-              aria-pressed={autoRefresh}
-              aria-label="Toggle auto refresh"
-            >
-              <span className="toggle-icon">⟲</span>
-              <span className="toggle-label">AUTO</span>
-            </button>
-            <button 
-              className={`intel-toggle ${showMetrics ? 'active' : ''}`}
-              onClick={() => setShowMetrics(!showMetrics)}
-              title="Show Metrics"
-              aria-pressed={showMetrics}
-              aria-label="Toggle metrics panel"
-            >
-              <span className="toggle-icon">📊</span>
-              <span className="toggle-label">METRICS</span>
-            </button>
-          </div>
-        </div>
+        <IntelSourceControls
+          viewMode={viewMode}
+          sortBy={sortBy}
+          categoryValue={categoryFilterValue}
+          showClassificationLevels={showClassificationLevels}
+          filterActive={filterActive}
+          autoRefresh={autoRefresh}
+          showMetrics={showMetrics}
+          onViewModeChange={handleViewModeChange}
+          onSortByChange={handleSortByChange}
+          onCategoryFilterChange={handleCategoryFilterChange}
+          onRestoreDefaults={handleRestoreDefaults}
+          onManualRefresh={handleManualFeedRefresh}
+          onFilterToggle={handleFilterToggle}
+          onAutoRefreshToggle={handleAutoRefreshToggle}
+          onMetricsToggle={handleMetricsToggle}
+          categoryOptions={controlCategoryOptions}
+        />
 
         {/* Add Source Button */}
         <div className="add-source-section">

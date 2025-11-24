@@ -1,8 +1,9 @@
 import './TacticalFilters.css';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { useFilters, useTimeRangePresets } from '../contexts/FilterContext';
+import { useStatusMessages } from '../contexts/StatusMessageContext';
 import { TimeRange } from '../services/FilterService';
 
 interface TacticalFiltersProps {
@@ -15,23 +16,95 @@ interface TacticalFiltersProps {
   filterPresets?: string[];
 }
 
+type FilterPresetDefinition = {
+  id: string;
+  label: string;
+  description: string;
+  filters: string[];
+  timeRangeLabel?: string;
+  isCustom?: boolean;
+};
+
+const PRESET_STORAGE_KEY = 'tactical-filter-presets-v1';
+
+const BUILT_IN_PRESETS: FilterPresetDefinition[] = [
+  {
+    id: 'critical-watch',
+    label: 'Critical Watch',
+    description: 'CRITICAL · ALERT · 1H',
+    filters: ['CRITICAL', 'ALERT'],
+    timeRangeLabel: '1H'
+  },
+  {
+    id: 'intel-scan',
+    label: 'Intel Scan',
+    description: 'INTEL · NEWS · 6H',
+    filters: ['INTEL', 'NEWS'],
+    timeRangeLabel: '6H'
+  },
+  {
+    id: 'regional-sweep',
+    label: 'Regional Sweep',
+    description: 'AMERICAS · EUROPE · 24H',
+    filters: ['AMERICAS', 'EUROPE'],
+    timeRangeLabel: '24H'
+  }
+];
+
+const readCustomPresets = (): FilterPresetDefinition[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+  try {
+    const stored = window.localStorage.getItem(PRESET_STORAGE_KEY);
+    if (!stored) {
+      return [];
+    }
+    const parsed = JSON.parse(stored);
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+  } catch (error) {
+    console.warn('Failed to parse custom filter presets', error);
+  }
+  return [];
+};
+
+const persistCustomPresets = (presets: FilterPresetDefinition[]) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  try {
+    window.localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(presets));
+  } catch (error) {
+    console.warn('Failed to persist custom filter presets', error);
+  }
+};
+
+const TAG_DISPLAY_LIMIT = 18;
+
 const TacticalFilters: React.FC<TacticalFiltersProps> = ({
   onFiltersChange,
   onApplyFilters,
   onSavePreset,
   onTimeRangeChange,
-  filterPresets = ['CRITICAL', 'INTEL', 'THREAT'],
+  filterPresets = [],
 }) => {
   const { 
     filterState, 
     addFilter, 
     removeFilter, 
+    updateFilters,
+    updateTimeRange,
     isFilterActive, 
-    clearAllFilters, 
-    hasActiveFilters
+    hasActiveFilters,
+    availableTagCounts
   } = useFilters();
 
-  const { applyPreset, applyCustomRange } = useTimeRangePresets();
+  const { applyPreset: applyTimeRangePreset, applyCustomRange } = useTimeRangePresets();
+  const { pushMessage } = useStatusMessages();
+
+  const [customPresets, setCustomPresets] = useState<FilterPresetDefinition[]>(() => readCustomPresets());
 
   const [showCustomRange, setShowCustomRange] = useState(false);
   const [customStartDate, setCustomStartDate] = useState('');
@@ -46,6 +119,49 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
     { key: '30D', label: '30D', hours: 720 },
     { key: 'CUSTOM', label: 'CUSTOM', hours: 0 }
   ];
+
+  const derivedBuiltInPresets = useMemo(() => {
+    if (filterPresets.length === 0) {
+      return BUILT_IN_PRESETS;
+    }
+    const legacyPreset: FilterPresetDefinition = {
+      id: 'legacy-preset',
+      label: 'Legacy Stack',
+      description: `${filterPresets.join(' · ')}`,
+      filters: filterPresets
+    };
+    return [...BUILT_IN_PRESETS, legacyPreset];
+  }, [filterPresets]);
+
+  const presetLibrary = useMemo(
+    () => [...derivedBuiltInPresets, ...customPresets],
+    [derivedBuiltInPresets, customPresets]
+  );
+
+  const operationalTags = useMemo(() => {
+    const entries = Object.entries(availableTagCounts || {});
+    return entries
+      .filter(([key, count]) => Boolean(key) && typeof count === 'number' && count > 0)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, TAG_DISPLAY_LIMIT);
+  }, [availableTagCounts]);
+
+  const activePresetId = useMemo(() => {
+    return (
+      presetLibrary.find(preset => {
+        if (preset.filters.length !== filterState.activeFilters.size) {
+          return false;
+        }
+        const filtersMatch = preset.filters.every(filter => filterState.activeFilters.has(filter));
+        if (!filtersMatch) {
+          return false;
+        }
+        const presetRange = preset.timeRangeLabel ?? 'ALL';
+        const activeRange = filterState.timeRange?.label ?? 'ALL';
+        return presetRange === activeRange;
+      })?.id ?? null
+    );
+  }, [presetLibrary, filterState]);
 
   const toggleFilter = (filter: string) => {
     if (isFilterActive(filter)) {
@@ -65,7 +181,7 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
     }
     
     setShowCustomRange(false);
-    applyPreset(rangeKey);
+  applyTimeRangePreset(rangeKey);
     
     // Call legacy callback for backwards compatibility
     if (onTimeRangeChange) {
@@ -78,6 +194,91 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
     }
   };
 
+  const applyFilterPreset = (preset: FilterPresetDefinition) => {
+    const nextFilters = new Set(preset.filters);
+    updateFilters(nextFilters);
+
+    if (preset.timeRangeLabel) {
+      applyTimeRangePreset(preset.timeRangeLabel);
+    } else if (filterState.timeRange) {
+      updateTimeRange(null);
+    }
+
+    pushMessage(`Preset “${preset.label}” deployed`, 'success', {
+      priority: 'medium',
+      source: 'TacticalFilters'
+    });
+
+    onFiltersChange?.(new Set(nextFilters));
+    onApplyFilters?.(new Set(nextFilters));
+  };
+
+  const handleSavePreset = () => {
+    if (filterState.activeFilters.size === 0) {
+      pushMessage('Activate at least one filter before saving', 'warning', {
+        priority: 'medium',
+        source: 'TacticalFilters'
+      });
+      return;
+    }
+
+    const name = window.prompt('Name this filter preset:', 'Custom Mission');
+    const trimmed = name?.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    const newPreset: FilterPresetDefinition = {
+      id: `custom-${Date.now()}`,
+      label: trimmed,
+      description: `${filterState.activeFilters.size} filters${filterState.timeRange ? ` · ${filterState.timeRange.label}` : ''}`,
+      filters: Array.from(filterState.activeFilters),
+      ...(filterState.timeRange?.label ? { timeRangeLabel: filterState.timeRange.label } : {}),
+      isCustom: true
+    };
+
+    setCustomPresets(prev => {
+      const next = [...prev, newPreset];
+      persistCustomPresets(next);
+      return next;
+    });
+
+    pushMessage(`Preset “${trimmed}” saved`, 'success', {
+      priority: 'medium',
+      source: 'TacticalFilters'
+    });
+
+    onSavePreset?.(filterState.activeFilters);
+  };
+
+  const handleRemovePreset = (presetId: string) => {
+    setCustomPresets(prev => {
+      const next = prev.filter(preset => preset.id !== presetId);
+      persistCustomPresets(next);
+      return next;
+    });
+    pushMessage('Preset removed', 'info', {
+      priority: 'low',
+      source: 'TacticalFilters'
+    });
+  };
+
+  const handleClearCustomPresets = () => {
+    if (customPresets.length === 0) {
+      return;
+    }
+    const confirmed = window.confirm('Remove all custom presets?');
+    if (!confirmed) {
+      return;
+    }
+    setCustomPresets([]);
+    persistCustomPresets([]);
+    pushMessage('Custom presets cleared', 'info', {
+      priority: 'low',
+      source: 'TacticalFilters'
+    });
+  };
+
   const handleApplyCustomRange = () => {
     if (customStartDate && customEndDate) {
       const start = new Date(customStartDate);
@@ -88,19 +289,6 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
       // Call legacy callback for backwards compatibility
       onTimeRangeChange?.({ start, end, label: 'CUSTOM' });
     }
-  };
-
-  const loadPresetFilters = () => {
-    clearAllFilters();
-    filterPresets.forEach(preset => addFilter(preset));
-  };
-
-  const handleApplyFilters = () => {
-    onApplyFilters?.(filterState.activeFilters);
-  };
-
-  const handleSavePreset = () => {
-    onSavePreset?.(filterState.activeFilters);
   };
 
   const getCurrentTimeRangeLabel = () => {
@@ -121,33 +309,35 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
         </div>
       </div>
       <div className="tactical-content">
-        {/* Filter Control Panel */}
-        <div className="filter-controls-section">
-          <div className="filter-quick-actions">
-            <button 
-              className="filter-action-btn clear"
-              onClick={clearAllFilters}
-              title="Clear All Filters"
-            >
-              <span className="btn-icon">✕</span>
-              <span className="btn-text">CLEAR ALL</span>
-            </button>
-            <button 
-              className="filter-action-btn preset"
-              onClick={loadPresetFilters}
-              title="Load Preset Filters"
-            >
-              <span className="btn-icon">⚡</span>
-              <span className="btn-text">PRESET</span>
-            </button>
-            <button 
-              className="filter-action-btn save"
-              onClick={handleSavePreset}
-              title="Save Current Configuration"
-            >
-              <span className="btn-icon">💾</span>
-              <span className="btn-text">SAVE</span>
-            </button>
+        {/* Filter Status & Active Summary */}
+        <div className="filter-summary-section compact">
+          <div className="active-filters-display">
+            <div className="summary-header">
+              <div className="summary-heading">
+                <span className="summary-icon">🎯</span>
+                <span className="summary-title">ACTIVE FILTERS</span>
+              </div>
+              <span className="filter-count">{filterState.activeFilters.size}</span>
+            </div>
+            {filterState.activeFilters.size > 0 ? (
+              <div className="active-filters-list">
+                {Array.from(filterState.activeFilters).map(filter => (
+                  <span key={filter} className="active-filter-tag">
+                    {filter}
+                    <button 
+                      className="remove-filter-btn"
+                      onClick={() => toggleFilter(filter)}
+                    >
+                      ✕
+                    </button>
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div className="no-filters-message">
+                No filters active - showing all content
+              </div>
+            )}
           </div>
         </div>
 
@@ -227,6 +417,31 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
               ))}
             </div>
           </div>
+
+          <div className="filter-category-card operational-tags-card">
+            <div className="category-header">
+              <span className="category-icon">🏷️</span>
+              <span className="category-title">OPERATIONAL TAGS</span>
+            </div>
+            {operationalTags.length > 0 ? (
+              <div className="tag-chip-grid">
+                {operationalTags.map(([tag, count]) => (
+                  <button
+                    key={tag}
+                    className={`filter-tag tag-chip ${isFilterActive(tag) ? 'active' : ''}`}
+                    onClick={() => toggleFilter(tag)}
+                  >
+                    <span className="filter-indicator"></span>
+                    <span className="filter-label">{tag}</span>
+                    <span className="tag-count">{count}</span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="no-tags-message">Tags will appear as new intel arrives.</div>
+            )}
+          </div>
+
         </div>
 
         {/* Time Range & Advanced Filters */}
@@ -292,44 +507,65 @@ const TacticalFilters: React.FC<TacticalFiltersProps> = ({
           </div>
         </div>
         
-        {/* Filter Summary & Actions */}
-        <div className="filter-summary-section">
-          <div className="active-filters-display">
-            <div className="summary-header">
-              <span className="summary-icon">🎯</span>
-              <span className="summary-title">ACTIVE FILTERS</span>
-              <span className="filter-count">{filterState.activeFilters.size}</span>
+        {/* Mission Presets Footer */}
+        <div className="filter-controls-section preset-library-section">
+          <div className="control-block preset-block">
+            <div className="block-header">
+              <span className="block-title">MISSION PRESETS</span>
+              <span className="block-subtitle">Deploy curated default + custom stacks</span>
             </div>
-            {filterState.activeFilters.size > 0 ? (
-              <div className="active-filters-list">
-                {Array.from(filterState.activeFilters).map(filter => (
-                  <span key={filter} className="active-filter-tag">
-                    {filter}
-                    <button 
-                      className="remove-filter-btn"
-                      onClick={() => toggleFilter(filter)}
-                    >
-                      ✕
-                    </button>
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <div className="no-filters-message">
-                No filters active - showing all content
-              </div>
-            )}
-          </div>
-          
-          <div className="filter-execution-panel">
-            <button className="apply-filters-btn" onClick={handleApplyFilters}>
-              <span className="btn-icon">▶</span>
-              <span className="btn-text">APPLY FILTERS</span>
-            </button>
-            <button className="save-preset-btn" onClick={handleSavePreset}>
-              <span className="btn-icon">📌</span>
-              <span className="btn-text">SAVE PRESET</span>
-            </button>
+            <div className="preset-chip-row">
+              {presetLibrary.map(preset => {
+                const isActive = activePresetId === preset.id;
+                return (
+                  <div
+                    key={preset.id}
+                    className={`preset-chip ${isActive ? 'active' : ''} ${preset.isCustom ? 'custom' : ''}`}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => applyFilterPreset(preset)}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        applyFilterPreset(preset);
+                      }
+                    }}
+                  >
+                    <div className="chip-body">
+                      <span className="chip-label">{preset.label}</span>
+                      <span className="chip-description">{preset.description}</span>
+                    </div>
+                    {preset.isCustom && (
+                      <button
+                        type="button"
+                        className="preset-chip-delete"
+                        aria-label={`Remove preset ${preset.label}`}
+                        onClick={event => {
+                          event.stopPropagation();
+                          handleRemovePreset(preset.id);
+                        }}
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <div className="filter-execution-panel">
+              <button className="save-preset-btn" onClick={handleSavePreset}>
+                <span className="btn-icon">📌</span>
+                <span className="btn-text">SAVE CUSTOM PRESET</span>
+              </button>
+              <button 
+                className="ghost-button"
+                onClick={handleClearCustomPresets}
+                disabled={customPresets.length === 0}
+              >
+                <span className="btn-icon">🧹</span>
+                <span className="btn-text">CLEAR CUSTOM PRESETS</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

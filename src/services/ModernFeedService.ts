@@ -978,11 +978,14 @@ class ModernFeedService {
           author: sourceName,
           categories: item.tags || [],
           tags: item.tags || [], // Add tags field for new UI
+          category: item.category || 'general',
           priority: this.mapPriorityToUppercase(item.priority || 'medium'), // Convert to uppercase
           contentType: this.mapCategoryToContentType(item.category || 'general'),
           source: sourceName,
           trustRating: item.trustRating || 50,
           verificationStatus: item.verificationStatus || 'UNVERIFIED',
+          dataQuality: typeof item.dataQuality === 'number' ? item.dataQuality : 70,
+          missionMode: item.missionMode ?? this.missionMode,
           lastValidated: new Date().toISOString(),
           responseTime: item.responseTime || 0,
           // Include metadata for additional features like comment counts

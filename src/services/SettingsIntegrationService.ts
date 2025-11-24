@@ -16,7 +16,7 @@ type NormalizedGeneralSettings = {
   storageLimit: number;
   showSourceDiagnostics?: boolean;
   export: {
-    format: 'json' | 'csv' | 'xml' | 'pdf';
+    format: 'json' | 'csv' | 'xml' | 'pdf' | 'intel' | 'intelreport';
     autoExport: boolean;
     includeMetadata: boolean;
     compress: boolean;

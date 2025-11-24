@@ -5,7 +5,7 @@ import RouteValidator from './components/RouteValidator';
 import SearchResults from './components/SearchResults';
 import WTTPStatus from './components/WTTPStatus/WTTPStatus';
 import { FilterProvider } from './contexts/FilterContext';
-import { HealthProvider } from './contexts/HealthContext';
+import { FeedDataProvider } from './contexts/FeedDataContext';
 import { IntelligenceProvider } from './contexts/IntelligenceContext';
 import { IPFSProvider } from './contexts/IPFSContext';
 import { MissionModeProvider } from './contexts/MissionModeContext';
@@ -37,7 +37,7 @@ const App: React.FC = () => {
                 <IPFSProvider>
                   <SearchProvider>
                     <FilterProvider>
-                      <HealthProvider>
+                      <FeedDataProvider>
                         <MissionModeProvider>
                           <div className="App">
                             <RouteValidator />
@@ -46,7 +46,7 @@ const App: React.FC = () => {
                             <WTTPStatus />
                           </div>
                         </MissionModeProvider>
-                      </HealthProvider>
+                      </FeedDataProvider>
                     </FilterProvider>
                   </SearchProvider>
                 </IPFSProvider>

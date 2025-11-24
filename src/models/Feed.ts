@@ -20,6 +20,11 @@ export interface Feed {
   classification?: string;
   timestamp?: string | Date;
   source?: string;
+  category?: string;
+  trustRating?: number;
+  verificationStatus?: 'VERIFIED' | 'UNVERIFIED' | 'OFFICIAL';
+  dataQuality?: number;
+  missionMode?: string;
   
   // Extended metadata for modern API sources
   metadata?: {

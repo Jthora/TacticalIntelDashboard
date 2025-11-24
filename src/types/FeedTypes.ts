@@ -19,6 +19,11 @@ export interface FeedItem {
   priority?: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   contentType?: 'INTEL' | 'NEWS' | 'ALERT' | 'THREAT';
   source?: string;
+  category?: string;
+  dataQuality?: number;
+  missionMode?: string;
+  region?: 'GLOBAL' | 'AMERICAS' | 'EUROPE' | 'ASIA_PACIFIC';
+  classification?: string;
   // Extended metadata for modern API sources
   metadata?: {
     numComments?: number;

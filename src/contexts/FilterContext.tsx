@@ -17,6 +17,8 @@ export interface FilterContextType {
   isFilterActive: (filter: string) => boolean;
   hasActiveFilters: boolean;
   resetFilters: () => void;
+  availableTagCounts: Record<string, number>;
+  updateAvailableTags: (counts: Record<string, number>) => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -76,6 +78,12 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     setFilterState(newState);
     saveFilterState(newState);
   }, [filterState, saveFilterState]);
+
+  const [availableTagCounts, setAvailableTagCounts] = useState<Record<string, number>>({});
+
+  const updateAvailableTags = useCallback((counts: Record<string, number>) => {
+    setAvailableTagCounts(counts);
+  }, []);
 
   const addFilter = useCallback((filter: string) => {
     const newFilters = new Set(filterState.activeFilters);
@@ -137,7 +145,9 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     getFilterCounts,
     isFilterActive,
     hasActiveFilters,
-    resetFilters
+    resetFilters,
+    availableTagCounts,
+    updateAvailableTags
   };
 
   return (

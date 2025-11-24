@@ -132,6 +132,66 @@
   color: var(--accent-cyan);
 }
 
+.export-detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+  padding-top: var(--spacing-xs);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.detail-label {
+  font-size: var(--font-size-xxs, 0.65rem);
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.detail-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+
+.export-input,
+.export-textarea {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 255, 170, 0.15);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body, var(--font-tactical), 'JetBrains Mono', monospace);
+  font-size: var(--font-size-xs);
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.export-input:focus,
+.export-textarea:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 1px var(--accent-cyan);
+}
+
+.export-textarea {
+  resize: vertical;
+  min-height: 64px;
+}
+
+.export-hint {
+  font-size: var(--font-size-xxs, 0.65rem);
+  color: var(--text-muted);
+}
+
+.export-error {
+  margin-bottom: var(--spacing-xs);
+  color: var(--accent-red);
+  font-size: var(--font-size-xxs, 0.65rem);
+  letter-spacing: 0.5px;
+}
+
 .export-execute-btn {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
@@ -161,6 +221,68 @@
   cursor: not-allowed;
   color: var(--text-muted);
   border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* New Export Modal Styles */
+.export-modal-content {
+  padding: 1rem;
+  color: var(--text-primary, #d7f9ff);
+}
+
+.export-modal-content .option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.export-modal-content .option-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary, #8fb5c4);
+}
+
+.export-modal-content .option-toggle {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  color: inherit;
+}
+
+.export-modal-content .export-detail-group {
+  margin-top: 1rem;
+}
+
+.export-modal-content .export-input,
+.export-modal-content .export-textarea {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-primary, #d7f9ff);
+}
+
+.export-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.export-modal-actions button {
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  cursor: pointer;
+  transition: background var(--transition-fast, 0.2s);
+}
+
+.export-modal-actions button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.export-modal-actions .confirm-btn {
+  background: linear-gradient(120deg, rgba(46, 210, 255, 0.2), rgba(46, 255, 196, 0.2));
+  border-color: rgba(46, 210, 255, 0.6);
 }
 
 /* Responsive Export Module */

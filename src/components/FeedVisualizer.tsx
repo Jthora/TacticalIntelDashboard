@@ -1,11 +1,13 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
 
 import { useFilters } from '../contexts/FilterContext';
+import { useFeedData } from '../contexts/FeedDataContext';
 import { useSettings } from '../contexts/SettingsContext';
 import useAlerts from '../hooks/alerts/useAlerts';
 import { useLoading } from '../hooks/useLoading';
 import type { Feed } from '../models/Feed';
 import FeedService from '../services/FeedService';
+import { FilterService } from '../services/FilterService';
 import PerformanceManager from '../services/PerformanceManager';
 import { SettingsIntegrationService } from '../services/SettingsIntegrationService';
 import { ErrorOverlay, FeedVisualizerSkeleton } from '../shared/components/LoadingStates';
@@ -77,7 +79,8 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
   const [diagnosticsExpandSignal, setDiagnosticsExpandSignal] = useState(0);
 
   // Filter context integration
-  const { getFilteredFeeds } = useFilters();
+  const { getFilteredFeeds, filterState, updateAvailableTags } = useFilters();
+  const { updateFeedSnapshot } = useFeedData();
 
   // Enhanced loading state management
   const { 
@@ -117,8 +120,29 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
   );
 
   // Performance-optimized filtered feeds with caching
+  const filterSignature = useMemo(() => {
+    const serializedTimeRange = filterState.timeRange
+      ? {
+          label: filterState.timeRange.label,
+          start: filterState.timeRange.start instanceof Date
+            ? filterState.timeRange.start.toISOString()
+            : filterState.timeRange.start,
+          end: filterState.timeRange.end instanceof Date
+            ? filterState.timeRange.end.toISOString()
+            : filterState.timeRange.end
+        }
+      : null;
+
+    return JSON.stringify({
+      filters: Array.from(filterState.activeFilters).sort(),
+      timeRange: serializedTimeRange,
+      searchQuery: filterState.searchQuery,
+      sortBy: filterState.sortBy
+    });
+  }, [filterState]);
+
   const filteredFeeds = useMemo(() => {
-    const cacheKey = `filtered-feeds-${selectedFeedList}-${feeds.length}`;
+    const cacheKey = `filtered-feeds-${selectedFeedList}-${feeds.length}-${filterSignature}`;
     const cached = PerformanceManager.getCache(cacheKey);
     
     if (cached) {
@@ -132,7 +156,19 @@ const FeedVisualizer: React.FC<FeedVisualizerProps> = memo(({ selectedFeedList }
     PerformanceManager.setCache(cacheKey, filtered, 30000);
     
     return filtered;
-  }, [feeds, getFilteredFeeds, selectedFeedList]);
+  }, [feeds, filterSignature, getFilteredFeeds, selectedFeedList]);
+
+  useEffect(() => {
+    updateAvailableTags(FilterService.getTagCounts(filteredFeeds));
+  }, [filteredFeeds, updateAvailableTags]);
+
+  useEffect(() => {
+    updateFeedSnapshot({
+      feeds,
+      filteredFeeds,
+      lastUpdated: lastUpdated ?? null
+    });
+  }, [feeds, filteredFeeds, lastUpdated, updateFeedSnapshot]);
 
   useAutoRefresh({ autoRefresh, selectedFeedList, loadFeeds });
 

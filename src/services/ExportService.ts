@@ -316,7 +316,42 @@ export class ExportService {
   }
   
   private static async encryptContent(content: string | Blob, password: string): Promise<string> {
-    const textContent = typeof content === 'string' ? content : await content.text();
+    let textContent: string;
+    if (typeof content === 'string') {
+      textContent = content;
+    } else if (typeof content.text === 'function') {
+      textContent = await content.text();
+    } else if (typeof content.arrayBuffer === 'function') {
+      if (typeof TextDecoder === 'undefined') {
+        throw new Error('TextDecoder API is required to encrypt binary exports');
+      }
+      const buffer = await content.arrayBuffer();
+      textContent = new TextDecoder().decode(buffer);
+    } else if (typeof FileReader !== 'undefined') {
+      textContent = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(reader.error ?? new Error('Failed to read Blob for encryption'));
+        reader.onload = () => {
+          const result = reader.result;
+          if (!result) {
+            reject(new Error('Empty Blob result during encryption'));
+            return;
+          }
+          if (typeof result === 'string') {
+            resolve(result);
+            return;
+          }
+          if (typeof TextDecoder === 'undefined') {
+            reject(new Error('TextDecoder API is required to encrypt binary exports'));
+            return;
+          }
+          resolve(new TextDecoder().decode(result as ArrayBuffer));
+        };
+        reader.readAsArrayBuffer(content);
+      });
+    } else {
+      throw new Error('Unsupported Blob implementation: missing text() and arrayBuffer() methods');
+    }
     const encrypted = CryptoJS.AES.encrypt(textContent, password).toString();
     return encrypted;
   }
@@ -326,8 +361,10 @@ export class ExportService {
     const textContent = typeof content === 'string' ? content : await content.text();
     try {
       const result = gzip(textContent, { level: 6 });
-      const compressed: Uint8Array = result instanceof Uint8Array ? result : new Uint8Array(result as any);
-      return new Blob([compressed], { type: 'application/gzip' });
+      const compressed: Uint8Array = result instanceof Uint8Array ? result : new Uint8Array(result as ArrayBuffer);
+      const buffer = new ArrayBuffer(compressed.byteLength);
+      new Uint8Array(buffer).set(compressed);
+      return new Blob([buffer], { type: 'application/gzip' });
     } catch (e:any) {
       const fallback = `/* gzip failed: ${e?.message || e} */\n` + textContent;
       return new Blob([fallback], { type: 'text/plain' });
