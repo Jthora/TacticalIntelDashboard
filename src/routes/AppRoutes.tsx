@@ -6,6 +6,7 @@ import MarketplaceDashboard from '../components/marketplace/MarketplaceDashboard
 import SettingsError from '../components/settings/SettingsError';
 import SettingsTabContent from '../components/settings/SettingsTabContent';
 import ProfilePageSimple from '../components/web3/ProfilePageSimple';
+import { featureFlags } from '../config/featureFlags';
 import MainLayout from '../layouts/MainLayout';
 import FeedPage from '../pages/FeedPage';
 import HomePage from '../pages/HomePage';
@@ -50,14 +51,19 @@ const AppRoutes: React.FC = () => (
         } />
       </Route>
       
-      {/* Profile route - MVP Web3 Login */}
-      <Route path="/profile" element={<ProfilePageSimple />} />
-      
-      {/* Web3 Integration Test Page */}
-      <Route path="/web3-test" element={<Web3TestPage />} />
-      
-      {/* Redirect legacy routes */}
-      <Route path="/web3login" element={<Navigate to="/profile" replace />} />
+      {featureFlags.web3Login ? (
+        <>
+          <Route path="/profile" element={<ProfilePageSimple />} />
+          <Route path="/web3-test" element={<Web3TestPage />} />
+          <Route path="/web3login" element={<Navigate to="/profile" replace />} />
+        </>
+      ) : (
+        <>
+          <Route path="/profile" element={<Navigate to="/" replace />} />
+          <Route path="/web3-test" element={<Navigate to="/" replace />} />
+          <Route path="/web3login" element={<Navigate to="/" replace />} />
+        </>
+      )}
       
       {/* Fallback route for any unmatched routes */}
       <Route path="*" element={<NotFoundPage />} />

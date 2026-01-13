@@ -1,0 +1,18 @@
+{
+  "title": "Fixture JSON Feed",
+  "link": "https://example.com/json-feed",
+  "items": [
+    {
+      "title": "JSON story 1",
+      "url": "https://example.com/json/1",
+      "published": "2026-01-12T00:00:00.000Z",
+      "summary": "Complete item with all fields"
+    },
+    {
+      "title": "JSON story missing url",
+      "summary": "No url present; tests default handling",
+      "tags": ["ops", "geoint"],
+      "extra": { "unexpected": true }
+    }
+  ]
+}

@@ -1,0 +1,471 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ProvenanceBadges matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="prov-badges compact"
+    data-testid="provenance-badges"
+  >
+    <span
+      aria-label="Signed: 2 sigs. Signatures present via PQC, EVM"
+      class="prov-badge positive"
+      data-testid="prov-badge-signature"
+      title="Signatures present via PQC, EVM"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Signed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        2 sigs
+      </span>
+    </span>
+    <span
+      aria-label="Anchored: QAN-mock. Anchored on QAN-mock (tx-abcdef)"
+      class="prov-badge positive"
+      data-testid="prov-badge-anchor"
+      title="Anchored on QAN-mock (tx-abcdef)"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Anchored
+      </span>
+      <span
+        class="prov-detail"
+      >
+        QAN-mock
+      </span>
+    </span>
+    <span
+      aria-label="CID: bafybe...proofs. Content stored at bafybeigdyrandomcidvalueforproofs"
+      class="prov-badge positive"
+      data-testid="prov-badge-cid"
+      title="Content stored at bafybeigdyrandomcidvalueforproofs"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        CID
+      </span>
+      <span
+        class="prov-detail"
+      >
+        bafybe...proofs
+      </span>
+    </span>
+    <span
+      aria-label="Relayed: 2 hops. Relayed via 2 endpoints"
+      class="prov-badge positive"
+      data-testid="prov-badge-relay"
+      title="Relayed via 2 endpoints"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Relayed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        2 hops
+      </span>
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ProvenanceBadges matches snapshot for failed anchor 1`] = `
+<DocumentFragment>
+  <div
+    class="prov-badges compact"
+    data-testid="provenance-badges"
+  >
+    <span
+      aria-label="Signed: 1 sig. Signatures present via EVM"
+      class="prov-badge positive"
+      data-testid="prov-badge-signature"
+      title="Signatures present via EVM"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Signed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        1 sig
+      </span>
+    </span>
+    <span
+      aria-label="Anchor failed: mock-chain. Anchor failed for 0xtx-failed"
+      class="prov-badge negative"
+      data-testid="prov-badge-anchor"
+      title="Anchor failed for 0xtx-failed"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Anchor failed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        mock-chain
+      </span>
+    </span>
+    <span
+      aria-label="CID: bafytestcid. Content stored at bafytestcid"
+      class="prov-badge positive"
+      data-testid="prov-badge-cid"
+      title="Content stored at bafytestcid"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        CID
+      </span>
+      <span
+        class="prov-detail"
+      >
+        bafytestcid
+      </span>
+    </span>
+    <span
+      aria-label="Relayed: 1 hop. Relayed via 1 endpoint"
+      class="prov-badge positive"
+      data-testid="prov-badge-relay"
+      title="Relayed via 1 endpoint"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Relayed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        1 hop
+      </span>
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ProvenanceBadges matches snapshot for missing CID 1`] = `
+<DocumentFragment>
+  <div
+    class="prov-badges compact"
+    data-testid="provenance-badges"
+  >
+    <span
+      aria-label="Signed: 1 sig. Signatures present via EVM"
+      class="prov-badge positive"
+      data-testid="prov-badge-signature"
+      title="Signatures present via EVM"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Signed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        1 sig
+      </span>
+    </span>
+    <span
+      aria-label="Anchored: mock-chain. Anchored on mock-chain (0xtx123)"
+      class="prov-badge positive"
+      data-testid="prov-badge-anchor"
+      title="Anchored on mock-chain (0xtx123)"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Anchored
+      </span>
+      <span
+        class="prov-detail"
+      >
+        mock-chain
+      </span>
+    </span>
+    <span
+      aria-label="No CID: missing. Content not pinned to IPFS"
+      class="prov-badge neutral"
+      data-testid="prov-badge-cid"
+      title="Content not pinned to IPFS"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        No CID
+      </span>
+      <span
+        class="prov-detail"
+      >
+        missing
+      </span>
+    </span>
+    <span
+      aria-label="Relayed: 1 hop. Relayed via 1 endpoint"
+      class="prov-badge positive"
+      data-testid="prov-badge-relay"
+      title="Relayed via 1 endpoint"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Relayed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        1 hop
+      </span>
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ProvenanceBadges matches snapshot for pending anchor 1`] = `
+<DocumentFragment>
+  <div
+    class="prov-badges compact"
+    data-testid="provenance-badges"
+  >
+    <span
+      aria-label="Signed: 1 sig. Signatures present via EVM"
+      class="prov-badge positive"
+      data-testid="prov-badge-signature"
+      title="Signatures present via EVM"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Signed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        1 sig
+      </span>
+    </span>
+    <span
+      aria-label="Anchoring: mock-chain. Anchoring in progress: 0xtx-pending"
+      class="prov-badge warning"
+      data-testid="prov-badge-anchor"
+      title="Anchoring in progress: 0xtx-pending"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Anchoring
+      </span>
+      <span
+        class="prov-detail"
+      >
+        mock-chain
+      </span>
+    </span>
+    <span
+      aria-label="CID: bafytestcid. Content stored at bafytestcid"
+      class="prov-badge positive"
+      data-testid="prov-badge-cid"
+      title="Content stored at bafytestcid"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        CID
+      </span>
+      <span
+        class="prov-detail"
+      >
+        bafytestcid
+      </span>
+    </span>
+    <span
+      aria-label="Relayed: 1 hop. Relayed via 1 endpoint"
+      class="prov-badge positive"
+      data-testid="prov-badge-relay"
+      title="Relayed via 1 endpoint"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Relayed
+      </span>
+      <span
+        class="prov-detail"
+      >
+        1 hop
+      </span>
+    </span>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`ProvenanceBadges matches snapshot for unsigned direct relay 1`] = `
+<DocumentFragment>
+  <div
+    class="prov-badges compact"
+    data-testid="provenance-badges"
+  >
+    <span
+      aria-label="Unsigned: no signatures. No signatures attached"
+      class="prov-badge neutral"
+      data-testid="prov-badge-signature"
+      title="No signatures attached"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Unsigned
+      </span>
+      <span
+        class="prov-detail"
+      >
+        no signatures
+      </span>
+    </span>
+    <span
+      aria-label="Not anchored: none. Anchoring not requested"
+      class="prov-badge neutral"
+      data-testid="prov-badge-anchor"
+      title="Anchoring not requested"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        Not anchored
+      </span>
+      <span
+        class="prov-detail"
+      >
+        none
+      </span>
+    </span>
+    <span
+      aria-label="CID: bafytestcid. Content stored at bafytestcid"
+      class="prov-badge positive"
+      data-testid="prov-badge-cid"
+      title="Content stored at bafytestcid"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        CID
+      </span>
+      <span
+        class="prov-detail"
+      >
+        bafytestcid
+      </span>
+    </span>
+    <span
+      aria-label="No relay: direct. No relay origin provided"
+      class="prov-badge neutral"
+      data-testid="prov-badge-relay"
+      title="No relay origin provided"
+    >
+      <span
+        aria-hidden="true"
+        class="prov-dot"
+      />
+      <span
+        class="prov-label"
+      >
+        No relay
+      </span>
+      <span
+        class="prov-detail"
+      >
+        direct
+      </span>
+    </span>
+  </div>
+</DocumentFragment>
+`;

@@ -1,0 +1,177 @@
+# Inference MVP Progress Tracker
+
+## Stage 1: Foundations
+- [ ] 1.1 Phase: Definition
+  - [ ] 1.1.1 Step: Lock scope
+    - [ ] 1.1.1.1 Task: Confirm MVP feature list (Summary, Risk & Alerts, Source Health)
+      - [ ] 1.1.1.1.1 Sub-Task: Review feature definitions and align list with doc 02
+      - [ ] 1.1.1.1.2 Sub-Task: Capture sign-off from PM/Eng/Design
+      - [ ] 1.1.1.1.3 Sub-Task: Update Product Spec with final scope
+    - [ ] 1.1.1.2 Task: Approve success criteria (latency, token caps, safety rules)
+      - [ ] 1.1.1.2.1 Sub-Task: Validate latency/token targets with backend owners
+      - [ ] 1.1.1.2.2 Sub-Task: Bake safety rules into prompt and schema notes
+      - [ ] 1.1.1.2.3 Sub-Task: Record success criteria in Product Spec
+  - [ ] 1.1.2 Step: Finalize schema
+    - [ ] 1.1.2.1 Task: Freeze payload schema version 1.0
+      - [ ] 1.1.2.1.1 Sub-Task: Cross-check schema doc vs hook implementation
+      - [ ] 1.1.2.1.2 Sub-Task: Add version field in payload and tests
+      - [ ] 1.1.2.1.3 Sub-Task: Communicate schema freeze to team
+    - [ ] 1.1.2.2 Task: Define redaction rules and truncation behavior
+      - [ ] 1.1.2.2.1 Sub-Task: List fields to mask/redact (PII/URLs/authors)
+      - [ ] 1.1.2.2.2 Sub-Task: Document truncation tiers and drop order
+      - [ ] 1.1.2.2.3 Sub-Task: Add examples to schema doc
+  - [ ] 1.1.3 Step: Prompts
+    - [ ] 1.1.3.1 Task: Approve v1 prompt templates per feature
+      - [ ] 1.1.3.1.1 Sub-Task: Run prompt reviews with sample payloads
+      - [ ] 1.1.3.1.2 Sub-Task: Snapshot templates for regression tests
+      - [ ] 1.1.3.1.3 Sub-Task: Capture prompt version identifiers
+    - [x] 1.1.3.2 Task: Add prompt version tagging in requests
+      - [x] 1.1.3.2.1 Sub-Task: Include promptVersion in transport payload
+      - [x] 1.1.3.2.2 Sub-Task: Log promptVersion with request metrics
+
+## Stage 2: Implementation
+- [ ] 2.1 Phase: Payload & Transport
+  - [ ] 2.1.1 Step: Payload assembly
+    - [x] 2.1.1.1 Task: Wire useIntelLLMPayload into CTA flow
+      - [x] 2.1.1.1.1 Sub-Task: Connect CTA handler to payload hook
+      - [x] 2.1.1.1.2 Sub-Task: Pass selected feeds and diagnostics into builder
+      - [x] 2.1.1.1.3 Sub-Task: Validate empty-feed short-circuit behavior
+    - [x] 2.1.1.2 Task: Add redaction hook and size guardrails
+      - [x] 2.1.1.2.1 Sub-Task: Implement redaction helper and unit tests
+      - [x] 2.1.1.2.2 Sub-Task: Enforce max payload size; drop raw feeds first
+      - [x] 2.1.1.2.3 Sub-Task: Add truncation notes when limits apply
+  - [ ] 2.1.2 Step: Transport client
+    - [x] 2.1.2.1 Task: Implement timeouts, retry-once with backoff
+      - [x] 2.1.2.1.1 Sub-Task: Set per-env timeout defaults
+      - [x] 2.1.2.1.2 Sub-Task: Add jittered backoff for retry
+      - [x] 2.1.2.1.3 Sub-Task: Prevent retry on client/cancel errors
+    - [x] 2.1.2.2 Task: Add requestId, logging, metrics counters
+      - [x] 2.1.2.2.1 Sub-Task: Derive requestId from payload hash + timestamp
+      - [x] 2.1.2.2.2 Sub-Task: Log status, size, truncation per requestId
+      - [x] 2.1.2.2.3 Sub-Task: Emit success/failure/latency metrics
+    - [x] 2.1.2.3 Task: Map errors to user-facing messages
+      - [x] 2.1.2.3.1 Sub-Task: Define categories (timeout, network, 429, 5xx)
+      - [x] 2.1.2.3.2 Sub-Task: Bind categories to StatusMessage copy
+      - [x] 2.1.2.3.3 Sub-Task: Add circuit-breaker/open-state message
+- [ ] 2.2 Phase: UX Integration
+  - [ ] 2.2.1 Step: CTAs and states
+    - [x] 2.2.1.1 Task: Add “Summarize Intel” CTA in Central View header
+      - [x] 2.2.1.1.1 Sub-Task: Place button with accessible label
+      - [x] 2.2.1.1.2 Sub-Task: Wire click to inference handler
+      - [x] 2.2.1.1.3 Sub-Task: Add disable/loading behavior on submit
+    - [x] 2.2.1.2 Task: Add “Risk & Alerts” and “Source Health” CTAs/entry points
+      - [x] 2.2.1.2.1 Sub-Task: Add secondary CTA or tab for Risk & Alerts
+      - [x] 2.2.1.2.2 Sub-Task: Add CTA from diagnostics banner for Source Health
+      - [x] 2.2.1.2.3 Sub-Task: Ensure keyboard/focus support
+    - [x] 2.2.1.3 Task: Implement loading, success, error, empty states
+      - [x] 2.2.1.3.1 Sub-Task: Show spinner/message during in-flight
+      - [x] 2.2.1.3.2 Sub-Task: Show inline error with retry CTA
+      - [x] 2.2.1.3.3 Sub-Task: Handle empty-feed state gracefully
+  - [ ] 2.2.2 Step: Rendering
+    - [x] 2.2.2.1 Task: Render summaries with truncation and timestamp metadata
+      - [x] 2.2.2.1.1 Sub-Task: Display lastUpdated and generatedAt
+      - [x] 2.2.2.1.2 Sub-Task: Show truncation notice when applicable
+      - [x] 2.2.2.1.3 Sub-Task: Preserve paragraph breaks and bulleting
+    - [x] 2.2.2.2 Task: Render risk/alerts and source health sections
+      - [x] 2.2.2.2.1 Sub-Task: Separate sections with headings
+      - [x] 2.2.2.2.2 Sub-Task: Include counts and source names in output
+      - [x] 2.2.2.2.3 Sub-Task: Link to raw feeds for context
+
+## Stage 3: Testing
+- [ ] 3.1 Phase: Unit & Contract
+  - [ ] 3.1.1 Step: Unit coverage
+    - [ ] 3.1.1.1 Task: Payload builder limits, diagnostics summary, redaction
+      - [x] 3.1.1.1.1 Sub-Task: Test maxFeeds/maxAlerts truncation flags
+      - [x] 3.1.1.1.2 Sub-Task: Test diagnostics aggregation output
+      - [x] 3.1.1.1.3 Sub-Task: Test redaction/masking paths
+    - [ ] 3.1.1.2 Task: Prompt renderer snapshot tests
+      - [x] 3.1.1.2.1 Sub-Task: Snapshot Summary prompt with truncation note
+      - [x] 3.1.1.2.2 Sub-Task: Snapshot Risk/Alerts prompt with alerts block
+      - [x] 3.1.1.2.3 Sub-Task: Snapshot Source Health prompt with failures
+    - [x] 3.1.1.3 Task: Transport retry/timeout/error mapping tests
+      - [x] 3.1.1.3.1 Sub-Task: Simulate timeout and assert retry count
+      - [x] 3.1.1.3.2 Sub-Task: Simulate 429 and assert user copy
+      - [x] 3.1.1.3.3 Sub-Task: Simulate 5xx and assert backoff
+  - [x] 3.1.2 Step: Contract tests
+    - [x] 3.1.2.1 Task: Mock LLM responses (success/empty/error)
+      - [x] 3.1.2.1.1 Sub-Task: Validate success path parses non-empty text
+      - [x] 3.1.2.1.2 Sub-Task: Validate empty response triggers error state
+      - [x] 3.1.2.1.3 Sub-Task: Validate error response maps to StatusMessage
+    - [x] 3.1.2.2 Task: Validate output parser rejects empty/invalid text
+      - [x] 3.1.2.2.1 Sub-Task: Reject whitespace-only outputs
+      - [x] 3.1.2.2.2 Sub-Task: Reject outputs below minimum length
+- [ ] 3.2 Phase: Smoke & UI
+  - [x] 3.2.1 Step: Smoke (sandbox)
+    - [x] 3.2.1.1 Task: Tiny payload live call; assert latency <10s and non-empty text
+      - [x] 3.2.1.1.1 Sub-Task: Create sandbox payload fixture
+      - [x] 3.2.1.1.2 Sub-Task: Capture latency/tokens in log
+      - [x] 3.2.1.1.3 Sub-Task: Gate smoke by env var to avoid prod keys
+  - [ ] 3.2.2 Step: UI behavior
+    - [ ] 3.2.2.1 Task: CTA click triggers call; states visible; errors surfaced
+      - [x] 3.2.2.1.1 Sub-Task: Verify CTA disabled while loading
+      - [x] 3.2.2.1.2 Sub-Task: Verify error banner on failure
+      - [x] 3.2.2.1.3 Sub-Task: Verify empty-feed short-circuit messaging
+
+## Stage 4: Observability & Ops
+- [ ] 4.1 Phase: Metrics and logging
+  - [ ] 4.1.1 Step: Metrics
+    - [ ] 4.1.1.1 Task: Counters for success/failure; latency histogram; truncation gauge
+      - [x] 4.1.1.1.1 Sub-Task: Emit metrics from transport client
+      - [x] 4.1.1.1.2 Sub-Task: Build dashboard for latency/errors/truncation
+      - [x] 4.1.1.1.3 Sub-Task: Set SLO targets for alerting
+    - [ ] 4.1.1.2 Task: Add token/cost tracking if provider returns usage
+        - [x] 4.1.1.2.1 Sub-Task: Parse usage fields from provider response
+        - [x] 4.1.1.2.2 Sub-Task: Log token counts and estimated cost
+      - [x] 4.1.1.2.3 Sub-Task: Add cost panel to dashboard
+  - [ ] 4.1.2 Step: Logging
+  - [x] 4.1.2 Step: Logging
+    - [x] 4.1.2.1 Task: Log requestId, payload size, truncation, error category
+      - [x] 4.1.2.1.1 Sub-Task: Mask sensitive data in logs
+      - [x] 4.1.2.1.2 Sub-Task: Add log sampling for high-volume paths
+      - [x] 4.1.2.1.3 Sub-Task: Verify logs include requestId for tracing
+- [ ] 4.2 Phase: Ops readiness
+  - [ ] 4.2.1 Step: Runbook and alerts
+    - [x] 4.2.1.1 Task: Add runbook entries for outage, rate-limit, cost spike
+      - [x] 4.2.1.1.1 Sub-Task: Document kill-switch steps and config
+      - [x] 4.2.1.1.2 Sub-Task: Document payload size tuning steps
+      - [x] 4.2.1.1.3 Sub-Task: Document throttle/queue steps
+    - [x] 4.2.1.2 Task: Configure alerts on error rate, latency, circuit-open
+      - [x] 4.2.1.2.1 Sub-Task: Set thresholds and channels
+      - [x] 4.2.1.2.2 Sub-Task: Test alert firing in sandbox
+      - [x] 4.2.1.2.3 Sub-Task: Add runbook links to alert payloads
+  - [x] 4.2.2 Step: Flags and quotas
+    - [x] 4.2.2.1 Task: Wire feature flags; per-session request caps
+      - [x] 4.2.2.1.1 Sub-Task: Add caps to CTA handler
+      - [x] 4.2.2.1.2 Sub-Task: Show message when cap reached
+      - [x] 4.2.2.1.3 Sub-Task: Add analytics for cap hits
+    - [ ] 4.2.2.2 Task: Sandbox/prod key separation and validation
+      - [x] 4.2.2.2.1 Sub-Task: Validate key presence per env at startup
+      - [x] 4.2.2.2.2 Sub-Task: Prevent prod key use in sandbox
+      - [x] 4.2.2.2.3 Sub-Task: Add runtime checks for missing keys
+      - [x] 4.2.2.2.4 Sub-Task: Add auth header wiring for provider key
+
+## Stage 5: Rollout
+- [ ] 5.1 Phase: Internal dogfood
+  - [ ] 5.1.1 Step: Enable for internal users; monitor metrics
+    - [ ] 5.1.1.1 Task: Enable flag for internal group
+      - [ ] 5.1.1.1.1 Sub-Task: Target internal cohorts only
+      - [ ] 5.1.1.1.2 Sub-Task: Verify metrics and logs flowing
+    - [ ] 5.1.1.2 Task: Collect feedback and adjust prompts
+      - [ ] 5.1.1.2.1 Sub-Task: Run feedback survey or channel
+      - [ ] 5.1.1.2.2 Sub-Task: Prioritize prompt tweaks from feedback
+- [ ] 5.2 Phase: Canary
+  - [ ] 5.2.1 Step: Enable small % in prod; watch SLOs for 24–48h
+    - [ ] 5.2.1.1 Task: Monitor latency/error dashboards during canary
+      - [ ] 5.2.1.1.1 Sub-Task: Define rollback thresholds
+      - [ ] 5.2.1.1.2 Sub-Task: Keep kill-switch armed
+    - [ ] 5.2.1.2 Task: Decide go/no-go for ramp-up
+      - [ ] 5.2.1.2.1 Sub-Task: Document decision with metrics snapshot
+      - [ ] 5.2.1.2.2 Sub-Task: Notify stakeholders of outcome
+- [ ] 5.3 Phase: Broad enablement
+  - [ ] 5.3.1 Step: Gradual ramp; keep kill-switch ready
+    - [ ] 5.3.1.1 Task: Increase rollout % in steps
+      - [ ] 5.3.1.1.1 Sub-Task: Track impact after each increment
+      - [ ] 5.3.1.1.2 Sub-Task: Pause/ramp based on SLOs
+    - [ ] 5.3.1.2 Task: Set final default-on flag when stable
+      - [ ] 5.3.1.2.1 Sub-Task: Remove temporary feature flags if safe
+      - [ ] 5.3.1.2.2 Sub-Task: Publish release note and handoff to Ops

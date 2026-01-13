@@ -3,6 +3,8 @@ import './AlertList.css';
 import React from 'react';
 
 import { AlertConfig } from '../../types/AlertTypes';
+import ProvenanceBadges from '../verification/ProvenanceBadges';
+import { withProvenanceDefaults } from '../../utils/provenanceDefaults';
 
 interface AlertListProps {
   alerts: AlertConfig[];
@@ -136,6 +138,10 @@ const AlertList: React.FC<AlertListProps> = ({
                   🗑️
                 </button>
               </div>
+            </div>
+
+            <div className="alert-provenance-row">
+              <ProvenanceBadges provenance={withProvenanceDefaults(alert.provenance || { anchorStatus: 'not-requested', relayIds: [] })} compact />
             </div>
 
             {alert.description && (

@@ -1,0 +1,281 @@
+# Integration Readiness Progress Tracker
+
+Legend: [ ] = not started, [~] = in progress, [x] = done
+
+- [ ] 1.0 Stage: Foundation
+  - [ ] 1.1 Phase: Ingestion Stability
+    - [ ] 1.1.1 Step: Restore fetch wiring
+      - [x] 1.1.1.1 Task: Replace missing fetchFeed_new import with working fetchFeed implementation
+              - [x] 1.1.1.1.a Subtask: Locate existing fetch utility and update controller import
+              - [ ] 1.1.1.1.b Subtask: Run type check and build to confirm no regressions
+              - [ ] 1.1.1.1.c Subtask: Document the change in progress tracker notes
+            - [x] 1.1.1.2 Task: Add smoke test for sample feeds (XML/JSON/TXT)
+              - [x] 1.1.1.2.a Subtask: Create fixtures for XML, JSON, and TXT feeds
+              - [x] 1.1.1.2.b Subtask: Write test harness invoking fetch with mock responses
+              - [x] 1.1.1.2.c Subtask: Assert parsed item counts and required fields
+    - [ ] 1.1.2 Step: Cache and validation
+      - [ ] 1.1.2.1 Task: Verify cache TTL enforcement and eviction
+        - [ ] 1.1.2.1.a Subtask: Add test that waits past TTL and expects cache miss
+        - [ ] 1.1.2.1.b Subtask: Ensure manual cache clear works via API
+        - [ ] 1.1.2.1.c Subtask: Capture cache status in diagnostics panel
+      - [ ] 1.1.2.2 Task: Validate content-type and size guards
+        - [ ] 1.1.2.2.a Subtask: Add fixtures exceeding size limit to confirm rejection
+        - [ ] 1.1.2.2.b Subtask: Test HTML masquerading as feed and ensure block
+        - [ ] 1.1.2.2.c Subtask: Log structured errors without payload leakage
+  - [ ] 1.2 Phase: Provenance Fields
+    - [ ] 1.2.1 Step: Schema extension
+      - [x] 1.2.1.1 Task: Add provenance bundle fields (hash, cid, signatures[], chainRef, relayIds) to intel/alerts
+        - [x] 1.2.1.1.a Subtask: Update TypeScript types and runtime models
+        - [x] 1.2.1.1.b Subtask: Ensure serialization includes new fields with defaults
+        - [x] 1.2.1.1.c Subtask: Add migration note for stored data/backward compatibility
+      - [x] 1.2.1.2 Task: Add provenanceVersion and modelVerdicts placeholders
+        - [x] 1.2.1.2.a Subtask: Define version constant and default value
+        - [x] 1.2.1.2.b Subtask: Extend UI detail view to show modelVerdicts stub
+        - [x] 1.2.1.2.c Subtask: Add tests to ensure fields remain optional
+    - [ ] 1.2.2 Step: UI surfacing
+      - [x] 1.2.2.1 Task: Render trust badges (signed/anchored/CID/relay origin) with stub data
+        - [x] 1.2.2.1.a Subtask: Create badge component with prop-driven states
+        - [x] 1.2.2.1.b Subtask: Add tooltip copy explaining each state
+        - [x] 1.2.2.1.c Subtask: Snapshot test badge variants
+      - [x] 1.2.2.2 Task: Add provenance detail panel with graceful empty states
+        - [x] 1.2.2.2.a Subtask: Render table/accordion of provenance fields
+        - [x] 1.2.2.2.b Subtask: Handle missing fields with “not provided” labels
+        - [x] 1.2.2.2.c Subtask: Wire mock provenance data to the panel
+      - [x] 1.2.2.3 Task: Surface provenance badges in alerts list with coverage
+        - [x] 1.2.2.3.a Subtask: Render badges using alert provenance bundle
+        - [x] 1.2.2.3.b Subtask: Add tests asserting badge presence and neutral fallback
+      - [x] 1.2.2.4 Task: Surface provenance badges in alert notifications with coverage
+        - [x] 1.2.2.4.a Subtask: Render badges in notification panel feed item
+        - [x] 1.2.2.4.b Subtask: Add test with mocked hook ensuring badge renders
+      - [x] 1.2.2.5 Task: Surface provenance badges in intelligence browse view with coverage
+        - [x] 1.2.2.5.a Subtask: Render badges on intelligence cards using defaulted provenance bundles
+        - [x] 1.2.2.5.b Subtask: Add RTL test validating anchor/signature/relay/CID badges
+      - [x] 1.2.2.6 Task: Expose provenance detail panel in intelligence browse view
+        - [x] 1.2.2.6.a Subtask: Render ProvenanceDetailPanel per intelligence card with defaults
+        - [x] 1.2.2.6.b Subtask: Add test ensuring detail panel renders alongside badges
+      - [x] 1.2.2.7 Task: Add provenance coverage for feed items
+        - [x] 1.2.2.7.a Subtask: Use shared fixtures to render feed provenance badges/panel
+        - [x] 1.2.2.7.b Subtask: Test pending anchor state on feed items
+        - [x] 1.2.2.7.c Subtask: Test missing CID and multi-relay variants in feed provenance detail
+
+- [ ] 2.0 Stage: Abstractions
+  - [ ] 2.1 Phase: Signer Provider
+    - [ ] 2.1.1 Step: Interface
+      - [x] 2.1.1.1 Task: Define SignerProvider (sign/verify/getPublicKey/metadata)
+        - [x] 2.1.1.1.a Subtask: Write TypeScript interface with typed signatures
+        - [ ] 2.1.1.1.b Subtask: Document expected error shapes and metadata fields
+        - [x] 2.1.1.1.c Subtask: Export minimal helper types (Signature, PublicKeyRef)
+      - [x] 2.1.1.2 Task: Add unit tests for interface contract (mock backend)
+        - [x] 2.1.1.2.a Subtask: Create mock signer returning deterministic outputs
+        - [x] 2.1.1.2.b Subtask: Test success and failure verification cases
+        - [x] 2.1.1.2.c Subtask: Assert metadata presence (scheme, algo, version)
+    - [ ] 2.1.2 Step: Implementations
+      - [ ] 2.1.2.1 Task: EVM backend (ethers) wrapped by interface
+        - [ ] 2.1.2.1.a Subtask: Adapt existing Web3Context signer to interface
+        - [ ] 2.1.2.1.b Subtask: Handle provider-not-found errors gracefully
+        - [ ] 2.1.2.1.c Subtask: Add small integration test in mock environment
+      - [ ] 2.1.2.2 Task: Mock PQC backend returning deterministic signatures
+        - [ ] 2.1.2.2.a Subtask: Implement deterministic sign/verify with fixed keys
+        - [ ] 2.1.2.2.b Subtask: Simulate larger key sizes to test UI truncation
+        - [ ] 2.1.2.2.c Subtask: Document swap steps for real PQC provider later
+  - [ ] 2.2 Phase: Relay Client
+    - [ ] 2.2.1 Step: Interface
+      - [x] 2.2.1.1 Task: Define RelayClient (publish/subscribe/health)
+        - [x] 2.2.1.1.a Subtask: Specify event shape and filter signature
+        - [x] 2.2.1.1.b Subtask: Define health response structure with status codes
+        - [x] 2.2.1.1.c Subtask: Document retry/backoff expectations
+      - [ ] 2.2.1.2 Task: Contract tests with in-memory stub
+        - [x] 2.2.1.2.a Subtask: Publish/subscribe round-trip test
+        - [x] 2.2.1.2.b Subtask: Filtered subscription test (topic/category)
+        - [x] 2.2.1.2.c Subtask: Health degradation simulation test
+    - [ ] 2.2.2 Step: Stub implementation
+      - [ ] 2.2.2.1 Task: In-memory event bus for dev/mock
+        - [x] 2.2.2.1.a Subtask: Implement publish queue and subscriber registry
+        - [x] 2.2.2.1.b Subtask: Add basic backpressure or drop policy option
+        - [x] 2.2.2.1.c Subtask: Log emitted events for diagnostics (toggleable)
+      - [ ] 2.2.2.2 Task: Health reporting and failure simulation hooks
+        - [x] 2.2.2.2.a Subtask: Expose latency and error injection toggles
+        - [x] 2.2.2.2.b Subtask: Record last error and uptime in health payload
+        - [x] 2.2.2.2.c Subtask: Add test covering simulated downtime recovery
+        - [x] 2.2.2.2.d Subtask: Implement retry/backoff with health nextRetry indicator
+  - [ ] 2.3 Phase: Anchor Client
+    - [ ] 2.3.1 Step: Interface
+      - [x] 2.3.1.1 Task: Define AnchorClient (anchor/get)
+        - [x] 2.3.1.1.a Subtask: Specify request/response types and status enum
+        - [ ] 2.3.1.1.b Subtask: Document error semantics and retry guidance
+        - [x] 2.3.1.1.c Subtask: Include chain identifier and txRef formats
+      - [ ] 2.3.1.2 Task: Contract tests with mock responses (pending/confirmed/failed)
+        - [x] 2.3.1.2.a Subtask: Test anchor() happy path to pending
+        - [x] 2.3.1.2.b Subtask: Test get() transitioning to confirmed/failed
+          - [x] 2.3.1.2.c Subtask: Test invalid txRef handling
+    - [ ] 2.3.2 Step: Stub implementation
+      - [ ] 2.3.2.1 Task: Mock anchoring that returns txRef and transitions status
+        - [x] 2.3.2.1.a Subtask: Generate deterministic txRef for tests
+        - [x] 2.3.2.1.b Subtask: Add timer-based status transition simulation
+        - [x] 2.3.2.1.c Subtask: Log anchor attempts with redacted payloads
+      - [ ] 2.3.2.2 Task: Config flag for mock vs real (future) mode
+        - [x] 2.3.2.2.a Subtask: Add env + UI toggle for anchoring backend
+        - [x] 2.3.2.2.b Subtask: Disable real mode unless explicitly set
+        - [x] 2.3.2.2.c Subtask: Document fallback order when flag absent
+        - [x] 2.3.2.2.d Subtask: Runtime selection with fallback to mock when real unavailable
+
+- [ ] 3.0 Stage: Configuration and Security
+  - [ ] 3.1 Phase: Config Matrix Implementation
+    - [ ] 3.1.1 Step: Centralize config
+      - [x] 3.1.1.1 Task: Add config module covering relay/IPFS/PQC/anchoring/logging flags
+        - [x] 3.1.1.1.a Subtask: Define typed config object with safe defaults
+        - [x] 3.1.1.1.b Subtask: Implement env loader with validation
+        - [x] 3.1.1.1.c Subtask: Add unit tests for config parsing
+      - [x] 3.1.1.2 Task: Apply precedence (defaults → env → user prefs)
+        - [x] 3.1.1.2.a Subtask: Document precedence rules in code comments
+        - [x] 3.1.1.2.b Subtask: Add test cases exercising override order
+        - [x] 3.1.1.2.c Subtask: Ensure sensitive keys ignore user overrides
+    - [ ] 3.1.2 Step: UI exposure
+      - [x] 3.1.2.1 Task: Add settings toggles for relay, anchoring, PQC, IPFS pinning, diagnostics
+        - [x] 3.1.2.1.a Subtask: Add UI controls with descriptions and safe defaults
+        - [x] 3.1.2.1.b Subtask: Persist toggles respecting sensitive/secrets boundaries
+        - [x] 3.1.2.1.c Subtask: Add telemetry event when toggles change (redacted)
+        - [x] 3.1.2.1.d Subtask: Add UI test coverage for telemetry + warnings
+      - [x] 3.1.2.2 Task: Add config summary/debug panel
+        - [x] 3.1.2.2.a Subtask: Display active endpoints, modes, and flags
+        - [x] 3.1.2.2.b Subtask: Include copy-to-clipboard for diagnostics (no secrets)
+        - [x] 3.1.2.2.c Subtask: Add warning indicators for risky configs
+        - [x] 3.1.2.2.d Subtask: Add prompt-based copy fallback when clipboard unavailable/denied (tested)
+      - [x] 3.1.2.3 Task: Wire settings toggles into runtime
+        - [x] 3.1.2.3.a Subtask: Relay runtime uses noop when disabled and logs when diagnostics enabled
+        - [x] 3.1.2.3.b Subtask: Anchor client resolution respects anchoring toggle (falls back to mock with reason)
+        - [x] 3.1.2.3.c Subtask: Diagnostics toggle tunes logger verbosity/console output
+        - [x] 3.1.2.4 Task: Wire intelligence publish to runtime relay/anchor
+          - [x] 3.1.2.4.a Subtask: Broadcast publish events through runtime relay client when enabled
+          - [x] 3.1.2.4.b Subtask: Anchor published metadata via runtime anchor client when enabled
+          - [x] 3.1.2.4.c Subtask: Surface disabled/failed relay/anchor states in publish UI messaging
+        - [x] 3.1.2.5 Task: Route RealTimeService through runtime relay client
+          - [x] 3.1.2.5.a Subtask: Subscribe via relay client with health propagation
+          - [x] 3.1.2.5.b Subtask: Publish fallback prefers relay, degrades to WebSocket with warnings
+          - [x] 3.1.2.5.c Subtask: Disabled relay state surfaces synthetic health update and skips subscription
+  - [ ] 3.2 Phase: Security Hardening
+    - [ ] 3.2.1 Step: Ingestion safety
+      - [ ] 3.2.1.1 Task: Enforce allowed domains and size limits
+        - [x] 3.2.1.1.a Subtask: Add allowlist config and validation hook
+        - [x] 3.2.1.1.b Subtask: Reject oversize responses early with clear errors
+          - [x] 3.2.1.1.c Subtask: Add tests for blocked domains and large payloads
+      - [ ] 3.2.1.2 Task: Harden HTML/DOM parsing and sanitization
+          - [x] 3.2.1.2.a Subtask: Integrate sanitization or safe parsing mode
+          - [x] 3.2.1.2.b Subtask: Add test for script/style stripping
+          - [x] 3.2.1.2.c Subtask: Document rendering rules for untrusted HTML (sanitize removes script/style/iframe/embed/object, refresh/preload tags, and inline javascript/data URLs before parsing)
+    - [ ] 3.2.2 Step: Supply chain and logging
+        - [ ] 3.2.2.1 Task: Run dependency audits and address highs
+          - [x] 3.2.2.1.a Subtask: Execute npm audit/knip/unimported tasks (npm audit: 27 vulns; critical jsPDF<=3.0.4; high qs via @cypress/request, react-router/dom<=6.30.2; hardhat/ethers chain upgrades gated on toolbox major; Node 18 triggers engine warnings for @nomicfoundation/edr)
+          - [x] 3.2.2.1.b Subtask: Triage findings and patch or pin as needed (patched jsPDF->4.x, react-router-dom->6.30.3 with router override, forced qs>=6.14.1; remaining: 21 low severities in hardhat/ethers/toolbox chain pending Node 20/toolbox major migration)
+          - [x] 3.2.2.1.c Subtask: Record outcomes in SECURITY notes (documented in docs/implementation/SECURITY_ACCESS_CONTROL.md dependency posture section)
+        - [x] 3.2.2.2 Task: Ensure structured/redacted logging for ingest and provenance
+          - [x] 3.2.2.2.a Subtask: Standardize log schema (level, code, context)
+          - [x] 3.2.2.2.b Subtask: Remove payload dumps; keep hashes/ids only (ingest logs now use digest + length)
+          - [x] 3.2.2.2.c Subtask: Add tests ensuring redaction in error paths
+
+- [x] 4.0 Stage: Testing
+  - [x] 4.1 Phase: Fixtures and Smoke Tests
+    - [ ] 4.1.1 Step: Feed fixtures
+      - [x] 4.1.1.1 Task: Add XML/JSON/TXT fixtures including edge cases
+        - [x] 4.1.1.1.a Subtask: Create fixtures with missing fields and unexpected tags
+        - [x] 4.1.1.1.b Subtask: Add oversized fixture for negative testing
+        - [x] 4.1.1.1.c Subtask: Store fixtures under test resources with docs (tests/fixtures/feeds/* and docs/testing/feed-fixtures.md)
+        - [x] 4.1.1.2 Task: Smoke test ingest → normalized items
+          - [x] 4.1.1.2.a Subtask: Assert required fields (id, title, link, timestamp) (fetchFeed smoke tests cover XML/JSON/TXT fixtures)
+          - [x] 4.1.1.2.b Subtask: Validate category/priority defaults when absent (missing links/defaults verified; categories default array checked)
+          - [x] 4.1.1.2.c Subtask: Ensure no thrown errors for benign anomalies (fixtures include missing fields/unexpected tags; smoke tests pass)
+    - [x] 4.1.2 Step: Provenance fixtures
+      - [x] 4.1.2.1 Task: Signed/unsigned, anchored/unanchored fixture sets
+        - [x] 4.1.2.1.a Subtask: Build fixtures covering mixed schemes (EVM/PQC mock)
+        - [x] 4.1.2.1.b Subtask: Include chainRef pending/failed variants
+        - [x] 4.1.2.1.c Subtask: Note provenanceVersion in fixtures for compatibility
+        - [x] 4.1.2.1.d Subtask: Add shared provenance fixture helper for UI tests
+        - [x] 4.1.2.1.e Subtask: Add missing-CID and multi-relay fixture variants
+      - [x] 4.1.2.2 Task: UI badge snapshot tests
+        - [x] 4.1.2.2.a Subtask: Render all badge states and capture snapshots
+        - [x] 4.1.2.2.b Subtask: Verify tooltips include scheme/algo text
+        - [x] 4.1.2.2.c Subtask: Add accessibility check for badge labels
+  - [x] 4.2 Phase: Contract Tests
+    - [x] 4.2.1 Step: Signer/Relay/Anchor contracts
+      - [x] 4.2.1.1 Task: Contract tests for SignerProvider backends
+        - [x] 4.2.1.1.a Subtask: Validate success path for sign/verify
+        - [x] 4.2.1.1.b Subtask: Validate failure path for tampered payload
+        - [x] 4.2.1.1.c Subtask: Assert metadata correctness per backend
+      - [x] 4.2.1.2 Task: Contract tests for RelayClient stub health/publish/subscribe
+        - [x] 4.2.1.2.a Subtask: Publish then receive on subscribed topic
+        - [x] 4.2.1.2.b Subtask: Health returns degraded when error injected
+        - [x] 4.2.1.2.c Subtask: Unsubscribe behavior test
+      - [x] 4.2.1.3 Task: Contract tests for AnchorClient mock status transitions
+        - [x] 4.2.1.3.a Subtask: Pending → confirmed transition test
+        - [x] 4.2.1.3.b Subtask: Pending → failed transition test
+        - [x] 4.2.1.3.c Subtask: Unknown txRef returns error test
+    - [x] 4.2.2 Step: Canonicalization
+        - [x] 4.2.2.1 Task: Hashing canonicalization tests for provenance bundle
+          - [x] 4.2.2.1.a Subtask: Ensure field order independence where specified
+          - [x] 4.2.2.1.b Subtask: Exclude volatile fields from hash scope tests
+          - [x] 4.2.2.1.c Subtask: Compare hash outputs against golden vectors
+        - [x] 4.2.2.2 Task: Serialization round-trip tests for intel + provenance
+          - [x] 4.2.2.2.a Subtask: Marshal/unmarshal and compare deep equality
+          - [x] 4.2.2.2.b Subtask: Verify optional fields survive round-trip when set
+          - [x] 4.2.2.2.c Subtask: Confirm absence of fields doesn’t break parsing
+
+- [ ] 5.0 Stage: UX and Observability
+  - [ ] 5.1 Phase: Trust UX
+    - [ ] 5.1.1 Step: Badges and panels
+      - [ ] 5.1.1.1 Task: Badge states for signed/anchored/CID/relay origin with tooltips
+        - [ ] 5.1.1.1.a Subtask: Map provenance bundle to badge props
+        - [ ] 5.1.1.1.b Subtask: Add hover/focus interactions for accessibility
+        - [ ] 5.1.1.1.c Subtask: Style badges for compact and dense modes
+      - [ ] 5.1.1.2 Task: Provenance detail drawer with stub data
+        - [ ] 5.1.1.2.a Subtask: Add section for signatures with scheme/algo
+        - [ ] 5.1.1.2.b Subtask: Add section for chainRef status and txRef link (mock)
+        - [ ] 5.1.1.2.c Subtask: Add section for relayIds and modelVerdicts
+    - [~] 5.1.2 Step: Degradation states
+        - [~] 5.1.2.1 Task: Offline/mock relay/anchor messaging in UI
+          - [x] 5.1.2.1.a Subtask: Detect mock mode from config and display banner
+          - [ ] 5.1.2.1.b Subtask: Provide CTA to switch to real mode when available
+          - [ ] 5.1.2.1.c Subtask: Ensure banner is dismissible and persists choice
+      - [ ] 5.1.2.2 Task: Empty/proof-missing states with guidance
+        - [ ] 5.1.2.2.a Subtask: Add copy for missing signature explaining next steps
+        - [ ] 5.1.2.2.b Subtask: Add copy for not anchored with recommended action
+        - [ ] 5.1.2.2.c Subtask: Ensure states are visually distinct from errors
+  - [ ] 5.2 Phase: Diagnostics and Telemetry
+    - [ ] 5.2.1 Step: Diagnostics panel
+      - [ ] 5.2.1.1 Task: Show relay/anchor health, signer backend, config mode
+        - [ ] 5.2.1.1.a Subtask: Add health fetch hook tied to Relay/Anchor clients
+        - [ ] 5.2.1.1.b Subtask: Color/status indicators for ok/degraded/down
+        - [ ] 5.2.1.1.c Subtask: Include timestamp of last health check
+      - [ ] 5.2.1.2 Task: Toggle verbose logs/traces via UI in dev
+        - [ ] 5.2.1.2.a Subtask: Add toggle bound to config/log level
+        - [ ] 5.2.1.2.b Subtask: Ensure toggle gated to dev/demo modes
+        - [ ] 5.2.1.2.c Subtask: Confirm logs redact payloads even in verbose
+    - [ ] 5.2.2 Step: Logging hooks
+      - [ ] 5.2.2.1 Task: Emit structured events for publish/anchor/sign flows (redacted)
+        - [ ] 5.2.2.1.a Subtask: Define event schema (code, component, ids)
+        - [ ] 5.2.2.1.b Subtask: Add correlation id support for tracing
+        - [ ] 5.2.2.1.c Subtask: Verify no raw payloads emitted
+      - [ ] 5.2.2.2 Task: Add counters/metrics placeholders for future backend export
+        - [ ] 5.2.2.2.a Subtask: Track counts for publish/anchor/sign successes/failures
+        - [ ] 5.2.2.2.b Subtask: Store metrics in memory for now with reset option
+        - [ ] 5.2.2.2.c Subtask: Document planned export targets (logs, OTEL)
+
+- [ ] 6.0 Stage: Checkpoints
+  - [ ] 6.1 Phase: Assumptions Review
+    - [ ] 6.1.1 Step: Update assumptions-and-open-questions with latest inputs
+      - [ ] 6.1.1.1 Task: Capture relay protocol decisions (once known)
+        - [ ] 6.1.1.1.a Subtask: Record chosen protocol, envelope format, auth model
+        - [ ] 6.1.1.1.b Subtask: Update integration-surfaces with concrete details
+        - [ ] 6.1.1.1.c Subtask: Note migration plan from mock to real client
+      - [ ] 6.1.1.2 Task: Capture QAN anchoring format decisions (once known)
+        - [ ] 6.1.1.2.a Subtask: Document hash canonicalization required for QAN
+        - [ ] 6.1.1.2.b Subtask: Record fee/throughput expectations
+        - [ ] 6.1.1.2.c Subtask: Update AnchorClient implementation plan
+    - [ ] 6.1.2 Step: Freeze interfaces
+      - [ ] 6.1.2.1 Task: Tag interface versions before wiring real relays/anchors
+        - [ ] 6.1.2.1.a Subtask: Create git tag or doc version for interfaces
+        - [ ] 6.1.2.1.b Subtask: Snapshot contract tests at tag
+        - [ ] 6.1.2.1.c Subtask: Communicate freeze to integrators
+      - [ ] 6.1.2.2 Task: Document migration notes if breaking changes are required
+        - [ ] 6.1.2.2.a Subtask: Outline breaking changes and rationale
+        - [ ] 6.1.2.2.b Subtask: Provide upgrade steps and timelines
+        - [ ] 6.1.2.2.c Subtask: Add compatibility shim plan if feasible

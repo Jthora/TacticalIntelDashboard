@@ -114,6 +114,18 @@
   line-height: 1.5;
 }
 
+.intel-provenance-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 10px;
+}
+
+.intel-provenance-detail {
+  margin: 6px 0 12px;
+}
+
 .intel-item-footer {
   display: flex;
   flex-direction: column;

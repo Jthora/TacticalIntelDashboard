@@ -3,6 +3,8 @@ import { BrowserProvider, Contract, ethers } from 'ethers';
 import { IPFSHTTPClient } from 'ipfs-http-client';
 import { nanoid } from 'nanoid';
 
+import { ProvenanceBundle } from '../../types/Provenance';
+
 // Contract addresses and ABIs would be imported from configuration
 // For now, we'll define placeholder values
 const INTEL_VERIFICATION_ADDRESS = '0x1234567890123456789012345678901234567890';
@@ -42,6 +44,7 @@ export interface IntelligenceItem {
   content?: string; // Decrypted content (if available)
   category?: string;
   sensitivity?: 'low' | 'medium' | 'high' | 'critical';
+  provenance?: ProvenanceBundle;
 }
 
 // Interface for intelligence vote

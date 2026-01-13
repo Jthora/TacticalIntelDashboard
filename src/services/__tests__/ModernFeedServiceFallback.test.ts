@@ -28,7 +28,7 @@ describe('ModernFeedService fallback handling', () => {
       summary: 'Summary of OCCRP investigation.',
       url: 'https://www.occrp.org/en/investigation/sample',
       publishedAt: new Date(),
-      source: 'OCCRP Investigations',
+      source: 'OCCRP Cross-Border Investigations',
       category: 'investigative',
       tags: ['investigative', 'occrp'],
       priority: 'high',

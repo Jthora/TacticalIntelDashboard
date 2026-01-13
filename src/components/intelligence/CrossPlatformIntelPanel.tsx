@@ -5,8 +5,9 @@ import '../../assets/styles/components/cross-platform-intel-panel.css';
 import React, {useState } from 'react';
 
 import { useIPFS } from '../../contexts/IPFSContext';
+import { useSettings } from '../../contexts/SettingsContext';
 import { useWeb3 } from '../../contexts/Web3Context';
-import { TIDIntelligenceFormat,useIntelligenceBridge } from '../../services/IntelligenceBridge';
+import { PublishResult, TIDIntelligenceFormat, useIntelligenceBridge } from '../../services/IntelligenceBridge';
 
 interface CrossPlatformIntelPanelProps {
   onIntelligencePublished?: (metadataHash: string) => void;
@@ -17,6 +18,7 @@ const CrossPlatformIntelPanel: React.FC<CrossPlatformIntelPanelProps> = ({
 }) => {
   const { isConnected: isWeb3Connected, walletAddress } = useWeb3();
   const { isConnected: isIPFSConnected } = useIPFS();
+  const { settings } = useSettings();
   const bridge = useIntelligenceBridge();
 
   // Form state
@@ -44,6 +46,41 @@ const CrossPlatformIntelPanel: React.FC<CrossPlatformIntelPanelProps> = ({
   const [retrievalStatus, setRetrievalStatus] = useState('');
 
   const isReady = bridge.isReady;
+
+  const formatPublishStatus = (outcome: PublishResult): string => {
+    const parts = [`✅ Published successfully! Hash: ${outcome.metadataHash}`];
+
+    if (outcome.relay) {
+      if (outcome.relay.disabled) {
+        parts.push('Relay disabled: broadcast skipped');
+      } else if (outcome.relay.ack?.status === 'ok') {
+        parts.push('Relay broadcast queued');
+      } else if (outcome.relay.error) {
+        parts.push(`Relay error: ${outcome.relay.error}`);
+      } else {
+        parts.push('Relay unavailable');
+      }
+    }
+
+    if (outcome.anchor) {
+      const resolution = outcome.anchor.resolution;
+      if (outcome.anchor.disabled || resolution?.reason === 'anchoring-disabled-by-settings') {
+        parts.push('Anchoring disabled: metadata not anchored');
+      } else if (outcome.anchor.record) {
+        parts.push(`Anchoring ${outcome.anchor.record.status} on ${outcome.anchor.record.chain}`);
+      } else if (outcome.anchor.error) {
+        parts.push(`Anchoring error: ${outcome.anchor.error}`);
+      } else if (resolution?.mode === 'mock') {
+        parts.push('Anchoring via mock backend');
+      }
+    }
+
+    if (outcome.provenance?.relayIds?.length) {
+      parts.push(`Relay IDs: ${outcome.provenance.relayIds.join(', ')}`);
+    }
+
+    return parts.join(' | ');
+  };
 
   const handlePublish = async () => {
     if (!isReady) {
@@ -79,17 +116,17 @@ const CrossPlatformIntelPanel: React.FC<CrossPlatformIntelPanelProps> = ({
       };
 
       // Publish to IPFS with both formats
-      const metadataHash = await bridge.publishIntelligence(tidIntel, {
+      const publishOutcome = await bridge.publishIntelligence(tidIntel, {
         encrypt,
         accessLevel,
         pinToMultipleServices: true
       });
 
-      setLastPublishedHash(metadataHash);
-      setPublishStatus(`✅ Published successfully! Hash: ${metadataHash}`);
+      setLastPublishedHash(publishOutcome.metadataHash);
+      setPublishStatus(formatPublishStatus(publishOutcome));
       
       if (onIntelligencePublished) {
-        onIntelligencePublished(metadataHash);
+        onIntelligencePublished(publishOutcome.metadataHash);
       }
 
       // Clear form
@@ -147,6 +184,21 @@ const CrossPlatformIntelPanel: React.FC<CrossPlatformIntelPanelProps> = ({
             {isReady ? '🟢' : '🔴'} Bridge: {isReady ? 'Ready' : 'Not Ready'}
           </div>
         </div>
+
+        {(() => {
+          const warnings: string[] = [];
+          if (!settings.infrastructure.relayEnabled) {
+            warnings.push('Relay disabled: broadcasts stay local');
+          }
+          if (!settings.infrastructure.anchoringEnabled) {
+            warnings.push('Anchoring disabled: publishes not anchored');
+          }
+          return warnings.length ? (
+            <div className="status-message warning">
+              {warnings.join(' | ')}
+            </div>
+          ) : null;
+        })()}
       </div>
 
       <div className="panel-content">

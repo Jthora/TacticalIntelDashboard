@@ -3,6 +3,12 @@
 ## Overview
 This guide details the security architecture and access control implementation for the Tactical Intelligence Dashboard, ensuring secure handling of classified information while maintaining operational efficiency.
 
+### Dependency Security Posture (2026-01-12)
+- jsPDF upgraded to 4.x to resolve CVE (LFI/path traversal in <=3.0.4)
+- react-router / react-router-dom upgraded to 6.30.3 to address redirect/XSS advisories
+- qs forced to >=6.14.1 via overrides to mitigate DoS advisory
+- Remaining: 21 low-severity findings in hardhat/ethers/toolbox chain; remediation requires Node >=20 and toolbox major bump (pending); engine warnings for @nomicfoundation/edr on Node 18 noted
+
 ## Security Architecture Overview
 
 ### 1. Multi-layered Security Model

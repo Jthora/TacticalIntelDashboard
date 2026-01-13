@@ -1,3 +1,4 @@
+import { ProvenanceBundle } from './Provenance';
 // Alert Type Definitions for the Tactical Intel Dashboard
 
 export interface AlertConfig {
@@ -13,6 +14,7 @@ export interface AlertConfig {
   createdAt: Date;
   lastTriggered?: Date;
   triggerCount: number;
+  provenance?: ProvenanceBundle;
 }
 
 export type AlertPriority = 'low' | 'medium' | 'high' | 'critical';
@@ -46,6 +48,7 @@ export interface AlertTrigger {
     link: string;
     source: string;
     pubDate: string;
+    provenance?: ProvenanceBundle;
   };
   matchedKeywords: string[];
   priority: AlertPriority;

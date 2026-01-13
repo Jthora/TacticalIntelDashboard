@@ -4,6 +4,8 @@
  * Generated on: 2025-07-11
  */
 
+import { ProvenanceBundle } from './Provenance';
+
 // Intelligence categories based on collection discipline
 export type IntelligenceCategory = 
   | 'OSINT'      // Open Source Intelligence
@@ -103,6 +105,9 @@ export interface IntelligenceItem {
     categories?: string[];
     media?: { url: string, type: string }[];
   };
+
+  // Provenance and trust metadata
+  provenance?: ProvenanceBundle;
 }
 
 // Tactical intelligence source definition
@@ -168,6 +173,9 @@ export interface IntelligenceAlert {
     location?: GeographicLocation;
     relatedAlerts?: string[];
   };
+
+  // Provenance for the alert itself (e.g., anchoring, signatures)
+  provenance?: ProvenanceBundle;
 }
 
 // Threat assessment data

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { featureFlags } from '../../config/featureFlags';
 import { useWeb3 } from '../../contexts/Web3Context';
 
 /**
@@ -12,6 +13,10 @@ import { useWeb3 } from '../../contexts/Web3Context';
 const Web3Button: React.FC = () => {
   const navigate = useNavigate();
   const { isConnected, walletAddress, networkName, ensName } = useWeb3();
+
+  if (!featureFlags.web3Login) {
+    return null;
+  }
 
   const handleClick = () => {
     navigate('/profile');

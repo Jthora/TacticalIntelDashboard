@@ -7,6 +7,16 @@ export interface FeedUrlValidationOptions {
    * where individual articles are expected.
    */
   allowArticlePatternsForInvestigativeHosts?: boolean;
+  /**
+   * Optional list of normalized hostnames that are allowed. When provided, any
+   * URL whose hostname (minus www) is not in the list will be rejected.
+   */
+  allowedHosts?: string[];
+  /**
+   * When true, rejects hostnames that resolve to private network shortcuts
+   * (localhost, 127.x, 10.x, 192.168.x, 172.16-31.x).
+   */
+  blockPrivateNetworks?: boolean;
 }
 
 const FEED_INDICATORS = [
@@ -64,12 +74,43 @@ function isInvestigativeArticleHost(url: string): boolean {
   return Boolean(hostname && INVESTIGATIVE_ARTICLE_HOSTNAMES.has(hostname));
 }
 
+function isPrivateOrLoopback(hostname: string | null): boolean {
+  if (!hostname) return true;
+  if (hostname === 'localhost') return true;
+  if (hostname.startsWith('127.')) return true;
+  if (hostname.startsWith('10.')) return true;
+  if (hostname.startsWith('192.168.')) return true;
+  const octets = hostname.split('.');
+  if (octets.length >= 2) {
+    const first = Number(octets[0]);
+    const second = Number(octets[1]);
+    if (first === 172 && second >= 16 && second <= 31) return true;
+  }
+  return false;
+}
+
 export const isValidFeedURL = (
   url: string,
-  { allowArticlePatternsForInvestigativeHosts = true }: FeedUrlValidationOptions = {}
+  {
+    allowArticlePatternsForInvestigativeHosts = true,
+    allowedHosts,
+    blockPrivateNetworks = true
+  }: FeedUrlValidationOptions = {}
 ): boolean => {
   if (!url || typeof url !== 'string') {
     return false;
+  }
+
+  const hostname = extractNormalizedHostname(url);
+
+  if (blockPrivateNetworks && isPrivateOrLoopback(hostname)) {
+    return false;
+  }
+
+  if (allowedHosts && allowedHosts.length > 0) {
+    if (!hostname || !allowedHosts.map(h => h.toLowerCase()).includes(hostname)) {
+      return false;
+    }
   }
 
   if (hasFeedIndicator(url)) {

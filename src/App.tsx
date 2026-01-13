@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import RouteValidator from './components/RouteValidator';
 import SearchResults from './components/SearchResults';
 import WTTPStatus from './components/WTTPStatus/WTTPStatus';
+import { featureFlags } from './config/featureFlags';
 import { FilterProvider } from './contexts/FilterContext';
 import { FeedDataProvider } from './contexts/FeedDataContext';
 import { IntelligenceProvider } from './contexts/IntelligenceContext';
@@ -27,30 +28,38 @@ const App: React.FC = () => {
     };
   }, []);
 
+  const coreProviders = (
+    <IPFSProvider>
+      <SearchProvider>
+        <FilterProvider>
+          <FeedDataProvider>
+            <MissionModeProvider>
+              <div className="App">
+                <RouteValidator />
+                <AppRoutes />
+                <SearchResults />
+                <WTTPStatus />
+              </div>
+            </MissionModeProvider>
+          </FeedDataProvider>
+        </FilterProvider>
+      </SearchProvider>
+    </IPFSProvider>
+  );
+
   return (
     <Router>
       <StatusMessageProvider>
         <SettingsProvider>
           <ThemeProvider>
             <IntelligenceProvider>
-              <Web3Provider>
-                <IPFSProvider>
-                  <SearchProvider>
-                    <FilterProvider>
-                      <FeedDataProvider>
-                        <MissionModeProvider>
-                          <div className="App">
-                            <RouteValidator />
-                            <AppRoutes />
-                            <SearchResults />
-                            <WTTPStatus />
-                          </div>
-                        </MissionModeProvider>
-                      </FeedDataProvider>
-                    </FilterProvider>
-                  </SearchProvider>
-                </IPFSProvider>
-              </Web3Provider>
+              {featureFlags.web3Login ? (
+                <Web3Provider>
+                  {coreProviders}
+                </Web3Provider>
+              ) : (
+                coreProviders
+              )}
             </IntelligenceProvider>
           </ThemeProvider>
         </SettingsProvider>

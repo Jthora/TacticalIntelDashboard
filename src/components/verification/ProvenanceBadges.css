@@ -1,0 +1,12 @@
+.prov-badges { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.prov-badges.compact { gap:6px; }
+
+.prov-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border-radius:999px; border:1px solid var(--feed-divider, rgba(0,255,170,0.2)); background: var(--glass-panel-bg, rgba(6,14,28,0.85)); color: var(--text-primary, #e8f3ff); font-size: var(--font-size-xs, 12px); font-weight:600; letter-spacing:0.2px; }
+.prov-badge .prov-label { text-transform: uppercase; }
+.prov-badge .prov-detail { color: var(--text-secondary, #9cb3c9); font-weight:600; font-size: 11px; }
+.prov-badge .prov-dot { width:8px; height:8px; border-radius:50%; background: currentColor; opacity:0.85; }
+
+.prov-badge.positive { background: rgba(0,255,170,0.14); border-color: rgba(0,255,170,0.4); color: var(--accent-cyan, #00ffaa); }
+.prov-badge.warning { background: rgba(255,190,92,0.14); border-color: rgba(255,190,92,0.5); color: var(--accent-orange, #ffbe5c); }
+.prov-badge.neutral { background: rgba(140,160,185,0.12); border-color: rgba(140,160,185,0.3); color: var(--text-secondary, #9cb3c9); }
+.prov-badge.negative { background: rgba(255,105,97,0.14); border-color: rgba(255,105,97,0.5); color: var(--accent-red, #ff6971); }

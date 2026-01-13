@@ -1,0 +1,2 @@
+TXT story 1|https://example.com/txt/1|2026-01-12T00:00:00.000Z|Includes expected lines|Full content|author1|news,ops|https://example.com/media.jpg;image/jpeg
+TXT story missing link||2026-01-12T01:00:00.000Z|Should fall back to feed URL|No link provided|author2|ops||

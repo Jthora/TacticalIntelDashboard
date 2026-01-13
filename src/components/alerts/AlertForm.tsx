@@ -93,18 +93,22 @@ const AlertForm: React.FC<AlertFormProps> = ({
       notifications: {
         browser: formData.browserNotifications,
         sound: formData.soundNotifications,
-        soundFile: formData.soundFile || undefined,
-        email: formData.email || undefined,
-        webhook: formData.webhook || undefined,
-        customMessage: formData.customMessage || undefined
+        ...(formData.soundFile ? { soundFile: formData.soundFile } : {}),
+        ...(formData.email ? { email: formData.email } : {}),
+        ...(formData.webhook ? { webhook: formData.webhook } : {}),
+        ...(formData.customMessage ? { customMessage: formData.customMessage } : {})
       },
       
       scheduling: {
-        activeHours: formData.hasActiveHours ? {
-          start: formData.startTime,
-          end: formData.endTime
-        } : undefined,
-        activeDays: formData.activeDays.length > 0 ? formData.activeDays : undefined,
+        ...(formData.hasActiveHours
+          ? {
+              activeHours: {
+                start: formData.startTime,
+                end: formData.endTime
+              }
+            }
+          : {}),
+        ...(formData.activeDays.length > 0 ? { activeDays: formData.activeDays } : {}),
         timezone: formData.timezone
       }
     };

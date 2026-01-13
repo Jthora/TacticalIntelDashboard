@@ -4,6 +4,8 @@
  */
 
 import { log } from '../utils/LoggerService';
+import { getInfrastructureSnapshot, getRelayClient } from '../utils/infrastructureRuntime';
+import { RelayClient, RelayEvent, RelayHealth, RelaySubscription } from '../types/RelayClient';
 
 export interface RealTimeConfig {
   autoReconnect: boolean;
@@ -27,6 +29,8 @@ export class RealTimeService {
   private reconnectTimer: NodeJS.Timeout | null = null;
   private heartbeatTimer: NodeJS.Timeout | null = null;
   private eventHandlers: Map<string, RealTimeEventHandler[]> = new Map();
+  private relayClient: RelayClient | null = null;
+  private relaySubscription: RelaySubscription | null = null;
   
   private readonly config: RealTimeConfig = {
     autoReconnect: true,
@@ -50,6 +54,27 @@ export class RealTimeService {
    * Start the real-time service
    */
   start(wsUrl?: string): void {
+    const infra = getInfrastructureSnapshot();
+
+    if (!infra.relayEnabled) {
+      this.teardownRelay();
+      log.warn('RealTimeService', 'Relay disabled via settings; skipping relay/WebSocket start');
+      this.handleMessage({ type: 'health_update', data: { status: 'down', lastError: 'relay-disabled' }, timestamp: new Date() });
+      return;
+    }
+
+    if (!this.relaySubscription) {
+      try {
+        this.relayClient = getRelayClient();
+        this.relaySubscription = this.relayClient.subscribe({ types: ['feed_update', 'health_update', 'alert', 'system_update'] }, (event: RelayEvent) => {
+          this.handleRelayEvent(event);
+        });
+        this.emitRelayHealth();
+      } catch (error) {
+        log.warn('RealTimeService', 'Failed to subscribe to relay client', { error });
+      }
+    }
+
     if (this.ws?.readyState === WebSocket.OPEN) {
       log.warn('RealTimeService', 'Service already started');
       return;
@@ -87,7 +112,8 @@ export class RealTimeService {
       this.ws.close();
       this.ws = null;
     }
-    
+
+    this.teardownRelay();
     this.reconnectAttempts = 0;
   }
 
@@ -117,11 +143,25 @@ export class RealTimeService {
   /**
    * Send a message via WebSocket
    */
-  send(message: RealTimeMessage): void {
+  async send(message: RealTimeMessage): Promise<void> {
+    if (this.relayClient) {
+      try {
+        await this.relayClient.publish({
+          id: `rt-${Date.now()}`,
+          type: message.type,
+          payload: message.data,
+          ts: message.timestamp.toISOString()
+        });
+        return;
+      } catch (error) {
+        log.warn('RealTimeService', 'Relay publish failed, falling back to WebSocket if available', { error });
+      }
+    }
+
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(message));
     } else {
-      log.warn('RealTimeService', 'Cannot send message - WebSocket not connected');
+      log.warn('RealTimeService', 'Cannot send message - no relay client or WebSocket connected');
     }
   }
 
@@ -219,6 +259,33 @@ export class RealTimeService {
       this.reconnectTimer = null;
       this.start();
     }, delay);
+  }
+
+  private handleRelayEvent(event: RelayEvent): void {
+    this.handleMessage({
+      type: event.type as RealTimeMessage['type'],
+      data: event.payload,
+      timestamp: new Date(event.ts)
+    });
+  }
+
+  private async emitRelayHealth(): Promise<void> {
+    if (!this.relayClient) return;
+
+    try {
+      const health: RelayHealth = await this.relayClient.health();
+      this.handleMessage({ type: 'health_update', data: health, timestamp: new Date(health.checkedAt || Date.now()) });
+    } catch (error) {
+      log.warn('RealTimeService', 'Failed to read relay health', { error });
+    }
+  }
+
+  private teardownRelay(): void {
+    if (this.relaySubscription) {
+      this.relaySubscription.unsubscribe();
+      this.relaySubscription = null;
+    }
+    this.relayClient = null;
   }
 
   private startHeartbeat(): void {

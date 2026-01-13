@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect,useState } from 'react';
 
 import { DEFAULT_MISSION_MODE, MissionMode } from '../constants/MissionMode';
+import { applyInfrastructureSettings } from '../utils/infrastructureRuntime';
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
@@ -57,6 +58,13 @@ export interface Settings {
     theme: 'light' | 'dark' | 'system' | 'alliance';
     density: 'comfortable' | 'compact' | 'spacious';
     fontSize: number;
+  };
+  infrastructure: {
+    relayEnabled: boolean;
+    anchoringEnabled: boolean;
+    pqcEnabled: boolean;
+    ipfsPinningEnabled: boolean;
+    diagnosticsEnabled: boolean;
   };
   general?: {
     mode: MissionMode;
@@ -134,6 +142,13 @@ const defaultSettings: Settings = {
     density: 'comfortable',
     fontSize: 14
   },
+  infrastructure: {
+    relayEnabled: true,
+    anchoringEnabled: true,
+    pqcEnabled: false,
+    ipfsPinningEnabled: false,
+    diagnosticsEnabled: false
+  },
   general: {
     mode: DEFAULT_MISSION_MODE,
     refreshInterval: 300000, // 5 minutes
@@ -195,6 +210,11 @@ export const SettingsProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
     } catch (error) {
       console.error('Failed to save settings:', error);
     }
+  }, [settings]);
+
+  // Apply infrastructure side effects (relay/anchoring/diagnostics) when settings change
+  useEffect(() => {
+    applyInfrastructureSettings(settings);
   }, [settings]);
   
   const updateSettings = (newSettings: SettingsUpdate) => {
@@ -273,6 +293,10 @@ export const SettingsProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
           ...prevSettings.display,
           ...(newSettings.display || {})
         },
+            infrastructure: {
+              ...(prevSettings.infrastructure ?? defaultSettings.infrastructure),
+              ...(newSettings.infrastructure || {})
+            },
         general: mergedGeneral
       };
     });

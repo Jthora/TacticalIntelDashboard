@@ -3,6 +3,12 @@
 import { useIPFS } from '../contexts/IPFSContext';
 import { useWeb3 } from '../contexts/Web3Context';
 import { decryptContent,encryptContent } from '../utils/encryptionUtils';
+import { getAnchorClientResolution, getInfrastructureSnapshot, getRelayClient } from '../utils/infrastructureRuntime';
+import { AnchorClientResolution } from '../utils/anchor/getAnchorClient';
+import { RelayAck, RelayEvent } from '../types/RelayClient';
+import { AnchorRecord } from '../types/AnchorClient';
+import { ChainReference, ProvenanceBundle } from '../types/Provenance';
+import { logger } from '../utils/LoggerService';
 
 /**
  * IntelligenceBridge - Cross-platform intelligence sharing service
@@ -28,6 +34,7 @@ export interface IntelligenceMetadata {
     tidMetadata?: any;
     imeMetadata?: any;
   };
+  provenance?: ProvenanceBundle;
 }
 
 export interface TIDIntelligenceFormat {
@@ -68,6 +75,26 @@ export interface IMEIntelligenceFormat {
   };
 }
 
+interface PublishRelayOutcome {
+  ack?: RelayAck;
+  error?: string;
+  disabled?: boolean;
+}
+
+interface PublishAnchorOutcome {
+  record?: AnchorRecord;
+  resolution?: AnchorClientResolution;
+  error?: string;
+  disabled?: boolean;
+}
+
+export interface PublishResult {
+  metadataHash: string;
+  relay?: PublishRelayOutcome;
+  anchor?: PublishAnchorOutcome;
+  provenance?: ProvenanceBundle;
+}
+
 export class IntelligenceBridge {
   private ipfs: any;
   private web3: any;
@@ -104,28 +131,6 @@ export class IntelligenceBridge {
   }
 
   /**
-   * Convert IME format to TID format  
-   */
-  private convertIMEToTID(imeData: IMEIntelligenceFormat): TIDIntelligenceFormat {
-    return {
-      id: imeData.report_id,
-      timestamp: imeData.created_at,
-      title: imeData.title,
-      content: imeData.content.details,
-      source: {
-        name: imeData.verification.verified_by[0] || 'Unknown',
-        url: imeData.content.sources[0] || '',
-        category: imeData.classification.category
-      },
-      metadata: {
-        tags: imeData.classification.tags,
-        priority: this.mapLevelToPriority(imeData.classification.level),
-        confidence: imeData.verification.confidence_score
-      }
-    };
-  }
-
-  /**
    * Publish intelligence in both TID and IME formats to IPFS
    */
   async publishIntelligence(
@@ -135,11 +140,19 @@ export class IntelligenceBridge {
       accessLevel?: number;
       pinToMultipleServices?: boolean;
     } = {}
-  ): Promise<string> {
+  ): Promise<PublishResult> {
     try {
       if (!this.web3.isConnected) {
         throw new Error('Wallet not connected');
       }
+
+      const infrastructure = getInfrastructureSnapshot?.() || {
+        relayEnabled: true,
+        anchoringEnabled: true,
+        pqcEnabled: false,
+        ipfsPinningEnabled: false,
+        diagnosticsEnabled: false
+      };
 
       // Convert to IME format
       const imeData = this.convertTIDToIME(tidData);
@@ -178,23 +191,102 @@ export class IntelligenceBridge {
           signature: await this.signMetadata(tidData),
           signer: this.web3.walletAddress
         },
-        encryption: options.encrypt ? {
-          encrypted: true,
-          accessLevel: options.accessLevel || 0,
-          tidMetadata: tidEncryptionMetadata,
-          imeMetadata: imeEncryptionMetadata
-        } : undefined
+        ...(options.encrypt
+          ? {
+              encryption: {
+                encrypted: true,
+                accessLevel: options.accessLevel || 0,
+                tidMetadata: tidEncryptionMetadata,
+                imeMetadata: imeEncryptionMetadata
+              }
+            }
+          : {})
       };
 
-      // Upload metadata
+      // Upload metadata first to obtain CID/hash for relay + anchoring
       const metadataHash = await this.ipfs.uploadContent(JSON.stringify(metadata));
+
+      const result: PublishResult = { metadataHash };
+      const relayIds: string[] = [];
+      const relayEvent: RelayEvent = {
+        id: `intel-${tidData.id}`,
+        type: 'intel.published',
+        payload: {
+          metadataHash,
+          title: tidData.title,
+          source: tidData.source.name,
+          ts: tidData.timestamp,
+          cid: metadataHash,
+          priority: tidData.metadata.priority,
+          confidence: tidData.metadata.confidence
+        },
+        ts: new Date().toISOString(),
+        topics: ['intel', 'publish']
+      };
+
+      if (infrastructure.relayEnabled) {
+        try {
+          const ack = await getRelayClient().publish(relayEvent);
+          result.relay = { ack, disabled: false };
+          if (ack.status === 'ok') {
+            relayIds.push(relayEvent.id);
+          }
+        } catch (relayError) {
+          const relayMessage = relayError instanceof Error ? relayError.message : 'relay-broadcast-error';
+          result.relay = { disabled: false, error: relayMessage };
+          logger.warn('IntelligenceBridge', 'Failed to broadcast via relay client', { relayMessage });
+        }
+      } else {
+        result.relay = { disabled: true };
+      }
+
+      const anchorResolution: AnchorClientResolution = getAnchorClientResolution();
+      let anchorRecord: AnchorRecord | undefined;
+      let anchorStatus: ProvenanceBundle['anchorStatus'] = 'not-requested';
+
+      const anchoringEnabled = infrastructure.anchoringEnabled && anchorResolution?.reason !== 'anchoring-disabled-by-settings';
+      if (anchoringEnabled) {
+        try {
+          anchorRecord = await anchorResolution.client.anchor({
+            hash: metadataHash,
+            context: `intel:${tidData.id}`
+          });
+          result.anchor = { resolution: anchorResolution, disabled: false, record: anchorRecord };
+          anchorStatus = anchorRecord.status === 'confirmed' ? 'anchored' : anchorRecord.status === 'failed' ? 'failed' : 'pending';
+        } catch (anchorError) {
+          const anchorMessage = anchorError instanceof Error ? anchorError.message : 'anchor-error';
+          result.anchor = { resolution: anchorResolution, disabled: false, error: anchorMessage };
+          anchorStatus = 'failed';
+          logger.warn('IntelligenceBridge', 'Failed to anchor intelligence metadata', { anchorMessage });
+        }
+      } else {
+        result.anchor = { resolution: anchorResolution, disabled: true };
+        anchorStatus = 'not-requested';
+      }
+
+      // Capture provenance for downstream consumers (not persisted yet)
+      const provenance: ProvenanceBundle = { relayIds, anchorStatus };
+      if (anchorRecord) {
+        const chainRef: ChainReference = {
+          chain: anchorRecord.chain,
+          txRef: anchorRecord.txRef,
+          status: anchorRecord.status
+        };
+
+        if (anchorRecord.anchoredAt) {
+          chainRef.anchoredAt = anchorRecord.anchoredAt;
+        }
+
+        provenance.chainRef = chainRef;
+      }
+      result.provenance = provenance;
 
       // Pin to multiple services if requested
       if (options.pinToMultipleServices) {
         await this.pinToServices([tidHash, imeHash, metadataHash]);
       }
 
-      return metadataHash;
+      return result;
     } catch (error) {
       console.error('Failed to publish intelligence:', error);
       throw error;
@@ -241,7 +333,7 @@ export class IntelligenceBridge {
   /**
    * List available intelligence with metadata
    */
-  async listIntelligence(filter?: {
+  async listIntelligence(_filter?: {
     source?: string;
     tags?: string[];
     timeRange?: { start: string; end: string };
@@ -257,11 +349,11 @@ export class IntelligenceBridge {
   async verifyIntelligence(metadataHash: string): Promise<boolean> {
     try {
       const metadataContent = await this.ipfs.getContent(metadataHash);
-      const metadata: IntelligenceMetadata = JSON.parse(metadataContent);
+      const parsed: IntelligenceMetadata = JSON.parse(metadataContent);
 
       // Verify signature using existing Web3 utilities
       // Implementation depends on your signature verification logic
-      return true; // Placeholder
+      return Boolean(parsed?.verification?.signature);
     } catch (error) {
       console.error('Failed to verify intelligence:', error);
       return false;
@@ -302,16 +394,6 @@ export class IntelligenceBridge {
       'critical': 'top_secret'
     };
     return mapping[priority] || 'unclassified';
-  }
-
-  private mapLevelToPriority(level: string): 'low' | 'medium' | 'high' | 'critical' {
-    const mapping: { [key: string]: 'low' | 'medium' | 'high' | 'critical' } = {
-      'unclassified': 'low',
-      'confidential': 'medium',
-      'secret': 'high',
-      'top_secret': 'critical'
-    };
-    return mapping[level] || 'low';
   }
 }
 

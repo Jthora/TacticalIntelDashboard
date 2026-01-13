@@ -5,7 +5,7 @@ import { useAutoRefresh } from '../useAutoRefresh';
 
 describe('useAutoRefresh', () => {
   test('registers interval and triggers load when autoRefresh is enabled', () => {
-    const loadFeeds = jest.fn<(showLoading?: boolean) => void>();
+    const loadFeeds = jest.fn<(showLoading?: boolean, reason?: string) => void>();
     const getGeneralSettings = jest.fn(() => ({ refreshInterval: 120 }));
     const logDebug = jest.fn();
 
@@ -46,7 +46,7 @@ describe('useAutoRefresh', () => {
       'Component',
       'Auto-refreshing feeds every 120 seconds...'
     );
-    expect(loadFeeds).toHaveBeenCalledWith(false);
+    expect(loadFeeds).toHaveBeenCalledWith(false, 'auto-refresh');
 
     unmount();
     expect(clearIntervalMock).toHaveBeenCalledWith(123 as unknown as ReturnType<typeof setInterval>);

@@ -1,3 +1,5 @@
+import { ProvenanceBundle } from '../types/Provenance';
+
 export interface Feed {
   id: string;
   name: string;
@@ -25,6 +27,7 @@ export interface Feed {
   verificationStatus?: 'VERIFIED' | 'UNVERIFIED' | 'OFFICIAL';
   dataQuality?: number;
   missionMode?: string;
+  provenance?: ProvenanceBundle;
   
   // Extended metadata for modern API sources
   metadata?: {

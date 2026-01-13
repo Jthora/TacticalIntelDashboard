@@ -1,5 +1,5 @@
 import { FeedItem,FeedResults } from '../types/FeedTypes';
-import { fetchFeed } from '../utils/fetchFeed_new';
+import { fetchFeed } from '../utils/fetchFeed';
 import { log } from '../utils/LoggerService';
 
 interface FetchedFeedItem {

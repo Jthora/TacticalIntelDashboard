@@ -28,4 +28,28 @@ describe('feedUrlValidator', () => {
       isValidFeedURL(investigativeArticleUrl, { allowArticlePatternsForInvestigativeHosts: false })
     ).toBe(false);
   });
+
+  it('rejects hosts not present in allowlist when provided', () => {
+    expect(
+      isValidFeedURL('https://intel.example/rss.xml', { allowedHosts: ['trusted.example'] })
+    ).toBe(false);
+
+    expect(
+      isValidFeedURL('https://trusted.example/rss.xml', { allowedHosts: ['trusted.example'] })
+    ).toBe(true);
+  });
+
+  it('blocks private/loopback hosts when requested', () => {
+    expect(
+      isValidFeedURL('http://localhost/rss.xml', { blockPrivateNetworks: true })
+    ).toBe(false);
+
+    expect(
+      isValidFeedURL('http://192.168.0.12/rss.xml', { blockPrivateNetworks: true })
+    ).toBe(false);
+
+    expect(
+      isValidFeedURL('http://news.example/rss.xml', { blockPrivateNetworks: true })
+    ).toBe(true);
+  });
 });

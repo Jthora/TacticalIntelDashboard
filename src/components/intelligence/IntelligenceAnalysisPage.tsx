@@ -1,6 +1,6 @@
 import '../../styles/intelligence/IntelligenceAnalysis.css';
 
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useMemo,useState } from 'react';
 
 import { useWeb3 } from '../../hooks/useWeb3';
 import { 
@@ -10,10 +10,66 @@ import {
   submitAnonymousIntelligence,
   submitIntelligence, 
   voteOnIntelligence} from '../../web3/intelligence/intelligenceAnalysis';
+import ProvenanceBadges from '../verification/ProvenanceBadges';
+import ProvenanceDetailPanel from '../verification/ProvenanceDetailPanel';
+import { withProvenanceDefaults } from '../../utils/provenanceDefaults';
 
 /**
  * Main page for intelligence analysis features
  */
+interface IntelCardProps {
+  item: IntelligenceItem;
+}
+
+const IntelCard: React.FC<IntelCardProps> = ({ item }) => {
+  const provenance = useMemo(
+    () => withProvenanceDefaults(item.provenance || { anchorStatus: 'not-requested', relayIds: [] }),
+    [item.provenance]
+  );
+
+  return (
+    <div className="intel-item">
+      <div className="intel-item-header">
+        <h3>{item.category} Intelligence</h3>
+        <span className={`intel-sensitivity ${item.sensitivity}`}>
+          {item.sensitivity}
+        </span>
+      </div>
+      <div className="intel-provenance-row">
+        <ProvenanceBadges
+          provenance={provenance}
+          compact
+          showLabels={false}
+        />
+      </div>
+      <div className="intel-provenance-detail">
+        <ProvenanceDetailPanel provenance={provenance} />
+      </div>
+      <div className="intel-item-content">
+        <p>{item.content || 'Encrypted content'}</p>
+      </div>
+      <div className="intel-item-footer">
+        <div className="intel-confidence">
+          <span>Confidence: </span>
+          <div className="confidence-bar">
+            <div 
+              className="confidence-level" 
+              style={{ width: `${item.confidenceScore}%` }}
+            />
+          </div>
+          <span>{item.confidenceScore}%</span>
+        </div>
+        <div className="intel-votes">
+          <span>{item.voteCount} assessments</span>
+        </div>
+        <div className="intel-timestamp">
+          {new Date(item.timestamp).toLocaleString()}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const IntelligenceAnalysisPage: React.FC = () => {
   const { provider, isConnected: connected } = useWeb3();
   const [intelligenceItems, setIntelligenceItems] = useState<IntelligenceItem[]>([]);
@@ -163,35 +219,7 @@ const IntelligenceAnalysisPage: React.FC = () => {
             ) : (
               <div className="intel-items">
                 {intelligenceItems.map((item) => (
-                  <div key={item.id} className="intel-item">
-                    <div className="intel-item-header">
-                      <h3>{item.category} Intelligence</h3>
-                      <span className={`intel-sensitivity ${item.sensitivity}`}>
-                        {item.sensitivity}
-                      </span>
-                    </div>
-                    <div className="intel-item-content">
-                      <p>{item.content || 'Encrypted content'}</p>
-                    </div>
-                    <div className="intel-item-footer">
-                      <div className="intel-confidence">
-                        <span>Confidence: </span>
-                        <div className="confidence-bar">
-                          <div 
-                            className="confidence-level" 
-                            style={{ width: `${item.confidenceScore}%` }}
-                          />
-                        </div>
-                        <span>{item.confidenceScore}%</span>
-                      </div>
-                      <div className="intel-votes">
-                        <span>{item.voteCount} assessments</span>
-                      </div>
-                      <div className="intel-timestamp">
-                        {new Date(item.timestamp).toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
+                  <IntelCard key={item.id} item={item} />
                 ))}
               </div>
             )}

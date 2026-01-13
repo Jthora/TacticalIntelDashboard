@@ -1,6 +1,37 @@
 import { getAllTextContents, getAttributeValue, getElementsByTagName,getTextContent, getTextContentWithFallback } from '../helpers/htmlHelper';
 import { Feed } from '../models/Feed';
 
+const dangerousSelectors = ['script', 'style', 'iframe', 'object', 'embed', 'meta[http-equiv="refresh"]', 'link[rel="preload"]', 'link[rel="prefetch"]'];
+
+export const sanitizeHtmlDocument = (doc: Document): Document => {
+  // Drop entire dangerous nodes first
+  dangerousSelectors.forEach(selector => {
+    doc.querySelectorAll(selector).forEach(node => node.remove());
+  });
+
+  const walker = doc.createTreeWalker(doc.documentElement, NodeFilter.SHOW_ELEMENT);
+  while (walker.nextNode()) {
+    const element = walker.currentNode as Element;
+
+    // Remove inline event handlers (onclick, onerror, etc.)
+    Array.from(element.attributes).forEach(attr => {
+      const name = attr.name.toLowerCase();
+      const value = (attr.value || '').trim().toLowerCase();
+
+      if (name.startsWith('on')) {
+        element.removeAttribute(attr.name);
+        return;
+      }
+
+      if ((name === 'src' || name === 'href' || name === 'xlink:href') && (value.startsWith('javascript:') || value.startsWith('data:text'))) {
+        element.removeAttribute(attr.name);
+      }
+    });
+  }
+
+  return doc;
+};
+
 export const parseFeedData = (htmlDoc: Element, url: string, feedListId: string): Feed[] => {
   const items = getElementsByTagName(htmlDoc, "item");
   const feeds: Feed[] = [];

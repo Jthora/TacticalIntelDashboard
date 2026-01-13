@@ -96,6 +96,12 @@
   margin-bottom: 1rem;
 }
 
+.alert-provenance-row {
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .alert-title {
   display: flex;
   align-items: center;

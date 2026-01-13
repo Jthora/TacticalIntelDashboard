@@ -4,6 +4,8 @@ import React, { useEffect,useState } from 'react';
 
 import useAlerts from '../../hooks/alerts/useAlerts';
 import { AlertTrigger } from '../../types/AlertTypes';
+import ProvenanceBadges from '../verification/ProvenanceBadges';
+import { withProvenanceDefaults } from '../../utils/provenanceDefaults';
 
 interface AlertNotificationPanelProps {
   className?: string;
@@ -133,6 +135,9 @@ const AlertNotificationPanel: React.FC<AlertNotificationPanelProps> = ({ classNa
                   <p className="alert-source">
                     📡 {alert.feedItem.source}
                   </p>
+                  <div className="alert-prov-row">
+                    <ProvenanceBadges provenance={withProvenanceDefaults(alert.feedItem.provenance)} compact />
+                  </div>
                   <div className="matched-keywords">
                     <span className="keywords-label">Keywords:</span>
                     {alert.matchedKeywords.map((keyword, index) => (

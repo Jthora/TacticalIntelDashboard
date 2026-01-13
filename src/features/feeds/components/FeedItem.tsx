@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 // Removed unused FeedHealthIndicator import
-import { Feed } from '../../../models/Feed';
+import ProvenanceBadges from '../../../components/verification/ProvenanceBadges';
+import ProvenanceDetailPanel from '../../../components/verification/ProvenanceDetailPanel';
 import { useSettings } from '../../../contexts/SettingsContext';
-import { log } from '../../../utils/LoggerService';
+import { Feed } from '../../../models/Feed';
 import useSocialShare from '../../../hooks/useSocialShare';
+import { withProvenanceDefaults } from '../../../utils/provenanceDefaults';
+import { log } from '../../../utils/LoggerService';
 
 interface FeedItemProps { feed: Feed; }
 
@@ -13,6 +16,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
   const shareSettings = settings.general?.share;
   const sharingEnabled = !!shareSettings?.enabled;
   const [expanded, setExpanded] = useState(false);
+  const [showProvenanceDetails, setShowProvenanceDetails] = useState(false);
   const [shareState, setShareState] = useState<'idle' | 'sharing' | 'error'>('idle');
   const [shareFeedback, setShareFeedback] = useState('');
   const feedbackTimeoutRef = useRef<number | null>(null);
@@ -49,6 +53,7 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
   };
 
   const toggleExpanded = () => setExpanded(!expanded);
+  const toggleProvenance = () => setShowProvenanceDetails(prev => !prev);
 
   const getSourceFromUrl = (url: string) => {
     try {
@@ -77,6 +82,8 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
       </span>
     );
   };
+
+  const provenance = withProvenanceDefaults(feed.provenance || { anchorStatus: 'not-requested', relayIds: [] });
 
   const renderTags = () => {
     if (!feed.tags || feed.tags.length === 0) return null;
@@ -166,6 +173,23 @@ const FeedItem: React.FC<FeedItemProps> = ({ feed }) => {
           <div className="feed-timestamp" data-testid="feed-timestamp">{formatDate(feed.pubDate)}</div>
         </div>
       </div>
+
+      <div className="feed-provenance-row">
+        <ProvenanceBadges provenance={provenance} compact />
+        <button
+          className="btn feed-btn"
+          data-testid="feed-prov-toggle"
+          onClick={toggleProvenance}
+        >
+          {showProvenanceDetails ? 'Hide details' : 'Provenance details'}
+        </button>
+      </div>
+
+      {showProvenanceDetails && (
+        <div className="feed-provenance-detail" data-testid="feed-prov-detail">
+          <ProvenanceDetailPanel provenance={provenance} />
+        </div>
+      )}
 
       <h3 className="feed-title" data-testid="feed-item-title">
         <a href={feed.link} target="_blank" rel="noopener noreferrer" className="feed-link">

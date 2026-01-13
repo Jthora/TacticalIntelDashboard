@@ -1,6 +1,6 @@
 import { CORSStrategy } from '../contexts/SettingsContext';
 import { Feed } from '../models/Feed';
-import { isValidHTML,parseFeedData as parseHTMLFeedData } from '../parsers/htmlParser';
+import { isValidHTML,parseFeedData as parseHTMLFeedData, sanitizeHtmlDocument } from '../parsers/htmlParser';
 import { isValidJSON,parseFeedData as parseJSONFeedData } from '../parsers/jsonParser';
 import { isValidTXT,parseFeedData as parseTXTFeedData } from '../parsers/txtParser';
 import { isValidXML,parseFeedData as parseXMLFeedData } from '../parsers/xmlParser';
@@ -10,6 +10,8 @@ import { handleFetchError, handleHTMLParsingError,handleJSONParsingError, handle
 import { convertFeedsToFeedItems } from './feedConversion';
 import { LocalStorageUtil } from './LocalStorageUtil';
 import { isValidFeedURL } from './feedUrlValidator';
+import { loadConfigMatrix } from '../config/configMatrix';
+import { logIngestEvent } from './structuredLogger';
 
 // Get proxy URL using user's CORS settings
 const getProxyUrl = (targetUrl: string): string => {
@@ -146,11 +148,28 @@ const fetchWithFallback = async (url: string, options: RequestInit): Promise<Res
 };
 
 export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
-  console.log(`Starting to fetch feed from URL: ${url}`);
+  const { ingestion } = loadConfigMatrix();
+  const allowedHosts = ingestion.allowedHosts;
+  const blockPrivateNetworks = ingestion.blockPrivateNetworks;
+  const maxBytes = ingestion.maxContentLengthBytes;
+
+  logIngestEvent({
+    level: 'info',
+    code: 'INGEST_FETCH_START',
+    message: 'Starting fetch for feed',
+    url,
+    context: { allowedHosts, blockPrivateNetworks, maxBytes },
+  });
   
   // Validate URL before processing
-  if (!isValidFeedURL(url, { allowArticlePatternsForInvestigativeHosts: false })) {
-    console.error(`Invalid feed URL detected: ${url}`);
+  if (!isValidFeedURL(url, { allowArticlePatternsForInvestigativeHosts: false, allowedHosts, blockPrivateNetworks })) {
+    logIngestEvent({
+      level: 'warn',
+      code: 'INGEST_URL_BLOCKED',
+      message: 'Feed URL blocked by policy',
+      url,
+      context: { allowedHosts, blockPrivateNetworks },
+    });
     return null;
   }
   
@@ -167,9 +186,42 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       throw new Error(`Failed to fetch feed: ${response.statusText}`);
     }
 
+    const contentLength = response.headers.get('content-length');
+    if (contentLength) {
+      const numericLength = Number(contentLength);
+      if (Number.isFinite(numericLength) && numericLength > maxBytes) {
+        logIngestEvent({
+          level: 'warn',
+          code: 'INGEST_SIZE_HEADER_BLOCK',
+          message: 'Feed content length exceeds cap (header)',
+          url,
+          context: { contentLength: numericLength, maxBytes },
+        });
+        throw new Error(`Feed content exceeds allowed size (${numericLength} > ${maxBytes} bytes)`);
+      }
+    }
+
     const contentType = response.headers.get('content-type');
     let textData = await response.text();
-    console.log(`Feed data fetched for URL: ${url}`, textData.substring(0, 200));
+
+    const byteLength = new TextEncoder().encode(textData).length;
+    if (byteLength > maxBytes) {
+      logIngestEvent({
+        level: 'warn',
+        code: 'INGEST_SIZE_BODY_BLOCK',
+        message: 'Feed content length exceeds cap (body)',
+        url,
+        context: { byteLength, maxBytes },
+      });
+      throw new Error(`Feed content exceeds allowed size after download (${byteLength} > ${maxBytes} bytes)`);
+    }
+    logIngestEvent({
+      level: 'info',
+      code: 'INGEST_FETCH_OK',
+      message: 'Feed response fetched',
+      url,
+      context: { contentType, byteLength },
+    });
 
     // Handle different proxy response formats
     if (contentType && contentType.includes('application/json')) {
@@ -200,7 +252,12 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       actualContentType = 'application/json';
     } else if (textData.includes('<!DOCTYPE') || textData.includes('<html') || textData.includes('<head>')) {
       actualContentType = 'text/html';
-      console.warn(`⚠️ Detected HTML content from URL: ${url} - This appears to be a webpage, not a feed`);
+      logIngestEvent({
+        level: 'warn',
+        code: 'INGEST_HTML_PAGE',
+        message: 'Detected HTML page instead of feed',
+        url,
+      });
       
       // For individual article pages, return null instead of trying to parse
       if (!isValidFeedURL(url, { allowArticlePatternsForInvestigativeHosts: false })) {
@@ -221,7 +278,13 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
         return null;
       }
       feeds = parseXMLFeedData(xmlDoc, url);
-      console.log(`Parsed ${feeds.length} feeds from XML`);
+      logIngestEvent({
+        level: 'info',
+        code: 'INGEST_PARSE_XML_OK',
+        message: 'Parsed XML feed',
+        url,
+        context: { itemCount: feeds.length },
+      });
     } else if (actualContentType && actualContentType.includes('application/json')) {
       if (!isValidJSON(textData)) {
         handleJSONParsingError(url, new Error('Invalid JSON'), textData);
@@ -229,14 +292,26 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       }
       const jsonData = JSON.parse(textData);
       feeds = parseJSONFeedData(jsonData, url);
-      console.log(`Parsed ${feeds.length} feeds from JSON`);
+      logIngestEvent({
+        level: 'info',
+        code: 'INGEST_PARSE_JSON_OK',
+        message: 'Parsed JSON feed',
+        url,
+        context: { itemCount: feeds.length },
+      });
     } else if (actualContentType && actualContentType.includes('text/plain')) {
       if (!isValidTXT(textData)) {
         handleTXTParsingError(url, new Error('Invalid TXT'), textData);
         return null;
       }
       feeds = parseTXTFeedData(textData, url);
-      console.log(`Parsed ${feeds.length} feeds from TXT`);
+      logIngestEvent({
+        level: 'info',
+        code: 'INGEST_PARSE_TXT_OK',
+        message: 'Parsed TXT feed',
+        url,
+        context: { itemCount: feeds.length },
+      });
     } else if (actualContentType && actualContentType.includes('text/html')) {
       if (!isValidHTML(textData)) {
         handleHTMLParsingError(url, new Error('Invalid HTML'), textData);
@@ -244,17 +319,36 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
       }
       const parser = new DOMParser();
       const htmlDoc = parser.parseFromString(textData, "text/html");
-      feeds = parseHTMLFeedData(htmlDoc.documentElement, url, '1');
-      console.log(`Parsed ${feeds.length} feeds from HTML`);
+      const sanitized = sanitizeHtmlDocument(htmlDoc);
+      feeds = parseHTMLFeedData(sanitized.documentElement, url, '1');
+      logIngestEvent({
+        level: 'info',
+        code: 'INGEST_PARSE_HTML_OK',
+        message: 'Parsed HTML feed after sanitization',
+        url,
+        context: { itemCount: feeds.length },
+      });
     } else {
-      console.error(`Unsupported content type: ${actualContentType}, attempting XML parsing as fallback`);
+      logIngestEvent({
+        level: 'warn',
+        code: 'INGEST_PARSE_FALLBACK_XML',
+        message: 'Unsupported content type, attempting XML fallback',
+        url,
+        context: { actualContentType },
+      });
       // Try XML parsing as a last resort
       try {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(textData, "application/xml");
         if (xmlDoc.getElementsByTagName("parsererror").length === 0) {
           feeds = parseXMLFeedData(xmlDoc, url);
-          console.log(`Fallback XML parsing succeeded, parsed ${feeds.length} feeds`);
+          logIngestEvent({
+            level: 'info',
+            code: 'INGEST_PARSE_XML_FALLBACK_OK',
+            message: 'Parsed via XML fallback',
+            url,
+            context: { itemCount: feeds.length },
+          });
         } else {
           throw new Error(`Unable to parse content as XML`);
         }
@@ -264,7 +358,13 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
     }
 
     const convertedFeedItems = convertFeedsToFeedItems(feeds);
-    console.log(`Converted to ${convertedFeedItems.length} feed items`);
+    logIngestEvent({
+      level: 'info',
+      code: 'INGEST_CONVERT_OK',
+      message: 'Converted feeds to feed items',
+      url,
+      context: { itemCount: convertedFeedItems.length },
+    });
 
     return {
       feeds: convertedFeedItems,
@@ -274,7 +374,12 @@ export const fetchFeed = async (url: string): Promise<FeedResults | null> => {
     if (error instanceof TypeError && error.message.includes('NetworkError')) {
       handleCORSError(url, error);
     } else {
-      console.error('Error fetching feed:', error);
+      logIngestEvent({
+        level: 'error',
+        code: 'INGEST_FETCH_ERROR',
+        message: (error as Error).message,
+        url,
+      });
       handleFetchError(error as Error, url);
     }
     return null;
