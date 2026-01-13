@@ -178,7 +178,8 @@ const Header: React.FC = () => {
             })}
           </div>
           <div className="status-indicator status-online" title="Connection Status">
-            ● ONLINE
+            <span className="status-dot" aria-hidden="true"></span>
+            <span className="status-text">ONLINE</span>
           </div>
         </div>
 
